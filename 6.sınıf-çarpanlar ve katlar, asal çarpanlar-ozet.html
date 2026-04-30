@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Çarpanlar ve Katlar, Asal Çarpanlar</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Source+Sans+3:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root { --bg: #f0f4f3; --fg: #152421; --muted: #5a7a74; --accent: #0a8c6a; --accent2: #066e52; --accent-l: #e2f5ef; --card: #fff; --border: #cdded8; --sh: 0 2px 14px rgba(10, 140, 106, .07); --sh2: 0 8px 30px rgba(10, 140, 106, .11); --r: 14px }
+    * { margin: 0; padding: 0; box-sizing: border-box }
+    body { font-family: 'Source Sans 3', sans-serif; background: var(--bg); color: var(--fg); line-height: 1.75; min-height: 100vh }
+    body::before { content: ''; position: fixed; top: -180px; right: -180px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(10, 140, 106, .06) 0%, transparent 70%); border-radius: 50%; pointer-events: none }
+    .container { max-width: 920px; margin: 0 auto; padding: 16px; position: relative; z-index: 1 }
+    .header { background: linear-gradient(135deg, #0a8c6a 0%, #066e52 60%, #044a38 100%); border-radius: 20px; padding: 40px 32px; color: #fff; text-align: center; margin-bottom: 28px; box-shadow: 0 12px 40px rgba(10, 140, 106, .25); position: relative; overflow: hidden }
+    .header::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent, transparent 28px, rgba(255, 255, 255, .015) 28px, rgba(255, 255, 255, .015) 56px); pointer-events: none }
+    .header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #10b981, #e8960a, #dc2626, #8b5cf6, #06b6d4, #0a8c6a) }
+    .header-badge { display: inline-block; background: rgba(255, 255, 255, .13); backdrop-filter: blur(4px); padding: 5px 20px; border-radius: 24px; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; border: 1px solid rgba(255, 255, 255, .18) }
+    .header h1 { font-family: 'Nunito', sans-serif; font-size: 32px; font-weight: 900; margin-bottom: 6px; letter-spacing: -.5px }
+    .header p { font-size: 15px; opacity: .88; max-width: 600px; margin: 0 auto }
+    .toc { background: var(--card); border-radius: var(--r); padding: 24px 28px; margin-bottom: 24px; box-shadow: var(--sh); border: 1px solid var(--border) }
+    .toc h2 { font-family: 'Nunito', sans-serif; font-size: 20px; font-weight: 800; color: var(--accent); margin-bottom: 14px; display: flex; align-items: center; gap: 8px }
+    .toc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px }
+    .toc-item { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 10px; border: 2px solid var(--border); cursor: pointer; transition: all .2s; font-size: 14px; font-weight: 600; text-decoration: none; color: var(--fg) }
+    .toc-item:hover { border-color: var(--accent); background: var(--accent-l); transform: translateY(-2px); box-shadow: var(--sh) }
+    .toc-num { width: 32px; height: 32px; border-radius: 8px; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px; flex-shrink: 0 }
+    .rule-section { background: var(--card); border-radius: var(--r); padding: 28px 30px; margin-bottom: 20px; box-shadow: var(--sh); border: 1px solid var(--border); position: relative; overflow: hidden }
+    .rule-section::before { content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%; border-radius: 3px 0 0 3px }
+    .rule-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px }
+    .rule-icon { width: 50px; height: 50px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-family: 'Nunito', sans-serif; font-size: 22px; font-weight: 900; color: #fff; flex-shrink: 0 }
+    .rule-title { font-family: 'Nunito', sans-serif; font-size: 22px; font-weight: 800; color: var(--fg) }
+    .rule-subtitle { font-size: 13px; color: var(--muted); font-weight: 500 }
+    .content-text { text-align: justify; font-size: 15.5px; line-height: 1.8; margin-bottom: 16px }
+    .content-text b, .content-text strong { color: var(--accent) }
+    .rule-box { background: linear-gradient(135deg, var(--accent-l), #d1f5eb); border: 2px solid var(--accent); border-radius: 12px; padding: 16px 20px; margin: 16px 0; text-align: center }
+    .rule-box .rule-formula { font-family: 'Nunito', sans-serif; font-size: 20px; font-weight: 800; color: var(--accent2); line-height: 1.5 }
+    .rule-box .rule-note { font-size: 13px; color: var(--muted); margin-top: 4px }
+    .example-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0 }
+    .example-card { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--border); background: #f8fbfa }
+    .example-card.yes { border-left: 4px solid #10b981; background: linear-gradient(90deg, #ecfdf5, #f8fbfa 30%) }
+    .example-card.no { border-left: 4px solid #ef4444; background: linear-gradient(90deg, #fef2f2, #f8fbfa 30%) }
+    .example-card .ex-q { font-weight: 700; font-size: 15px; margin-bottom: 4px }
+    .example-card .ex-a { font-size: 13.5px; color: var(--muted); line-height: 1.6; text-align: justify }
+    .example-card .ex-a b { color: var(--accent) }
+    .info-box { background: linear-gradient(135deg, #eff6ff, #dbeafe); border: 1px solid #93c5fd; border-left: 4px solid #3b82f6; border-radius: 0 10px 10px 0; padding: 14px 18px; margin: 14px 0; font-size: 13.5px; color: #1e3a5f; display: flex; align-items: flex-start; gap: 10px; text-align: justify; line-height: 1.7 }
+    .info-box i { color: #3b82f6; margin-top: 3px; flex-shrink: 0 }
+    .test-section { background: var(--card); border-radius: var(--r); padding: 28px 30px; margin-top: 28px; box-shadow: var(--sh2); border: 2px solid var(--accent) }
+    .test-header { text-align: center; margin-bottom: 20px }
+    .test-header h2 { font-family: 'Nunito', sans-serif; font-size: 24px; font-weight: 900; color: var(--accent) }
+    .test-header p { font-size: 14px; color: var(--muted) }
+    .qc { background: var(--card); border-radius: var(--r); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--sh); border: 1px solid var(--border); transition: all .22s; position: relative }
+    .qc:hover { box-shadow: var(--sh2); border-color: rgba(10, 140, 106, .3) }
+    .qc.ac { border-left: 4px solid #10b981; background: linear-gradient(90deg, #ecfdf5, var(--card) 30%) }
+    .qc.aw { border-left: 4px solid #ef4444; background: linear-gradient(90deg, #fef2f2, var(--card) 30%) }
+    .qh { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px }
+    .qn { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 13px; flex-shrink: 0; color: #fff; background: var(--accent) }
+    .qt { font-size: 15px; font-weight: 500; padding-top: 3px; line-height: 1.7; text-align: justify }
+    .qt b { font-weight: 700; color: var(--accent) }
+    .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding-left: 44px }
+    .opt { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 8px; border: 2px solid var(--border); cursor: pointer; transition: all .18s; font-size: 14px; font-weight: 500; user-select: none; background: #f8fbfa }
+    .opt:hover { border-color: var(--accent); background: var(--accent-l) }
+    .opt.sel { border-color: var(--accent); background: var(--accent-l); font-weight: 600 }
+    .opt.cor { border-color: #10b981; background: #ecfdf5; color: #065f46; font-weight: 700 }
+    .opt.wrg { border-color: #ef4444; background: #fef2f2; color: #991b1b; font-weight: 700 }
+    .ol { width: 26px; height: 26px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 12px; background: #e8efec; color: var(--muted); flex-shrink: 0; transition: all .18s }
+    .opt.sel .ol { background: var(--accent); color: #fff }
+    .opt.cor .ol { background: #10b981; color: #fff }
+    .opt.wrg .ol { background: #ef4444; color: #fff }
+    .sol-panel { display: none; margin: 10px 0 0 44px; padding: 12px 16px; background: linear-gradient(135deg, #fffbeb, #fef3c7); border: 1px solid #fde68a; border-left: 3px solid #e8960a; border-radius: 0 8px 8px 0; font-size: 13px; color: #78350f; line-height: 1.65; text-align: justify }
+    .sol-panel.vis { display: block }
+    .toolbar { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 20px 0 }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border: none; border-radius: 10px; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: all .22s; white-space: nowrap }
+    .btn:hover { transform: translateY(-1px) }
+    .btn-primary { background: linear-gradient(135deg, #0a8c6a, #066e52); color: #fff; box-shadow: 0 3px 12px rgba(10, 140, 106, .25) }
+    .btn-sec { background: var(--card); color: var(--accent); border: 2px solid var(--accent) }
+    .btn-sec:hover { background: var(--accent-l) }
+    .btn-warn { background: linear-gradient(135deg, #e8960a, #c67f08); color: #fff }
+    .result-panel { background: linear-gradient(135deg, var(--accent-l), #d1f5eb); border: 2px solid var(--accent); border-radius: 16px; padding: 24px; text-align: center; margin: 20px 0; display: none }
+    .result-panel.vis { display: block }
+    .result-score { font-family: 'Nunito', sans-serif; font-size: 48px; font-weight: 900; color: var(--accent) }
+    .result-detail { display: flex; justify-content: center; gap: 24px; margin-top: 12px; flex-wrap: wrap }
+    .result-item { text-align: center }
+    .result-item .num { font-family: 'Nunito', sans-serif; font-size: 24px; font-weight: 800 }
+    .result-item .lbl { font-size: 12px; color: var(--muted) }
+    .result-item.c .num { color: #10b981 }
+    .result-item.w .num { color: #ef4444 }
+    .result-item.e .num { color: var(--muted) }
+    .footer { text-align: center; padding: 28px 0; color: var(--muted); font-size: 12px }
+    .scroll-top { position: fixed; right: 20px; bottom: 20px; width: 46px; height: 46px; border-radius: 12px; background: var(--accent); color: #fff; border: none; cursor: pointer; font-size: 18px; box-shadow: 0 4px 16px rgba(10, 140, 106, .3); display: none; align-items: center; justify-content: center; transition: all .2s; z-index: 100 }
+    .scroll-top:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(10, 140, 106, .4) }
+    .scroll-top.show { display: flex }
+    @media(max-width:640px) { .opts { grid-template-columns: 1fr; padding-left: 0 } .example-grid { grid-template-columns: 1fr } .header h1 { font-size: 24px } .header { padding: 28px 18px } .rule-section { padding: 20px 18px } .toc-grid { grid-template-columns: 1fr 1fr } }
+    .algo-container { display: inline-flex; font-family: 'Nunito', monospace; font-size: 16px; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; align-items: flex-start; }
+    .algo-left { text-align: right; padding-right: 12px; border-right: 2px solid var(--accent); color: var(--fg); font-weight: 700; line-height: 1.6; }
+    .algo-right { text-align: left; padding-left: 12px; color: var(--muted); line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="header-badge"><i class="fas fa-book-open"></i> 6. SINIF</div>
+      <h1>Çarpanlar ve Katlar, Asal Çarpanlar</h1>
+      <p>Çarpan (bölen), kat, asal sayılar, asal çarpanlara ayırma işlemleri, çarpan sayısını formülle bulma taktikleri ve kendinizi deneyebileceğiniz 50 soruluk profesyonel test.</p>
+    </header>
+
+    <div class="toc">
+      <h2><i class="fas fa-list-ul"></i> İçindekiler</h2>
+      <div class="toc-grid">
+        <a href="#rule-carpan" class="toc-item">
+          <div class="toc-num" style="background:#10b981">1</div>Çarpanlar (Bölenler)
+        </a>
+        <a href="#rule-kat" class="toc-item">
+          <div class="toc-num" style="background:#06b6d4">2</div>Katlar
+        </a>
+        <a href="#rule-asal" class="toc-item">
+          <div class="toc-num" style="background:#f59e0b">3</div>Asal Sayılar
+        </a>
+        <a href="#rule-asalcarpan" class="toc-item">
+          <div class="toc-num" style="background:#8b5cf6">4</div>Asal Çarpanlar
+        </a>
+        <a href="#rule-form" class="toc-item">
+          <div class="toc-num" style="background:#ef4444">5</div>Çarpan Sayısı Bulma
+        </a>
+        <a href="#test-section" class="toc-item" style="border-color:var(--accent);background:var(--accent-l)">
+          <div class="toc-num" style="background:var(--accent)"><i class="fas fa-tasks"></i></div>Konu Testi (50 Soru)
+        </a>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <i class="fas fa-info-circle"></i>
+      <div><strong>Çarpan ile Bölen Aynı Mıdır?</strong> Evet! Bir doğal sayıyı kalansız (tam) olarak bölen sayılara o sayının çarpanı veya böleni denir. Her iki terim de matematiksel olarak tamamen aynı anlama gelir.</div>
+    </div>
+
+    <div class="rule-section" id="rule-carpan" style="border-left: 5px solid #10b981">
+      <div class="rule-header">
+        <div class="rule-icon" style="background:#10b981">1</div>
+        <div>
+          <div class="rule-title">Çarpanlar (Bölenler)</div>
+          <div class="rule-subtitle">Bir doğal sayıyı kalansız bölen sayılar.</div>
+        </div>
+      </div>
+
+      <div class="content-text">Her doğal sayı, iki doğal sayının çarpımı olarak yazılabilir. Bu iki sayıdan her birine o sayının <strong>çarpanı</strong> denir. Bir sayının çarpanları, aynı zamanda o sayının <strong>tam bölenleridir</strong>.</div>
+
+      <div class="rule-box" style="border-color:#10b981; background:rgba(16,185,129,0.05)">
+        <div class="rule-formula" style="color:#10b981">En küçük pozitif çarpan daima 1, en büyük çarpan ise sayının kendisidir.</div>
+        <div class="rule-note">Çarpanları bulurken, sırasıyla 1'den başlayıp sayıları ikili çarpımlar şeklinde yazmak eksik çarpan bırakmamayı sağlar.</div>
+      </div>
+
+      <div class="example-grid">
+        <div class="example-card yes">
+          <div class="ex-q">24'ün Çarpanları</div>
+          <div class="ex-a">1 x 24<br>2 x 12<br>3 x 8<br>4 x 6<br><b>Çarpanlar:</b> 1, 2, 3, 4, 6, 8, 12, 24 (8 tane)</div>
+        </div>
+        <div class="example-card yes">
+          <div class="ex-q">36'nın Çarpanları</div>
+          <div class="ex-a">1 x 36<br>2 x 18<br>3 x 12<br>4 x 9<br>6 x 6<br><b>Çarpanlar:</b> 1, 2, 3, 4, 6, 9, 12, 18, 36 (9 tane)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule-section" id="rule-kat" style="border-left: 5px solid #06b6d4">
+      <div class="rule-header">
+        <div class="rule-icon" style="background:#06b6d4">2</div>
+        <div>
+          <div class="rule-title">Katlar</div>
+          <div class="rule-subtitle">Bir sayının kalansız olarak bölebildiği kendisinden büyük sayılar.</div>
+        </div>
+      </div>
+
+      <div class="content-text">Bir doğal sayının kendisiyle veya başka bir sayma sayısıyla çarpılarak elde edilen sonuçlara o sayının <strong>katları</strong> denir. Katlar sonsuza kadar devam eder.</div>
+
+      <div class="rule-box" style="border-color:#06b6d4; background:rgba(6,182,212,0.05)">
+        <div class="rule-formula" style="color:#06b6d4">Bir sayının en küçük tam katı kendisidir. Katlar, sayının kendisi kadar artarak devam eder.</div>
+      </div>
+
+      <div class="example-grid">
+        <div class="example-card yes">
+          <div class="ex-q">15'in Katları</div>
+          <div class="ex-a">15, 30, 45, 60, 75, 90, 105, 120... sonsuza kadar gider.</div>
+        </div>
+        <div class="example-card yes">
+          <div class="ex-q">8'in 50'den Küçük Katları</div>
+          <div class="ex-a">8, 16, 24, 32, 40, 48 olmak üzere 6 tanedir.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule-section" id="rule-asal" style="border-left: 5px solid #f59e0b">
+      <div class="rule-header">
+        <div class="rule-icon" style="background:#f59e0b">3</div>
+        <div>
+          <div class="rule-title">Asal Sayılar</div>
+          <div class="rule-subtitle">Sadece 1'e ve kendisine bölünebilen 1'den büyük doğal sayılar.</div>
+        </div>
+      </div>
+
+      <div class="content-text">Çarpanları (bölenleri) sadece 1 ve sayının kendisi olan 1'den büyük doğal sayılara <strong>asal sayı</strong> denir. Asal sayıların sadece ve sadece 2 tane çarpanı vardır.</div>
+
+      <div class="rule-box" style="border-color:#f59e0b; background:rgba(245,158,11,0.05)">
+        <div class="rule-formula" style="color:#f59e0b">En küçük asal sayı 2'dir. 2'den başka çift asal sayı yoktur!</div>
+        <div class="rule-note">1 asal sayı değildir. Çünkü 1'in sadece 1 tane çarpanı vardır (kendisi).</div>
+      </div>
+
+      <div class="info-box">
+        <i class="fas fa-lightbulb"></i>
+        <div><strong>İlk 100 İçindeki Asallar:</strong> 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97 (Toplam 25 tanedir).</div>
+      </div>
+    </div>
+
+    <div class="rule-section" id="rule-asalcarpan" style="border-left: 5px solid #8b5cf6">
+      <div class="rule-header">
+        <div class="rule-icon" style="background:#8b5cf6">4</div>
+        <div>
+          <div class="rule-title">Asal Çarpanlar</div>
+          <div class="rule-subtitle">Bir sayının çarpanlarından asal olanları.</div>
+        </div>
+      </div>
+
+      <div class="content-text">Bir sayının tüm çarpanlarını bulmak yerine, sadece asal olan çarpanlarına ayrıştırılması matematikte çok önemlidir. Asal çarpanlara ayırmak için genellikle <strong>Bölen Listesi (Algoritma)</strong> yöntemi kullanılır.</div>
+
+      <div class="rule-box" style="border-color:#8b5cf6; background:rgba(139,92,246,0.05)">
+        <div class="rule-formula" style="color:#8b5cf6">Bir sayı asal çarpanlarının çarpımı şeklinde (üs kullanarak) yazılabilir.</div>
+        <div class="rule-note">Bölen listesinde, sayı en küçük asal sayıdan başlanarak (genelde 2) bölünür. Tam bölünmüyorsa bir sonraki asal sayıya geçilir. Sayı 1 olana kadar işlem devam eder.</div>
+      </div>
+
+      <div class="example-grid">
+        <div class="example-card yes">
+          <div class="ex-q">60'ın Asal Çarpanları</div>
+          <div class="algo-container" style="margin-top:8px;">
+            <div class="algo-left" style="border-color:#10b981">60<br>30<br>15<br>5<br>1</div>
+            <div class="algo-right">2<br>2<br>3<br>5<br>&nbsp;</div>
+          </div>
+          <div class="ex-a" style="margin-top:8px;">60 = 2 . 2 . 3 . 5<br><b>Asal Çarpanları:</b> 2, 3 ve 5'tir.</div>
+        </div>
+        <div class="example-card yes">
+          <div class="ex-q">72'nin Asal Çarpanları</div>
+          <div class="algo-container" style="margin-top:8px;">
+            <div class="algo-left" style="border-color:#10b981">72<br>36<br>18<br>9<br>3<br>1</div>
+            <div class="algo-right">2<br>2<br>2<br>3<br>3<br>&nbsp;</div>
+          </div>
+          <div class="ex-a" style="margin-top:8px;">72 = 2 . 2 . 2 . 3 . 3<br><b>Asal Çarpanları:</b> 2 ve 3'tür.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule-section" id="rule-form" style="border-left: 5px solid #ef4444">
+      <div class="rule-header">
+        <div class="rule-icon" style="background:#ef4444">5</div>
+        <div>
+          <div class="rule-title">Doğal Çarpan Sayısını Bulma Formülü</div>
+          <div class="rule-subtitle">Bir sayının tüm çarpanlarını yazmadan kaç tane çarpanı olduğunu bulma.</div>
+        </div>
+      </div>
+
+      <div class="content-text">Büyük sayıların kaç tane çarpanı olduğunu tek tek yazarak bulmak zordur. Bunun yerine pratik bir taktik kullanabiliriz: sayıyı asal çarpanlarına ayırırız ve üslerden faydalanırız.</div>
+
+      <div class="rule-box" style="border-color:#ef4444; background:rgba(239,68,68,0.05)">
+        <div class="rule-formula" style="color:#ef4444">Asal çarpanların üslerini (kuvvetlerini) 1 arttırıp birbirleriyle çarp!</div>
+        <div class="rule-note">Sayıyı aynı asal çarpanları üslü olarak yazıp üstteki sayıların (kuvvetlerin) her birine 1 ekleyip çıkan sonuçları çarparız.</div>
+      </div>
+
+      <div class="example-grid">
+        <div class="example-card yes">
+          <div class="ex-q">180 Sayısının Çarpan Sayısı</div>
+          <div class="ex-a">180 = 2² . 3² . 5¹<br>Üsler: 2, 2, 1.<br>Hepsini 1 arttır: (2+1) . (2+1) . (1+1)<br>3 x 3 x 2 = <b>18 tane çarpanı vardır.</b></div>
+        </div>
+        <div class="example-card yes">
+          <div class="ex-q">250 Sayısının Çarpan Sayısı</div>
+          <div class="ex-a">250 = 2¹ . 5³<br>Üsler: 1, 3.<br>Hepsini 1 arttır: (1+1) . (3+1)<br>2 x 4 = <b>8 tane çarpanı vardır.</b></div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="test-section" id="test-section">
+      <div class="test-header">
+        <h2><i class="fas fa-clipboard-check"></i> Konu Tarama Testi</h2>
+        <p>Öğrendiklerinizi pekiştirmek için 50 soruluk testi çözün.</p>
+      </div>
+
+      <div id="qContainer"></div>
+
+      <div class="toolbar">
+        <button class="btn btn-primary" onclick="checkAnswers()"><i class="fas fa-check-double"></i> Değerlendir</button>
+        <button class="btn btn-warn" onclick="resetTest()"><i class="fas fa-undo"></i> Sıfırla</button>
+      </div>
+
+      <div class="result-panel" id="resultPanel">
+        <div>Doğru Cevap Sayısı</div>
+        <div class="result-score" id="resScore">0</div>
+        <div style="font-weight:700;margin-top:-5px">/ 50 Soru</div>
+
+        <div class="result-detail">
+          <div class="result-item c">
+            <div class="num" id="resC">0</div>
+            <div class="lbl">Doğru</div>
+          </div>
+          <div class="result-item w">
+            <div class="num" id="resW">0</div>
+            <div class="lbl">Yanlış</div>
+          </div>
+          <div class="result-item e">
+            <div class="num" id="resE">0</div>
+            <div class="lbl">Boş</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">TEKKEKÖY GM MAT KURSU - Çarpanlar ve Katlar</div>
+  </div>
+
+  <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script>
+    var Q = [
+{"id":1,"lv":"easy","t":"24 sayısının <b>en büyük</b> çarpanı kaçtır?","o":["12","24","48","6"],"a":1,"sol":"Bir sayının en büyük çarpanı (böleni) kendisidir. Dolayısıyla cevap 24'tür."},
+{"id":2,"lv":"easy","t":"Aşağıdakilerden hangisi 36 sayısının bir çarpanı <b>değildir</b>?","o":["4","6","8","9"],"a":2,"sol":"36 sayısı 8'e tam bölünmez (36:8 kalanlıdır). Bu nedenle 8, 36'nın çarpanı değildir."},
+{"id":3,"lv":"easy","t":"18 sayısının pozitif tam sayı çarpanları hangi seçenekte doğru verilmiştir?","o":["1, 2, 3, 6, 9, 18","1, 2, 4, 9, 18","2, 3, 6, 9, 18","1, 3, 6, 9, 18"],"a":0,"sol":"18'i tam bölen sayılar: 1x18, 2x9, 3x6. Yani 1, 2, 3, 6, 9, 18'dir."},
+{"id":4,"lv":"easy","t":"45 sayısının kaç tane pozitif tam sayı çarpanı vardır?","o":["4","5","6","8"],"a":2,"sol":"45'in çarpanları: 1x45, 3x15, 5x9. Toplam 6 tanedir: 1, 3, 5, 9, 15, 45."},
+{"id":5,"lv":"easy","t":"Bir sayının en küçük pozitif tam sayı çarpanı ile en büyük pozitif tam sayı çarpanının çarpımı 60'tır. Bu sayı kaçtır?","o":["30","60","120","15"],"a":1,"sol":"Bir sayının en küçük pozitif çarpanı daima 1'dir. En büyük pozitif çarpanı ise kendisidir. 1 x Kendisi = 60 ise sayı 60'tır."},
+{"id":6,"lv":"easy","t":"40 sayısının çarpanlarından kaç tanesi <b>tek</b> sayıdır?","o":["2","3","4","5"],"a":0,"sol":"40'ın çarpanları: 1, 2, 4, 5, 8, 10, 20, 40. Bunlardan tek olanlar sadece 1 ve 5'tir (2 tane)."},
+{"id":7,"lv":"easy","t":"Aşağıdaki sayılardan hangisinin kendisi hariç en büyük çarpanı 15'tir?","o":["30","45","60","75"],"a":0,"sol":"Kendisi hariç en büyük çarpan, sayının kendisi çiftse 2'ye bölümüdür. 30'un kendisi hariç en büyük çarpanı 30:2 = 15'tir."},
+{"id":8,"lv":"med","t":"Alanı 48 cm² olan dikdörtgensel bölgenin kenar uzunlukları birer doğal sayıdır. Buna göre bu dikdörtgenin çevresi <b>en az</b> kaç cm olabilir?","o":["28","32","38","98"],"a":0,"sol":"Alan = a x b = 48. Çevrenin en az olması için kenarlar birbirine yakın seçilmeli. 6x8=48 alırsak Çevre = 2(6+8) = 28 olur."},
+{"id":9,"lv":"med","t":"x ve y doğal sayılar olmak üzere x . y = 72'dir. x + y toplamının alabileceği <b>en büyük</b> değer kaçtır?","o":["17","22","38","73"],"a":3,"sol":"Toplamın en büyük olması için çarpanların birbirine en uzak seçilmesi gerekir. x=1, y=72 seçersek 1+72 = 73 olur."},
+{"id":10,"lv":"med","t":"75 sayısının çarpanları küçükten büyüğe sıralandığında baştan 3. sayı kaçtır?","o":["3","5","15","25"],"a":1,"sol":"75'in çarpanları: 1, 3, 5, 15, 25, 75. Baştan 3. sayı 5'tir."},
+{"id":11,"lv":"easy","t":"Aşağıdakilerden hangisi 12'nin bir katı <b>değildir</b>?","o":["24","48","60","75"],"a":3,"sol":"12'nin katları: 12, 24, 36, 48, 60, 72, 84... 75 sayısı 12'nin katı değildir."},
+{"id":12,"lv":"easy","t":"15 sayısının 50 ile 100 arasındaki katları kaç tanedir?","o":["2","3","4","5"],"a":1,"sol":"15'in katları: 15, 30, 45, 60, 75, 90, 105... 50 ile 100 arasında olanlar 60, 75 ve 90'dır. Toplam 3 tanedir."},
+{"id":13,"lv":"easy","t":"Bir sınıftaki öğrenci sayısı 7'nin katıdır. Bu sınıfta 25'ten fazla öğrenci olduğuna göre, sınıfta <b>en az</b> kaç öğrenci vardır?","o":["28","35","42","49"],"a":0,"sol":"7'nin 25'ten büyük ilk katı 7x4 = 28'dir."},
+{"id":14,"lv":"med","t":"Hem 4'ün hem de 6'nın ortak katı olan en küçük iki basamaklı doğal sayı kaçtır?","o":["12","24","36","48"],"a":0,"sol":"4'ün katları: 4, 8, 12, 16... 6'nın katları: 6, 12, 18... İlk ortak kat 12'dir."},
+{"id":15,"lv":"med","t":"Bir hastanede A doktoru 4 günde bir, B doktoru 5 günde bir nöbet tutmaktadır. İkisi birlikte nöbet tuttuktan <b>en az</b> kaç gün sonra tekrar birlikte nöbet tutarlar?","o":["9","10","15","20"],"a":3,"sol":"Birlikte nöbet tutmaları için geçen sürenin hem 4'ün hem de 5'in ortak katı olması gerekir. 4 ve 5'in ilk ortak katı 20'dir."},
+{"id":16,"lv":"easy","t":"20 sayısının 100'den küçük kaç tane pozitif tam katı vardır?","o":["3","4","5","6"],"a":1,"sol":"20'nin katları: 20, 40, 60, 80. (100 dahil değil). Toplam 4 tanedir."},
+{"id":17,"lv":"med","t":"18'in iki basamaklı <b>en büyük</b> katı ile <b>en küçük</b> katının toplamı kaçtır?","o":["108","118","126","136"],"a":0,"sol":"En küçük iki basamaklı katı 18x1 = 18. En büyük iki basamaklı katı 18x5 = 90. Toplam: 90 + 18 = 108."},
+{"id":18,"lv":"med","t":"Aşağıdaki sayılardan hangisi hem 8'in hem de 10'un ortak katıdır?","o":["40","60","70","100"],"a":0,"sol":"8 ve 10'un ortak katları 40'ın katlarıdır (40, 80, 120...). Seçeneklerde 40 vardır."},
+{"id":19,"lv":"med","t":"Bir torbadaki bilyeler 5'erli ve 6'şarlı sayıldığında hiç bilye artmıyor. Bu torbada <b>en az</b> kaç bilye vardır?","o":["11","25","30","60"],"a":2,"sol":"Bilye sayısı hem 5'in hem 6'nın ortak katı olmalıdır. 5 ve 6'nın ilk ortak katı 30'dur."},
+{"id":20,"lv":"hard","t":"12'nin katı olan 3 basamaklı <b>en küçük</b> doğal sayı kaçtır?","o":["100","102","108","120"],"a":2,"sol":"12x8=96, 12x9=108. 3 basamaklı ilk kat 108'dir."},
+{"id":21,"lv":"easy","t":"En küçük asal sayı kaçtır?","o":["0","1","2","3"],"a":2,"sol":"Asal sayılar 2'den başlar. En küçük ve tek çift asal sayı 2'dir."},
+{"id":22,"lv":"easy","t":"Aşağıdakilerden hangisi bir asal sayıdır?","o":["15","21","51","61"],"a":3,"sol":"15=3x5, 21=3x7, 51=3x17 (3'e bölünür). 61 ise sadece 1'e ve kendisine bölündüğü için asal sayıdır."},
+{"id":23,"lv":"easy","t":"Aşağıdakilerden hangisi asal sayı <b>değildir</b>?","o":["37","47","57","67"],"a":2,"sol":"57 sayısının rakamları toplamı 5+7=12'dir ve 3'e tam bölünür (57 = 3x19). Bu nedenle asal değildir."},
+{"id":24,"lv":"easy","t":"10 ile 20 arasında kaç tane asal sayı vardır?","o":["3","4","5","6"],"a":1,"sol":"10 ile 20 arasındaki asallar: 11, 13, 17, 19. Toplam 4 tanedir."},
+{"id":25,"lv":"med","t":"İki asal sayının toplamı 15'tir. Bu sayıların çarpımı kaçtır?","o":["14","26","36","44"],"a":1,"sol":"Toplamı 15 olan asallar 2 ve 13'tür. (Biri mutlaka 2 olmalıdır ki toplam tek olsun). Çarpımları: 2x13 = 26."},
+{"id":26,"lv":"med","t":"1'den 50'ye kadar olan asalların içinde son rakamı 3 olan kaç tane sayı vardır?","o":["3","4","5","6"],"a":1,"sol":"Sonu 3 olanlar: 3 (asal), 13 (asal), 23 (asal), 33 (3'e bölünür), 43 (asal). Toplam 4 tanedir."},
+{"id":27,"lv":"med","t":"İki asal sayının farkı 1'dir. Bu iki asal sayının toplamı kaçtır?","o":["3","5","7","9"],"a":1,"sol":"Aralarındaki fark 1 olan tek asal sayı çifti 2 ve 3'tür. Toplamları: 2+3=5'tir."},
+{"id":28,"lv":"hard","t":"İki asal sayının çarpımı 85'tir. Bu sayıların toplamı kaçtır?","o":["18","22","32","86"],"a":1,"sol":"85'in çarpanları 5 ve 17'dir. İkisi de asaldır. Toplamları: 5 + 17 = 22."},
+{"id":29,"lv":"hard","t":"A, B ve C birbirinden farklı asal sayılardır. A + B + C = 10 olduğuna göre A.B.C çarpımı kaçtır?","o":["15","30","45","60"],"a":1,"sol":"Toplamı 10 olan farklı asallar: 2, 3 ve 5'tir (2+3+5=10). Çarpımları: 2x3x5 = 30."},
+{"id":30,"lv":"hard","t":"Aşağıdaki sayılardan hangisi iki farklı asal sayının toplamı şeklinde <b>yazılamaz</b>?","o":["7","9","11","13"],"a":2,"sol":"7=2+5, 9=2+7, 13=2+11. Ancak 11'i iki farklı asalın toplamı yapamayız (2+9 olmaz 9 asal değil, 4+7 olmaz)."},
+{"id":31,"lv":"easy","t":"30 sayısının <b>asal çarpanları</b> hangi seçenekte doğru verilmiştir?","o":["2, 3","3, 5","2, 3, 5","2, 5, 7"],"a":2,"sol":"30 = 2 . 3 . 5 olduğundan asal çarpanları 2, 3 ve 5'tir."},
+{"id":32,"lv":"easy","t":"120 sayısının bölen listesi (algoritması) yapıldığında en büyük asal çarpanı kaç olur?","o":["2","3","5","7"],"a":2,"sol":"120'yi sırayla bölersek: 2'ye, 3'e ve en son 5'e bölünür. En büyük asal çarpanı 5'tir."},
+{"id":33,"lv":"easy","t":"Aşağıdaki sayılardan hangisinin sadece 1 tane asal çarpanı vardır?","o":["12","25","30","45"],"a":1,"sol":"25'in çarpanları 1, 5, 25'tir. Bunlardan asal olan sadece 5'tir. (Yani 25 = 5.5)"},
+{"id":34,"lv":"med","t":"42 sayısının asal çarpanlarının toplamı kaçtır?","o":["10","12","15","21"],"a":1,"sol":"42 = 2 . 3 . 7. Asal çarpanları 2, 3 ve 7'dir. Toplamı: 2+3+7 = 12."},
+{"id":35,"lv":"med","t":"Asal çarpanları sadece 2 ve 5 olan <b>en küçük</b> iki basamaklı doğal sayı kaçtır?","o":["10","20","25","50"],"a":0,"sol":"2 ve 5 çarpanına sahipse sayı 2 ve 5'e yani 10'a tam bölünür. En küçük iki basamaklısı 10'dur."},
+{"id":36,"lv":"med","t":"Asal çarpanları 2, 3 ve 7 olan <b>en küçük</b> doğal sayı kaçtır?","o":["21","42","84","126"],"a":1,"sol":"En az birer tane bulunmaları gerektiğinden en küçük sayı 2 . 3 . 7 = 42'dir."},
+{"id":37,"lv":"med","t":"Bir A sayısının asal çarpanlarına ayrılmış hali A = 2 . 2 . 2 . 3 . 3 . 5 şeklindedir. A sayısı kaçtır?","o":["180","240","360","720"],"a":2,"sol":"(2.2.2 = 8), (3.3 = 9). A = 8 . 9 . 5 = 72 . 5 = 360'tır."},
+{"id":38,"lv":"hard","t":"140 sayısının asal çarpanlarının toplamı kaçtır?","o":["12","14","16","18"],"a":1,"sol":"140'ı bölen listesiyle ayırırsak 2, 5 ve 7'ye tam bölünür. Asal çarpanları 2, 5 ve 7'dir. Toplamı 14."},
+{"id":39,"lv":"hard","t":"210 sayısının kaç farklı asal çarpanı vardır?","o":["2","3","4","5"],"a":2,"sol":"210'un asal çarpanları: 2, 3, 5, 7'dir. Toplam 4 farklı asal çarpanı vardır."},
+{"id":40,"lv":"hard","t":"Asal çarpanlarına ayrıldığında 3 . 3 . a . a şeklinde olan sayı 225 ise 'a' asal sayısı kaçtır?","o":["2","5","7","11"],"a":1,"sol":"3 . 3 = 9. O zaman 225 : 9 = 25. Yani a . a = 25 olmalı. Bu durumda a = 5'tir."},
+{"id":41,"lv":"med","t":"48 sayısının kendisi hariç en büyük çarpanı ile en küçük çarpanının toplamı kaçtır?","o":["24","25","49","50"],"a":1,"sol":"Kendisi hariç en büyük çarpanı 24'tür. En küçük çarpanı her zaman 1'dir. Toplamı: 24 + 1 = 25."},
+{"id":42,"lv":"med","t":"Alanı 36 cm² olan bir dikdörtgenin kenar uzunlukları birer doğal sayıdır. Bu dikdörtgenin çevresi <b>en fazla</b> kaç cm olabilir?","o":["24","26","40","74"],"a":3,"sol":"Alan=36 ise kenarlar (1x36), (2x18), (3x12), (4x9), (6x6) olabilir. Çevrenin en fazla olması için birbirine en uzak kenarları (1 ve 36) seçeriz. Çevre = 2(1+36) = 74."},
+{"id":43,"lv":"hard","t":"10'dan büyük, 30'dan küçük olan asal sayıların toplamı kaçtır?","o":["102","112","120","122"],"a":1,"sol":"Bu aralıktaki asallar: 11, 13, 17, 19, 23, 29'dur. Toplamları: 11+13+17+19+23+29 = 112."},
+{"id":44,"lv":"hard","t":"Ahmet bilyelerini 8'erli ve 12'şerli gruplara ayırdığında hiç bilyesi artmıyor. Ahmet'in bilye sayısı 40'tan fazla ise <b>en az</b> kaçtır?","o":["24","48","60","72"],"a":1,"sol":"Bilye sayısı hem 8'in hem 12'nin katı (ortak katı) olmalı. 8 ve 12'nin ilk ortak katı 24'tür. 40'tan büyük istendiği için 24'ün katlarına bakarız: 24, 48. En az 48'dir."},
+{"id":45,"lv":"hard","t":"Aşağıdaki sayılardan hangisinin bölen (çarpan) sayısı diğerlerinden <b>fazladır</b>?","o":["13","15","18","24"],"a":3,"sol":"13'ün 2 böleni var. 15'in 4 böleni (1,3,5,15). 18'in 6 böleni (1,2,3,6,9,18). 24'ün 8 böleni (1,2,3,4,6,8,12,24) var. En fazla bölen 24'tedir."},
+{"id":46,"lv":"hard","t":"Aralarında asal iki sayının ebobu her zaman 1'dir. Buna göre 9 ve 10'un en küçük ortak katı kaçtır? (İkisi aralarında asaldır)","o":["19","45","90","180"],"a":2,"sol":"Aralarında asal sayıların en küçük ortak katı bu iki sayının çarpımına eşittir. 9 x 10 = 90'dır."},
+{"id":47,"lv":"hard","t":"1'den 20'ye kadar (1 ve 20 dahil) olan sayılardan kaç tanesinin sadece 2 tane çarpanı vardır?","o":["6","7","8","9"],"a":2,"sol":"Sadece 2 tane çarpanı olan sayılar asal sayılardır. 1'den 20'ye kadar: 2, 3, 5, 7, 11, 13, 17, 19 (Toplam 8 tane)."},
+{"id":48,"lv":"hard","t":"Çarpanları küçükten büyüğe 1, A, 3, B, C, 18 olan sayı kaçtır?","o":["18","24","36","54"],"a":0,"sol":"En baştaki ve en sondaki çarpanların çarpımı sayının kendisini verir: 1 x 18 = 18. Demek ki sayımız 18'dir."},
+{"id":49,"lv":"hard","t":"Bir sayının kendisi hariç pozitif tam sayı çarpanlarının toplamı kendisine eşitse bu sayıya 'mükemmel sayı' denir. Buna göre aşağıdakilerden hangisi mükemmel sayıdır?","o":["6","8","10","12"],"a":0,"sol":"6'nın çarpanları: 1, 2, 3, 6. Kendisi hariç toplamı: 1+2+3 = 6. Yani 6 bir mükemmel sayıdır."},
+{"id":50,"lv":"hard","t":"30 sayısının çarpanlarından kaç tanesi asal sayı <b>değildir</b>?","o":["3","4","5","6"],"a":2,"sol":"30'un çarpanları: 1, 2, 3, 5, 6, 10, 15, 30 (8 tane). Bunlardan 2, 3, 5 asaldır (3 tane). Geriye kalan 5 tanesi asal değildir."}
+    ];
+    var UA = {};
+    var EVALUATED = false;
+    var LT = ['A', 'B', 'C', 'D'];
+
+    function esc(s) { return String(s).replace(/[&<>"']/g, function (ch) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]; }); }
+
+    function toggleSol(id) {
+      var sp = document.getElementById('sol-' + id);
+      if (sp.classList.contains('vis')) {
+        sp.classList.remove('vis');
+      } else {
+        sp.classList.add('vis');
+      }
+    }
+
+    function renderQ() {
+      var c = document.getElementById('qContainer');
+      var h = '';
+      Q.forEach(function (q) {
+        var opts = q.o.map(function (o, i) {
+          return '<div class="opt" id="op-' + q.id + '-' + i + '" onclick="selOpt(' + q.id + ',' + i + ')"><div class="ol">' + LT[i] + '</div><span>' + esc(o) + '</span></div>';
+        }).join('');
+
+        h += '<div class="qc" id="qc-' + q.id + '">' +
+          '<div class="qh">' +
+            '<div class="qn">' + q.id + '</div>' +
+            '<div class="qt" style="flex-grow:1">' + q.t + '</div>' +
+            '<button onclick="toggleSol(' + q.id + ')" title="Çözümü Göster" style="background:none;border:none;cursor:pointer;color:#e8960a;font-size:20px;padding:4px"><i class="fas fa-lightbulb"></i></button>' +
+          '</div>' +
+          '<div class="opts">' + opts + '</div>' +
+          '<div class="sol-panel" id="sol-' + q.id + '"><i class="fas fa-lightbulb"></i><span>' + q.sol + '</span></div>' +
+          '</div>';
+      });
+      c.innerHTML = h;
+    }
+
+    function selOpt(qid, oi) {
+      if (EVALUATED) return;
+      for (var i = 0; i < 4; i++) {
+        var el = document.getElementById('op-' + qid + '-' + i);
+        if (el) el.classList.remove('sel');
+      }
+      var e = document.getElementById('op-' + qid + '-' + oi);
+      if (e) e.classList.add('sel');
+      UA[qid] = oi;
+    }
+
+    function checkAnswers() {
+      if (Object.keys(UA).length === 0) return alert('Lütfen en az bir soru işaretleyin.');
+      EVALUATED = true;
+      var cor = 0, wrg = 0, emp = 0;
+      Q.forEach(function (q) {
+        var card = document.getElementById('qc-' + q.id);
+        var sp = document.getElementById('sol-' + q.id);
+        sp.classList.add('vis');
+        if (UA[q.id] === undefined) {
+          emp++;
+          var ae = document.getElementById('op-' + q.id + '-' + q.a);
+          if (ae) ae.classList.add('cor');
+        }
+        else if (UA[q.id] === q.a) {
+          cor++;
+          card.classList.add('ac');
+          var ce = document.getElementById('op-' + q.id + '-' + q.a);
+          if (ce) ce.classList.add('cor');
+        }
+        else {
+          wrg++;
+          card.classList.add('aw');
+          var we = document.getElementById('op-' + q.id + '-' + UA[q.id]);
+          if (we) we.classList.add('wrg');
+          var ae = document.getElementById('op-' + q.id + '-' + q.a);
+          if (ae) ae.classList.add('cor');
+        }
+      });
+
+      document.getElementById('resScore').textContent = cor;
+      document.getElementById('resC').textContent = cor;
+      document.getElementById('resW').textContent = wrg;
+      document.getElementById('resE').textContent = emp;
+      var rp = document.getElementById('resultPanel');
+      rp.classList.add('vis');
+      rp.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function resetTest() {
+      EVALUATED = false;
+      UA = {};
+      Q.forEach(function (q) {
+        var card = document.getElementById('qc-' + q.id);
+        if (card) card.classList.remove('ac', 'aw');
+        var sp = document.getElementById('sol-' + q.id);
+        if (sp) sp.classList.remove('vis');
+        for (var i = 0; i < 4; i++) {
+          var e = document.getElementById('op-' + q.id + '-' + i);
+          if (e) e.classList.remove('sel', 'cor', 'wrg');
+        }
+      });
+      document.getElementById('resultPanel').classList.remove('vis');
+      document.getElementById('test-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    window.addEventListener('scroll', function () {
+      var btn = document.getElementById('scrollTop');
+      if (window.scrollY > 300) btn.classList.add('show');
+      else btn.classList.remove('show');
+    });
+
+    renderQ();
+  </script>
+</body>
+</html>
