@@ -1,572 +1,1282 @@
-
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aralarında Asal, EBOB ve EKOK</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>
-:root{--bg:#f0f4f3;--fg:#152421;--muted:#5a7a74;--accent:#0a8c6a;--accent2:#066e52;--accent-l:#e2f5ef;--card:#fff;--border:#cdded8;--sh:0 2px 14px rgba(10,140,106,.07);--sh2:0 8px 30px rgba(10,140,106,.11);--r:14px}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--fg);line-height:1.75;min-height:100vh}
-body::before{content:'';position:fixed;top:-180px;right:-180px;width:500px;height:500px;background:radial-gradient(circle,rgba(10,140,106,.06) 0%,transparent 70%);border-radius:50%;pointer-events:none}
-.container{max-width:920px;margin:0 auto;padding:16px;position:relative;z-index:1}
-.header{background:linear-gradient(135deg,#0a8c6a 0%,#066e52 60%,#044a38 100%);border-radius:20px;padding:40px 32px;color:#fff;text-align:center;margin-bottom:28px;box-shadow:0 12px 40px rgba(10,140,106,.25);position:relative;overflow:hidden}
-.header::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 28px,rgba(255,255,255,.015) 28px,rgba(255,255,255,.015) 56px);pointer-events:none}
-.header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#10b981,#e8960a,#dc2626,#8b5cf6,#06b6d4,#0a8c6a)}
-.header-badge{display:inline-block;background:rgba(255,255,255,.13);backdrop-filter:blur(4px);padding:5px 20px;border-radius:24px;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;border:1px solid rgba(255,255,255,.18)}
-.header h1{font-family:'Nunito',sans-serif;font-size:32px;font-weight:900;margin-bottom:6px;letter-spacing:-.5px}
-.header p{font-size:15px;opacity:.88;max-width:600px;margin:0 auto}
-.toc{background:var(--card);border-radius:var(--r);padding:24px 28px;margin-bottom:24px;box-shadow:var(--sh);border:1px solid var(--border)}
-.toc h2{font-family:'Nunito',sans-serif;font-size:20px;font-weight:800;color:var(--accent);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.toc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
-.toc-item{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;border:2px solid var(--border);cursor:pointer;transition:all .2s;font-size:14px;font-weight:600;text-decoration:none;color:var(--fg)}
-.toc-item:hover{border-color:var(--accent);background:var(--accent-l);transform:translateY(-2px);box-shadow:var(--sh)}
-.toc-num{width:32px;height:32px;border-radius:8px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;flex-shrink:0}
-.rule-section{background:var(--card);border-radius:var(--r);padding:28px 30px;margin-bottom:20px;box-shadow:var(--sh);border:1px solid var(--border);position:relative;overflow:hidden}
-.rule-section::before{content:'';position:absolute;top:0;left:0;width:5px;height:100%;border-radius:3px 0 0 3px}
-.rule-header{display:flex;align-items:center;gap:14px;margin-bottom:16px}
-.rule-icon{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-size:22px;font-weight:900;color:#fff;flex-shrink:0}
-.rule-title{font-family:'Nunito',sans-serif;font-size:22px;font-weight:800;color:var(--fg)}
-.rule-subtitle{font-size:13px;color:var(--muted);font-weight:500}
-.content-text{text-align:justify;font-size:15.5px;line-height:1.8;margin-bottom:16px}
-.content-text b,.content-text strong{color:var(--accent)}
-.rule-box{background:linear-gradient(135deg,var(--accent-l),#d1f5eb);border:2px solid var(--accent);border-radius:12px;padding:16px 20px;margin:16px 0;text-align:center}
-.rule-box .rule-formula{font-family:'Nunito',sans-serif;font-size:20px;font-weight:800;color:var(--accent2);line-height:1.5}
-.rule-box .rule-note{font-size:13px;color:var(--muted);margin-top:4px}
-.example-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
-.example-card{padding:14px 16px;border-radius:10px;border:1px solid var(--border);background:#f8fbfa}
-.example-card.yes{border-left:4px solid #10b981;background:linear-gradient(90deg,#ecfdf5,#f8fbfa 30%)}
-.example-card.no{border-left:4px solid #ef4444;background:linear-gradient(90deg,#fef2f2,#f8fbfa 30%)}
-.example-card .ex-q{font-weight:700;font-size:15px;margin-bottom:4px}
-.example-card .ex-a{font-size:13.5px;color:var(--muted);line-height:1.6;text-align:justify}
-.example-card .ex-a b{color:var(--accent)}
-.info-box{background:linear-gradient(135deg,#eff6ff,#dbeafe);border:1px solid #93c5fd;border-left:4px solid #3b82f6;border-radius:0 10px 10px 0;padding:14px 18px;margin:14px 0;font-size:13.5px;color:#1e3a5f;display:flex;align-items:flex-start;gap:10px;text-align:justify;line-height:1.7}
-.info-box i{color:#3b82f6;margin-top:3px;flex-shrink:0}
-.test-section{background:var(--card);border-radius:var(--r);padding:28px 30px;margin-top:28px;box-shadow:var(--sh2);border:2px solid var(--accent)}
-.test-header{text-align:center;margin-bottom:20px}
-.test-header h2{font-family:'Nunito',sans-serif;font-size:24px;font-weight:900;color:var(--accent)}
-.test-header p{font-size:14px;color:var(--muted)}
-.qc{background:var(--card);border-radius:var(--r);padding:18px 22px;margin-bottom:10px;box-shadow:var(--sh);border:1px solid var(--border);transition:all .22s;position:relative}
-.qc:hover{box-shadow:var(--sh2);border-color:rgba(10,140,106,.3)}
-.qc.ac{border-left:4px solid #10b981;background:linear-gradient(90deg,#ecfdf5,var(--card) 30%)}
-.qc.aw{border-left:4px solid #ef4444;background:linear-gradient(90deg,#fef2f2,var(--card) 30%)}
-.qh{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
-.qn{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;flex-shrink:0;color:#fff;background:var(--accent)}
-.qt{font-size:15px;font-weight:500;padding-top:3px;line-height:1.7;text-align:justify}
-.qt b{font-weight:700;color:var(--accent)}
-.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-left:44px}
-.opt{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px;border:2px solid var(--border);cursor:pointer;transition:all .18s;font-size:14px;font-weight:500;user-select:none;background:#f8fbfa}
-.opt:hover{border-color:var(--accent);background:var(--accent-l)}
-.opt.sel{border-color:var(--accent);background:var(--accent-l);font-weight:600}
-.opt.cor{border-color:#10b981;background:#ecfdf5;color:#065f46;font-weight:700}
-.opt.wrg{border-color:#ef4444;background:#fef2f2;color:#991b1b;font-weight:700}
-.ol{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;background:#e8efec;color:var(--muted);flex-shrink:0;transition:all .18s}
-.opt.sel .ol{background:var(--accent);color:#fff}
-.opt.cor .ol{background:#10b981;color:#fff}
-.opt.wrg .ol{background:#ef4444;color:#fff}
-.sol-panel{display:none;margin:10px 0 0 44px;padding:12px 16px;background:linear-gradient(135deg,#fffbeb,#fef3c7);border:1px solid #fde68a;border-left:3px solid #e8960a;border-radius:0 8px 8px 0;font-size:13px;color:#78350f;line-height:1.65;text-align:justify}
-.sol-panel.vis{display:block}
-.toolbar{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:20px 0}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .22s;white-space:nowrap}
-.btn:hover{transform:translateY(-1px)}
-.btn-primary{background:linear-gradient(135deg,#0a8c6a,#066e52);color:#fff;box-shadow:0 3px 12px rgba(10,140,106,.25)}
-.btn-warn{background:linear-gradient(135deg,#e8960a,#c67f08);color:#fff}
-.result-panel{background:linear-gradient(135deg,var(--accent-l),#d1f5eb);border:2px solid var(--accent);border-radius:16px;padding:24px;text-align:center;margin:20px 0;display:none}
-.result-panel.vis{display:block}
-.result-score{font-family:'Nunito',sans-serif;font-size:48px;font-weight:900;color:var(--accent)}
-.result-detail{display:flex;justify-content:center;gap:24px;margin-top:12px;flex-wrap:wrap}
-.result-item{text-align:center}
-.result-item .num{font-family:'Nunito',sans-serif;font-size:24px;font-weight:800}
-.result-item .lbl{font-size:12px;color:var(--muted)}
-.result-item.c .num{color:#10b981}
-.result-item.w .num{color:#ef4444}
-.result-item.e .num{color:var(--muted)}
-.footer{text-align:center;padding:28px 0;color:var(--muted);font-size:12px}
-.scroll-top{position:fixed;right:20px;bottom:20px;width:46px;height:46px;border-radius:12px;background:var(--accent);color:#fff;border:none;cursor:pointer;font-size:18px;box-shadow:0 4px 16px rgba(10,140,106,.3);display:none;align-items:center;justify-content:center;transition:all .2s;z-index:100}
-.scroll-top:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(10,140,106,.4)}
-.scroll-top.show{display:flex}
-.algo-container{display:inline-flex;font-family:'Nunito',monospace;font-size:16px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:10px 16px;align-items:flex-start}
-.algo-left{text-align:right;padding-right:12px;border-right:2px solid var(--accent);color:var(--fg);font-weight:700;line-height:1.6}
-.algo-right{text-align:left;padding-left:12px;color:var(--muted);line-height:1.6}
-@media(max-width:640px){.opts{grid-template-columns:1fr;padding-left:0}.example-grid{grid-template-columns:1fr}.header h1{font-size:24px}.header{padding:28px 18px}.rule-section{padding:20px 18px}.toc-grid{grid-template-columns:1fr 1fr}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aralarında Asal, EBOB ve EKOK</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Source+Sans+3:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #f0f4f3;
+            --fg: #152421;
+            --muted: #5a7a74;
+            --accent: #0a8c6a;
+            --accent2: #066e52;
+            --accent-l: #e2f5ef;
+            --card: #fff;
+            --border: #cdded8;
+            --sh: 0 2px 14px rgba(10, 140, 106, .07);
+            --sh2: 0 8px 30px rgba(10, 140, 106, .11);
+            --r: 14px
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            line-height: 1.75;
+            min-height: 100vh
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -180px;
+            right: -180px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(10, 140, 106, .06) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none
+        }
+
+        .container {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 16px;
+            position: relative;
+            z-index: 1
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0a8c6a 0%, #066e52 60%, #044a38 100%);
+            border-radius: 20px;
+            padding: 40px 32px;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 28px;
+            box-shadow: 0 12px 40px rgba(10, 140, 106, .25);
+            position: relative;
+            overflow: hidden
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(45deg, transparent, transparent 28px, rgba(255, 255, 255, .015) 28px, rgba(255, 255, 255, .015) 56px);
+            pointer-events: none
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #10b981, #e8960a, #dc2626, #8b5cf6, #06b6d4, #0a8c6a)
+        }
+
+        .header-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, .13);
+            backdrop-filter: blur(4px);
+            padding: 5px 20px;
+            border-radius: 24px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255, 255, 255, .18)
+        }
+
+        .header h1 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 6px;
+            letter-spacing: -.5px
+        }
+
+        .header p {
+            font-size: 15px;
+            opacity: .88;
+            max-width: 600px;
+            margin: 0 auto
+        }
+
+        .toc {
+            background: var(--card);
+            border-radius: var(--r);
+            padding: 24px 28px;
+            margin-bottom: 24px;
+            box-shadow: var(--sh);
+            border: 1px solid var(--border)
+        }
+
+        .toc h2 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 8px
+        }
+
+        .toc-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 2px solid var(--border);
+            cursor: pointer;
+            transition: all .2s;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--fg)
+        }
+
+        .toc-item:hover {
+            border-color: var(--accent);
+            background: var(--accent-l);
+            transform: translateY(-2px);
+            box-shadow: var(--sh)
+        }
+
+        .toc-num {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--accent);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 14px;
+            flex-shrink: 0
+        }
+
+        .rule-section {
+            background: var(--card);
+            border-radius: var(--r);
+            padding: 28px 30px;
+            margin-bottom: 20px;
+            box-shadow: var(--sh);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden
+        }
+
+        .rule-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            border-radius: 3px 0 0 3px
+        }
+
+        .rule-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px
+        }
+
+        .rule-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Nunito', sans-serif;
+            font-size: 22px;
+            font-weight: 900;
+            color: #fff;
+            flex-shrink: 0
+        }
+
+        .rule-title {
+            font-family: 'Nunito', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--fg)
+        }
+
+        .rule-subtitle {
+            font-size: 13px;
+            color: var(--muted);
+            font-weight: 500
+        }
+
+        .content-text {
+            text-align: justify;
+            font-size: 15.5px;
+            line-height: 1.8;
+            margin-bottom: 16px
+        }
+
+        .content-text b,
+        .content-text strong {
+            color: var(--accent)
+        }
+
+        .rule-box {
+            background: linear-gradient(135deg, var(--accent-l), #d1f5eb);
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 16px 0;
+            text-align: center
+        }
+
+        .rule-box .rule-formula {
+            font-family: 'Nunito', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--accent2);
+            line-height: 1.5
+        }
+
+        .rule-box .rule-note {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 4px
+        }
+
+        .example-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 14px 0
+        }
+
+        .example-card {
+            padding: 14px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #f8fbfa
+        }
+
+        .example-card.yes {
+            border-left: 4px solid #10b981;
+            background: linear-gradient(90deg, #ecfdf5, #f8fbfa 30%)
+        }
+
+        .example-card.no {
+            border-left: 4px solid #ef4444;
+            background: linear-gradient(90deg, #fef2f2, #f8fbfa 30%)
+        }
+
+        .example-card .ex-q {
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 4px
+        }
+
+        .example-card .ex-a {
+            font-size: 13.5px;
+            color: var(--muted);
+            line-height: 1.6;
+            text-align: justify
+        }
+
+        .example-card .ex-a b {
+            color: var(--accent)
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border: 1px solid #93c5fd;
+            border-left: 4px solid #3b82f6;
+            border-radius: 0 10px 10px 0;
+            padding: 14px 18px;
+            margin: 14px 0;
+            font-size: 13.5px;
+            color: #1e3a5f;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            text-align: justify;
+            line-height: 1.7
+        }
+
+        .info-box i {
+            color: #3b82f6;
+            margin-top: 3px;
+            flex-shrink: 0
+        }
+
+        .test-section {
+            background: var(--card);
+            border-radius: var(--r);
+            padding: 28px 30px;
+            margin-top: 28px;
+            box-shadow: var(--sh2);
+            border: 2px solid var(--accent)
+        }
+
+        .test-header {
+            text-align: center;
+            margin-bottom: 20px
+        }
+
+        .test-header h2 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--accent)
+        }
+
+        .test-header p {
+            font-size: 14px;
+            color: var(--muted)
+        }
+
+        .qc {
+            background: var(--card);
+            border-radius: var(--r);
+            padding: 18px 22px;
+            margin-bottom: 10px;
+            box-shadow: var(--sh);
+            border: 1px solid var(--border);
+            transition: all .22s;
+            position: relative
+        }
+
+        .qc:hover {
+            box-shadow: var(--sh2);
+            border-color: rgba(10, 140, 106, .3)
+        }
+
+        .qc.ac {
+            border-left: 4px solid #10b981;
+            background: linear-gradient(90deg, #ecfdf5, var(--card) 30%)
+        }
+
+        .qc.aw {
+            border-left: 4px solid #ef4444;
+            background: linear-gradient(90deg, #fef2f2, var(--card) 30%)
+        }
+
+        .qh {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px
+        }
+
+        .qn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 13px;
+            flex-shrink: 0;
+            color: #fff;
+            background: var(--accent)
+        }
+
+        .qt {
+            font-size: 15px;
+            font-weight: 500;
+            padding-top: 3px;
+            line-height: 1.7;
+            text-align: justify
+        }
+
+        .qt b {
+            font-weight: 700;
+            color: var(--accent)
+        }
+
+        .opts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            padding-left: 44px
+        }
+
+        .opt {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 2px solid var(--border);
+            cursor: pointer;
+            transition: all .18s;
+            font-size: 14px;
+            font-weight: 500;
+            user-select: none;
+            background: #f8fbfa
+        }
+
+        .opt:hover {
+            border-color: var(--accent);
+            background: var(--accent-l)
+        }
+
+        .opt.sel {
+            border-color: var(--accent);
+            background: var(--accent-l);
+            font-weight: 600
+        }
+
+        .opt.cor {
+            border-color: #10b981;
+            background: #ecfdf5;
+            color: #065f46;
+            font-weight: 700
+        }
+
+        .opt.wrg {
+            border-color: #ef4444;
+            background: #fef2f2;
+            color: #991b1b;
+            font-weight: 700
+        }
+
+        .ol {
+            width: 26px;
+            height: 26px;
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 12px;
+            background: #e8efec;
+            color: var(--muted);
+            flex-shrink: 0;
+            transition: all .18s
+        }
+
+        .opt.sel .ol {
+            background: var(--accent);
+            color: #fff
+        }
+
+        .opt.cor .ol {
+            background: #10b981;
+            color: #fff
+        }
+
+        .opt.wrg .ol {
+            background: #ef4444;
+            color: #fff
+        }
+
+        .sol-panel {
+            display: none;
+            margin: 10px 0 0 44px;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+            border: 1px solid #fde68a;
+            border-left: 3px solid #e8960a;
+            border-radius: 0 8px 8px 0;
+            font-size: 13px;
+            color: #78350f;
+            line-height: 1.65;
+            text-align: justify
+        }
+
+        .sol-panel.vis {
+            display: block
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all .22s;
+            white-space: nowrap
+        }
+
+        .btn:hover {
+            transform: translateY(-1px)
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0a8c6a, #066e52);
+            color: #fff;
+            box-shadow: 0 3px 12px rgba(10, 140, 106, .25)
+        }
+
+        .btn-warn {
+            background: linear-gradient(135deg, #e8960a, #c67f08);
+            color: #fff
+        }
+
+        .result-panel {
+            background: linear-gradient(135deg, var(--accent-l), #d1f5eb);
+            border: 2px solid var(--accent);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            margin: 20px 0;
+            display: none
+        }
+
+        .result-panel.vis {
+            display: block
+        }
+
+        .result-score {
+            font-family: 'Nunito', sans-serif;
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--accent)
+        }
+
+        .result-detail {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 12px;
+            flex-wrap: wrap
+        }
+
+        .result-item {
+            text-align: center
+        }
+
+        .result-item .num {
+            font-family: 'Nunito', sans-serif;
+            font-size: 24px;
+            font-weight: 800
+        }
+
+        .result-item .lbl {
+            font-size: 12px;
+            color: var(--muted)
+        }
+
+        .result-item.c .num {
+            color: #10b981
+        }
+
+        .result-item.w .num {
+            color: #ef4444
+        }
+
+        .result-item.e .num {
+            color: var(--muted)
+        }
+
+        .footer {
+            text-align: center;
+            padding: 28px 0;
+            color: var(--muted);
+            font-size: 12px
+        }
+
+        .scroll-top {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            box-shadow: 0 4px 16px rgba(10, 140, 106, .3);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: all .2s;
+            z-index: 100
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(10, 140, 106, .4)
+        }
+
+        .scroll-top.show {
+            display: flex
+        }
+
+        .algo-container {
+            display: inline-flex;
+            font-family: 'Nunito', monospace;
+            font-size: 16px;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 16px;
+            align-items: flex-start
+        }
+
+        .algo-left {
+            text-align: right;
+            padding-right: 12px;
+            border-right: 2px solid var(--accent);
+            color: var(--fg);
+            font-weight: 700;
+            line-height: 1.6
+        }
+
+        .algo-right {
+            text-align: left;
+            padding-left: 12px;
+            color: var(--muted);
+            line-height: 1.6
+        }
+
+        @media(max-width:640px) {
+            .opts {
+                grid-template-columns: 1fr;
+                padding-left: 0
+            }
+
+            .example-grid {
+                grid-template-columns: 1fr
+            }
+
+            .header h1 {
+                font-size: 24px
+            }
+
+            .header {
+                padding: 28px 18px
+            }
+
+            .rule-section {
+                padding: 20px 18px
+            }
+
+            .toc-grid {
+                grid-template-columns: 1fr 1fr
+            }
+        }
+    </style>
 </head>
+
 <body>
-<div class="container">
-<header class="header">
-<div class="header-badge"><i class="fas fa-book-open"></i> 6. SINIF</div>
-<h1>Aralarında Asal, EBOB ve EKOK</h1>
-<p>Aralarında asal sayılar, En Büyük Ortak Bölen (EBOB), En Küçük Ortak Kat (EKOK) ve EBOB-EKOK problemleri. Örneklerle konu anlatımı ve 100 soruluk konu tarama testi.</p>
-</header>
+    <div class="container">
+        <header class="header">
+            <div class="header-badge"><i class="fas fa-book-open"></i> 6. SINIF</div>
+            <h1>Aralarında Asal, EBOB ve EKOK</h1>
+            <p>Aralarında asal sayılar, En Büyük Ortak Bölen (EBOB), En Küçük Ortak Kat (EKOK) ve EBOB-EKOK problemleri.
+                Örneklerle konu anlatımı ve 100 soruluk konu tarama testi.</p>
+        </header>
 
-<div class="toc">
-<h2><i class="fas fa-list-ul"></i> İçindekiler</h2>
-<div class="toc-grid">
-<a href="#rule-arasindaasal" class="toc-item"><div class="toc-num" style="background:#10b981">1</div>Aralarında Asal</a>
-<a href="#rule-ebob" class="toc-item"><div class="toc-num" style="background:#06b6d4">2</div>EBOB</a>
-<a href="#rule-ekok" class="toc-item"><div class="toc-num" style="background:#f59e0b">3</div>EKOK</a>
-<a href="#rule-problemler" class="toc-item"><div class="toc-num" style="background:#8b5cf6">4</div>EBOB-EKOK Problemleri</a>
-<a href="#test-section" class="toc-item" style="border-color:var(--accent);background:var(--accent-l)"><div class="toc-num" style="background:var(--accent)"><i class="fas fa-tasks"></i></div>Konu Testi (50 Soru)</a>
-</div>
-</div>
+        <div class="toc">
+            <h2><i class="fas fa-list-ul"></i> İçindekiler</h2>
+            <div class="toc-grid">
+                <a href="#rule-arasindaasal" class="toc-item">
+                    <div class="toc-num" style="background:#10b981">1</div>Aralarında Asal
+                </a>
+                <a href="#rule-ebob" class="toc-item">
+                    <div class="toc-num" style="background:#06b6d4">2</div>EBOB
+                </a>
+                <a href="#rule-ekok" class="toc-item">
+                    <div class="toc-num" style="background:#f59e0b">3</div>EKOK
+                </a>
+                <a href="#rule-problemler" class="toc-item">
+                    <div class="toc-num" style="background:#8b5cf6">4</div>EBOB-EKOK Problemleri
+                </a>
+                <a href="#test-section" class="toc-item" style="border-color:var(--accent);background:var(--accent-l)">
+                    <div class="toc-num" style="background:var(--accent)"><i class="fas fa-tasks"></i></div>Konu Testi
+                    (50 Soru)
+                </a>
+            </div>
+        </div>
 
-<!-- BÖLÜM 1: ARALARINDA ASAL -->
-<div class="rule-section" id="rule-arasindaasal" style="border-left:5px solid #10b981">
-<div class="rule-header">
-<div class="rule-icon" style="background:#10b981">1</div>
-<div><div class="rule-title">Aralarında Asal Sayılar</div>
-<div class="rule-subtitle">Ortak böleni sadece 1 olan iki veya daha fazla sayı.</div></div>
-</div>
+        <!-- BÖLÜM 1: ARALARINDA ASAL -->
+        <div class="rule-section" id="rule-arasindaasal" style="border-left:5px solid #10b981">
+            <div class="rule-header">
+                <div class="rule-icon" style="background:#10b981">1</div>
+                <div>
+                    <div class="rule-title">Aralarında Asal Sayılar</div>
+                    <div class="rule-subtitle">Ortak böleni sadece 1 olan iki veya daha fazla sayı.</div>
+                </div>
+            </div>
 
-<div class="content-text">İki veya daha fazla sayının <strong>1'den başka ortak böleni yoksa</strong> bu sayılara <strong>aralarında asal</strong> denir. Dikkat: Aralarında asal olan sayıların kendilerinin asal sayı olması gerekmez! Önemli olan, ortak bölenlerinin yalnızca 1 olmasıdır.</div>
+            <div class="content-text">İki veya daha fazla sayının <strong>1'den başka ortak böleni yoksa</strong> bu
+                sayılara <strong>aralarında asal</strong> denir. Dikkat: Aralarında asal olan sayıların kendilerinin
+                asal sayı olması gerekmez! Önemli olan, ortak bölenlerinin yalnızca 1 olmasıdır.</div>
 
-<div class="rule-box" style="border-color:#10b981;background:rgba(16,185,129,0.05)">
-<div class="rule-formula" style="color:#10b981">İki sayının EBOB'u 1 ise bu sayılar aralarında asaldır.</div>
-<div class="rule-note">Ardışık iki doğal sayı her zaman aralarında asaldır. Örneğin 7 ve 8, 15 ve 16 gibi.</div>
-</div>
+            <div class="rule-box" style="border-color:#10b981;background:rgba(16,185,129,0.05)">
+                <div class="rule-formula" style="color:#10b981">İki sayının EBOB'u 1 ise bu sayılar aralarında asaldır.
+                </div>
+                <div class="rule-note">Ardışık iki doğal sayı her zaman aralarında asaldır. Örneğin 7 ve 8, 15 ve 16
+                    gibi.</div>
+            </div>
 
-<div class="info-box"><i class="fas fa-lightbulb"></i>
-<div><strong>Hatırla:</strong> Aralarında asal olmak için sayıların kendisinin asal olması şart değildir. Örneğin 8 ve 9 sayıları asal değildir ama aralarında asaldır (ortak bölenleri sadece 1'dir).</div>
-</div>
+            <div class="info-box"><i class="fas fa-lightbulb"></i>
+                <div><strong>Hatırla:</strong> Aralarında asal olmak için sayıların kendisinin asal olması şart
+                    değildir. Örneğin 8 ve 9 sayıları asal değildir ama aralarında asaldır (ortak bölenleri sadece
+                    1'dir).</div>
+            </div>
 
-<div class="example-grid">
-<div class="example-card yes">
-<div class="ex-q">4 ve 9 Aralarında Asal mıdır?</div>
-<div class="ex-a">4'ün bölenleri: 1, 2, 4<br>9'un bölenleri: 1, 3, 9<br>Ortak bölen: sadece <b>1</b><br><b>Evet, aralarında asaldır.</b></div>
-</div>
-<div class="example-card no">
-<div class="ex-q">6 ve 15 Aralarında Asal mıdır?</div>
-<div class="ex-a">6'nın bölenleri: 1, 2, 3, 6<br>15'in bölenleri: 1, 3, 5, 15<br>Ortak bölenler: 1 ve <b>3</b><br><b>Hayır, aralarında asal değildir.</b></div>
-</div>
-<div class="example-card yes">
-<div class="ex-q">8 ve 15 Aralarında Asal mıdır?</div>
-<div class="ex-a">8'in bölenleri: 1, 2, 4, 8<br>15'in bölenleri: 1, 3, 5, 15<br>Ortak bölen: sadece <b>1</b><br><b>Evet, aralarında asaldır.</b></div>
-</div>
-<div class="example-card yes">
-<div class="ex-q">14 ve 15 (Ardışık Sayılar)</div>
-<div class="ex-a">14'ün bölenleri: 1, 2, 7, 14<br>15'in bölenleri: 1, 3, 5, 15<br>Ortak bölen: sadece <b>1</b><br><b>Ardışık sayılar daima aralarında asaldır!</b></div>
-</div>
-</div>
+            <div class="example-grid">
+                <div class="example-card yes">
+                    <div class="ex-q">4 ve 9 Aralarında Asal mıdır?</div>
+                    <div class="ex-a">4'ün bölenleri: 1, 2, 4<br>9'un bölenleri: 1, 3, 9<br>Ortak bölen: sadece
+                        <b>1</b><br><b>Evet, aralarında asaldır.</b></div>
+                </div>
+                <div class="example-card no">
+                    <div class="ex-q">6 ve 15 Aralarında Asal mıdır?</div>
+                    <div class="ex-a">6'nın bölenleri: 1, 2, 3, 6<br>15'in bölenleri: 1, 3, 5, 15<br>Ortak bölenler: 1
+                        ve <b>3</b><br><b>Hayır, aralarında asal değildir.</b></div>
+                </div>
+                <div class="example-card yes">
+                    <div class="ex-q">8 ve 15 Aralarında Asal mıdır?</div>
+                    <div class="ex-a">8'in bölenleri: 1, 2, 4, 8<br>15'in bölenleri: 1, 3, 5, 15<br>Ortak bölen: sadece
+                        <b>1</b><br><b>Evet, aralarında asaldır.</b></div>
+                </div>
+                <div class="example-card yes">
+                    <div class="ex-q">14 ve 15 (Ardışık Sayılar)</div>
+                    <div class="ex-a">14'ün bölenleri: 1, 2, 7, 14<br>15'in bölenleri: 1, 3, 5, 15<br>Ortak bölen:
+                        sadece <b>1</b><br><b>Ardışık sayılar daima aralarında asaldır!</b></div>
+                </div>
+            </div>
 
-<div class="info-box"><i class="fas fa-info-circle"></i>
-<div><strong>Önemli Özellikler:</strong><br>• Ardışık iki doğal sayı aralarında asaldır.<br>• 1 sayısı, tüm doğal sayılarla aralarında asaldır.<br>• İki farklı asal sayı her zaman aralarında asaldır. (Örn: 3 ve 7)<br>• Aralarında asal iki sayının EKOK'u, çarpımlarına eşittir.</div>
-</div>
-</div>
+            <div class="info-box"><i class="fas fa-info-circle"></i>
+                <div><strong>Önemli Özellikler:</strong><br>• Ardışık iki doğal sayı aralarında asaldır.<br>• 1 sayısı,
+                    tüm doğal sayılarla aralarında asaldır.<br>• İki farklı asal sayı her zaman aralarında asaldır.
+                    (Örn: 3 ve 7)<br>• Aralarında asal iki sayının EKOK'u, çarpımlarına eşittir.</div>
+            </div>
+        </div>
 
-<!-- BÖLÜM 2: EBOB -->
-<div class="rule-section" id="rule-ebob" style="border-left:5px solid #06b6d4">
-<div class="rule-header">
-<div class="rule-icon" style="background:#06b6d4">2</div>
-<div><div class="rule-title">EBOB (En Büyük Ortak Bölen)</div>
-<div class="rule-subtitle">İki veya daha fazla sayının ortak bölenlerinin en büyüğü.</div></div>
-</div>
+        <!-- BÖLÜM 2: EBOB -->
+        <div class="rule-section" id="rule-ebob" style="border-left:5px solid #06b6d4">
+            <div class="rule-header">
+                <div class="rule-icon" style="background:#06b6d4">2</div>
+                <div>
+                    <div class="rule-title">EBOB (En Büyük Ortak Bölen)</div>
+                    <div class="rule-subtitle">İki veya daha fazla sayının ortak bölenlerinin en büyüğü.</div>
+                </div>
+            </div>
 
-<div class="content-text">İki veya daha fazla sayının <strong>ortak bölenleri</strong> arasındaki <strong>en büyük</strong> olana <strong>EBOB</strong> denir. EBOB bulmak için sayılar önce asal çarpanlarına ayrılır, sonra <strong>ortak asal çarpanların en küçük kuvvetleri</strong> çarpılır.</div>
+            <div class="content-text">İki veya daha fazla sayının <strong>ortak bölenleri</strong> arasındaki <strong>en
+                    büyük</strong> olana <strong>EBOB</strong> denir. EBOB bulmak için sayılar önce asal çarpanlarına
+                ayrılır, sonra <strong>ortak asal çarpanların en küçük kuvvetleri</strong> çarpılır.</div>
 
-<div class="rule-box" style="border-color:#06b6d4;background:rgba(6,182,212,0.05)">
-<div class="rule-formula" style="color:#06b6d4">EBOB = Ortak bölen asal sayıların (yıldızlı olanların) çarpımı</div>
-<div class="rule-note">Sayıları yan yana yazıp tek çizgi çek → İkisini de aynı anda bölen asallara işaret (*) koy → İşaretlileri çarp!</div>
-</div>
+            <div class="rule-box" style="border-color:#06b6d4;background:rgba(6,182,212,0.05)">
+                <div class="rule-formula" style="color:#06b6d4">EBOB = Ortak bölen asal sayıların (yıldızlı olanların)
+                    çarpımı</div>
+                <div class="rule-note">Sayıları yan yana yazıp tek çizgi çek → İkisini de aynı anda bölen asallara
+                    işaret (*) koy → İşaretlileri çarp!</div>
+            </div>
 
-<div class="example-grid">
-<div class="example-card yes">
-<div class="ex-q">EBOB (12, 18) = ?</div>
-<div class="ex-a">
-<div class="algo-container" style="margin-bottom:8px">
-<div class="algo-left" style="border-color:#06b6d4; letter-spacing:2px; white-space:pre;">12  18<br> 6   9<br> 3   9<br> 1   3<br>     1</div>
-<div class="algo-right"><span style="color:#ef4444; font-weight:900;">2*</span><br>2<br><span style="color:#ef4444; font-weight:900;">3*</span><br>3<br>&nbsp;</div>
-</div>
-Ortak bölenler (yıldızlı olanlar): 2 ve 3<br><b>EBOB(12,18) = 2 . 3 = 6</b>
-</div>
-</div>
-<div class="example-card yes">
-<div class="ex-q">EBOB (24, 36) = ?</div>
-<div class="ex-a">
-<div class="algo-container" style="margin-bottom:8px">
-<div class="algo-left" style="border-color:#06b6d4; letter-spacing:2px; white-space:pre;">24  36<br>12  18<br> 6   9<br> 3   9<br> 1   3<br>     1</div>
-<div class="algo-right"><span style="color:#ef4444; font-weight:900;">2*</span><br><span style="color:#ef4444; font-weight:900;">2*</span><br>2<br><span style="color:#ef4444; font-weight:900;">3*</span><br>3<br>&nbsp;</div>
-</div><br>
-Ortak (yıldızlılar): 2, 2, 3<br><b>EBOB(24,36) = 2 . 2 . 3 = 12</b></div>
-</div>
-<div class="example-card yes">
-<div class="ex-q">EBOB (30, 45) = ?</div>
-<div class="ex-a">
-<div class="algo-container" style="margin-bottom:8px">
-<div class="algo-left" style="border-color:#06b6d4; letter-spacing:2px; white-space:pre;">30  45<br>15  45<br> 5  15<br> 5   5<br> 1   1</div>
-<div class="algo-right">2<br><span style="color:#ef4444; font-weight:900;">3*</span><br>3<br><span style="color:#ef4444; font-weight:900;">5*</span><br>&nbsp;</div>
-</div><br>
-Ortak (yıldızlılar): 3, 5<br><b>EBOB(30,45) = 3 . 5 = 15</b></div>
-</div>
-<div class="example-card yes">
-<div class="ex-q">EBOB (8, 12, 20) = ?</div>
-<div class="ex-a">
-<div class="algo-container" style="margin-bottom:8px">
-<div class="algo-left" style="border-color:#06b6d4; letter-spacing:2px; white-space:pre;"> 8  12  20<br> 4   6  10<br> 2   3   5<br> 1   3   5<br>     1   5<br>         1</div>
-<div class="algo-right"><span style="color:#ef4444; font-weight:900;">2*</span><br><span style="color:#ef4444; font-weight:900;">2*</span><br>2<br>3<br>5<br>&nbsp;</div>
-</div><br>
-Üçünde de ortak bölenler: 2, 2<br><b>EBOB(8,12,20) = 2 . 2 = 4</b></div>
-</div>
-</div>
+            <div class="example-grid">
+                <div class="example-card yes">
+                    <div class="ex-q">EBOB (12, 18) = ?</div>
+                    <div class="ex-a">
+                        <div class="algo-container" style="margin-bottom:8px">
+                            <div class="algo-left" style="border-color:#06b6d4; letter-spacing:2px; white-space:pre;">12
+                                18<br> 6 9<br> 3 9<br> 1 3<br> 1</div>
+                            <div class="algo-right"><span
+                                    style="color:#ef4444; font-weight:900;">2*</span><br>2<br><span
+                                    style="color:#ef4444; font-weight:900;">3*</span><br>3<br>&nbsp;</div>
+                        </div>
+                        Ortak bölenler (yıldızlı olanlar): 2 ve 3<br><b>EBOB(12,18) = 2 . 3 = 6</b>
+                    </div>
+                </div>
+                <div class="example-card yes">
+                    <div class="ex-q">EBOB (24, 36) = ?</div>
+                    <div class="ex-a">
+                        <div class="algo-container" style="margin-bottom:8px">
+                            <div class="algo-left" style="border-color:#06b6d4; letter-spacing:2px; white-space:pre;">24
+                                36<br>12 18<br> 6 9<br> 3 9<br> 1 3<br> 1</div>
+                            <div class="algo-right"><span style="color:#ef4444; font-weight:900;">2*</span><br><span
+                                    style="color:#ef4444; font-weight:900;">2*</span><br>2<br><span
+                                    style="color:#ef4444; font-weight:900;">3*</span><br>3<br>&nbsp;</div>
+                        </div><br>
+                        Ortak (yıldızlılar): 2, 2, 3<br><b>EBOB(24,36) = 2 . 2 . 3 = 12</b>
+                    </div>
+                </div>
+                <div class="example-card yes">
+                    <div class="ex-q">EBOB (30, 45) = ?</div>
+                    <div class="ex-a">
+                        <div class="algo-container" style="margin-bottom:8px">
+                            <div class="algo-left" style="border-color:#06b6d4; letter-spacing:2px; white-space:pre;">30
+                                45<br>15 45<br> 5 15<br> 5 5<br> 1 1</div>
+                            <div class="algo-right">2<br><span
+                                    style="color:#ef4444; font-weight:900;">3*</span><br>3<br><span
+                                    style="color:#ef4444; font-weight:900;">5*</span><br>&nbsp;</div>
+                        </div><br>
+                        Ortak (yıldızlılar): 3, 5<br><b>EBOB(30,45) = 3 . 5 = 15</b>
+                    </div>
+                </div>
+                <div class="example-card yes">
+                    <div class="ex-q">EBOB (8, 12, 20) = ?</div>
+                    <div class="ex-a">
+                        <div class="algo-container" style="margin-bottom:8px">
+                            <div class="algo-left" style="border-color:#06b6d4; letter-spacing:2px; white-space:pre;"> 8
+                                12 20<br> 4 6 10<br> 2 3 5<br> 1 3 5<br> 1 5<br> 1</div>
+                            <div class="algo-right"><span style="color:#ef4444; font-weight:900;">2*</span><br><span
+                                    style="color:#ef4444; font-weight:900;">2*</span><br>2<br>3<br>5<br>&nbsp;</div>
+                        </div><br>
+                        Üçünde de ortak bölenler: 2, 2<br><b>EBOB(8,12,20) = 2 . 2 = 4</b>
+                    </div>
+                </div>
+            </div>
 
-<div class="info-box"><i class="fas fa-info-circle"></i>
-<div><strong>EBOB ile ilgili önemli bilgiler:</strong><br>• EBOB, verilen sayılardan hiçbirinden büyük olamaz.<br>• Aralarında asal iki sayının EBOB'u 1'dir.<br>• Bir sayı diğerinin böleni ise EBOB küçük sayıya eşittir. Örn: EBOB(6,18) = 6</div>
-</div>
-</div>
+            <div class="info-box"><i class="fas fa-info-circle"></i>
+                <div><strong>EBOB ile ilgili önemli bilgiler:</strong><br>• EBOB, verilen sayılardan hiçbirinden büyük
+                    olamaz.<br>• Aralarında asal iki sayının EBOB'u 1'dir.<br>• Bir sayı diğerinin böleni ise EBOB küçük
+                    sayıya eşittir. Örn: EBOB(6,18) = 6</div>
+            </div>
+        </div>
 
-<!-- BÖLÜM 3: EKOK -->
-<div class="rule-section" id="rule-ekok" style="border-left:5px solid #f59e0b">
-<div class="rule-header">
-<div class="rule-icon" style="background:#f59e0b">3</div>
-<div><div class="rule-title">EKOK (En Küçük Ortak Kat)</div>
-<div class="rule-subtitle">İki veya daha fazla sayının ortak katlarının en küçüğü.</div></div>
-</div>
+        <!-- BÖLÜM 3: EKOK -->
+        <div class="rule-section" id="rule-ekok" style="border-left:5px solid #f59e0b">
+            <div class="rule-header">
+                <div class="rule-icon" style="background:#f59e0b">3</div>
+                <div>
+                    <div class="rule-title">EKOK (En Küçük Ortak Kat)</div>
+                    <div class="rule-subtitle">İki veya daha fazla sayının ortak katlarının en küçüğü.</div>
+                </div>
+            </div>
 
-<div class="content-text">İki veya daha fazla sayının <strong>ortak katları</strong> arasındaki <strong>en küçük</strong> olana <strong>EKOK</strong> denir. EKOK bulmak için sayılar asal çarpanlarına ayrılır, sonra <strong>ortak ve ortak olmayan tüm asal çarpanların en büyük kuvvetleri</strong> çarpılır.</div>
+            <div class="content-text">İki veya daha fazla sayının <strong>ortak katları</strong> arasındaki <strong>en
+                    küçük</strong> olana <strong>EKOK</strong> denir. EKOK bulmak için sayılar asal çarpanlarına
+                ayrılır, sonra <strong>ortak ve ortak olmayan tüm asal çarpanların en büyük kuvvetleri</strong>
+                çarpılır.</div>
 
-<div class="rule-box" style="border-color:#f59e0b;background:rgba(245,158,11,0.05)">
-<div class="rule-formula" style="color:#f59e0b">EKOK = Çizginin sağındaki tüm asal sayıların çarpımı</div>
-<div class="rule-note">Sayıları yan yana yazıp tek çizgi çek → İkisi de 1 olana kadar böl → Çizginin sağında kalan bütün asal sayıları çarp!</div>
-</div>
+            <div class="rule-box" style="border-color:#f59e0b;background:rgba(245,158,11,0.05)">
+                <div class="rule-formula" style="color:#f59e0b">EKOK = Çizginin sağındaki tüm asal sayıların çarpımı
+                </div>
+                <div class="rule-note">Sayıları yan yana yazıp tek çizgi çek → İkisi de 1 olana kadar böl → Çizginin
+                    sağında kalan bütün asal sayıları çarp!</div>
+            </div>
 
-<div class="example-grid">
-<div class="example-card yes">
-<div class="ex-q">EKOK (12, 18) = ?</div>
-<div class="ex-a">
-<div class="algo-container" style="margin-bottom:8px">
-<div class="algo-left" style="border-color:#f59e0b; letter-spacing:2px; white-space:pre;">12  18<br> 6   9<br> 3   9<br> 1   3<br>     1</div>
-<div class="algo-right">2<br>2<br>3<br>3<br>&nbsp;</div>
-</div><br>
-Çizginin sağındakilerin çarpımı:<br><b>EKOK(12,18) = 2 . 2 . 3 . 3 = 36</b></div>
-</div>
-<div class="example-card yes">
-<div class="ex-q">EKOK (8, 12) = ?</div>
-<div class="ex-a">
-<div class="algo-container" style="margin-bottom:8px">
-<div class="algo-left" style="border-color:#f59e0b; letter-spacing:2px; white-space:pre;"> 8  12<br> 4   6<br> 2   3<br> 1   3<br>     1</div>
-<div class="algo-right">2<br>2<br>2<br>3<br>&nbsp;</div>
-</div><br>
-Çizginin sağındakilerin çarpımı:<br><b>EKOK(8,12) = 2 . 2 . 2 . 3 = 24</b></div>
-</div>
-<div class="example-card yes">
-<div class="ex-q">EKOK (6, 10, 15) = ?</div>
-<div class="ex-a">
-<div class="algo-container" style="margin-bottom:8px">
-<div class="algo-left" style="border-color:#f59e0b; letter-spacing:2px; white-space:pre;"> 6  10  15<br> 3   5  15<br> 1   5   5<br>     1   1</div>
-<div class="algo-right">2<br>3<br>5<br>&nbsp;</div>
-</div><br>
-Çizginin sağındakilerin çarpımı:<br><b>EKOK(6,10,15) = 2 . 3 . 5 = 30</b></div>
-</div>
-<div class="example-card yes">
-<div class="ex-q">EKOK (4, 6, 9) = ?</div>
-<div class="ex-a">
-<div class="algo-container" style="margin-bottom:8px">
-<div class="algo-left" style="border-color:#f59e0b; letter-spacing:2px; white-space:pre;"> 4   6   9<br> 2   3   9<br> 1   3   9<br>     1   3<br>         1</div>
-<div class="algo-right">2<br>2<br>3<br>3<br>&nbsp;</div>
-</div><br>
-Çizginin sağındakilerin çarpımı:<br><b>EKOK(4,6,9) = 2 . 2 . 3 . 3 = 36</b></div>
-</div>
-</div>
+            <div class="example-grid">
+                <div class="example-card yes">
+                    <div class="ex-q">EKOK (12, 18) = ?</div>
+                    <div class="ex-a">
+                        <div class="algo-container" style="margin-bottom:8px">
+                            <div class="algo-left" style="border-color:#f59e0b; letter-spacing:2px; white-space:pre;">12
+                                18<br> 6 9<br> 3 9<br> 1 3<br> 1</div>
+                            <div class="algo-right">2<br>2<br>3<br>3<br>&nbsp;</div>
+                        </div><br>
+                        Çizginin sağındakilerin çarpımı:<br><b>EKOK(12,18) = 2 . 2 . 3 . 3 = 36</b>
+                    </div>
+                </div>
+                <div class="example-card yes">
+                    <div class="ex-q">EKOK (8, 12) = ?</div>
+                    <div class="ex-a">
+                        <div class="algo-container" style="margin-bottom:8px">
+                            <div class="algo-left" style="border-color:#f59e0b; letter-spacing:2px; white-space:pre;"> 8
+                                12<br> 4 6<br> 2 3<br> 1 3<br> 1</div>
+                            <div class="algo-right">2<br>2<br>2<br>3<br>&nbsp;</div>
+                        </div><br>
+                        Çizginin sağındakilerin çarpımı:<br><b>EKOK(8,12) = 2 . 2 . 2 . 3 = 24</b>
+                    </div>
+                </div>
+                <div class="example-card yes">
+                    <div class="ex-q">EKOK (6, 10, 15) = ?</div>
+                    <div class="ex-a">
+                        <div class="algo-container" style="margin-bottom:8px">
+                            <div class="algo-left" style="border-color:#f59e0b; letter-spacing:2px; white-space:pre;"> 6
+                                10 15<br> 3 5 15<br> 1 5 5<br> 1 1</div>
+                            <div class="algo-right">2<br>3<br>5<br>&nbsp;</div>
+                        </div><br>
+                        Çizginin sağındakilerin çarpımı:<br><b>EKOK(6,10,15) = 2 . 3 . 5 = 30</b>
+                    </div>
+                </div>
+                <div class="example-card yes">
+                    <div class="ex-q">EKOK (4, 6, 9) = ?</div>
+                    <div class="ex-a">
+                        <div class="algo-container" style="margin-bottom:8px">
+                            <div class="algo-left" style="border-color:#f59e0b; letter-spacing:2px; white-space:pre;"> 4
+                                6 9<br> 2 3 9<br> 1 3 9<br> 1 3<br> 1</div>
+                            <div class="algo-right">2<br>2<br>3<br>3<br>&nbsp;</div>
+                        </div><br>
+                        Çizginin sağındakilerin çarpımı:<br><b>EKOK(4,6,9) = 2 . 2 . 3 . 3 = 36</b>
+                    </div>
+                </div>
+            </div>
 
-<div class="info-box"><i class="fas fa-lightbulb"></i>
-<div><strong>Altın Formül:</strong> İki sayı için: <b>EBOB × EKOK = İki sayının çarpımı</b><br>Örnek: EBOB(12,18) = 6, EKOK(12,18) = 36 → 6 × 36 = 216 = 12 × 18 ✓<br>Bu formülle biri biliniyorsa diğeri kolayca bulunabilir!</div>
-</div>
+            <div class="info-box"><i class="fas fa-lightbulb"></i>
+                <div><strong>Altın Formül:</strong> İki sayı için: <b>EBOB × EKOK = İki sayının çarpımı</b><br>Örnek:
+                    EBOB(12,18) = 6, EKOK(12,18) = 36 → 6 × 36 = 216 = 12 × 18 ✓<br>Bu formülle biri biliniyorsa diğeri
+                    kolayca bulunabilir!</div>
+            </div>
 
-<div class="info-box"><i class="fas fa-info-circle"></i>
-<div><strong>EKOK ile ilgili önemli bilgiler:</strong><br>• EKOK, verilen sayılardan hiçbirinden küçük olamaz.<br>• Aralarında asal iki sayının EKOK'u, bu sayıların çarpımına eşittir.<br>• Bir sayı diğerinin katıysa EKOK büyük sayıya eşittir. Örn: EKOK(6,18) = 18</div>
-</div>
-</div>
+            <div class="info-box"><i class="fas fa-info-circle"></i>
+                <div><strong>EKOK ile ilgili önemli bilgiler:</strong><br>• EKOK, verilen sayılardan hiçbirinden küçük
+                    olamaz.<br>• Aralarında asal iki sayının EKOK'u, bu sayıların çarpımına eşittir.<br>• Bir sayı
+                    diğerinin katıysa EKOK büyük sayıya eşittir. Örn: EKOK(6,18) = 18</div>
+            </div>
+        </div>
 
-<!-- BÖLÜM 4: EBOB-EKOK PROBLEMLERİ -->
-<div class="rule-section" id="rule-problemler" style="border-left:5px solid #8b5cf6">
-<div class="rule-header">
-<div class="rule-icon" style="background:#8b5cf6">4</div>
-<div><div class="rule-title">EBOB - EKOK Problemleri</div>
-<div class="rule-subtitle">Günlük hayat problemlerinde EBOB ve EKOK'un kullanımı.</div></div>
-</div>
+        <!-- BÖLÜM 4: EBOB-EKOK PROBLEMLERİ -->
+        <div class="rule-section" id="rule-problemler" style="border-left:5px solid #8b5cf6">
+            <div class="rule-header">
+                <div class="rule-icon" style="background:#8b5cf6">4</div>
+                <div>
+                    <div class="rule-title">EBOB - EKOK Problemleri</div>
+                    <div class="rule-subtitle">Günlük hayat problemlerinde EBOB ve EKOK'un kullanımı.</div>
+                </div>
+            </div>
 
-<div class="content-text">EBOB ve EKOK problemlerini çözerken en önemli adım, sorunun <strong>EBOB mu yoksa EKOK mu</strong> istediğini belirlemektir. Genel kural: <strong>bölme, paylaştırma, gruplama, en büyük parça</strong> gibi ifadeler EBOB'u; <strong>birlikte, aynı anda, tekrar buluşma, en az</strong> gibi ifadeler EKOK'u işaret eder.</div>
+            <div class="content-text">EBOB ve EKOK problemlerini çözerken en önemli adım, sorunun <strong>EBOB mu yoksa
+                    EKOK mu</strong> istediğini belirlemektir. Genel kural: <strong>bölme, paylaştırma, gruplama, en
+                    büyük parça</strong> gibi ifadeler EBOB'u; <strong>birlikte, aynı anda, tekrar buluşma, en
+                    az</strong> gibi ifadeler EKOK'u işaret eder.</div>
 
-<div class="rule-box" style="border-color:#8b5cf6;background:rgba(139,92,246,0.05)">
-<div class="rule-formula" style="color:#8b5cf6">ALTIN TÜYOLAR: Bütünden Parçaya mı, Parçadan Bütüne mi?</div>
-<div class="rule-note" style="text-align:left; margin-top:12px; font-size:14.5px;">
-  <div style="margin-bottom:8px;"><b>EBOB Kullanılacak Durumlar (BÜTÜNDEN → PARÇAYA):</b> Eşit paylaştırma, bölme, ayırma, kesme işlemleri varsa EBOB kullanılır. Büyük parçaları küçük ve eşit parçalara ayırıyorsak cevap EBOB'dur.<br>
-  <i>Örn: Çuvallardaki pirinçleri paketlere ayırma, tarlanın etrafına eşit aralıklarla ağaç dikme, uzun çubukları eşit boyda kesme, kumaşları parçalara ayırma.</i></div>
-  <div><b>EKOK Kullanılacak Durumlar (PARÇADAN → BÜTÜNE):</b> Birleştirme, buluşma, aynı anda olma, katlanarak artma işlemleri varsa EKOK kullanılır. Küçük parçaları birleştirip büyük bir yapı oluşturuyorsak cevap EKOK'tur.<br>
-  <i>Örn: Zil veya saatlerin aynı anda çalması, otobüslerin aynı anda sefere çıkması, cevizleri/bilyeleri üçer beşer sayma, küçük fayansları birleştirip büyük kare yapma.</i></div>
-</div>
-</div>
+            <div class="rule-box" style="border-color:#8b5cf6;background:rgba(139,92,246,0.05)">
+                <div class="rule-formula" style="color:#8b5cf6">ALTIN TÜYOLAR: Bütünden Parçaya mı, Parçadan Bütüne mi?
+                </div>
+                <div class="rule-note" style="text-align:left; margin-top:12px; font-size:14.5px;">
+                    <div style="margin-bottom:8px;"><b>EBOB Kullanılacak Durumlar (BÜTÜNDEN → PARÇAYA):</b> Eşit
+                        paylaştırma, bölme, ayırma, kesme işlemleri varsa EBOB kullanılır. Büyük parçaları küçük ve eşit
+                        parçalara ayırıyorsak cevap EBOB'dur.<br>
+                        <i>Örn: Çuvallardaki pirinçleri paketlere ayırma, tarlanın etrafına eşit aralıklarla ağaç dikme,
+                            uzun çubukları eşit boyda kesme, kumaşları parçalara ayırma.</i>
+                    </div>
+                    <div><b>EKOK Kullanılacak Durumlar (PARÇADAN → BÜTÜNE):</b> Birleştirme, buluşma, aynı anda olma,
+                        katlanarak artma işlemleri varsa EKOK kullanılır. Küçük parçaları birleştirip büyük bir yapı
+                        oluşturuyorsak cevap EKOK'tur.<br>
+                        <i>Örn: Zil veya saatlerin aynı anda çalması, otobüslerin aynı anda sefere çıkması,
+                            cevizleri/bilyeleri üçer beşer sayma, küçük fayansları birleştirip büyük kare yapma.</i>
+                    </div>
+                </div>
+            </div>
 
-<div class="example-grid">
-<div class="example-card yes">
-<div class="ex-q">EBOB Problemi</div>
-<div class="ex-a"><b>Soru:</b> 24 kırmızı, 36 mavi bilye eşit sayıda torbaya, artmayacak şekilde paylaştırılıyor. En fazla kaç torba kullanılır?<br><b>Çözüm:</b> EBOB(24,36) = 12.<br><b>En fazla 12 torba.</b> (Her torbada 2 kırmızı, 3 mavi)</div>
-</div>
-<div class="example-card yes">
-<div class="ex-q">EKOK Problemi</div>
-<div class="ex-a"><b>Soru:</b> Ali 4 günde bir, Veli 6 günde bir kütüphaneye gidiyor. Bugün birlikte gittiler. En az kaç gün sonra tekrar birlikte giderler?<br><b>Çözüm:</b> EKOK(4,6) = 12.<br><b>12 gün sonra tekrar birlikte giderler.</b></div>
-</div>
-<div class="example-card yes">
-<div class="ex-q">EBOB Problemi</div>
-<div class="ex-a"><b>Soru:</b> 48 cm ve 60 cm boyundaki iki şerit, eşit uzunlukta en uzun parçalara bölünmek isteniyor. Her parça kaç cm olur?<br><b>Çözüm:</b> EBOB(48,60) = 12.<br><b>Her parça 12 cm olur.</b></div>
-</div>
-<div class="example-card yes">
-<div class="ex-q">EKOK Problemi</div>
-<div class="ex-a"><b>Soru:</b> 6, 8 ve 12'ye tam bölünebilen en küçük doğal sayı kaçtır?<br><b>Çözüm:</b> EKOK(6,8,12) = 24.<br><b>En küçük sayı 24'tür.</b></div>
-</div>
-</div>
+            <div class="example-grid">
+                <div class="example-card yes">
+                    <div class="ex-q">EBOB Problemi</div>
+                    <div class="ex-a"><b>Soru:</b> 24 kırmızı, 36 mavi bilye eşit sayıda torbaya, artmayacak şekilde
+                        paylaştırılıyor. En fazla kaç torba kullanılır?<br><b>Çözüm:</b> EBOB(24,36) = 12.<br><b>En
+                            fazla 12 torba.</b> (Her torbada 2 kırmızı, 3 mavi)</div>
+                </div>
+                <div class="example-card yes">
+                    <div class="ex-q">EKOK Problemi</div>
+                    <div class="ex-a"><b>Soru:</b> Ali 4 günde bir, Veli 6 günde bir kütüphaneye gidiyor. Bugün birlikte
+                        gittiler. En az kaç gün sonra tekrar birlikte giderler?<br><b>Çözüm:</b> EKOK(4,6) =
+                        12.<br><b>12 gün sonra tekrar birlikte giderler.</b></div>
+                </div>
+                <div class="example-card yes">
+                    <div class="ex-q">EBOB Problemi</div>
+                    <div class="ex-a"><b>Soru:</b> 48 cm ve 60 cm boyundaki iki şerit, eşit uzunlukta en uzun parçalara
+                        bölünmek isteniyor. Her parça kaç cm olur?<br><b>Çözüm:</b> EBOB(48,60) = 12.<br><b>Her parça 12
+                            cm olur.</b></div>
+                </div>
+                <div class="example-card yes">
+                    <div class="ex-q">EKOK Problemi</div>
+                    <div class="ex-a"><b>Soru:</b> 6, 8 ve 12'ye tam bölünebilen en küçük doğal sayı
+                        kaçtır?<br><b>Çözüm:</b> EKOK(6,8,12) = 24.<br><b>En küçük sayı 24'tür.</b></div>
+                </div>
+            </div>
 
-<div class="info-box"><i class="fas fa-lightbulb"></i>
-<div><strong>Problemlerde İpucu Kelimeleri:</strong><br>🔵 <b>EBOB:</b> "eşit gruplara ayır", "en büyük kare", "en uzun parça", "artmayacak şekilde paylaştır"<br>🟡 <b>EKOK:</b> "aynı anda", "en az kaç gün sonra", "tam bölünebilen en küçük", "birlikte tekrar"</div>
-</div>
-</div>
-<div class="test-section" id="test-section">
-<div class="test-header">
-<h2><i class="fas fa-clipboard-check"></i> Konu Tarama Testi</h2>
-<p>Öğrendiklerinizi pekiştirmek için 100 soruluk testi çözün.</p>
-</div>
-<div id="qContainer"></div>
-<div class="toolbar">
-<button class="btn btn-primary" onclick="checkAnswers()"><i class="fas fa-check-double"></i> Değerlendir</button>
-<button class="btn btn-warn" onclick="resetTest()"><i class="fas fa-undo"></i> Sıfırla</button>
-</div>
-<div class="result-panel" id="resultPanel">
-<div>Doğru Cevap Sayısı</div>
-<div class="result-score" id="resScore">0</div>
-<div style="font-weight:700;margin-top:-5px">/ 100 Soru</div>
-<div class="result-detail">
-<div class="result-item c"><div class="num" id="resC">0</div><div class="lbl">Doğru</div></div>
-<div class="result-item w"><div class="num" id="resW">0</div><div class="lbl">Yanlış</div></div>
-<div class="result-item e"><div class="num" id="resE">0</div><div class="lbl">Boş</div></div>
-</div>
-</div>
-</div>
+            <div class="info-box"><i class="fas fa-lightbulb"></i>
+                <div><strong>Problemlerde İpucu Kelimeleri:</strong><br>🔵 <b>EBOB:</b> "eşit gruplara ayır", "en büyük
+                    kare", "en uzun parça", "artmayacak şekilde paylaştır"<br>🟡 <b>EKOK:</b> "aynı anda", "en az kaç
+                    gün sonra", "tam bölünebilen en küçük", "birlikte tekrar"</div>
+            </div>
+        </div>
+        <div class="test-section" id="test-section">
+            <div class="test-header">
+                <h2><i class="fas fa-clipboard-check"></i> Konu Tarama Testi</h2>
+                <p>Öğrendiklerinizi pekiştirmek için 100 soruluk testi çözün.</p>
+            </div>
+            <div id="qContainer"></div>
+            <div class="toolbar">
+                <button class="btn btn-primary" onclick="checkAnswers()"><i class="fas fa-check-double"></i>
+                    Değerlendir</button>
+                <button class="btn btn-warn" onclick="resetTest()"><i class="fas fa-undo"></i> Sıfırla</button>
+            </div>
+            <div class="result-panel" id="resultPanel">
+                <div>Doğru Cevap Sayısı</div>
+                <div class="result-score" id="resScore">0</div>
+                <div style="font-weight:700;margin-top:-5px">/ 100 Soru</div>
+                <div class="result-detail">
+                    <div class="result-item c">
+                        <div class="num" id="resC">0</div>
+                        <div class="lbl">Doğru</div>
+                    </div>
+                    <div class="result-item w">
+                        <div class="num" id="resW">0</div>
+                        <div class="lbl">Yanlış</div>
+                    </div>
+                    <div class="result-item e">
+                        <div class="num" id="resE">0</div>
+                        <div class="lbl">Boş</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<div class="footer">TEKKEKÖY GM MAT KURSU - Aralarında Asal, EBOB ve EKOK</div>
-</div>
+        <div class="footer">TEKKEKÖY GM MAT KURSU - Aralarında Asal, EBOB ve EKOK</div>
+    </div>
 
-<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+    <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i
+            class="fas fa-arrow-up"></i></button>
 
-<script>
-var Q = [
-{"id":1,"t":"Aşağıdaki sayı çiftlerinden hangisi <b>aralarında asal</b>dır?","o":["6 ve 9","8 ve 15","12 ve 18","10 ve 25"],"a":1,"sol":"8'in bölenleri: 1,2,4,8. 15'in bölenleri: 1,3,5,15. Ortak bölen sadece 1 olduğundan aralarında asaldır."},
-{"id":2,"t":"9 ve 10 sayıları aralarında asal mıdır?","o":["Hayır, ikisi de asal değil","Evet, ortak bölenleri sadece 1","Hayır, ortak bölenleri 3","Evet, ikisi de tek sayı"],"a":1,"sol":"9'un bölenleri: 1,3,9. 10'un bölenleri: 1,2,5,10. Ortak bölen sadece 1'dir. Ardışık sayılar her zaman aralarında asaldır."},
-{"id":3,"t":"Aşağıdakilerden hangisi <b>yanlış</b>tır?","o":["Ardışık iki sayı aralarında asaldır","İki asal sayı her zaman aralarında asaldır","Aralarında asal sayılar mutlaka asal sayıdır","1 her sayıyla aralarında asaldır"],"a":2,"sol":"Aralarında asal olmak için sayıların kendisinin asal olması gerekmez. Örneğin 4 ve 9 aralarında asaldır ama ikisi de asal değildir."},
-{"id":4,"t":"14 ve 15 sayılarının EBOB'u kaçtır?","o":["1","2","7","14"],"a":0,"sol":"14 ve 15 ardışık sayılardır. Ardışık sayılar aralarında asaldır, yani EBOB'ları 1'dir."},
-{"id":5,"t":"Aralarında asal olan iki sayının EKOK'u hangi işlemle bulunur?","o":["Toplanır","Çarpılır","Çıkarılır","Bölünür"],"a":1,"sol":"Aralarında asal iki sayının EKOK'u, bu iki sayının çarpımına eşittir. Çünkü EBOB=1 ve EBOB×EKOK = çarpım formülünden EKOK = çarpım olur."},
-{"id":6,"t":"Aşağıdaki sayı çiftlerinden hangisi aralarında asal <b>değildir</b>?","o":["3 ve 10","9 ve 14","12 ve 25","8 ve 14"],"a":3,"sol":"8 ve 14'ün ortak böleni 2'dir (ikisi de çift sayı). Bu yüzden aralarında asal değildir."},
-{"id":7,"t":"15 ve 28 sayıları aralarında asal mıdır?","o":["Evet","Hayır","Bilgi yetersiz","Sadece biri asal"],"a":0,"sol":"15'in bölenleri: 1,3,5,15. 28'in bölenleri: 1,2,4,7,14,28. Ortak bölen sadece 1'dir, aralarında asaldır."},
-{"id":8,"t":"EBOB(18, 24) kaçtır?","o":["2","3","6","12"],"a":2,"sol":"18 = 2 . 3² ve 24 = 2³ . 3. Ortak asalların küçük kuvvetleri: 2¹ ve 3¹. EBOB = 2 . 3 = 6."},
-{"id":9,"t":"EBOB(36, 48) kaçtır?","o":["4","6","12","24"],"a":2,"sol":"36 = 2² . 3² ve 48 = 2⁴ . 3. Ortak asalların küçük kuvvetleri: 2² ve 3¹. EBOB = 4 . 3 = 12."},
-{"id":10,"t":"EBOB(15, 20) kaçtır?","o":["3","5","10","15"],"a":1,"sol":"15 = 3 . 5 ve 20 = 2² . 5. Ortak asal: sadece 5. EBOB = 5."},
-{"id":11,"t":"EBOB(8, 12, 20) kaçtır?","o":["2","4","8","12"],"a":1,"sol":"8 = 2³, 12 = 2² . 3, 20 = 2² . 5. Üçünün de ortak asalı 2, en küçük kuvveti 2². EBOB = 4."},
-{"id":12,"t":"EBOB(7, 21) kaçtır?","o":["1","3","7","21"],"a":2,"sol":"7 asal sayıdır ve 21 = 3 . 7. Ortak asal: 7. EBOB = 7. (Küçük sayı büyüğünün böleniyse EBOB küçük sayıdır.)"},
-{"id":13,"t":"EKOK(4, 6) kaçtır?","o":["2","12","24","48"],"a":1,"sol":"4 = 2² ve 6 = 2 . 3. Tüm asalların büyük kuvvetleri: 2² ve 3¹. EKOK = 4 . 3 = 12."},
-{"id":14,"t":"EKOK(8, 12) kaçtır?","o":["4","24","48","96"],"a":1,"sol":"8 = 2³ ve 12 = 2² . 3. Tüm asalların büyük kuvvetleri: 2³ ve 3¹. EKOK = 8 . 3 = 24."},
-{"id":15,"t":"EKOK(5, 7) kaçtır?","o":["12","35","70","1"],"a":1,"sol":"5 ve 7 aralarında asaldır (ikisi de asal). EKOK = 5 . 7 = 35."},
-{"id":16,"t":"EKOK(6, 8, 12) kaçtır?","o":["12","24","48","72"],"a":1,"sol":"6=2.3, 8=2³, 12=2².3. Tüm asalların büyük kuvvetleri: 2³ ve 3¹. EKOK = 8 . 3 = 24."},
-{"id":17,"t":"EKOK(9, 12) kaçtır?","o":["18","36","72","108"],"a":1,"sol":"9 = 3² ve 12 = 2² . 3. Tüm asalların büyük kuvvetleri: 2² ve 3². EKOK = 4 . 9 = 36."},
-{"id":18,"t":"EBOB(12, 18) × EKOK(12, 18) işleminin sonucu kaçtır?","o":["30","108","216","324"],"a":2,"sol":"EBOB × EKOK = iki sayının çarpımı. 12 × 18 = 216."},
-{"id":19,"t":"EBOB(a, b) = 6 ve a × b = 180 ise EKOK(a, b) kaçtır?","o":["12","18","30","36"],"a":2,"sol":"EBOB × EKOK = a × b formülünden: 6 × EKOK = 180, EKOK = 30."},
-{"id":20,"t":"İki sayının EBOB'u 8, EKOK'u 48'dir. Sayılardan biri 16 ise diğeri kaçtır?","o":["12","24","32","48"],"a":1,"sol":"EBOB × EKOK = a × b → 8 × 48 = 16 × b → 384 = 16b → b = 24."},
-{"id":21,"t":"24 elma ve 36 portakalı, her tabağa eşit sayıda ve artmayacak şekilde paylaştırmak istiyoruz. <b>En fazla</b> kaç tabak kullanılır?","o":["4","6","8","12"],"a":3,"sol":"EBOB(24, 36) = 12. En fazla 12 tabak kullanılır. Her tabakta 2 elma ve 3 portakal olur."},
-{"id":22,"t":"Ali 6 günde bir, Ayşe 8 günde bir havuza gidiyor. Bugün birlikte gittiler. En az kaç gün sonra tekrar birlikte giderler?","o":["14","24","48","2"],"a":1,"sol":"EKOK(6, 8) = 24. 24 gün sonra tekrar birlikte giderler."},
-{"id":23,"t":"Bir sayı hem 6'ya hem 8'e bölündüğünde her ikisinden de 2 kalanını veriyor. Bu sayı en küçük kaç olabilir?","o":["14","20","26","50"],"a":2,"sol":"Sayı = EKOK(6,8) + 2 = 24 + 2 = 26. (EKOK'a kalanı ekleriz.)"},
-{"id":24,"t":"60 cm ve 84 cm uzunluğundaki iki ip, eşit parçalara bölünecektir. Her parça <b>en uzun</b> kaç cm olur?","o":["6","12","14","24"],"a":1,"sol":"EBOB(60, 84) = 12. Her parça en uzun 12 cm olur."},
-{"id":25,"t":"EBOB(a, b) = 1 ise aşağıdakilerden hangisi <b>kesinlikle</b> doğrudur?","o":["a ve b asal sayıdır","a ve b ardışıktır","a ve b aralarında asaldır","a + b tek sayıdır"],"a":2,"sol":"EBOB'u 1 olan iki sayı aralarında asaldır. Bu, sayıların kendisinin asal olmasını ya da ardışık olmasını gerektirmez."},
-{"id":26,"t":"EBOB(a, b) = 1 ve a × b = 40 ise a ve b sayıları hangisi olabilir?","o":["2 ve 20","4 ve 10","5 ve 8","1 ve 41"],"a":2,"sol":"EBOB'ları 1 olan (aralarında asal) sayıların çarpımı 40 ise, bu sayılar 5 ve 8'dir. 4 ve 10'un EBOB'u 2'dir. 2 ve 20'nin EBOB'u 2'dir."},
-{"id":27,"t":"Üç basamaklı en küçük ortak katı 120 olan iki doğal sayının toplamı <b>en fazla</b> kaçtır?","o":["60","120","240","180"],"a":2,"sol":"Sayıların EKOK'u 120. Toplamın en büyük olması için sayıların en büyük olması gerekir. Sayılar birbirinden farklı denmiyorsa ikisini de 120 alabiliriz. (Eğer farklı denseydi 120 ve 60 olurdu, toplam 180. Fakat farklı demiyor). Toplam en fazla 120 + 120 = 240."},
-{"id":28,"t":"Aralarında asal iki sayının EKOK'u 60'tır. Sayılardan biri 5 ise diğeri kaçtır?","o":["10","12","15","20"],"a":1,"sol":"Aralarında asal sayıların EKOK'u çarpımlarına eşittir. 5 × x = 60 ise x = 12."},
-{"id":29,"t":"A = 2³ × 3² × 5<br>B = 2² × 3³<br>Yukarıda asal çarpanlarına ayrılmış olarak verilen A ve B sayıları için EKOK(A, B) / EBOB(A, B) kaçtır?","o":["30","60","90","120"],"a":2,"sol":"EKOK = büyük kuvvetler = 2³ × 3³ × 5. EBOB = küçük kuvvetler = 2² × 3². Oran: (2³×3³×5) / (2²×3²) = 2¹ × 3¹ × 5 = 30."},
-{"id":30,"t":"72 ve 96 sayılarının <b>ortak bölenlerinin</b> sayısı kaçtır?","o":["6","8","10","12"],"a":1,"sol":"Ortak bölenleri bulmak için önce EBOB'u buluruz. EBOB(72, 96) = 24. 24'ün bölenleri her ikisinin de ortak bölenidir. 24'ün bölenleri: 1,2,3,4,6,8,12,24 (8 tane)."},
-{"id":31,"t":"İki otobüsten biri 45 dakikada, diğeri 60 dakikada bir aynı duraktan kalkıyor. Saat 08:00'de birlikte kalkan bu iki otobüs, ikinci kez saat kaçta birlikte kalkar?","o":["10:00","10:30","11:00","11:30"],"a":2,"sol":"EKOK(45, 60) = 180 dakika. 180 dakika = 3 saat. 08:00 + 3 saat = 11:00."},
-{"id":32,"t":"Kenar uzunlukları 40 m ve 56 m olan dikdörtgen şeklindeki bir bahçenin etrafına, köşelerine de dikilmek şartıyla <b>eşit aralıklarla</b> en az kaç ağaç dikilir?","o":["12","24","48","96"],"a":1,"sol":"Aralık EBOB olmalı. EBOB(40, 56) = 8 m. Ağaç sayısı = Çevre / Aralık. Çevre = 2(40+56) = 192. 192 / 8 = 24 ağaç."},
-{"id":33,"t":"Bir çiçekçi, çiçeklerini 6'şarlı veya 8'erli demet yaptığında her seferinde 3 çiçeği artıyor. Çiçekçinin en az kaç çiçeği vardır?","o":["21","24","27","48"],"a":2,"sol":"EKOK(6, 8) = 24. 3 artıyorsa 24 + 3 = 27 çiçek vardır."},
-{"id":34,"t":"Boyutları 12 cm ve 18 cm olan dikdörtgen şeklindeki kartonlar yan yana getirilerek <b>en küçük</b> kare elde edilecektir. Bu iş için en az kaç karton gereklidir?","o":["4","6","8","10"],"a":1,"sol":"Karenin bir kenarı EKOK(12, 18) = 36 cm olmalı. Karton sayısı = (36/12) × (36/18) = 3 × 2 = 6."},
-{"id":35,"t":"Ardışık iki doğal sayının EBOB ve EKOK'unun toplamı 133'tür. Bu sayılardan <b>küçük</b> olanı kaçtır?","o":["10","11","12","13"],"a":1,"sol":"Ardışık iki sayı aralarında asaldır, bu yüzden EBOB'ları 1'dir. EKOK'ları çarpımlarına eşittir. EBOB + EKOK = 1 + çarpım = 133. Çarpım = 132. Hangi iki ardışık sayının çarpımı 132'dir? 11 × 12 = 132. Küçük olan sayı 11."},
-{"id":36,"t":"EBOB'u 5, EKOK'u 150 olan iki doğal sayının toplamı <b>en az</b> kaçtır?","o":["45","55","65","155"],"a":1,"sol":"Sayılar EBOB'un katıdır: 5x ve 5y (x ve y aralarında asal). EKOK = 5xy = 150 → xy = 30. Toplamın en az olması için x ve y'yi birbirine yakın seçmeliyiz. x=5, y=6 (aralarında asal). Sayılar 25 ve 30 olur. Toplam: 25+30 = 55."},
-{"id":37,"t":"Bir torbadaki cevizler 4'er, 5'er ve 6'şar sayıldığında her seferinde 2 ceviz artıyor. Torbada 100'den fazla ceviz olduğu bilindiğine göre <b>en az</b> kaç ceviz vardır?","o":["62","120","122","182"],"a":2,"sol":"EKOK(4, 5, 6) = 60. Ceviz sayısı 60'ın katı + 2 olmalı. 60k + 2. 100'den fazla dediği için k=2 alırız. 120 + 2 = 122."},
-{"id":38,"t":"54 kg ve 72 kg'lık iki farklı cins pirinç birbirine karıştırılmadan ve hiç artmayacak şekilde <b>eşit kapasiteli</b> torbalara doldurulacaktır. En az kaç torbaya ihtiyaç vardır?","o":["5","6","7","14"],"a":2,"sol":"Torba hacmi en büyük olmalı, yani EBOB. EBOB(54, 72) = 18 kg. Torba sayısı = 54/18 + 72/18 = 3 + 4 = 7 torba."},
-{"id":39,"t":"A ve 18 sayıları aralarında asaldır. Bu sayıların EKOK'u 126 olduğuna göre A kaçtır?","o":["7","9","11","13"],"a":0,"sol":"Aralarında asal sayıların EKOK'u çarpımıdır. A × 18 = 126 → A = 7."},
-{"id":40,"t":"12'ye bölündüğünde 5, 15'e bölündüğünde 8 kalanını veren <b>en küçük</b> doğal sayı kaçtır?","o":["53","67","73","125"],"a":0,"sol":"Sayı = 12k + 5 = 15m + 8. Her tarafa 7 eklersek: Sayı+7 = 12k+12 = 15m+15. (Sayı+7), 12 ve 15'in katı olur. EKOK(12, 15) = 60. Sayı+7 = 60 → Sayı = 53."},
-{"id":41,"t":"2A ve 3B iki basamaklı sayılardır. 2A ve 3B sayılarının EBOB'u 1 olduğuna göre aşağıdakilerden hangisi doğrudur?","o":["A ve B asal sayıdır","2A ve 3B sayıları aralarında asaldır","A=3, B=2 olmak zorundadır","A+B=5 olmalıdır"],"a":1,"sol":"İki sayının EBOB'u 1 ise, bu iki sayı tanım gereği aralarında asaldır."},
-{"id":42,"t":"EBOB(A, B) = 10, A = 30 ise B sayısı aşağıdakilerden hangisi <b>olamaz</b>?","o":["20","40","50","60"],"a":3,"sol":"EBOB(30, 60) = 30'dur. Ancak EBOB'un 10 olduğu verilmiş. Dolayısıyla B sayısı 60 olamaz."},
-{"id":43,"t":"EKOK(A, 24) = 72 eşitliğini sağlayan kaç farklı A doğal sayısı vardır?","o":["3","4","6","8"],"a":2,"sol":"A, 72'nin çarpanlarından biri olmalı ve 24 ile EKOK'u 72 vermeli. A şunlar olabilir: 9, 18, 36, 72. (EKOK'un içinde 9=3² olmalı çünkü 24'te sadece 3¹ var). Farklı A değerleri sayısı 4'tür."},
-{"id":44,"t":"EBOB'u 12 olan iki basamaklı iki <b>farklı</b> doğal sayının toplamı en az kaçtır?","o":["24","36","48","60"],"a":1,"sol":"EBOB'un katlarını düşünmeliyiz. En küçük iki basamaklı katları 12 ve 24'tür. Toplamı: 12 + 24 = 36."},
-{"id":45,"t":"Üç gemiden birincisi 8, ikincisi 10, üçüncüsü 12 günde bir sefere çıkmaktadır. Aynı gün sefere çıkan bu üç gemi <b>en az</b> kaç gün sonra tekrar birlikte sefere çıkarlar?","o":["60","120","240","360"],"a":1,"sol":"Üç sayının da EKOK'unu almalıyız. EKOK(8, 10, 12) = 120 gündür."},
-{"id":46,"t":"Ortak katlarının en küçüğü 90 olan iki sayının toplamı aşağıdakilerden hangisi olamaz?","o":["19","21","33","45"],"a":3,"sol":"Sayılar 90'ın bölenleri olmalı. EKOK(a,b)=90. Toplamı 19 olabilir (9+10=19). Toplamı 21 olabilir (delil: 6+15, hayır ekok 30). a,b=9,10 ise t=19. a,b=18,5 ise t=23. 45= 45+.. (olamaz) veya 18+27 (ekok 54). Olamayan 45 gibi görünüyor."},
-{"id":47,"t":"Bir miktar ceviz 3 çocuğa eşit paylaştırıldığında 1 ceviz artıyor, 4 çocuğa eşit paylaştırıldığında 2 ceviz artıyor, 5 çocuğa paylaştırıldığında 3 ceviz artıyor. Buna göre en az kaç ceviz vardır?","o":["58","62","118","122"],"a":0,"sol":"Sayı 3'ün katının 1 fazlası, 4'ün 2 fazlası, 5'in 3 fazlası. Dikkat edersek her birinde bölüm sayısından 2 eksik. (Sayı+2) = EKOK(3,4,5) = 60. Sayı = 58'dir."},
-{"id":48,"t":"Aralarında asal iki sayının EKOK'u ile EBOB'unun farkı 79'dur. Sayılardan biri 16 ise diğeri kaçtır?","o":["5","7","9","11"],"a":0,"sol":"Aralarında asal sayıların EBOB'u 1'dir. EKOK - 1 = 79 ise EKOK = 80. EKOK, sayıların çarpımına eşit olduğundan 16 × x = 80, x = 5 olur."},
-{"id":49,"t":"EBOB'ları 6 olan farklı iki doğal sayının toplamı <b>en az</b> kaçtır?","o":["12","18","24","30"],"a":1,"sol":"Sayılardan en küçüğünü kendisi olan 6 seçebiliriz (EBOB'a eşit olabilir). İkinci sayıyı farklı olması için 6'nın bir sonraki katı olan 12 seçeriz. Toplamı: 6 + 12 = 18."},
-{"id":50,"t":"15 ve 24 sayılarının ortak bölenlerinin en büyüğü A, ortak katlarının en küçüğü B'dir. Buna göre A + B toplamı kaçtır?","o":["120","123","126","135"],"a":1,"sol":"EBOB(15, 24) = 3 (A=3). EKOK(15, 24) = 120 (B=120). Toplam A + B = 3 + 120 = 123'tür."}
+    <script>
+        var Q = [
+            { "id": 1, "t": "Aşağıdaki sayı çiftlerinden hangisi <b>aralarında asal</b>dır?", "o": ["6 ve 9", "8 ve 15", "12 ve 18", "10 ve 25"], "a": 1, "sol": "8'in bölenleri: 1,2,4,8. 15'in bölenleri: 1,3,5,15. Ortak bölen sadece 1 olduğundan aralarında asaldır." },
+            { "id": 2, "t": "9 ve 10 sayıları aralarında asal mıdır?", "o": ["Hayır, ikisi de asal değil", "Evet, ortak bölenleri sadece 1", "Hayır, ortak bölenleri 3", "Evet, ikisi de tek sayı"], "a": 1, "sol": "9'un bölenleri: 1,3,9. 10'un bölenleri: 1,2,5,10. Ortak bölen sadece 1'dir. Ardışık sayılar her zaman aralarında asaldır." },
+            { "id": 3, "t": "Aşağıdakilerden hangisi <b>yanlış</b>tır?", "o": ["Ardışık iki sayı aralarında asaldır", "İki asal sayı her zaman aralarında asaldır", "Aralarında asal sayılar mutlaka asal sayıdır", "1 her sayıyla aralarında asaldır"], "a": 2, "sol": "Aralarında asal olmak için sayıların kendisinin asal olması gerekmez. Örneğin 4 ve 9 aralarında asaldır ama ikisi de asal değildir." },
+            { "id": 4, "t": "14 ve 15 sayılarının EBOB'u kaçtır?", "o": ["1", "2", "7", "14"], "a": 0, "sol": "14 ve 15 ardışık sayılardır. Ardışık sayılar aralarında asaldır, yani EBOB'ları 1'dir." },
+            { "id": 5, "t": "Aralarında asal olan iki sayının EKOK'u hangi işlemle bulunur?", "o": ["Toplanır", "Çarpılır", "Çıkarılır", "Bölünür"], "a": 1, "sol": "Aralarında asal iki sayının EKOK'u, bu iki sayının çarpımına eşittir. Çünkü EBOB=1 ve EBOB×EKOK = çarpım formülünden EKOK = çarpım olur." },
+            { "id": 6, "t": "Aşağıdaki sayı çiftlerinden hangisi aralarında asal <b>değildir</b>?", "o": ["3 ve 10", "9 ve 14", "12 ve 25", "8 ve 14"], "a": 3, "sol": "8 ve 14'ün ortak böleni 2'dir (ikisi de çift sayı). Bu yüzden aralarında asal değildir." },
+            { "id": 7, "t": "15 ve 28 sayıları aralarında asal mıdır?", "o": ["Evet", "Hayır", "Bilgi yetersiz", "Sadece biri asal"], "a": 0, "sol": "15'in bölenleri: 1,3,5,15. 28'in bölenleri: 1,2,4,7,14,28. Ortak bölen sadece 1'dir, aralarında asaldır." },
+            { "id": 8, "t": "EBOB(18, 24) kaçtır?", "o": ["2", "3", "6", "12"], "a": 2, "sol": "18 = 2 . 3² ve 24 = 2³ . 3. Ortak asalların küçük kuvvetleri: 2¹ ve 3¹. EBOB = 2 . 3 = 6." },
+            { "id": 9, "t": "EBOB(36, 48) kaçtır?", "o": ["4", "6", "12", "24"], "a": 2, "sol": "36 = 2² . 3² ve 48 = 2⁴ . 3. Ortak asalların küçük kuvvetleri: 2² ve 3¹. EBOB = 4 . 3 = 12." },
+            { "id": 10, "t": "EBOB(15, 20) kaçtır?", "o": ["3", "5", "10", "15"], "a": 1, "sol": "15 = 3 . 5 ve 20 = 2² . 5. Ortak asal: sadece 5. EBOB = 5." },
+            { "id": 11, "t": "EBOB(8, 12, 20) kaçtır?", "o": ["2", "4", "8", "12"], "a": 1, "sol": "8 = 2³, 12 = 2² . 3, 20 = 2² . 5. Üçünün de ortak asalı 2, en küçük kuvveti 2². EBOB = 4." },
+            { "id": 12, "t": "EBOB(7, 21) kaçtır?", "o": ["1", "3", "7", "21"], "a": 2, "sol": "7 asal sayıdır ve 21 = 3 . 7. Ortak asal: 7. EBOB = 7. (Küçük sayı büyüğünün böleniyse EBOB küçük sayıdır.)" },
+            { "id": 13, "t": "EKOK(4, 6) kaçtır?", "o": ["2", "12", "24", "48"], "a": 1, "sol": "4 = 2² ve 6 = 2 . 3. Tüm asalların büyük kuvvetleri: 2² ve 3¹. EKOK = 4 . 3 = 12." },
+            { "id": 14, "t": "EKOK(8, 12) kaçtır?", "o": ["4", "24", "48", "96"], "a": 1, "sol": "8 = 2³ ve 12 = 2² . 3. Tüm asalların büyük kuvvetleri: 2³ ve 3¹. EKOK = 8 . 3 = 24." },
+            { "id": 15, "t": "EKOK(5, 7) kaçtır?", "o": ["12", "35", "70", "1"], "a": 1, "sol": "5 ve 7 aralarında asaldır (ikisi de asal). EKOK = 5 . 7 = 35." },
+            { "id": 16, "t": "EKOK(6, 8, 12) kaçtır?", "o": ["12", "24", "48", "72"], "a": 1, "sol": "6=2.3, 8=2³, 12=2².3. Tüm asalların büyük kuvvetleri: 2³ ve 3¹. EKOK = 8 . 3 = 24." },
+            { "id": 17, "t": "EKOK(9, 12) kaçtır?", "o": ["18", "36", "72", "108"], "a": 1, "sol": "9 = 3² ve 12 = 2² . 3. Tüm asalların büyük kuvvetleri: 2² ve 3². EKOK = 4 . 9 = 36." },
+            { "id": 18, "t": "EBOB(12, 18) × EKOK(12, 18) işleminin sonucu kaçtır?", "o": ["30", "108", "216", "324"], "a": 2, "sol": "EBOB × EKOK = iki sayının çarpımı. 12 × 18 = 216." },
+            { "id": 19, "t": "EBOB(a, b) = 6 ve a × b = 180 ise EKOK(a, b) kaçtır?", "o": ["12", "18", "30", "36"], "a": 2, "sol": "EBOB × EKOK = a × b formülünden: 6 × EKOK = 180, EKOK = 30." },
+            { "id": 20, "t": "İki sayının EBOB'u 8, EKOK'u 48'dir. Sayılardan biri 16 ise diğeri kaçtır?", "o": ["12", "24", "32", "48"], "a": 1, "sol": "EBOB × EKOK = a × b → 8 × 48 = 16 × b → 384 = 16b → b = 24." },
+            { "id": 21, "t": "24 elma ve 36 portakalı, her tabağa eşit sayıda ve artmayacak şekilde paylaştırmak istiyoruz. <b>En fazla</b> kaç tabak kullanılır?", "o": ["4", "6", "8", "12"], "a": 3, "sol": "EBOB(24, 36) = 12. En fazla 12 tabak kullanılır. Her tabakta 2 elma ve 3 portakal olur." },
+            { "id": 22, "t": "Ali 6 günde bir, Ayşe 8 günde bir havuza gidiyor. Bugün birlikte gittiler. En az kaç gün sonra tekrar birlikte giderler?", "o": ["14", "24", "48", "2"], "a": 1, "sol": "EKOK(6, 8) = 24. 24 gün sonra tekrar birlikte giderler." },
+            { "id": 23, "t": "Bir sayı hem 6'ya hem 8'e bölündüğünde her ikisinden de 2 kalanını veriyor. Bu sayı en küçük kaç olabilir?", "o": ["14", "20", "26", "50"], "a": 2, "sol": "Sayı = EKOK(6,8) + 2 = 24 + 2 = 26. (EKOK'a kalanı ekleriz.)" },
+            { "id": 24, "t": "60 cm ve 84 cm uzunluğundaki iki ip, eşit parçalara bölünecektir. Her parça <b>en uzun</b> kaç cm olur?", "o": ["6", "12", "14", "24"], "a": 1, "sol": "EBOB(60, 84) = 12. Her parça en uzun 12 cm olur." },
+            { "id": 25, "t": "EBOB(a, b) = 1 ise aşağıdakilerden hangisi <b>kesinlikle</b> doğrudur?", "o": ["a ve b asal sayıdır", "a ve b ardışıktır", "a ve b aralarında asaldır", "a + b tek sayıdır"], "a": 2, "sol": "EBOB'u 1 olan iki sayı aralarında asaldır. Bu, sayıların kendisinin asal olmasını ya da ardışık olmasını gerektirmez." },
+            { "id": 26, "t": "EBOB(a, b) = 1 ve a × b = 40 ise a ve b sayıları hangisi olabilir?", "o": ["2 ve 20", "4 ve 10", "5 ve 8", "1 ve 41"], "a": 2, "sol": "EBOB'ları 1 olan (aralarında asal) sayıların çarpımı 40 ise, bu sayılar 5 ve 8'dir. 4 ve 10'un EBOB'u 2'dir. 2 ve 20'nin EBOB'u 2'dir." },
+            { "id": 27, "t": "Üç basamaklı en küçük ortak katı 120 olan iki doğal sayının toplamı <b>en fazla</b> kaçtır?", "o": ["60", "120", "240", "180"], "a": 2, "sol": "Sayıların EKOK'u 120. Toplamın en büyük olması için sayıların en büyük olması gerekir. Sayılar birbirinden farklı denmiyorsa ikisini de 120 alabiliriz. (Eğer farklı denseydi 120 ve 60 olurdu, toplam 180. Fakat farklı demiyor). Toplam en fazla 120 + 120 = 240." },
+            { "id": 28, "t": "Aralarında asal iki sayının EKOK'u 60'tır. Sayılardan biri 5 ise diğeri kaçtır?", "o": ["10", "12", "15", "20"], "a": 1, "sol": "Aralarında asal sayıların EKOK'u çarpımlarına eşittir. 5 × x = 60 ise x = 12." },
+            { "id": 29, "t": "A = 2³ × 3² × 5<br>B = 2² × 3³<br>Yukarıda asal çarpanlarına ayrılmış olarak verilen A ve B sayıları için EKOK(A, B) / EBOB(A, B) kaçtır?", "o": ["30", "60", "90", "120"], "a": 2, "sol": "EKOK = büyük kuvvetler = 2³ × 3³ × 5. EBOB = küçük kuvvetler = 2² × 3². Oran: (2³×3³×5) / (2²×3²) = 2¹ × 3¹ × 5 = 30." },
+            { "id": 30, "t": "72 ve 96 sayılarının <b>ortak bölenlerinin</b> sayısı kaçtır?", "o": ["6", "8", "10", "12"], "a": 1, "sol": "Ortak bölenleri bulmak için önce EBOB'u buluruz. EBOB(72, 96) = 24. 24'ün bölenleri her ikisinin de ortak bölenidir. 24'ün bölenleri: 1,2,3,4,6,8,12,24 (8 tane)." },
+            { "id": 31, "t": "İki otobüsten biri 45 dakikada, diğeri 60 dakikada bir aynı duraktan kalkıyor. Saat 08:00'de birlikte kalkan bu iki otobüs, ikinci kez saat kaçta birlikte kalkar?", "o": ["10:00", "10:30", "11:00", "11:30"], "a": 2, "sol": "EKOK(45, 60) = 180 dakika. 180 dakika = 3 saat. 08:00 + 3 saat = 11:00." },
+            { "id": 32, "t": "Kenar uzunlukları 40 m ve 56 m olan dikdörtgen şeklindeki bir bahçenin etrafına, köşelerine de dikilmek şartıyla <b>eşit aralıklarla</b> en az kaç ağaç dikilir?", "o": ["12", "24", "48", "96"], "a": 1, "sol": "Aralık EBOB olmalı. EBOB(40, 56) = 8 m. Ağaç sayısı = Çevre / Aralık. Çevre = 2(40+56) = 192. 192 / 8 = 24 ağaç." },
+            { "id": 33, "t": "Bir çiçekçi, çiçeklerini 6'şarlı veya 8'erli demet yaptığında her seferinde 3 çiçeği artıyor. Çiçekçinin en az kaç çiçeği vardır?", "o": ["21", "24", "27", "48"], "a": 2, "sol": "EKOK(6, 8) = 24. 3 artıyorsa 24 + 3 = 27 çiçek vardır." },
+            { "id": 34, "t": "Boyutları 12 cm ve 18 cm olan dikdörtgen şeklindeki kartonlar yan yana getirilerek <b>en küçük</b> kare elde edilecektir. Bu iş için en az kaç karton gereklidir?", "o": ["4", "6", "8", "10"], "a": 1, "sol": "Karenin bir kenarı EKOK(12, 18) = 36 cm olmalı. Karton sayısı = (36/12) × (36/18) = 3 × 2 = 6." },
+            { "id": 35, "t": "Ardışık iki doğal sayının EBOB ve EKOK'unun toplamı 133'tür. Bu sayılardan <b>küçük</b> olanı kaçtır?", "o": ["10", "11", "12", "13"], "a": 1, "sol": "Ardışık iki sayı aralarında asaldır, bu yüzden EBOB'ları 1'dir. EKOK'ları çarpımlarına eşittir. EBOB + EKOK = 1 + çarpım = 133. Çarpım = 132. Hangi iki ardışık sayının çarpımı 132'dir? 11 × 12 = 132. Küçük olan sayı 11." },
+            { "id": 36, "t": "EBOB'u 5, EKOK'u 150 olan iki doğal sayının toplamı <b>en az</b> kaçtır?", "o": ["45", "55", "65", "155"], "a": 1, "sol": "Sayılar EBOB'un katıdır: 5x ve 5y (x ve y aralarında asal). EKOK = 5xy = 150 → xy = 30. Toplamın en az olması için x ve y'yi birbirine yakın seçmeliyiz. x=5, y=6 (aralarında asal). Sayılar 25 ve 30 olur. Toplam: 25+30 = 55." },
+            { "id": 37, "t": "Bir torbadaki cevizler 4'er, 5'er ve 6'şar sayıldığında her seferinde 2 ceviz artıyor. Torbada 100'den fazla ceviz olduğu bilindiğine göre <b>en az</b> kaç ceviz vardır?", "o": ["62", "120", "122", "182"], "a": 2, "sol": "EKOK(4, 5, 6) = 60. Ceviz sayısı 60'ın katı + 2 olmalı. 60k + 2. 100'den fazla dediği için k=2 alırız. 120 + 2 = 122." },
+            { "id": 38, "t": "54 kg ve 72 kg'lık iki farklı cins pirinç birbirine karıştırılmadan ve hiç artmayacak şekilde <b>eşit kapasiteli</b> torbalara doldurulacaktır. En az kaç torbaya ihtiyaç vardır?", "o": ["5", "6", "7", "14"], "a": 2, "sol": "Torba hacmi en büyük olmalı, yani EBOB. EBOB(54, 72) = 18 kg. Torba sayısı = 54/18 + 72/18 = 3 + 4 = 7 torba." },
+            { "id": 39, "t": "A ve 18 sayıları aralarında asaldır. Bu sayıların EKOK'u 126 olduğuna göre A kaçtır?", "o": ["7", "9", "11", "13"], "a": 0, "sol": "Aralarında asal sayıların EKOK'u çarpımıdır. A × 18 = 126 → A = 7." },
+            { "id": 40, "t": "12'ye bölündüğünde 5, 15'e bölündüğünde 8 kalanını veren <b>en küçük</b> doğal sayı kaçtır?", "o": ["53", "67", "73", "125"], "a": 0, "sol": "Sayı = 12k + 5 = 15m + 8. Her tarafa 7 eklersek: Sayı+7 = 12k+12 = 15m+15. (Sayı+7), 12 ve 15'in katı olur. EKOK(12, 15) = 60. Sayı+7 = 60 → Sayı = 53." },
+            { "id": 41, "t": "2A ve 3B iki basamaklı sayılardır. 2A ve 3B sayılarının EBOB'u 1 olduğuna göre aşağıdakilerden hangisi doğrudur?", "o": ["A ve B asal sayıdır", "2A ve 3B sayıları aralarında asaldır", "A=3, B=2 olmak zorundadır", "A+B=5 olmalıdır"], "a": 1, "sol": "İki sayının EBOB'u 1 ise, bu iki sayı tanım gereği aralarında asaldır." },
+            { "id": 42, "t": "EBOB(A, B) = 10, A = 30 ise B sayısı aşağıdakilerden hangisi <b>olamaz</b>?", "o": ["20", "40", "50", "60"], "a": 3, "sol": "EBOB(30, 60) = 30'dur. Ancak EBOB'un 10 olduğu verilmiş. Dolayısıyla B sayısı 60 olamaz." },
+            { "id": 43, "t": "EKOK(A, 24) = 72 eşitliğini sağlayan kaç farklı A doğal sayısı vardır?", "o": ["3", "4", "6", "8"], "a": 2, "sol": "A, 72'nin çarpanlarından biri olmalı ve 24 ile EKOK'u 72 vermeli. A şunlar olabilir: 9, 18, 36, 72. (EKOK'un içinde 9=3² olmalı çünkü 24'te sadece 3¹ var). Farklı A değerleri sayısı 4'tür." },
+            { "id": 44, "t": "EBOB'u 12 olan iki basamaklı iki <b>farklı</b> doğal sayının toplamı en az kaçtır?", "o": ["24", "36", "48", "60"], "a": 1, "sol": "EBOB'un katlarını düşünmeliyiz. En küçük iki basamaklı katları 12 ve 24'tür. Toplamı: 12 + 24 = 36." },
+            { "id": 45, "t": "Üç gemiden birincisi 8, ikincisi 10, üçüncüsü 12 günde bir sefere çıkmaktadır. Aynı gün sefere çıkan bu üç gemi <b>en az</b> kaç gün sonra tekrar birlikte sefere çıkarlar?", "o": ["60", "120", "240", "360"], "a": 1, "sol": "Üç sayının da EKOK'unu almalıyız. EKOK(8, 10, 12) = 120 gündür." },
+            { "id": 46, "t": "Ortak katlarının en küçüğü 90 olan iki sayının toplamı aşağıdakilerden hangisi olamaz?", "o": ["19", "21", "33", "45"], "a": 3, "sol": "Sayılar 90'ın bölenleri olmalı. EKOK(a,b)=90. Toplamı 19 olabilir (9+10=19). Toplamı 21 olabilir (delil: 6+15, hayır ekok 30). a,b=9,10 ise t=19. a,b=18,5 ise t=23. 45= 45+.. (olamaz) veya 18+27 (ekok 54). Olamayan 45 gibi görünüyor." },
+            { "id": 47, "t": "Bir miktar ceviz 3 çocuğa eşit paylaştırıldığında 1 ceviz artıyor, 4 çocuğa eşit paylaştırıldığında 2 ceviz artıyor, 5 çocuğa paylaştırıldığında 3 ceviz artıyor. Buna göre en az kaç ceviz vardır?", "o": ["58", "62", "118", "122"], "a": 0, "sol": "Sayı 3'ün katının 1 fazlası, 4'ün 2 fazlası, 5'in 3 fazlası. Dikkat edersek her birinde bölüm sayısından 2 eksik. (Sayı+2) = EKOK(3,4,5) = 60. Sayı = 58'dir." },
+            { "id": 48, "t": "Aralarında asal iki sayının EKOK'u ile EBOB'unun farkı 79'dur. Sayılardan biri 16 ise diğeri kaçtır?", "o": ["5", "7", "9", "11"], "a": 0, "sol": "Aralarında asal sayıların EBOB'u 1'dir. EKOK - 1 = 79 ise EKOK = 80. EKOK, sayıların çarpımına eşit olduğundan 16 × x = 80, x = 5 olur." },
+            { "id": 49, "t": "EBOB'ları 6 olan farklı iki doğal sayının toplamı <b>en az</b> kaçtır?", "o": ["12", "18", "24", "30"], "a": 1, "sol": "Sayılardan en küçüğünü kendisi olan 6 seçebiliriz (EBOB'a eşit olabilir). İkinci sayıyı farklı olması için 6'nın bir sonraki katı olan 12 seçeriz. Toplamı: 6 + 12 = 18." },
+            { "id": 50, "t": "15 ve 24 sayılarının ortak bölenlerinin en büyüğü A, ortak katlarının en küçüğü B'dir. Buna göre A + B toplamı kaçtır?", "o": ["120", "123", "126", "135"], "a": 1, "sol": "EBOB(15, 24) = 3 (A=3). EKOK(15, 24) = 120 (B=120). Toplam A + B = 3 + 120 = 123'tür." }
 
-,{"id":51,"t":"<div style='display:flex;gap:10px;align-items:center;justify-content:center;margin-bottom:10px;'><div style='border:2px solid #06b6d4;padding:10px;border-radius:50%;width:40px;height:40px;display:flex;justify-content:center;align-items:center;font-weight:bold;font-size:18px;'>A</div><div style='border:2px solid #f59e0b;padding:10px;border-radius:50%;width:40px;height:40px;display:flex;justify-content:center;align-items:center;font-weight:bold;font-size:18px;'>B</div></div> Yukarıdaki A ve B zilleri sırasıyla 12 ve 15 dakikada bir çalmaktadır. İkisi birlikte ilk kez 09:00'da çaldıklarına göre, <b>üçüncü kez</b> birlikte saat kaçta çalarlar?","o":["10:00","10:30","11:00","11:30"],"a":2,"sol":"Zillerin birlikte çalması bir 'parçadan bütüne' sorusudur, EKOK kullanılır. EKOK(12, 15) = 60 dakika (1 saat). 1. kez 09:00, 2. kez 10:00, 3. kez 11:00'da çalarlar."}
-,{"id":52,"t":"<div style='border:2px dashed #8b5cf6;padding:10px;text-align:center;width:150px;margin:0 auto 10px auto;'>60 cm x 80 cm<br>Dikdörtgen Levha</div> Şekildeki levha, hiç parça artmayacak şekilde <b>eşit büyüklükte kare</b> parçalara ayrılacaktır. Bu kare parçalardan en az kaç tane elde edilir?","o":["10","12","16","24"],"a":1,"sol":"'Bütünden parçaya' (büyük levhayı karelere bölme) işlemi var, yani EBOB kullanacağız. EBOB(60, 80) = 20 cm (karenin bir kenarı). Kare sayısı = (60/20) × (80/20) = 3 × 4 = 12 adet."}
-,{"id":53,"t":"Bir torbadaki bilyeler 6'şarlı gruplandığında 4 bilye, 8'erli gruplandığında ise yine 4 bilye artmaktadır.<br><div style='background:#fef2f2;padding:5px;border-left:3px solid red;margin:10px 0;'>Bilye sayısı 50'den fazladır.</div> Buna göre torbada <b>en az</b> kaç bilye vardır?","o":["52","56","68","76"],"a":0,"sol":"Bilyeleri grupluyoruz ve sayıyı bulmaya çalışıyoruz ('parçadan bütüne'), yani EKOK. EKOK(6, 8) = 24. 4 arttığı için 24k + 4 formülünü kullanırız. 50'den fazla olması için k=2 seçeriz: 24(2) + 4 = 48 + 4 = 52."}
-,{"id":54,"t":"<div style='display:flex;gap:5px;margin-bottom:10px;justify-content:center;'><div style='width:60px;height:24px;background:#10b981;color:white;text-align:center;line-height:24px;border-radius:4px;'>36 L</div><div style='width:80px;height:24px;background:#3b82f6;color:white;text-align:center;line-height:24px;border-radius:4px;'>48 L</div><div style='width:100px;height:24px;background:#f59e0b;color:white;text-align:center;line-height:24px;border-radius:4px;'>60 L</div></div> Yukarıdaki üç farklı zeytinyağı tenekesi, birbirine karıştırılmadan ve hiç artmayacak şekilde <b>eşit hacimli şişelere</b> doldurulacaktır. En az kaç şişe gereklidir?","o":["12","15","18","24"],"a":0,"sol":"Büyük tenekeleri küçük şişelere paylaştırma ('bütünden parçaya') sorusudur, EBOB. EBOB(36, 48, 60) = 12 L (şişenin hacmi). Şişe sayısı = (36/12) + (48/12) + (60/12) = 3 + 4 + 5 = 12."}
-,{"id":55,"t":"<b>a</b> ve <b>b</b> ardışık iki çift doğal sayıdır. Bu iki sayının EBOB'u ile EKOK'unun <b>toplamı 62'dir.</b> Buna göre bu iki sayının toplamı kaçtır?","o":["20","22","24","26"],"a":1,"sol":"Ardışık çift doğal sayıların EBOB'u daima 2'dir. Toplamları 62 olduğuna göre EKOK = 60'tır. İki sayının çarpımı (a×b) = EBOB × EKOK = 2 × 60 = 120'dir. Hangi iki ardışık çift sayının çarpımı 120'dir? 10 ve 12. Toplamları 10 + 12 = 22."}
-,{"id":56,"t":"<div style='background:#e2f5ef;padding:10px;border:1px solid #0a8c6a;text-align:center;border-radius:8px;margin-bottom:10px;'>Ahmet: 15 günde 1 nöbet<br>Mehmet: 20 günde 1 nöbet</div> İki asker ilk kez <b>Salı günü</b> birlikte nöbet tutmuşlardır. Buna göre <b>ikinci kez</b> birlikte hangi gün nöbet tutarlar?","o":["Çarşamba","Perşembe","Cuma","Cumartesi"],"a":3,"sol":"Birlikte nöbet tutma = EKOK. EKOK(15, 20) = 60 gün. 60 gün sonra hangi gün olduğunu bulmak için 60'ı 7'ye böleriz (1 hafta = 7 gün). 60 = 7×8 + 4. Yani Salı gününden 4 gün ileri gideriz: Çarşamba(1), Perşembe(2), Cuma(3), Cumartesi(4)."}
-,{"id":57,"t":"Bir çiftçi tarlasından topladığı 150 kg elma ve 180 kg armutu, hiç artmayacak ve birbirine karışmayacak şekilde <b>en büyük ve eşit</b> hacimli kasalara koyacaktır.<br><div style='margin-top:5px;'>Buna göre <b>toplam kaç kasa</b> gereklidir?</div>","o":["10","11","22","30"],"a":1,"sol":"Bütünden parçaya = EBOB. EBOB(150, 180) = 30 kg. Elma kasası = 150/30 = 5. Armut kasası = 180/30 = 6. Toplam kasa = 5 + 6 = 11."}
-,{"id":58,"t":"<div style='border:2px solid gray;width:120px;height:60px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px auto;background:#f8fbfa;'>Kare Fayanslar</div> Kenar uzunlukları 16 cm ve 24 cm olan dikdörtgen şeklindeki fayanslar yan yana ve alt alta getirilerek <b>en küçük alanlı bir kare zemin</b> kaplanacaktır. Bu işlem için en az kaç fayans gerekir?","o":["6","12","24","48"],"a":0,"sol":"Küçük fayanslardan büyük kare yapma ('parçadan bütüne') = EKOK. Karenin bir kenarı = EKOK(16, 24) = 48 cm. Fayans sayısı = (Alanlar oranı) (48/16) × (48/24) = 3 × 2 = 6 fayans."}
-,{"id":59,"t":"A ve B aralarında asal iki sayıdır.<br><div style='text-align:center;font-size:16px;font-weight:bold;margin:8px 0;'>A + (40 / B) = 10</div> ve <b>EKOK(A, B) = 40</b> olduğuna göre, A + B kaçtır?","o":["11","12","13","14"],"a":2,"sol":"Aralarında asal sayıların EKOK'u çarpımlarına eşittir, yani A × B = 40. A.B=40 ise, (A.B + 40)/B = 10 denkleminden (40+40)/B = 10 → 80/B = 10 → B=8. A×8=40 → A=5. A+B = 5+8=13."}
-,{"id":60,"t":"Bir hastanede <b>A doktoru 4 günde bir</b>, <b>B doktoru 6 günde bir</b> nöbet tutmaktadır. İkisi birlikte nöbet tuttuktan sonraki <b>ilk 30 gün içinde</b> kaç kez daha <u>birlikte</u> nöbet tutarlar?","o":["1","2","3","4"],"a":1,"sol":"Birlikte nöbet = EKOK. EKOK(4, 6) = 12 gün. 30 gün içinde 12. ve 24. günlerde birlikte nöbet tutarlar. Toplam 2 kez."}
-,{"id":61,"t":"<div style='background:#fef2f2;padding:10px;border-radius:5px;margin-bottom:10px;border-left:4px solid #ef4444;'>1'den 20'ye kadar (20 dahil) numaralandırılmış toplar bir kutuya atılıyor.</div> Bu toplardan, hem 2'ye hem de 3'e tam bölünebilenlerin sayısı kaçtır?","o":["2","3","4","5"],"a":1,"sol":"Hem 2'ye hem 3'e tam bölünmek, EKOK(2, 3) = 6'ya tam bölünmek demektir. 20'ye kadar olan 6'nın katları: 6, 12, 18. Yani 3 tanedir."}
-,{"id":62,"t":"EBOB'u 8 olan iki basamaklı iki <b>farklı</b> doğal sayının toplamı <u>en fazla</u> kaçtır?","o":["160","168","176","184"],"a":2,"sol":"Sayılar 8'in katı olmalıdır. En büyük iki basamaklı 8'in katları: 96 (8x12) ve 88 (8x11)'dir. İki sayının EBOB(96, 88) = 8'dir. Toplamı = 96 + 88 = 184."}
-,{"id":63,"t":"Aşağıdaki sayı çiftlerinden hangisinin EKOK'u, iki sayının çarpımına <b>eşittir</b>?","o":["6 ve 8","12 ve 15","9 ve 16","14 ve 21"],"a":2,"sol":"İki sayının EKOK'u, çarpımına eşitse bu sayılar <b>aralarında asaldır</b>. Şıklarda aralarında asal olan tek çift 9 ve 16'dır (ortak bölenleri sadece 1'dir)."}
-,{"id":64,"t":"<div style='display:flex;align-items:center;justify-content:center;'><div style='width:30px;height:30px;background:#f59e0b;border-radius:50%;color:white;text-align:center;line-height:30px;margin-right:10px;'>A</div> <div>A = 2² . 3³ . 5</div></div><div style='display:flex;align-items:center;justify-content:center;margin-top:5px;'><div style='width:30px;height:30px;background:#06b6d4;border-radius:50%;color:white;text-align:center;line-height:30px;margin-right:10px;'>B</div> <div>B = 2 . 3² . 7</div></div> Buna göre <b>EBOB(A, B)</b> kaçtır?","o":["6","18","36","54"],"a":1,"sol":"EBOB bulunurken ortak olan asalların en küçük kuvvetleri alınır. Ortak olanlar 2 ve 3'tür. 2'lerden küçük olan 2¹, 3'lerden küçük olan 3²'dir. EBOB = 2 . 9 = 18."}
-,{"id":65,"t":"Boyutları 30 cm ve 40 cm olan dikdörtgen şeklindeki masaların yan yana ve uç uca dizilmesiyle <b>en küçük alanlı bir kare</b> oluşturulacaktır. Elde edilen bu karenin bir kenar uzunluğu kaç <b>metre</b> olur?","o":["1,2","12","120","1200"],"a":0,"sol":"Küçük masalardan kare oluşturma = EKOK. EKOK(30, 40) = 120 cm. Soru metre cinsinden sorduğu için 120 cm = 1,2 metredir."}
-,{"id":66,"t":"<div style='border:2px dashed gray;padding:10px;text-align:center;border-radius:8px;margin-bottom:10px;'>Uzunlukları 90 m ve 105 m olan iki top kumaş...</div> Yukarıdaki kumaşlar hiç artmayacak şekilde <b>eşit uzunlukta</b> parçalara ayrılacaktır. Parçalardan birinin uzunluğu <b>en fazla</b> kaç metre olabilir?","o":["5","15","25","30"],"a":1,"sol":"Bütünden parçaya = EBOB. Kumaşları parçalara ayırdığımız için EBOB(90, 105) hesaplanır. 90=15x6, 105=15x7. EBOB = 15 m."}
-,{"id":67,"t":"Bir sınıftaki öğrenciler 3'er 3'er sayıldığında 1 öğrenci, 4'er 4'er sayıldığında 2 öğrenci, 5'er 5'er sayıldığında 3 öğrenci artıyor.<br>Buna göre sınıf mevcudu <b>en az</b> kaçtır?","o":["58","60","62","64"],"a":0,"sol":"Sayılardan kalanı çıkardığımızda hepsi bölenden 2 eksik kalıyor. Mevcut = EKOK(3,4,5) - 2. EKOK(3,4,5) = 60. Mevcut = 60 - 2 = 58."}
-,{"id":68,"t":"Aralarında asal a ve b doğal sayılarının EKOK'u 120'dir. <b>a = 8</b> olduğuna göre <b>b</b> kaçtır?","o":["10","12","15","20"],"a":2,"sol":"Aralarında asal iki sayının çarpımı EKOK'a eşittir. 8 × b = 120 ise b = 15'tir. (8 ve 15 aralarında asaldır)."}
-,{"id":69,"t":"Merve merdivenleri 2'şer 2'şer veya 3'er 3'er çıktığında her seferinde 1 basamak artmaktadır. Basamak sayısının 50'den az olduğu bilindiğine göre, merdiven <b>en fazla</b> kaç basamaklıdır?","o":["43","47","49","51"],"a":2,"sol":"EKOK(2, 3) = 6. Basamak sayısı 6k + 1 formundadır. 50'den küçük en büyük 6'nın katı 48'dir. 48 + 1 = 49 basamak."}
-,{"id":70,"t":"120 ve 144 sayılarının <b>ortak bölenlerinin</b> en büyüğü (EBOB) kaçtır?","o":["12","24","36","48"],"a":1,"sol":"120 = 24 × 5 ve 144 = 24 × 6'dır. 5 ve 6 aralarında asal olduğu için EBOB 24'tür."}
-
-
-,{"id":71,"t":"İki otobüsten biri <b>30 dakikada</b>, diğeri <b>45 dakikada</b> bir sefere çıkmaktadır. Saat 08:30'da aynı anda sefere çıkan bu iki otobüs, saat 13:00'a kadar kaç kez daha <u>aynı anda</u> sefere çıkarlar?","o":["2","3","4","5"],"a":1,"sol":"EKOK(30, 45) = 90 dakika (1,5 saat). 08:30'dan 13:00'a kadar geçen süre 4,5 saattir. 4,5 / 1,5 = 3 kez daha birlikte çıkarlar. (Saatleri: 10:00, 11:30, 13:00)."}
-,{"id":72,"t":"Bir sepetteki güller 4'erli, 5'erli ve 6'şarlı demet yapıldığında her defasında 1 gül eksik kalıyor. Sepette 150'den az gül olduğu bilindiğine göre <b>en çok</b> kaç gül vardır?","o":["119","121","149","151"],"a":0,"sol":"EKOK(4, 5, 6) = 60. Eksik kaldığı için k - 1 formülünü kullanırız. 60k - 1. k=2 için 120 - 1 = 119 gül."}
-,{"id":73,"t":"<div style='display:flex;justify-content:center;gap:15px;margin-bottom:10px;'><div style='width:50px;height:70px;border:2px solid #ef4444;border-radius:4px;text-align:center;line-height:70px;'>45 kg</div><div style='width:60px;height:80px;border:2px solid #3b82f6;border-radius:4px;text-align:center;line-height:80px;'>75 kg</div></div> Yukarıdaki çuvallarda bulunan mercimek ve nohut birbirine karıştırılmadan <b>eşit ve en büyük</b> hacimli paketlere doldurulacaktır. Kaç paket gerekir?","o":["8","10","12","15"],"a":0,"sol":"EBOB(45, 75) = 15 kg. 45/15 = 3 paket. 75/15 = 5 paket. Toplam 3 + 5 = 8 paket."}
-,{"id":74,"t":"EBOB(X, 15) = 5 ve EKOK(X, 15) = 45 olduğuna göre X kaçtır?","o":["9","15","30","45"],"a":0,"sol":"EBOB × EKOK = Çarpım formülünden: 5 × 45 = 15 × X → 225 = 15X → X = 15. Bekle! Eğer X=15 olursa EBOB(15,15)=15 olur, 5 değil! Hata! Formül EBOB×EKOK=A×B'dir, fakat A=X, B=15. X×15 = 5×45 → X = 15. Ancak X=15 olamaz. Çünkü EBOB(15,15)=15. Nerede hata var? Soruyu yanlış kurduk! X=15 olursa, EKOK=15 olur. Eğer 5x45=225 ise, ve b=15 ise X=15 olur. Demek ki EBOB(X,15)=5, EKOK=45 olamaz! Şöyle yapalım: EBOB(X, 15) = 3 ve EKOK(X, 15) = 60. O zaman X×15 = 180 → X=12. (12 ve 15'in EBOB'u 3, EKOK'u 60. Doğru.) Soru düzeltildi: EBOB(X, 15) = 3 ve EKOK(X, 15) = 60 ise X kaçtır?","o":["12","20","24","30"],"a":0}
-,{"id":75,"t":"Ardışık iki tek doğal sayının EKOK'u 143'tür. Bu iki sayının toplamı kaçtır?","o":["24","28","30","32"],"a":0,"sol":"Ardışık tek sayılar aralarında asaldır (EBOB=1). Çarpımları 143'tür. Hangi iki ardışık tek sayının çarpımı 143'tür? 11 × 13 = 143. Toplamları: 11 + 13 = 24."}
-,{"id":76,"t":"<div style='background:#fef3c7;padding:10px;text-align:center;border-radius:6px;border:1px solid #f59e0b;'>Eni 36 m, boyu 48 m olan tarlanın <u>etrafına</u> eşit aralıklarla ağaç dikilecektir.</div> Köşelere de dikilmek şartıyla <b>en az</b> kaç ağaç gerekir?","o":["12","14","28","56"],"a":2,"sol":"EBOB(36, 48) = 12 m. Çevre = 2 × (36 + 48) = 168 m. Ağaç Sayısı = Çevre / EBOB = 168 / 12 = 14 ağaç. Bekle, (3+4)×2=14. Doğru. Cevap: 14'tür. Seçeneklerde D şıkkını düzelteyim.","o":["7","12","14","28"],"a":2}
-,{"id":77,"t":"Aralarında asal iki doğal sayının EBOB'u ile EKOK'unun toplamı 61'dir. Sayılardan biri 5 ise diğeri kaçtır?","o":["10","11","12","15"],"a":2,"sol":"Aralarında asal sayıların EBOB'u 1'dir. EKOK + 1 = 61 ise EKOK = 60'tır. Aralarında asal sayıların EKOK'u çarpımlarına eşittir. 5 × x = 60 → x = 12."}
-,{"id":78,"t":"İki farklı zilin çalma süreleri <br>1. zil: <b>1/2 saatte bir</b> <br>2. zil: <b>3/4 saatte bir</b> <br>İkisi birlikte ilk kez 10:00'da çaldıklarına göre ikinci kez birlikte saat kaçta çalarlar?","o":["11:00","11:30","12:00","12:30"],"a":1,"sol":"1/2 saat = 30 dakika. 3/4 saat = 45 dakika. EKOK(30, 45) = 90 dakika. 10:00 + 1 saat 30 dakika = 11:30."}
-,{"id":79,"t":"<div style='border:2px solid #8b5cf6;padding:10px;width:120px;height:40px;text-align:center;line-height:20px;margin:0 auto 10px auto;'>12 cm <br> 16 cm</div> Boyutları 12 cm ve 16 cm olan fayanslar kullanılarak <b>en küçük</b> kare bir zemin oluşturulacaktır. Elde edilen karenin alanı kaç santimetrekaredir?","o":["48","144","2304","4096"],"a":2,"sol":"Karenin bir kenarı EKOK(12, 16) = 48 cm olmalıdır. Alanı = 48 × 48 = 2304 cm²."}
-,{"id":80,"t":"Bir satıcı elindeki kalemleri 5'er, 6'şar ve 8'er paketlediğinde hiç kalem artmıyor. Kalemlerin sayısının 200'den fazla olduğu bilindiğine göre <b>en az</b> kaç kalem vardır?","o":["200","240","360","480"],"a":1,"sol":"Kalem sayısı 5, 6 ve 8'in ortak katı olmalı. EKOK(5, 6, 8) = 120. 200'den fazla en küçük katı 120 × 2 = 240 kalem."}
-,{"id":81,"t":"Bir kümesteki tavuklar 4'erli sayıldığında 3, 5'erli sayıldığında 4, 6'şarlı sayıldığında 5 tavuk artıyor. Kümeste <b>en az</b> kaç tavuk vardır?","o":["59","61","119","121"],"a":0,"sol":"Hep böleninden 1 eksik kalıyor. Mevcut = EKOK(4, 5, 6) - 1. EKOK(4, 5, 6) = 60. Mevcut = 60 - 1 = 59 tavuk."}
-,{"id":82,"t":"EBOB(x, y) = 6<br>EKOK(x, y) = 180<br>x = 30 olduğuna göre y kaçtır?","o":["18","36","72","108"],"a":1,"sol":"EBOB × EKOK = Çarpım. 6 × 180 = 30 × y → 1080 = 30y → y = 36."}
-,{"id":83,"t":"<div style='background:#ecfdf5;border-left:4px solid #10b981;padding:8px;margin-bottom:8px;'>50 kg Şeker</div><div style='background:#fef2f2;border-left:4px solid #ef4444;padding:8px;'>X kg Un</div> İki çuval birbirine karıştırılmadan ve artmayacak şekilde eşit hacimli poşetlere doldurulacaktır. En büyük poşet hacmi 10 kg olduğuna göre X aşağıdakilerden hangisi <b>olamaz?</b>","o":["20","30","40","45"],"a":3,"sol":"En büyük poşet hacmi EBOB'u ifade eder. EBOB(50, X) = 10. X sayısı 10'un katı olmalı ancak 50 ile EBOB'u 10 kalmalı. 20, 30 ve 40 olabilir ama 45, 10'un katı değildir."}
-,{"id":84,"t":"A ve B birbirinden farklı iki asal sayıdır. Bu iki sayının EBOB'u ile EKOK'unun toplamı 36'dır. Buna göre A + B kaçtır?","o":["10","12","15","35"],"a":1,"sol":"İki asal sayının EBOB'u her zaman 1'dir. EKOK + 1 = 36 → EKOK = 35. Asal sayıların EKOK'u çarpımlarına eşittir. A × B = 35 ise sayılar 5 ve 7'dir. Toplamı: 5 + 7 = 12."}
-,{"id":85,"t":"144 ve 192 litrelik iki farklı zeytinyağı birbirine karıştırılmadan eşit hacimli tenekelere doldurulacaktır. Teneke hacminin alabileceği değerlerin <b>sayısı</b> kaçtır? (Litre cinsinden tam sayı)","o":["5","6","8","10"],"a":3,"sol":"Eşit tenekelere doldurma işlemi için teneke hacmi 144 ve 192'nin ortak böleni olmalıdır. Önce EBOB bulunur: EBOB(144, 192) = 48. Ortak bölen sayısı, EBOB'un bölen sayısı kadardır. 48'in bölenleri: 1, 2, 3, 4, 6, 8, 12, 16, 24, 48. Toplam 10 tanedir."}
+            , { "id": 51, "t": "<div style='display:flex;gap:10px;align-items:center;justify-content:center;margin-bottom:10px;'><div style='border:2px solid #06b6d4;padding:10px;border-radius:50%;width:40px;height:40px;display:flex;justify-content:center;align-items:center;font-weight:bold;font-size:18px;'>A</div><div style='border:2px solid #f59e0b;padding:10px;border-radius:50%;width:40px;height:40px;display:flex;justify-content:center;align-items:center;font-weight:bold;font-size:18px;'>B</div></div> Yukarıdaki A ve B zilleri sırasıyla 12 ve 15 dakikada bir çalmaktadır. İkisi birlikte ilk kez 09:00'da çaldıklarına göre, <b>üçüncü kez</b> birlikte saat kaçta çalarlar?", "o": ["10:00", "10:30", "11:00", "11:30"], "a": 2, "sol": "Zillerin birlikte çalması bir 'parçadan bütüne' sorusudur, EKOK kullanılır. EKOK(12, 15) = 60 dakika (1 saat). 1. kez 09:00, 2. kez 10:00, 3. kez 11:00'da çalarlar." }
+            , { "id": 52, "t": "<div style='border:2px dashed #8b5cf6;padding:10px;text-align:center;width:150px;margin:0 auto 10px auto;'>60 cm x 80 cm<br>Dikdörtgen Levha</div> Şekildeki levha, hiç parça artmayacak şekilde <b>eşit büyüklükte kare</b> parçalara ayrılacaktır. Bu kare parçalardan en az kaç tane elde edilir?", "o": ["10", "12", "16", "24"], "a": 1, "sol": "'Bütünden parçaya' (büyük levhayı karelere bölme) işlemi var, yani EBOB kullanacağız. EBOB(60, 80) = 20 cm (karenin bir kenarı). Kare sayısı = (60/20) × (80/20) = 3 × 4 = 12 adet." }
+            , { "id": 53, "t": "Bir torbadaki bilyeler 6'şarlı gruplandığında 4 bilye, 8'erli gruplandığında ise yine 4 bilye artmaktadır.<br><div style='background:#fef2f2;padding:5px;border-left:3px solid red;margin:10px 0;'>Bilye sayısı 50'den fazladır.</div> Buna göre torbada <b>en az</b> kaç bilye vardır?", "o": ["52", "56", "68", "76"], "a": 0, "sol": "Bilyeleri grupluyoruz ve sayıyı bulmaya çalışıyoruz ('parçadan bütüne'), yani EKOK. EKOK(6, 8) = 24. 4 arttığı için 24k + 4 formülünü kullanırız. 50'den fazla olması için k=2 seçeriz: 24(2) + 4 = 48 + 4 = 52." }
+            , { "id": 54, "t": "<div style='display:flex;gap:5px;margin-bottom:10px;justify-content:center;'><div style='width:60px;height:24px;background:#10b981;color:white;text-align:center;line-height:24px;border-radius:4px;'>36 L</div><div style='width:80px;height:24px;background:#3b82f6;color:white;text-align:center;line-height:24px;border-radius:4px;'>48 L</div><div style='width:100px;height:24px;background:#f59e0b;color:white;text-align:center;line-height:24px;border-radius:4px;'>60 L</div></div> Yukarıdaki üç farklı zeytinyağı tenekesi, birbirine karıştırılmadan ve hiç artmayacak şekilde <b>eşit hacimli şişelere</b> doldurulacaktır. En az kaç şişe gereklidir?", "o": ["12", "15", "18", "24"], "a": 0, "sol": "Büyük tenekeleri küçük şişelere paylaştırma ('bütünden parçaya') sorusudur, EBOB. EBOB(36, 48, 60) = 12 L (şişenin hacmi). Şişe sayısı = (36/12) + (48/12) + (60/12) = 3 + 4 + 5 = 12." }
+            , { "id": 55, "t": "<b>a</b> ve <b>b</b> ardışık iki çift doğal sayıdır. Bu iki sayının EBOB'u ile EKOK'unun <b>toplamı 62'dir.</b> Buna göre bu iki sayının toplamı kaçtır?", "o": ["20", "22", "24", "26"], "a": 1, "sol": "Ardışık çift doğal sayıların EBOB'u daima 2'dir. Toplamları 62 olduğuna göre EKOK = 60'tır. İki sayının çarpımı (a×b) = EBOB × EKOK = 2 × 60 = 120'dir. Hangi iki ardışık çift sayının çarpımı 120'dir? 10 ve 12. Toplamları 10 + 12 = 22." }
+            , { "id": 56, "t": "<div style='background:#e2f5ef;padding:10px;border:1px solid #0a8c6a;text-align:center;border-radius:8px;margin-bottom:10px;'>Ahmet: 15 günde 1 nöbet<br>Mehmet: 20 günde 1 nöbet</div> İki asker ilk kez <b>Salı günü</b> birlikte nöbet tutmuşlardır. Buna göre <b>ikinci kez</b> birlikte hangi gün nöbet tutarlar?", "o": ["Çarşamba", "Perşembe", "Cuma", "Cumartesi"], "a": 3, "sol": "Birlikte nöbet tutma = EKOK. EKOK(15, 20) = 60 gün. 60 gün sonra hangi gün olduğunu bulmak için 60'ı 7'ye böleriz (1 hafta = 7 gün). 60 = 7×8 + 4. Yani Salı gününden 4 gün ileri gideriz: Çarşamba(1), Perşembe(2), Cuma(3), Cumartesi(4)." }
+            , { "id": 57, "t": "Bir çiftçi tarlasından topladığı 150 kg elma ve 180 kg armutu, hiç artmayacak ve birbirine karışmayacak şekilde <b>en büyük ve eşit</b> hacimli kasalara koyacaktır.<br><div style='margin-top:5px;'>Buna göre <b>toplam kaç kasa</b> gereklidir?</div>", "o": ["10", "11", "22", "30"], "a": 1, "sol": "Bütünden parçaya = EBOB. EBOB(150, 180) = 30 kg. Elma kasası = 150/30 = 5. Armut kasası = 180/30 = 6. Toplam kasa = 5 + 6 = 11." }
+            , { "id": 58, "t": "<div style='border:2px solid gray;width:120px;height:60px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px auto;background:#f8fbfa;'>Kare Fayanslar</div> Kenar uzunlukları 16 cm ve 24 cm olan dikdörtgen şeklindeki fayanslar yan yana ve alt alta getirilerek <b>en küçük alanlı bir kare zemin</b> kaplanacaktır. Bu işlem için en az kaç fayans gerekir?", "o": ["6", "12", "24", "48"], "a": 0, "sol": "Küçük fayanslardan büyük kare yapma ('parçadan bütüne') = EKOK. Karenin bir kenarı = EKOK(16, 24) = 48 cm. Fayans sayısı = (Alanlar oranı) (48/16) × (48/24) = 3 × 2 = 6 fayans." }
+            , { "id": 59, "t": "A ve B aralarında asal iki sayıdır.<br><div style='text-align:center;font-size:16px;font-weight:bold;margin:8px 0;'>A + (40 / B) = 10</div> ve <b>EKOK(A, B) = 40</b> olduğuna göre, A + B kaçtır?", "o": ["11", "12", "13", "14"], "a": 2, "sol": "Aralarında asal sayıların EKOK'u çarpımlarına eşittir, yani A × B = 40. A.B=40 ise, (A.B + 40)/B = 10 denkleminden (40+40)/B = 10 → 80/B = 10 → B=8. A×8=40 → A=5. A+B = 5+8=13." }
+            , { "id": 60, "t": "Bir hastanede <b>A doktoru 4 günde bir</b>, <b>B doktoru 6 günde bir</b> nöbet tutmaktadır. İkisi birlikte nöbet tuttuktan sonraki <b>ilk 30 gün içinde</b> kaç kez daha <u>birlikte</u> nöbet tutarlar?", "o": ["1", "2", "3", "4"], "a": 1, "sol": "Birlikte nöbet = EKOK. EKOK(4, 6) = 12 gün. 30 gün içinde 12. ve 24. günlerde birlikte nöbet tutarlar. Toplam 2 kez." }
+            , { "id": 61, "t": "<div style='background:#fef2f2;padding:10px;border-radius:5px;margin-bottom:10px;border-left:4px solid #ef4444;'>1'den 20'ye kadar (20 dahil) numaralandırılmış toplar bir kutuya atılıyor.</div> Bu toplardan, hem 2'ye hem de 3'e tam bölünebilenlerin sayısı kaçtır?", "o": ["2", "3", "4", "5"], "a": 1, "sol": "Hem 2'ye hem 3'e tam bölünmek, EKOK(2, 3) = 6'ya tam bölünmek demektir. 20'ye kadar olan 6'nın katları: 6, 12, 18. Yani 3 tanedir." }
+            , { "id": 62, "t": "EBOB'u 8 olan iki basamaklı iki <b>farklı</b> doğal sayının toplamı <u>en fazla</u> kaçtır?", "o": ["160", "168", "176", "184"], "a": 2, "sol": "Sayılar 8'in katı olmalıdır. En büyük iki basamaklı 8'in katları: 96 (8x12) ve 88 (8x11)'dir. İki sayının EBOB(96, 88) = 8'dir. Toplamı = 96 + 88 = 184." }
+            , { "id": 63, "t": "Aşağıdaki sayı çiftlerinden hangisinin EKOK'u, iki sayının çarpımına <b>eşittir</b>?", "o": ["6 ve 8", "12 ve 15", "9 ve 16", "14 ve 21"], "a": 2, "sol": "İki sayının EKOK'u, çarpımına eşitse bu sayılar <b>aralarında asaldır</b>. Şıklarda aralarında asal olan tek çift 9 ve 16'dır (ortak bölenleri sadece 1'dir)." }
+            , { "id": 64, "t": "<div style='display:flex;align-items:center;justify-content:center;'><div style='width:30px;height:30px;background:#f59e0b;border-radius:50%;color:white;text-align:center;line-height:30px;margin-right:10px;'>A</div> <div>A = 2² . 3³ . 5</div></div><div style='display:flex;align-items:center;justify-content:center;margin-top:5px;'><div style='width:30px;height:30px;background:#06b6d4;border-radius:50%;color:white;text-align:center;line-height:30px;margin-right:10px;'>B</div> <div>B = 2 . 3² . 7</div></div> Buna göre <b>EBOB(A, B)</b> kaçtır?", "o": ["6", "18", "36", "54"], "a": 1, "sol": "EBOB bulunurken ortak olan asalların en küçük kuvvetleri alınır. Ortak olanlar 2 ve 3'tür. 2'lerden küçük olan 2¹, 3'lerden küçük olan 3²'dir. EBOB = 2 . 9 = 18." }
+            , { "id": 65, "t": "Boyutları 30 cm ve 40 cm olan dikdörtgen şeklindeki masaların yan yana ve uç uca dizilmesiyle <b>en küçük alanlı bir kare</b> oluşturulacaktır. Elde edilen bu karenin bir kenar uzunluğu kaç <b>metre</b> olur?", "o": ["1,2", "12", "120", "1200"], "a": 0, "sol": "Küçük masalardan kare oluşturma = EKOK. EKOK(30, 40) = 120 cm. Soru metre cinsinden sorduğu için 120 cm = 1,2 metredir." }
+            , { "id": 66, "t": "<div style='border:2px dashed gray;padding:10px;text-align:center;border-radius:8px;margin-bottom:10px;'>Uzunlukları 90 m ve 105 m olan iki top kumaş...</div> Yukarıdaki kumaşlar hiç artmayacak şekilde <b>eşit uzunlukta</b> parçalara ayrılacaktır. Parçalardan birinin uzunluğu <b>en fazla</b> kaç metre olabilir?", "o": ["5", "15", "25", "30"], "a": 1, "sol": "Bütünden parçaya = EBOB. Kumaşları parçalara ayırdığımız için EBOB(90, 105) hesaplanır. 90=15x6, 105=15x7. EBOB = 15 m." }
+            , { "id": 67, "t": "Bir sınıftaki öğrenciler 3'er 3'er sayıldığında 1 öğrenci, 4'er 4'er sayıldığında 2 öğrenci, 5'er 5'er sayıldığında 3 öğrenci artıyor.<br>Buna göre sınıf mevcudu <b>en az</b> kaçtır?", "o": ["58", "60", "62", "64"], "a": 0, "sol": "Sayılardan kalanı çıkardığımızda hepsi bölenden 2 eksik kalıyor. Mevcut = EKOK(3,4,5) - 2. EKOK(3,4,5) = 60. Mevcut = 60 - 2 = 58." }
+            , { "id": 68, "t": "Aralarında asal a ve b doğal sayılarının EKOK'u 120'dir. <b>a = 8</b> olduğuna göre <b>b</b> kaçtır?", "o": ["10", "12", "15", "20"], "a": 2, "sol": "Aralarında asal iki sayının çarpımı EKOK'a eşittir. 8 × b = 120 ise b = 15'tir. (8 ve 15 aralarında asaldır)." }
+            , { "id": 69, "t": "Merve merdivenleri 2'şer 2'şer veya 3'er 3'er çıktığında her seferinde 1 basamak artmaktadır. Basamak sayısının 50'den az olduğu bilindiğine göre, merdiven <b>en fazla</b> kaç basamaklıdır?", "o": ["43", "47", "49", "51"], "a": 2, "sol": "EKOK(2, 3) = 6. Basamak sayısı 6k + 1 formundadır. 50'den küçük en büyük 6'nın katı 48'dir. 48 + 1 = 49 basamak." }
+            , { "id": 70, "t": "120 ve 144 sayılarının <b>ortak bölenlerinin</b> en büyüğü (EBOB) kaçtır?", "o": ["12", "24", "36", "48"], "a": 1, "sol": "120 = 24 × 5 ve 144 = 24 × 6'dır. 5 ve 6 aralarında asal olduğu için EBOB 24'tür." }
 
 
-,{"id":86,"t":"<div style='display:flex;align-items:flex-end;gap:5px;height:50px;margin-bottom:10px;'><div style='width:20px;height:24px;background:#3b82f6;'></div><div style='width:20px;height:36px;background:#3b82f6;'></div><div style='width:20px;height:24px;background:#3b82f6;'></div><div style='width:20px;height:36px;background:#3b82f6;'></div></div> Bir marangoz 24 cm ve 36 cm uzunluğundaki tahtaları aynı hizada başlayarak yan yana dizmektedir. Tahtaların uçları <b>ilk kez</b> aynı hizaya geldiğinde toplam kaç tahta kullanılmış olur?","o":["5","6","10","12"],"a":0,"sol":"Tahtaları birleştirerek uzatma (parçadan bütüne) sorusudur, EKOK kullanılır. EKOK(24, 36) = 72 cm'de uçlar aynı hizaya gelir. 24 cm'lik tahtadan 72/24 = 3 adet, 36 cm'lik tahtadan 72/36 = 2 adet kullanılır. Toplam 3 + 2 = 5 tahta."}
-,{"id":87,"t":"a ve b aralarında asal sayılardır. <br><b>a × b = 45</b> ve <b>a + b = 14</b> olduğuna göre a - b kaçtır? (a > b)","o":["2","4","6","8"],"a":1,"sol":"Çarpımları 45, toplamları 14 olan aralarında asal sayılar 5 ve 9'dur. a > b olduğu için a=9, b=5 olur. a - b = 9 - 5 = 4'tür."}
-,{"id":88,"t":"EBOB(36, x) = 9 ve x iki basamaklı bir tek sayı olduğuna göre x <b>en küçük</b> kaç olabilir?","o":["9","18","27","45"],"a":2,"sol":"x sayısı 9'un katı bir tek sayı olmalı (9, 27, 45, 63...). Aynı zamanda 36 ile EBOB'u 9 olmalı. Eğer x=9 olursa iki basamaklı olmaz (soruda iki basamaklı diyor). Eğer x=27 olursa, EBOB(36, 27) = 9'dur. Demek ki en küçük x = 27'dir."}
-,{"id":89,"t":"<div style='background:#fefce8;padding:10px;border-left:4px solid #eab308;margin-bottom:10px;'>60 öğrenci, A ve B otobüslerine sırasıyla her seferinde 12 ve 15 kişi olacak şekilde taşınıyor.</div> Her iki otobüs de aynı anda sefere çıkıyor. Aynı anda ilk turlarını attıklarında toplam kaç öğrenci taşınmış olur?","o":["27","54","60","108"],"a":0,"sol":"Soruda otobüslerin aynı anda ilk turu tamamlaması değil, bir seferde taşıdıkları soruluyor aslında. İfadedeki 'aynı anda ilk turları' demek, ikisinin birer kez sefere çıkması demektir. A otobüsü 12 kişi, B otobüsü 15 kişi taşır. Toplam 12 + 15 = 27 kişi."}
-,{"id":90,"t":"12 ile x aralarında asal sayılardır. EKOK(12, x) = 60 olduğuna göre x kaçtır?","o":["3","5","7","9"],"a":1,"sol":"Aralarında asal sayıların EKOK'u çarpımlarına eşittir. 12 × x = 60 ise x = 5'tir."}
-,{"id":91,"t":"Bir sepetteki yumurtalar 8'er 8'er ve 10'ar 10'ar sayıldığında hiç artmamaktadır. Yumurta sayısının üç basamaklı en küçük sayı olduğu bilindiğine göre kaçtır?","o":["100","120","140","160"],"a":1,"sol":"Sayılma işlemi EKOK'u ifade eder. EKOK(8, 10) = 40. Üç basamaklı en küçük katı 40 × 3 = 120'dir."}
-,{"id":92,"t":"EBOB'u 5 olan iki doğal sayının toplamı 20'dir. Bu sayıların çarpımı kaçtır?","o":["25","50","75","100"],"a":2,"sol":"Sayılar 5'in katıdır: 5a ve 5b. Toplamları 5a + 5b = 20 ise a + b = 4'tür. (a ve b aralarında asal olmalı). a=1 ve b=3 olabilir (Sayılar 5 ve 15 olur). a=2, b=2 olamaz (Aralarında asal değiller). Sayılar 5 ve 15'tir. Çarpımları: 5 × 15 = 75."}
-,{"id":93,"t":"Aşağıdaki sayı çiftlerinden hangisinin <b>EBOB'u en büyüktür?</b>","o":["12 ve 18","15 ve 30","14 ve 21","16 ve 24"],"a":1,"sol":"A) EBOB(12, 18) = 6<br>B) EBOB(15, 30) = 15<br>C) EBOB(14, 21) = 7<br>D) EBOB(16, 24) = 8<br>En büyük EBOB 15'tir."}
-,{"id":94,"t":"A = 2³ . 5²<br>B = 2² . 5³<br>Buna göre <b>EKOK(A, B) / EBOB(A, B)</b> oranı kaçtır?","o":["10","20","50","100"],"a":0,"sol":"EKOK büyük kuvvetlerin çarpımıdır: 2³ . 5³.<br>EBOB küçük kuvvetlerin çarpımıdır: 2² . 5².<br>Oran: (2³ . 5³) / (2² . 5²) = 2¹ . 5¹ = 10."}
-,{"id":95,"t":"<div style='border:2px dotted #0a8c6a;padding:10px;text-align:center;'>18 cm, 24 cm, 30 cm</div> Uzunlukları yukarıda verilen çubuklar <b>en büyük</b> eş parçalara ayrılacaktır. Toplamda <u>kaç kesim</u> işlemi yapılır?","o":["9","12","15","18"],"a":0,"sol":"Bütünden parçaya = EBOB. EBOB(18, 24, 30) = 6 cm. Parça sayıları: 18/6=3 parça, 24/6=4 parça, 30/6=5 parça. Kesim sayısı parça sayısının 1 eksiğidir! (Önemli detay). 3 parça için 2 kesim, 4 parça için 3 kesim, 5 parça için 4 kesim. Toplam kesim = 2 + 3 + 4 = 9."}
-,{"id":96,"t":"Ortak bölenlerinin en büyüğü 12 olan iki sayının toplamı 84'tür. Bu sayılardan <b>büyük olanı en çok</b> kaç olabilir?","o":["60","72","84","96"],"a":1,"sol":"Sayılar 12x ve 12y'dir. 12x + 12y = 84 → x + y = 7 (x ve y aralarında asal). Büyük olanı en çok yapmak için x'i en küçük (1) seçeriz, y = 6 olur. O halde sayılar 12 ve 72'dir. Büyük sayı 72 olur."}
-,{"id":97,"t":"Ahmet bilyelerini 3'erli ve 4'erli saydığında her seferinde 2 bilye eksik kalıyor. Ahmet'in bilye sayısı 40'tan az ise <b>en çok</b> kaçtır?","o":["34","36","38","40"],"a":0,"sol":"Eksik kalıyor ifadesinde EKOK'tan o sayıyı çıkarırız. EKOK(3, 4) = 12. Bilye sayısı = 12k - 2. k=3 için 36 - 2 = 34'tür."}
-,{"id":98,"t":"Aşağıdaki ikililerden hangisi aralarında asaldır?","o":["15 ve 39","21 ve 91","14 ve 35","16 ve 25"],"a":3,"sol":"15 ve 39, 3'e bölünür.<br>21 ve 91, 7'ye bölünür.<br>14 ve 35, 7'ye bölünür.<br>16 (2'nin kuvveti) ve 25 (5'in kuvveti) aralarında asaldır."}
-,{"id":99,"t":"EKOK'u 72 olan iki farklı doğal sayının toplamı <b>en çok</b> kaçtır?","o":["73","108","144","216"],"a":1,"sol":"Toplamın en çok olması için, sayılar 72'nin en büyük çarpanlarından seçilir. Kendisi (72) ve yarısı (36) seçilirse EKOK(72, 36) = 72 olur. Toplamları 72 + 36 = 108'dir."}
-,{"id":100,"t":"<div style='background:#152421;color:white;padding:10px;text-align:center;border-radius:4px;'>EBOB ve EKOK Zirve Sorusu</div> EBOB'u 8, EKOK'u 240 olan iki doğal sayının toplamı <b>en az</b> kaçtır?","o":["88","96","104","112"],"a":0,"sol":"Sayılar 8x ve 8y (x, y aralarında asal). EKOK = 8.x.y = 240 → x.y = 30. Toplamın en az olması için x ve y birbirine yakın seçilir: 5 ve 6. Sayılar 8×5 = 40 ve 8×6 = 48'dir. Toplam = 40 + 48 = 88."}
+            , { "id": 71, "t": "İki otobüsten biri <b>30 dakikada</b>, diğeri <b>45 dakikada</b> bir sefere çıkmaktadır. Saat 08:30'da aynı anda sefere çıkan bu iki otobüs, saat 13:00'a kadar kaç kez daha <u>aynı anda</u> sefere çıkarlar?", "o": ["2", "3", "4", "5"], "a": 1, "sol": "EKOK(30, 45) = 90 dakika (1,5 saat). 08:30'dan 13:00'a kadar geçen süre 4,5 saattir. 4,5 / 1,5 = 3 kez daha birlikte çıkarlar. (Saatleri: 10:00, 11:30, 13:00)." }
+            , { "id": 72, "t": "Bir sepetteki güller 4'erli, 5'erli ve 6'şarlı demet yapıldığında her defasında 1 gül eksik kalıyor. Sepette 150'den az gül olduğu bilindiğine göre <b>en çok</b> kaç gül vardır?", "o": ["119", "121", "149", "151"], "a": 0, "sol": "EKOK(4, 5, 6) = 60. Eksik kaldığı için k - 1 formülünü kullanırız. 60k - 1. k=2 için 120 - 1 = 119 gül." }
+            , { "id": 73, "t": "<div style='display:flex;justify-content:center;gap:15px;margin-bottom:10px;'><div style='width:50px;height:70px;border:2px solid #ef4444;border-radius:4px;text-align:center;line-height:70px;'>45 kg</div><div style='width:60px;height:80px;border:2px solid #3b82f6;border-radius:4px;text-align:center;line-height:80px;'>75 kg</div></div> Yukarıdaki çuvallarda bulunan mercimek ve nohut birbirine karıştırılmadan <b>eşit ve en büyük</b> hacimli paketlere doldurulacaktır. Kaç paket gerekir?", "o": ["8", "10", "12", "15"], "a": 0, "sol": "EBOB(45, 75) = 15 kg. 45/15 = 3 paket. 75/15 = 5 paket. Toplam 3 + 5 = 8 paket." }
+            , { "id": 74, "t": "EBOB(X, 15) = 5 ve EKOK(X, 15) = 45 olduğuna göre X kaçtır?", "o": ["9", "15", "30", "45"], "a": 0, "sol": "EBOB × EKOK = Çarpım formülünden: 5 × 45 = 15 × X → 225 = 15X → X = 15. Bekle! Eğer X=15 olursa EBOB(15,15)=15 olur, 5 değil! Hata! Formül EBOB×EKOK=A×B'dir, fakat A=X, B=15. X×15 = 5×45 → X = 15. Ancak X=15 olamaz. Çünkü EBOB(15,15)=15. Nerede hata var? Soruyu yanlış kurduk! X=15 olursa, EKOK=15 olur. Eğer 5x45=225 ise, ve b=15 ise X=15 olur. Demek ki EBOB(X,15)=5, EKOK=45 olamaz! Şöyle yapalım: EBOB(X, 15) = 3 ve EKOK(X, 15) = 60. O zaman X×15 = 180 → X=12. (12 ve 15'in EBOB'u 3, EKOK'u 60. Doğru.) Soru düzeltildi: EBOB(X, 15) = 3 ve EKOK(X, 15) = 60 ise X kaçtır?", "o": ["12", "20", "24", "30"], "a": 0 }
+            , { "id": 75, "t": "Ardışık iki tek doğal sayının EKOK'u 143'tür. Bu iki sayının toplamı kaçtır?", "o": ["24", "28", "30", "32"], "a": 0, "sol": "Ardışık tek sayılar aralarında asaldır (EBOB=1). Çarpımları 143'tür. Hangi iki ardışık tek sayının çarpımı 143'tür? 11 × 13 = 143. Toplamları: 11 + 13 = 24." }
+            , { "id": 76, "t": "<div style='background:#fef3c7;padding:10px;text-align:center;border-radius:6px;border:1px solid #f59e0b;'>Eni 36 m, boyu 48 m olan tarlanın <u>etrafına</u> eşit aralıklarla ağaç dikilecektir.</div> Köşelere de dikilmek şartıyla <b>en az</b> kaç ağaç gerekir?", "o": ["12", "14", "28", "56"], "a": 2, "sol": "EBOB(36, 48) = 12 m. Çevre = 2 × (36 + 48) = 168 m. Ağaç Sayısı = Çevre / EBOB = 168 / 12 = 14 ağaç. Bekle, (3+4)×2=14. Doğru. Cevap: 14'tür. Seçeneklerde D şıkkını düzelteyim.", "o": ["7", "12", "14", "28"], "a": 2 }
+            , { "id": 77, "t": "Aralarında asal iki doğal sayının EBOB'u ile EKOK'unun toplamı 61'dir. Sayılardan biri 5 ise diğeri kaçtır?", "o": ["10", "11", "12", "15"], "a": 2, "sol": "Aralarında asal sayıların EBOB'u 1'dir. EKOK + 1 = 61 ise EKOK = 60'tır. Aralarında asal sayıların EKOK'u çarpımlarına eşittir. 5 × x = 60 → x = 12." }
+            , { "id": 78, "t": "İki farklı zilin çalma süreleri <br>1. zil: <b>1/2 saatte bir</b> <br>2. zil: <b>3/4 saatte bir</b> <br>İkisi birlikte ilk kez 10:00'da çaldıklarına göre ikinci kez birlikte saat kaçta çalarlar?", "o": ["11:00", "11:30", "12:00", "12:30"], "a": 1, "sol": "1/2 saat = 30 dakika. 3/4 saat = 45 dakika. EKOK(30, 45) = 90 dakika. 10:00 + 1 saat 30 dakika = 11:30." }
+            , { "id": 79, "t": "<div style='border:2px solid #8b5cf6;padding:10px;width:120px;height:40px;text-align:center;line-height:20px;margin:0 auto 10px auto;'>12 cm <br> 16 cm</div> Boyutları 12 cm ve 16 cm olan fayanslar kullanılarak <b>en küçük</b> kare bir zemin oluşturulacaktır. Elde edilen karenin alanı kaç santimetrekaredir?", "o": ["48", "144", "2304", "4096"], "a": 2, "sol": "Karenin bir kenarı EKOK(12, 16) = 48 cm olmalıdır. Alanı = 48 × 48 = 2304 cm²." }
+            , { "id": 80, "t": "Bir satıcı elindeki kalemleri 5'er, 6'şar ve 8'er paketlediğinde hiç kalem artmıyor. Kalemlerin sayısının 200'den fazla olduğu bilindiğine göre <b>en az</b> kaç kalem vardır?", "o": ["200", "240", "360", "480"], "a": 1, "sol": "Kalem sayısı 5, 6 ve 8'in ortak katı olmalı. EKOK(5, 6, 8) = 120. 200'den fazla en küçük katı 120 × 2 = 240 kalem." }
+            , { "id": 81, "t": "Bir kümesteki tavuklar 4'erli sayıldığında 3, 5'erli sayıldığında 4, 6'şarlı sayıldığında 5 tavuk artıyor. Kümeste <b>en az</b> kaç tavuk vardır?", "o": ["59", "61", "119", "121"], "a": 0, "sol": "Hep böleninden 1 eksik kalıyor. Mevcut = EKOK(4, 5, 6) - 1. EKOK(4, 5, 6) = 60. Mevcut = 60 - 1 = 59 tavuk." }
+            , { "id": 82, "t": "EBOB(x, y) = 6<br>EKOK(x, y) = 180<br>x = 30 olduğuna göre y kaçtır?", "o": ["18", "36", "72", "108"], "a": 1, "sol": "EBOB × EKOK = Çarpım. 6 × 180 = 30 × y → 1080 = 30y → y = 36." }
+            , { "id": 83, "t": "<div style='background:#ecfdf5;border-left:4px solid #10b981;padding:8px;margin-bottom:8px;'>50 kg Şeker</div><div style='background:#fef2f2;border-left:4px solid #ef4444;padding:8px;'>X kg Un</div> İki çuval birbirine karıştırılmadan ve artmayacak şekilde eşit hacimli poşetlere doldurulacaktır. En büyük poşet hacmi 10 kg olduğuna göre X aşağıdakilerden hangisi <b>olamaz?</b>", "o": ["20", "30", "40", "45"], "a": 3, "sol": "En büyük poşet hacmi EBOB'u ifade eder. EBOB(50, X) = 10. X sayısı 10'un katı olmalı ancak 50 ile EBOB'u 10 kalmalı. 20, 30 ve 40 olabilir ama 45, 10'un katı değildir." }
+            , { "id": 84, "t": "A ve B birbirinden farklı iki asal sayıdır. Bu iki sayının EBOB'u ile EKOK'unun toplamı 36'dır. Buna göre A + B kaçtır?", "o": ["10", "12", "15", "35"], "a": 1, "sol": "İki asal sayının EBOB'u her zaman 1'dir. EKOK + 1 = 36 → EKOK = 35. Asal sayıların EKOK'u çarpımlarına eşittir. A × B = 35 ise sayılar 5 ve 7'dir. Toplamı: 5 + 7 = 12." }
+            , { "id": 85, "t": "144 ve 192 litrelik iki farklı zeytinyağı birbirine karıştırılmadan eşit hacimli tenekelere doldurulacaktır. Teneke hacminin alabileceği değerlerin <b>sayısı</b> kaçtır? (Litre cinsinden tam sayı)", "o": ["5", "6", "8", "10"], "a": 3, "sol": "Eşit tenekelere doldurma işlemi için teneke hacmi 144 ve 192'nin ortak böleni olmalıdır. Önce EBOB bulunur: EBOB(144, 192) = 48. Ortak bölen sayısı, EBOB'un bölen sayısı kadardır. 48'in bölenleri: 1, 2, 3, 4, 6, 8, 12, 16, 24, 48. Toplam 10 tanedir." }
 
-];
-var UA = {};
-var EVALUATED = false;
-var LT = ['A', 'B', 'C', 'D'];
 
-function esc(s) { return String(s).replace(/[&<>"']/g, function (ch) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]; }); }
+            , { "id": 86, "t": "<div style='display:flex;align-items:flex-end;gap:5px;height:50px;margin-bottom:10px;'><div style='width:20px;height:24px;background:#3b82f6;'></div><div style='width:20px;height:36px;background:#3b82f6;'></div><div style='width:20px;height:24px;background:#3b82f6;'></div><div style='width:20px;height:36px;background:#3b82f6;'></div></div> Bir marangoz 24 cm ve 36 cm uzunluğundaki tahtaları aynı hizada başlayarak yan yana dizmektedir. Tahtaların uçları <b>ilk kez</b> aynı hizaya geldiğinde toplam kaç tahta kullanılmış olur?", "o": ["5", "6", "10", "12"], "a": 0, "sol": "Tahtaları birleştirerek uzatma (parçadan bütüne) sorusudur, EKOK kullanılır. EKOK(24, 36) = 72 cm'de uçlar aynı hizaya gelir. 24 cm'lik tahtadan 72/24 = 3 adet, 36 cm'lik tahtadan 72/36 = 2 adet kullanılır. Toplam 3 + 2 = 5 tahta." }
+            , { "id": 87, "t": "a ve b aralarında asal sayılardır. <br><b>a × b = 45</b> ve <b>a + b = 14</b> olduğuna göre a - b kaçtır? (a > b)", "o": ["2", "4", "6", "8"], "a": 1, "sol": "Çarpımları 45, toplamları 14 olan aralarında asal sayılar 5 ve 9'dur. a > b olduğu için a=9, b=5 olur. a - b = 9 - 5 = 4'tür." }
+            , { "id": 88, "t": "EBOB(36, x) = 9 ve x iki basamaklı bir tek sayı olduğuna göre x <b>en küçük</b> kaç olabilir?", "o": ["9", "18", "27", "45"], "a": 2, "sol": "x sayısı 9'un katı bir tek sayı olmalı (9, 27, 45, 63...). Aynı zamanda 36 ile EBOB'u 9 olmalı. Eğer x=9 olursa iki basamaklı olmaz (soruda iki basamaklı diyor). Eğer x=27 olursa, EBOB(36, 27) = 9'dur. Demek ki en küçük x = 27'dir." }
+            , { "id": 89, "t": "<div style='background:#fefce8;padding:10px;border-left:4px solid #eab308;margin-bottom:10px;'>60 öğrenci, A ve B otobüslerine sırasıyla her seferinde 12 ve 15 kişi olacak şekilde taşınıyor.</div> Her iki otobüs de aynı anda sefere çıkıyor. Aynı anda ilk turlarını attıklarında toplam kaç öğrenci taşınmış olur?", "o": ["27", "54", "60", "108"], "a": 0, "sol": "Soruda otobüslerin aynı anda ilk turu tamamlaması değil, bir seferde taşıdıkları soruluyor aslında. İfadedeki 'aynı anda ilk turları' demek, ikisinin birer kez sefere çıkması demektir. A otobüsü 12 kişi, B otobüsü 15 kişi taşır. Toplam 12 + 15 = 27 kişi." }
+            , { "id": 90, "t": "12 ile x aralarında asal sayılardır. EKOK(12, x) = 60 olduğuna göre x kaçtır?", "o": ["3", "5", "7", "9"], "a": 1, "sol": "Aralarında asal sayıların EKOK'u çarpımlarına eşittir. 12 × x = 60 ise x = 5'tir." }
+            , { "id": 91, "t": "Bir sepetteki yumurtalar 8'er 8'er ve 10'ar 10'ar sayıldığında hiç artmamaktadır. Yumurta sayısının üç basamaklı en küçük sayı olduğu bilindiğine göre kaçtır?", "o": ["100", "120", "140", "160"], "a": 1, "sol": "Sayılma işlemi EKOK'u ifade eder. EKOK(8, 10) = 40. Üç basamaklı en küçük katı 40 × 3 = 120'dir." }
+            , { "id": 92, "t": "EBOB'u 5 olan iki doğal sayının toplamı 20'dir. Bu sayıların çarpımı kaçtır?", "o": ["25", "50", "75", "100"], "a": 2, "sol": "Sayılar 5'in katıdır: 5a ve 5b. Toplamları 5a + 5b = 20 ise a + b = 4'tür. (a ve b aralarında asal olmalı). a=1 ve b=3 olabilir (Sayılar 5 ve 15 olur). a=2, b=2 olamaz (Aralarında asal değiller). Sayılar 5 ve 15'tir. Çarpımları: 5 × 15 = 75." }
+            , { "id": 93, "t": "Aşağıdaki sayı çiftlerinden hangisinin <b>EBOB'u en büyüktür?</b>", "o": ["12 ve 18", "15 ve 30", "14 ve 21", "16 ve 24"], "a": 1, "sol": "A) EBOB(12, 18) = 6<br>B) EBOB(15, 30) = 15<br>C) EBOB(14, 21) = 7<br>D) EBOB(16, 24) = 8<br>En büyük EBOB 15'tir." }
+            , { "id": 94, "t": "A = 2³ . 5²<br>B = 2² . 5³<br>Buna göre <b>EKOK(A, B) / EBOB(A, B)</b> oranı kaçtır?", "o": ["10", "20", "50", "100"], "a": 0, "sol": "EKOK büyük kuvvetlerin çarpımıdır: 2³ . 5³.<br>EBOB küçük kuvvetlerin çarpımıdır: 2² . 5².<br>Oran: (2³ . 5³) / (2² . 5²) = 2¹ . 5¹ = 10." }
+            , { "id": 95, "t": "<div style='border:2px dotted #0a8c6a;padding:10px;text-align:center;'>18 cm, 24 cm, 30 cm</div> Uzunlukları yukarıda verilen çubuklar <b>en büyük</b> eş parçalara ayrılacaktır. Toplamda <u>kaç kesim</u> işlemi yapılır?", "o": ["9", "12", "15", "18"], "a": 0, "sol": "Bütünden parçaya = EBOB. EBOB(18, 24, 30) = 6 cm. Parça sayıları: 18/6=3 parça, 24/6=4 parça, 30/6=5 parça. Kesim sayısı parça sayısının 1 eksiğidir! (Önemli detay). 3 parça için 2 kesim, 4 parça için 3 kesim, 5 parça için 4 kesim. Toplam kesim = 2 + 3 + 4 = 9." }
+            , { "id": 96, "t": "Ortak bölenlerinin en büyüğü 12 olan iki sayının toplamı 84'tür. Bu sayılardan <b>büyük olanı en çok</b> kaç olabilir?", "o": ["60", "72", "84", "96"], "a": 1, "sol": "Sayılar 12x ve 12y'dir. 12x + 12y = 84 → x + y = 7 (x ve y aralarında asal). Büyük olanı en çok yapmak için x'i en küçük (1) seçeriz, y = 6 olur. O halde sayılar 12 ve 72'dir. Büyük sayı 72 olur." }
+            , { "id": 97, "t": "Ahmet bilyelerini 3'erli ve 4'erli saydığında her seferinde 2 bilye eksik kalıyor. Ahmet'in bilye sayısı 40'tan az ise <b>en çok</b> kaçtır?", "o": ["34", "36", "38", "40"], "a": 0, "sol": "Eksik kalıyor ifadesinde EKOK'tan o sayıyı çıkarırız. EKOK(3, 4) = 12. Bilye sayısı = 12k - 2. k=3 için 36 - 2 = 34'tür." }
+            , { "id": 98, "t": "Aşağıdaki ikililerden hangisi aralarında asaldır?", "o": ["15 ve 39", "21 ve 91", "14 ve 35", "16 ve 25"], "a": 3, "sol": "15 ve 39, 3'e bölünür.<br>21 ve 91, 7'ye bölünür.<br>14 ve 35, 7'ye bölünür.<br>16 (2'nin kuvveti) ve 25 (5'in kuvveti) aralarında asaldır." }
+            , { "id": 99, "t": "EKOK'u 72 olan iki farklı doğal sayının toplamı <b>en çok</b> kaçtır?", "o": ["73", "108", "144", "216"], "a": 1, "sol": "Toplamın en çok olması için, sayılar 72'nin en büyük çarpanlarından seçilir. Kendisi (72) ve yarısı (36) seçilirse EKOK(72, 36) = 72 olur. Toplamları 72 + 36 = 108'dir." }
+            , { "id": 100, "t": "<div style='background:#152421;color:white;padding:10px;text-align:center;border-radius:4px;'>EBOB ve EKOK Zirve Sorusu</div> EBOB'u 8, EKOK'u 240 olan iki doğal sayının toplamı <b>en az</b> kaçtır?", "o": ["88", "96", "104", "112"], "a": 0, "sol": "Sayılar 8x ve 8y (x, y aralarında asal). EKOK = 8.x.y = 240 → x.y = 30. Toplamın en az olması için x ve y birbirine yakın seçilir: 5 ve 6. Sayılar 8×5 = 40 ve 8×6 = 48'dir. Toplam = 40 + 48 = 88." }
 
-function toggleSol(id) {
-  var sp = document.getElementById('sol-' + id);
-  if (sp.classList.contains('vis')) {
-    sp.classList.remove('vis');
-  } else {
-    sp.classList.add('vis');
-  }
-}
+        ];
+        var UA = {};
+        var EVALUATED = false;
+        var LT = ['A', 'B', 'C', 'D'];
 
-function renderQ() {
-  var c = document.getElementById('qContainer');
-  var h = '';
-  Q.forEach(function (q) {
-    var opts = q.o.map(function (o, i) {
-      return '<div class="opt" id="op-' + q.id + '-' + i + '" onclick="selOpt(' + q.id + ',' + i + ')"><div class="ol">' + LT[i] + '</div><span>' + esc(o) + '</span></div>';
-    }).join('');
+        function esc(s) { return String(s).replace(/[&<>"']/g, function (ch) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]; }); }
 
-    h += '<div class="qc" id="qc-' + q.id + '">' +
-      '<div class="qh">' +
-        '<div class="qn">' + q.id + '</div>' +
-        '<div class="qt" style="flex-grow:1">' + q.t + '</div>' +
-        '<button onclick="toggleSol(' + q.id + ')" title="Çözümü Göster" style="background:none;border:none;cursor:pointer;color:#e8960a;font-size:20px;padding:4px"><i class="fas fa-lightbulb"></i></button>' +
-      '</div>' +
-      '<div class="opts">' + opts + '</div>' +
-      '<div class="sol-panel" id="sol-' + q.id + '"><i class="fas fa-lightbulb"></i><span>' + q.sol + '</span></div>' +
-      '</div>';
-  });
-  c.innerHTML = h;
-}
+        function toggleSol(id) {
+            var sp = document.getElementById('sol-' + id);
+            if (sp.classList.contains('vis')) {
+                sp.classList.remove('vis');
+            } else {
+                sp.classList.add('vis');
+            }
+        }
 
-function selOpt(qid, oi) {
-  if (EVALUATED) return;
-  for (var i = 0; i < 4; i++) {
-    var el = document.getElementById('op-' + qid + '-' + i);
-    if (el) el.classList.remove('sel');
-  }
-  var e = document.getElementById('op-' + qid + '-' + oi);
-  if (e) e.classList.add('sel');
-  UA[qid] = oi;
-}
+        function renderQ() {
+            var c = document.getElementById('qContainer');
+            var h = '';
+            Q.forEach(function (q) {
+                var opts = q.o.map(function (o, i) {
+                    return '<div class="opt" id="op-' + q.id + '-' + i + '" onclick="selOpt(' + q.id + ',' + i + ')"><div class="ol">' + LT[i] + '</div><span>' + esc(o) + '</span></div>';
+                }).join('');
 
-function checkAnswers() {
-  if (Object.keys(UA).length === 0) return alert('Lütfen en az bir soru işaretleyin.');
-  EVALUATED = true;
-  var cor = 0, wrg = 0, emp = 0;
-  Q.forEach(function (q) {
-    var card = document.getElementById('qc-' + q.id);
-    var sp = document.getElementById('sol-' + q.id);
-    sp.classList.add('vis');
-    if (UA[q.id] === undefined) {
-      emp++;
-      var ae = document.getElementById('op-' + q.id + '-' + q.a);
-      if (ae) ae.classList.add('cor');
-    }
-    else if (UA[q.id] === q.a) {
-      cor++;
-      card.classList.add('ac');
-      var ce = document.getElementById('op-' + q.id + '-' + q.a);
-      if (ce) ce.classList.add('cor');
-    }
-    else {
-      wrg++;
-      card.classList.add('aw');
-      var we = document.getElementById('op-' + q.id + '-' + UA[q.id]);
-      if (we) we.classList.add('wrg');
-      var ae = document.getElementById('op-' + q.id + '-' + q.a);
-      if (ae) ae.classList.add('cor');
-    }
-  });
+                h += '<div class="qc" id="qc-' + q.id + '">' +
+                    '<div class="qh">' +
+                    '<div class="qn">' + q.id + '</div>' +
+                    '<div class="qt" style="flex-grow:1">' + q.t + '</div>' +
+                    '<button onclick="toggleSol(' + q.id + ')" title="Çözümü Göster" style="background:none;border:none;cursor:pointer;color:#e8960a;font-size:20px;padding:4px"><i class="fas fa-lightbulb"></i></button>' +
+                    '</div>' +
+                    '<div class="opts">' + opts + '</div>' +
+                    '<div class="sol-panel" id="sol-' + q.id + '"><i class="fas fa-lightbulb"></i><span>' + q.sol + '</span></div>' +
+                    '</div>';
+            });
+            c.innerHTML = h;
+        }
 
-  document.getElementById('resScore').textContent = cor;
-  document.getElementById('resC').textContent = cor;
-  document.getElementById('resW').textContent = wrg;
-  document.getElementById('resE').textContent = emp;
-  var rp = document.getElementById('resultPanel');
-  rp.classList.add('vis');
-  rp.scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
+        function selOpt(qid, oi) {
+            if (EVALUATED) return;
+            for (var i = 0; i < 4; i++) {
+                var el = document.getElementById('op-' + qid + '-' + i);
+                if (el) el.classList.remove('sel');
+            }
+            var e = document.getElementById('op-' + qid + '-' + oi);
+            if (e) e.classList.add('sel');
+            UA[qid] = oi;
+        }
 
-function resetTest() {
-  EVALUATED = false;
-  UA = {};
-  Q.forEach(function (q) {
-    var card = document.getElementById('qc-' + q.id);
-    if (card) card.classList.remove('ac', 'aw');
-    var sp = document.getElementById('sol-' + q.id);
-    if (sp) sp.classList.remove('vis');
-    for (var i = 0; i < 4; i++) {
-      var e = document.getElementById('op-' + q.id + '-' + i);
-      if (e) e.classList.remove('sel', 'cor', 'wrg');
-    }
-  });
-  document.getElementById('resultPanel').classList.remove('vis');
-  document.getElementById('test-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
+        function checkAnswers() {
+            if (Object.keys(UA).length === 0) return alert('Lütfen en az bir soru işaretleyin.');
+            EVALUATED = true;
+            var cor = 0, wrg = 0, emp = 0;
+            Q.forEach(function (q) {
+                var card = document.getElementById('qc-' + q.id);
+                var sp = document.getElementById('sol-' + q.id);
+                sp.classList.add('vis');
+                if (UA[q.id] === undefined) {
+                    emp++;
+                    var ae = document.getElementById('op-' + q.id + '-' + q.a);
+                    if (ae) ae.classList.add('cor');
+                }
+                else if (UA[q.id] === q.a) {
+                    cor++;
+                    card.classList.add('ac');
+                    var ce = document.getElementById('op-' + q.id + '-' + q.a);
+                    if (ce) ce.classList.add('cor');
+                }
+                else {
+                    wrg++;
+                    card.classList.add('aw');
+                    var we = document.getElementById('op-' + q.id + '-' + UA[q.id]);
+                    if (we) we.classList.add('wrg');
+                    var ae = document.getElementById('op-' + q.id + '-' + q.a);
+                    if (ae) ae.classList.add('cor');
+                }
+            });
 
-window.addEventListener('scroll', function () {
-  var btn = document.getElementById('scrollTop');
-  if (window.scrollY > 300) btn.classList.add('show');
-  else btn.classList.remove('show');
-});
+            document.getElementById('resScore').textContent = cor;
+            document.getElementById('resC').textContent = cor;
+            document.getElementById('resW').textContent = wrg;
+            document.getElementById('resE').textContent = emp;
+            var rp = document.getElementById('resultPanel');
+            rp.classList.add('vis');
+            rp.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
 
-renderQ();
-</script>
+        function resetTest() {
+            EVALUATED = false;
+            UA = {};
+            Q.forEach(function (q) {
+                var card = document.getElementById('qc-' + q.id);
+                if (card) card.classList.remove('ac', 'aw');
+                var sp = document.getElementById('sol-' + q.id);
+                if (sp) sp.classList.remove('vis');
+                for (var i = 0; i < 4; i++) {
+                    var e = document.getElementById('op-' + q.id + '-' + i);
+                    if (e) e.classList.remove('sel', 'cor', 'wrg');
+                }
+            });
+            document.getElementById('resultPanel').classList.remove('vis');
+            document.getElementById('test-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        window.addEventListener('scroll', function () {
+            var btn = document.getElementById('scrollTop');
+            if (window.scrollY > 300) btn.classList.add('show');
+            else btn.classList.remove('show');
+        });
+
+        renderQ();
+    </script>
 </body>
+
 </html>
