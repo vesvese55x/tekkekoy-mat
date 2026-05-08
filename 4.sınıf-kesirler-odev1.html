@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>4. Sınıf Kesirler Testi 1</title>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;}
+.page-wrapper{max-width:900px;margin:0 auto;padding:20px;}
+.header-card{background:linear-gradient(135deg,#1e3c72,#2a5298);border-radius:20px;padding:30px;text-align:center;color:#fff;margin-bottom:24px;box-shadow:0 10px 40px rgba(0,0,0,.3);}
+.header-card h1{font-size:2rem;font-weight:900;letter-spacing:-.5px;}
+.header-card p{font-size:1rem;opacity:.85;margin-top:6px;}
+.meta-badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px;}
+.badge{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.35);border-radius:30px;padding:4px 14px;font-size:.82rem;font-weight:700;}
+.section-title{color:#fff;border-radius:12px;padding:10px 20px;font-size:1.05rem;font-weight:800;margin:22px 0 12px;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;}
+.sec1{background:linear-gradient(135deg,#667eea,#764ba2);box-shadow:0 4px 15px rgba(102,126,234,.35);}
+.sec2{background:linear-gradient(135deg,#f093fb,#f5576c);box-shadow:0 4px 15px rgba(245,87,108,.35);}
+.sec3{background:linear-gradient(135deg,#43e97b,#38f9d7);box-shadow:0 4px 15px rgba(67,233,123,.35);}
+.sec4{background:linear-gradient(135deg,#fa709a,#fee140);box-shadow:0 4px 15px rgba(250,112,154,.35);}
+.sec5{background:linear-gradient(135deg,#4facfe,#00f2fe);box-shadow:0 4px 15px rgba(79,172,254,.35);}
+.sec6{background:linear-gradient(135deg,#a18cd1,#fbc2eb);box-shadow:0 4px 15px rgba(161,140,209,.35);}
+.sec7{background:linear-gradient(135deg,#fccb90,#d57eeb);box-shadow:0 4px 15px rgba(213,126,235,.35);}
+.section-title .arrow{transition:transform .25s;display:inline-block;font-size:.85rem;}
+.section-title.collapsed .arrow{transform:rotate(-90deg);}
+.section-body{overflow:hidden;transition:max-height .35s ease;}
+.section-body.hidden{max-height:0!important;overflow:hidden;}
+.q-card{background:#fff;border-radius:14px;padding:18px 20px;margin-bottom:14px;box-shadow:0 4px 18px rgba(0,0,0,.1);border-left:5px solid #667eea;transition:transform .15s;}
+.q-card:hover{transform:translateY(-2px);}
+.q-card.tf{border-left-color:#f5576c;}.q-card.mc{border-left-color:#43e97b;}.q-card.match{border-left-color:#f093fb;}.q-card.fill{border-left-color:#4facfe;}
+.q-num{display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:50%;width:28px;height:28px;font-size:.82rem;font-weight:800;margin-right:8px;flex-shrink:0;}
+.q-num.tf{background:linear-gradient(135deg,#f5576c,#ee0979);}.q-num.mc{background:linear-gradient(135deg,#43e97b,#38f9d7);color:#1a4a2a;}.q-num.match{background:linear-gradient(135deg,#f093fb,#f5576c);}.q-num.fill{background:linear-gradient(135deg,#4facfe,#00f2fe);color:#0a3a4a;}
+.q-text{font-size:.97rem;font-weight:700;color:#2d3748;display:flex;align-items:flex-start;gap:6px;flex-wrap:wrap;}
+.q-type-tag{font-size:.68rem;font-weight:800;padding:2px 8px;border-radius:10px;margin-left:auto;white-space:nowrap;flex-shrink:0;}
+.tag-fill{background:#e0f0ff;color:#0077cc;}.tag-tf{background:#ffe0e5;color:#cc0033;}.tag-mc{background:#e0fff0;color:#007733;}.tag-match{background:#f5e0ff;color:#7700cc;}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
+.opt{background:#f7f8fc;border:2px solid #e2e8f0;border-radius:8px;padding:7px 12px;font-size:.88rem;font-weight:600;color:#444;cursor:pointer;transition:all .15s;user-select:none;}
+.opt:hover{border-color:#667eea;background:#eef2ff;}
+.opt.correct{border-color:#43e97b!important;background:#e6fff3!important;color:#1a7a3c!important;}
+.opt.wrong{border-color:#f5576c!important;background:#ffe6ea!important;color:#aa1133!important;}
+.opt.selected{border-color:#667eea;background:#eef2ff;}
+.answer-box{margin-top:8px;background:#f7f8fc;border-radius:8px;padding:8px 14px;font-size:.88rem;color:#555;border:1px dashed #ccc;}
+.answer-line{display:inline-block;width:80px;border-bottom:2px solid #667eea;margin:0 4px;vertical-align:bottom;}
+.number-line-wrap{margin:10px 0;overflow-x:auto;}.nl-svg{display:block;margin:0 auto;}
+.download-btn{position:fixed;bottom:28px;right:28px;z-index:999;background:linear-gradient(135deg,#f5576c,#f093fb);color:#fff;border:none;border-radius:50px;padding:14px 26px;font-family:'Nunito',sans-serif;font-size:1rem;font-weight:800;cursor:pointer;box-shadow:0 8px 25px rgba(245,87,108,.5);display:flex;align-items:center;gap:8px;transition:transform .2s;}
+.download-btn:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(245,87,108,.6);}
+.download-btn svg{width:20px;height:20px;}
+.progress-bar-wrap{background:rgba(255,255,255,.15);border-radius:30px;height:8px;margin-top:12px;}
+.progress-bar{height:8px;background:linear-gradient(90deg,#43e97b,#00f2fe);border-radius:30px;transition:width .5s;}
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-80px);background:#1e3c72;color:#fff;padding:12px 24px;border-radius:30px;font-weight:700;font-size:.95rem;z-index:9999;transition:transform .4s;box-shadow:0 6px 20px rgba(0,0,0,.3);}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.score-card{background:linear-gradient(135deg,#43e97b,#38f9d7);border-radius:16px;padding:18px 24px;text-align:center;color:#1a4a2a;font-weight:800;font-size:1.1rem;margin-top:20px;display:none;box-shadow:0 6px 20px rgba(67,233,123,.4);}
+.fill-input{border:none;border-bottom:2px solid #667eea;background:transparent;font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:700;color:#3730a3;width:60px;text-align:center;outline:none;padding:0 4px;transition:border-color .2s,color .2s;}
+.fill-input:focus{border-bottom-color:#f5576c;}
+.fraction{display:inline-flex;flex-direction:column;align-items:center;font-weight:800;font-size:1rem;line-height:1.1;vertical-align:middle;margin:0 3px;}
+.fraction .num{border-bottom:2px solid #2d3748;padding:0 4px;}.fraction .den{padding:0 4px;}
+.fraction-big{font-size:1.3rem;}
+.check-btn{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:30px;padding:10px 28px;font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:800;cursor:pointer;margin-top:18px;display:block;margin-left:auto;margin-right:auto;box-shadow:0 4px 15px rgba(102,126,234,.4);transition:transform .15s;}
+.check-btn:hover{transform:scale(1.04);}
+.reset-btn{background:linear-gradient(135deg,#f5576c,#ee0979);color:#fff;border:none;border-radius:30px;padding:8px 22px;font-family:'Nunito',sans-serif;font-size:.85rem;font-weight:800;cursor:pointer;margin-top:10px;display:block;margin-left:auto;margin-right:auto;box-shadow:0 4px 12px rgba(245,87,108,.35);transition:transform .15s;}
+.reset-btn:hover{transform:scale(1.04);}
+
+/* MATCHING STYLES */
+.match-game{margin-top:12px;}
+.match-columns{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.match-col-title{font-weight:800;font-size:.85rem;margin-bottom:8px;padding:4px 8px;border-radius:6px;}
+.match-left-title{background:#ede9fe;color:#5b21b6;}
+.match-right-title{background:#d1fae5;color:#065f46;}
+.match-item{padding:8px 12px;border-radius:8px;font-weight:700;font-size:.88rem;margin-bottom:6px;cursor:pointer;transition:all .2s;border:2px solid transparent;position:relative;}
+.match-left-item{background:#f5e0ff;color:#5b21b6;border-color:#d8b4fe;}
+.match-left-item:hover{background:#ede9fe;border-color:#7c3aed;}
+.match-left-item.selected{background:#7c3aed;color:#fff;border-color:#5b21b6;}
+.match-left-item.matched{background:#d1fae5;color:#065f46;border-color:#34d399;cursor:default;}
+.match-right-item{background:#f0fff4;color:#065f46;border-color:#6ee7b7;}
+.match-right-item:hover{background:#d1fae5;border-color:#10b981;}
+.match-right-item.matched{background:#d1fae5;color:#065f46;border-color:#34d399;cursor:default;}
+.match-right-item.wrong-flash{background:#fee2e2;border-color:#f87171;animation:wrongFlash .4s;}
+@keyframes wrongFlash{0%,100%{background:#f0fff4;}50%{background:#fee2e2;}}
+.match-result{margin-top:8px;font-size:.85rem;font-weight:700;padding:6px 12px;border-radius:8px;display:none;}
+.match-result.correct{background:#d1fae5;color:#065f46;display:block;}
+.match-result.wrong{background:#fee2e2;color:#991b1b;display:block;}
+.match-badge{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:.75rem;}
+.match-reset-btn{background:#e0e7ff;color:#3730a3;border:none;border-radius:20px;padding:5px 14px;font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:800;cursor:pointer;margin-top:8px;}
+.match-reset-btn:hover{background:#c7d2fe;}
+.match-score{font-size:.85rem;font-weight:800;color:#5b21b6;margin-top:6px;}
+
+/* SHAPE MATCH */
+.shape-match-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;}
+.shape-match-left{display:flex;flex-direction:column;gap:8px;}
+.shape-match-right{display:flex;flex-direction:column;gap:8px;}
+.shape-item{background:#f5e0ff;border:2px solid #d8b4fe;border-radius:8px;padding:8px;cursor:pointer;transition:all .2s;text-align:center;}
+.shape-item:hover{border-color:#7c3aed;background:#ede9fe;}
+.shape-item.selected{border-color:#7c3aed;background:#7c3aed;color:#fff;}
+.shape-item.matched{border-color:#34d399;background:#d1fae5;cursor:default;}
+.frac-item{background:#f0fff4;border:2px solid #6ee7b7;border-radius:8px;padding:8px 12px;cursor:pointer;transition:all .2s;text-align:center;font-weight:800;}
+.frac-item:hover{border-color:#10b981;background:#d1fae5;}
+.frac-item.matched{border-color:#34d399;background:#d1fae5;cursor:default;}
+
+@media(max-width:640px){.options{grid-template-columns:1fr;}.header-card h1{font-size:1.4rem;}.q-text{font-size:.88rem;}.download-btn{bottom:16px;right:16px;padding:12px 20px;font-size:.9rem;}.match-columns{grid-template-columns:1fr;}}
+
+/* PRINT / PDF styles */
+@media print{
+  body{background:#fff!important;}
+  .download-btn,.check-btn,.reset-btn{display:none!important;}
+  .page-wrapper{max-width:100%!important;padding:8px!important;}
+  .header-card{background:#1e3c72!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .q-card{break-inside:avoid;page-break-inside:avoid;}
+  .section-body.hidden{max-height:none!important;overflow:visible!important;}
+}
+</style>
+</head>
+<body>
+<div class="toast" id="toast">PDF hazırlanıyor... ⏳</div>
+
+<div class="page-wrapper" id="main-content">
+<div class="header-card">
+  <div style="font-size:2.5rem;margin-bottom:6px;">🍕📐✂️</div>
+  <h1>KESİRLER YAPRAK TESTİ 1</h1>
+  <p>4. Sınıf Matematik | Kesir Çeşitleri • Gösterimler • Dönüşümler</p>
+  <div class="meta-badges">
+    <span class="badge">📋 100 Soru</span><span class="badge">🎯 4. Sınıf</span><span class="badge">⏱ Süre: Serbest</span><span class="badge">📝 Karma Soru Tipi</span>
+  </div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="prog-bar" style="width:0%"></div></div>
+  <div style="margin-top:6px;font-size:.82rem;opacity:.8;" id="prog-text">Cevaplandı: 0 / 100</div>
+</div>
+
+<!-- BÖLÜM 1 -->
+<div class="section-title sec1" id="sec1" onclick="toggleSec(this)"><span class="arrow">▼</span> 🔷 BÖLÜM 1: KESİR ÇEŞİTLERİ — Boşluk Doldurma (1–15)</div>
+<div class="section-body">
+
+<div class="q-card fill" data-type="fill" data-answer="3">
+<div class="q-text"><span class="q-num fill">1</span>Aşağıdaki şekilde boyalı parça sayısı kaçtır? Bu kesrin payı <span class="answer-line"></span>'dir.<span class="q-type-tag tag-fill">Boşluk</span></div>
+<div style="margin-top:10px;text-align:center;">
+<svg width="220" height="55" viewBox="0 0 220 55">
+<rect x="2" y="5" width="40" height="40" fill="#6366f1" stroke="#4338ca" stroke-width="2" rx="4"/>
+<rect x="48" y="5" width="40" height="40" fill="#6366f1" stroke="#4338ca" stroke-width="2" rx="4"/>
+<rect x="94" y="5" width="40" height="40" fill="#6366f1" stroke="#4338ca" stroke-width="2" rx="4"/>
+<rect x="140" y="5" width="40" height="40" fill="#fff" stroke="#4338ca" stroke-width="2" rx="4"/>
+<rect x="186" y="5" width="32" height="40" fill="#fff" stroke="#4338ca" stroke-width="2" rx="4"/>
+</svg>
+</div>
+<div class="answer-box">Boyalı parça sayısı (pay) = <input class="fill-input" data-q="1" type="number" min="0" max="20"/> &nbsp; Toplam parça (payda) = 5</div>
+</div>
+
+<div class="q-card fill" data-type="fill" data-answer="6">
+<div class="q-text"><span class="q-num fill">2</span>Bir daire eşit parçalara bölünmüş, 2 parçası boyalıdır. Bu kesrin paydası <span class="answer-line"></span>'dir.<span class="q-type-tag tag-fill">Boşluk</span></div>
+<div style="margin-top:10px;text-align:center;">
+<svg width="90" height="90" viewBox="0 0 90 90">
+<circle cx="45" cy="45" r="38" fill="#fff" stroke="#6366f1" stroke-width="2.5"/>
+<path d="M45,45 L45,7 A38,38 0 0,1 78.9,26 Z" fill="#f5576c"/>
+<path d="M45,45 L78.9,26 A38,38 0 0,1 78.9,64 Z" fill="#f5576c"/>
+<line x1="45" y1="45" x2="45" y2="7" stroke="#4338ca" stroke-width="1.5"/>
+<line x1="45" y1="45" x2="78.9" y2="26" stroke="#4338ca" stroke-width="1.5"/>
+<line x1="45" y1="45" x2="78.9" y2="64" stroke="#4338ca" stroke-width="1.5"/>
+<line x1="45" y1="45" x2="45" y2="83" stroke="#4338ca" stroke-width="1.5"/>
+<line x1="45" y1="45" x2="11.1" y2="64" stroke="#4338ca" stroke-width="1.5"/>
+<line x1="45" y1="45" x2="11.1" y2="26" stroke="#4338ca" stroke-width="1.5"/>
+</svg>
+</div>
+<div class="answer-box">Payda = <input class="fill-input" data-q="2" type="number" min="0" max="20"/></div>
+</div>
+
+<div class="q-card fill" data-type="fill" data-answer="bilesik">
+<div class="q-text"><span class="q-num fill">3</span>Payı paydasından büyük olan kesre <span class="answer-line"></span> kesir denir.<span class="q-type-tag tag-fill">Boşluk</span></div>
+<div class="answer-box">Cevap: <input class="fill-input" data-q="3" type="text" style="width:120px;" placeholder="..."/></div>
+</div>
+
+<div class="q-card fill" data-type="fill" data-answer="tam">
+<div class="q-text"><span class="q-num fill">4</span>Payı ile paydası eşit olan kesir (ör: <span class="fraction"><span class="num">4</span><span class="den">4</span></span>) bir ............. sayıya eşittir.<span class="q-type-tag tag-fill">Boşluk</span></div>
+<div class="answer-box">Cevap: <input class="fill-input" data-q="4" type="text" style="width:120px;" placeholder="..."/></div>
+</div>
+
+<div class="q-card fill" data-type="fill" data-answer="3/5">
+<div class="q-text"><span class="q-num fill">5</span>Aşağıdaki üçgende boyalı parçaları gösteren kesri yazınız.<span class="q-type-tag tag-fill">Boşluk</span></div>
+<div style="margin-top:10px;text-align:center;">
+<svg width="250" height="80" viewBox="0 0 250 80">
+<defs><clipPath id="tc"><polygon points="125,5 5,75 245,75"/></clipPath></defs>
+<rect x="5" y="5" width="44" height="70" fill="#6366f1" clip-path="url(#tc)"/>
+<rect x="49" y="5" width="44" height="70" fill="#6366f1" clip-path="url(#tc)"/>
+<rect x="93" y="5" width="44" height="70" fill="#6366f1" clip-path="url(#tc)"/>
+<rect x="137" y="5" width="44" height="70" fill="#fff" clip-path="url(#tc)"/>
+<rect x="181" y="5" width="64" height="70" fill="#fff" clip-path="url(#tc)"/>
+<polygon points="125,5 5,75 245,75" fill="none" stroke="#4338ca" stroke-width="2.5"/>
+<line x1="49" y1="5" x2="49" y2="75" stroke="#4338ca" stroke-width="1.2" clip-path="url(#tc)"/>
+<line x1="93" y1="5" x2="93" y2="75" stroke="#4338ca" stroke-width="1.2" clip-path="url(#tc)"/>
+<line x1="137" y1="5" x2="137" y2="75" stroke="#4338ca" stroke-width="1.2" clip-path="url(#tc)"/>
+<line x1="181" y1="5" x2="181" y2="75" stroke="#4338ca" stroke-width="1.2" clip-path="url(#tc)"/>
+</svg>
+</div>
+<div class="answer-box">Kesir = <input class="fill-input" data-q="5" type="text" style="width:80px;" placeholder="_/_"/></div>
+</div>
+
+<div class="q-card fill" data-type="fill" data-answer="öz">
+<div class="q-text"><span class="q-num fill">6</span>Payı paydadan küçük olan kesre <span class="answer-line"></span> kesir denir. Örnek: <span class="fraction"><span class="num">2</span><span class="den">7</span></span><span class="q-type-tag tag-fill">Boşluk</span></div>
+<div class="answer-box">Cevap: <input class="fill-input" data-q="6" type="text" style="width:100px;" placeholder="..."/></div>
+</div>
+
+<div class="q-card fill" data-type="fill" data-answer="2">
+<div class="q-text"><span class="q-num fill">7</span><span class="fraction fraction-big"><span class="num">9</span><span class="den">4</span></span> kesri tamsayılı kesir olarak yazıldığında tam kısmı <span class="answer-line"></span>'dir.<span class="q-type-tag tag-fill">Boşluk</span></div>
+<div class="answer-box">Tam kısım = <input class="fill-input" data-q="7" type="number" min="0" max="20"/></div>
+</div>
+
+<div class="q-card fill" data-type="fill" data-answer="1">
+<div class="q-text"><span class="q-num fill">8</span><span class="fraction fraction-big"><span class="num">9</span><span class="den">4</span></span> = 2 <span class="fraction"><span class="num">?</span><span class="den">4</span></span> &nbsp;Soru işareti yerine gelen sayı nedir?<span class="q-type-tag tag-fill">Boşluk</span></div>
+<div class="answer-box">? = <input class="fill-input" data-q="8" type="number" min="0" max="20"/></div>
+</div>
+
+<div class="q-card fill" data-type="fill" data-answer="11">
+<div class="q-text"><span class="q-num fill">9</span>3 <span class="fraction"><span class="num">2</span><span class="den">3</span></span> tamsayılı kesrini bileşik kesre dönüştürünce pay <span class="answer-line"></span> olur.<span class="q-type-tag tag-fill">Boşluk</span></div>
+<div class="answer-box">Bileşik kesir payı = <input class="fill-input" data-q="9" type="number" min="0" max="30"/></div>
+</div>
+
+<div class="q-card fill" data-type="fill" data-answer="4">
+<div class="q-text"><span class="q-num fill">10</span>Aşağıdaki sayı doğrusunda ★ işaretinin bulunduğu nokta hangi kesri göstermektedir? Payı nedir?<span class="q-type-tag tag-fill">Boşluk</span></div>
+<div class="number-line-wrap">
+<svg class="nl-svg" width="340" height="50" viewBox="0 0 340 50">
+<line x1="20" y1="30" x2="320" y2="30" stroke="#2d3748" stroke-width="2.5"/>
+<line x1="20" y1="22" x2="20" y2="38" stroke="#2d3748" stroke-width="2.5"/><text x="20" y="48" text-anchor="middle" font-size="13" font-weight="bold" fill="#2d3748">0</text>
+<line x1="320" y1="22" x2="320" y2="38" stroke="#2d3748" stroke-width="2.5"/><text x="320" y="48" text-anchor="middle" font-size="13" font-weight="bold" fill="#2d3748">1</text>
+<line x1="80" y1="24" x2="80" y2="36" stroke="#6366f1" stroke-width="1.5"/>
+<line x1="140" y1="24" x2="140" y2="36" stroke="#6366f1" stroke-width="1.5"/>
+<line x1="200" y1="24" x2="200" y2="36" stroke="#6366f1" stroke-width="1.5"/>
+<line x1="260" y1="24" x2="260" y2="36" stroke="#6366f1" stroke-width="1.5"/>
+<text x="260" y="18" text-anchor="middle" font-size="16">★</text>
+</svg>
+</div>
+<div class="answer-box">★ → <input class="fill-input" data-q="10" type="number" min="0" max="10"/> / 5</div>
+</div>
+
+<div class="q-card fill" data-type="fill" data-answer="birim">
+<div class="q-text"><span class="q-num fill">11</span>Payı 1 olan kesre (ör: <span class="fraction"><span class="num">1</span><span class="den">8</span></span>) <span class="answer-line"></span> kesir denir.<span class="q-type-tag tag-fill">Boşluk</span></div>
+<div class="answer-box">Cevap: <input class="fill-input" data-q="11" type="text" style="width:100px;" placeholder="..."/></div>
+</div>
+
+<div class="q-card fill" data-type="fill" data-answer="5 2/3">
+<div class="q-text"><span class="q-num fill">12</span><span class="fraction fraction-big"><span class="num">17</span><span class="den">3</span></span> bileşik kesrini tamsayılı kesir olarak yazınız.<span class="q-type-tag tag-fill">Boşluk</span></div>
+<div class="answer-box">Tamsayılı kesir: <input class="fill-input" data-q="12" type="text" style="width:100px;" placeholder="_ _/_"/></div>
+</div>
+
+<div class="q-card fill" data-type="fill" data-answer="19">
+<div class="q-text"><span class="q-num fill">13</span>4 <span class="fraction"><span class="num">3</span><span class="den">4</span></span> tamsayılı kesrini bileşik kesre dönüştürdüğünüzde pay nedir?<span class="q-type-tag tag-fill">Boşluk</span></div>
+<div class="answer-box">Pay = <input class="fill-input" data-q="13" type="number" min="0" max="40"/></div>
+</div>
+
+<div class="q-card fill" data-type="fill" data-answer="2">
+<div class="q-text"><span class="q-num fill">14</span>Aşağıdaki sayı doğrusunda 0 ile 3 arasında eşit parçalara bölünmüş. Her bir parça kaçta kaç'ı göstermektedir? Paydayı yazın.<span class="q-type-tag tag-fill">Boşluk</span></div>
+<div class="number-line-wrap">
+<svg class="nl-svg" width="340" height="50" viewBox="0 0 340 50">
+<line x1="20" y1="30" x2="320" y2="30" stroke="#2d3748" stroke-width="2.5"/>
+<line x1="20" y1="22" x2="20" y2="38" stroke="#2d3748" stroke-width="2.5"/><text x="20" y="48" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d3748">0</text>
+<line x1="320" y1="22" x2="320" y2="38" stroke="#2d3748" stroke-width="2.5"/><text x="320" y="48" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d3748">3</text>
+<line x1="70" y1="23" x2="70" y2="37" stroke="#6366f1" stroke-width="1.5"/>
+<line x1="120" y1="23" x2="120" y2="37" stroke="#2d3748" stroke-width="2"/><text x="120" y="48" text-anchor="middle" font-size="11" font-weight="bold" fill="#2d3748">1</text>
+<line x1="170" y1="23" x2="170" y2="37" stroke="#6366f1" stroke-width="1.5"/>
+<line x1="220" y1="23" x2="220" y2="37" stroke="#2d3748" stroke-width="2"/><text x="220" y="48" text-anchor="middle" font-size="11" font-weight="bold" fill="#2d3748">2</text>
+<line x1="270" y1="23" x2="270" y2="37" stroke="#6366f1" stroke-width="1.5"/>
+</svg>
+</div>
+<div class="answer-box">Payda = <input class="fill-input" data-q="14" type="number" min="0" max="20"/></div>
+</div>
+
+<div class="q-card fill" data-type="fill" data-answer="3/9">
+<div class="q-text"><span class="q-num fill">15</span>Bir kesrin paydası payının 3 katıdır ve bu kesir öz kesirdir. Payı 3 olan bu kesri yazınız.<span class="q-type-tag tag-fill">Boşluk</span></div>
+<div class="answer-box">Kesir = <input class="fill-input" data-q="15" type="text" style="width:80px;" placeholder="_/_"/></div>
+</div>
+
+</div><!-- B1 end -->
+
+<!-- BÖLÜM 2 -->
+<div class="section-title sec2" id="sec2" onclick="toggleSec(this)"><span class="arrow">▼</span> ✅❌ BÖLÜM 2: DOĞRU / YANLIŞ (16–30)</div>
+<div class="section-body">
+
+<div class="q-card tf" data-type="tf" data-answer="D"><div class="q-text"><span class="q-num tf">16</span><span class="fraction"><span class="num">7</span><span class="den">3</span></span> bir bileşik kesirdir.<span class="q-type-tag tag-tf">D/Y</span></div><div class="options"><div class="opt" data-q="16" data-val="D">✅ Doğru</div><div class="opt" data-q="16" data-val="Y">❌ Yanlış</div></div></div>
+
+<div class="q-card tf" data-type="tf" data-answer="Y"><div class="q-text"><span class="q-num tf">17</span><span class="fraction"><span class="num">3</span><span class="den">8</span></span> bir bileşik kesirdir.<span class="q-type-tag tag-tf">D/Y</span></div><div class="options"><div class="opt" data-q="17" data-val="D">✅ Doğru</div><div class="opt" data-q="17" data-val="Y">❌ Yanlış</div></div></div>
+
+<div class="q-card tf" data-type="tf" data-answer="D"><div class="q-text"><span class="q-num tf">18</span>2 <span class="fraction"><span class="num">1</span><span class="den">4</span></span> bir tamsayılı kesirdir.<span class="q-type-tag tag-tf">D/Y</span></div><div class="options"><div class="opt" data-q="18" data-val="D">✅ Doğru</div><div class="opt" data-q="18" data-val="Y">❌ Yanlış</div></div></div>
+
+<div class="q-card tf" data-type="tf" data-answer="D"><div class="q-text"><span class="q-num tf">19</span>Aşağıdaki şekilde boyalı parça <span class="fraction"><span class="num">2</span><span class="den">6</span></span> kesrini göstermektedir.
+<span class="q-type-tag tag-tf">D/Y</span></div>
+<div style="margin-top:8px;text-align:center;"><svg width="210" height="38" viewBox="0 0 210 38"><rect x="2" y="2" width="30" height="34" fill="#f5576c" stroke="#9f1239" stroke-width="2" rx="3"/><rect x="36" y="2" width="30" height="34" fill="#f5576c" stroke="#9f1239" stroke-width="2" rx="3"/><rect x="70" y="2" width="30" height="34" fill="#fff" stroke="#9f1239" stroke-width="2" rx="3"/><rect x="104" y="2" width="30" height="34" fill="#fff" stroke="#9f1239" stroke-width="2" rx="3"/><rect x="138" y="2" width="30" height="34" fill="#fff" stroke="#9f1239" stroke-width="2" rx="3"/><rect x="172" y="2" width="30" height="34" fill="#fff" stroke="#9f1239" stroke-width="2" rx="3"/></svg></div>
+<div class="options"><div class="opt" data-q="19" data-val="D">✅ Doğru</div><div class="opt" data-q="19" data-val="Y">❌ Yanlış</div></div></div>
+
+<div class="q-card tf" data-type="tf" data-answer="Y"><div class="q-text"><span class="q-num tf">20</span><span class="fraction"><span class="num">5</span><span class="den">5</span></span> = 0 'dır.<span class="q-type-tag tag-tf">D/Y</span></div><div class="options"><div class="opt" data-q="20" data-val="D">✅ Doğru</div><div class="opt" data-q="20" data-val="Y">❌ Yanlış</div></div></div>
+
+<div class="q-card tf" data-type="tf" data-answer="D"><div class="q-text"><span class="q-num tf">21</span><span class="fraction"><span class="num">1</span><span class="den">6</span></span> bir birim kesirdir.<span class="q-type-tag tag-tf">D/Y</span></div><div class="options"><div class="opt" data-q="21" data-val="D">✅ Doğru</div><div class="opt" data-q="21" data-val="Y">❌ Yanlış</div></div></div>
+
+<div class="q-card tf" data-type="tf" data-answer="D"><div class="q-text"><span class="q-num tf">22</span>3 <span class="fraction"><span class="num">2</span><span class="den">5</span></span> = <span class="fraction"><span class="num">17</span><span class="den">5</span></span> 'dir.<span class="q-type-tag tag-tf">D/Y</span></div><div class="options"><div class="opt" data-q="22" data-val="D">✅ Doğru</div><div class="opt" data-q="22" data-val="Y">❌ Yanlış</div></div></div>
+
+<div class="q-card tf" data-type="tf" data-answer="Y"><div class="q-text"><span class="q-num tf">23</span><span class="fraction"><span class="num">13</span><span class="den">4</span></span> tamsayılı kesir olarak 4 <span class="fraction"><span class="num">1</span><span class="den">4</span></span> 'dir.<span class="q-type-tag tag-tf">D/Y</span></div><div class="options"><div class="opt" data-q="23" data-val="D">✅ Doğru</div><div class="opt" data-q="23" data-val="Y">❌ Yanlış</div></div></div>
+
+<div class="q-card tf" data-type="tf" data-answer="D"><div class="q-text"><span class="q-num tf">24</span>Sayı doğrusunda 0 ile 1 arasında 4 eşit parçaya bölündüğünde her parça <span class="fraction"><span class="num">1</span><span class="den">4</span></span> büyüklüğündedir.<span class="q-type-tag tag-tf">D/Y</span></div><div class="options"><div class="opt" data-q="24" data-val="D">✅ Doğru</div><div class="opt" data-q="24" data-val="Y">❌ Yanlış</div></div></div>
+
+<div class="q-card tf" data-type="tf" data-answer="Y"><div class="q-text"><span class="q-num tf">25</span>Aşağıdaki dairede boyalı alan <span class="fraction"><span class="num">1</span><span class="den">4</span></span> kesrini göstermektedir.<span class="q-type-tag tag-tf">D/Y</span></div>
+<div style="margin-top:8px;text-align:center;"><svg width="80" height="80" viewBox="0 0 80 80"><circle cx="40" cy="40" r="34" fill="#fff" stroke="#6366f1" stroke-width="2"/><path d="M40,40 L40,6 A34,34 0 0,1 74,40 A34,34 0 0,1 40,74 Z" fill="#f5576c"/><line x1="40" y1="40" x2="40" y2="6" stroke="#4338ca" stroke-width="1.5"/><line x1="40" y1="40" x2="74" y2="40" stroke="#4338ca" stroke-width="1.5"/><line x1="40" y1="40" x2="40" y2="74" stroke="#4338ca" stroke-width="1.5"/><line x1="40" y1="40" x2="6" y2="40" stroke="#4338ca" stroke-width="1.5"/></svg></div>
+<div class="options"><div class="opt" data-q="25" data-val="D">✅ Doğru</div><div class="opt" data-q="25" data-val="Y">❌ Yanlış</div></div></div>
+
+<div class="q-card tf" data-type="tf" data-answer="D"><div class="q-text"><span class="q-num tf">26</span>Her öz kesir 0 ile 1 arasında sayı doğrusunda gösterilir.<span class="q-type-tag tag-tf">D/Y</span></div><div class="options"><div class="opt" data-q="26" data-val="D">✅ Doğru</div><div class="opt" data-q="26" data-val="Y">❌ Yanlış</div></div></div>
+
+<div class="q-card tf" data-type="tf" data-answer="Y"><div class="q-text"><span class="q-num tf">27</span><span class="fraction"><span class="num">8</span><span class="den">3</span></span> bileşik kesrinin tamsayılı biçimi 3 <span class="fraction"><span class="num">2</span><span class="den">3</span></span> 'dir.<span class="q-type-tag tag-tf">D/Y</span></div><div class="options"><div class="opt" data-q="27" data-val="D">✅ Doğru</div><div class="opt" data-q="27" data-val="Y">❌ Yanlış</div></div></div>
+
+<div class="q-card tf" data-type="tf" data-answer="D"><div class="q-text"><span class="q-num tf">28</span>Bileşik kesirler sayı doğrusunda 1'den büyük noktalarda gösterilir.<span class="q-type-tag tag-tf">D/Y</span></div><div class="options"><div class="opt" data-q="28" data-val="D">✅ Doğru</div><div class="opt" data-q="28" data-val="Y">❌ Yanlış</div></div></div>
+
+<div class="q-card tf" data-type="tf" data-answer="Y"><div class="q-text"><span class="q-num tf">29</span>Paydası 1 olan her kesir birim kesirdir.<span class="q-type-tag tag-tf">D/Y</span></div><div class="options"><div class="opt" data-q="29" data-val="D">✅ Doğru</div><div class="opt" data-q="29" data-val="Y">❌ Yanlış</div></div></div>
+
+<div class="q-card tf" data-type="tf" data-answer="D"><div class="q-text"><span class="q-num tf">30</span>5 <span class="fraction"><span class="num">0</span><span class="den">6</span></span> = 5 'tir.<span class="q-type-tag tag-tf">D/Y</span></div><div class="options"><div class="opt" data-q="30" data-val="D">✅ Doğru</div><div class="opt" data-q="30" data-val="Y">❌ Yanlış</div></div></div>
+
+</div><!-- B2 end -->
+
+<!-- BÖLÜM 3 -->
+<div class="section-title sec3" id="sec3" onclick="toggleSec(this)"><span class="arrow">▼</span> 🔵 BÖLÜM 3: ÇOKTAN SEÇMELİ — Kesir Çeşitleri & Şekil (31–55)</div>
+<div class="section-body">
+
+<div class="q-card mc" data-type="mc" data-answer="B"><div class="q-text"><span class="q-num mc">31</span>Aşağıdaki şekillerden hangisi <span class="fraction"><span class="num">3</span><span class="den">4</span></span> kesrini doğru göstermektedir?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
+<div class="opt" data-q="31" data-val="A" style="text-align:center;"><div style="font-weight:800;color:#6366f1;margin-bottom:4px;">A)</div><svg width="70" height="70" viewBox="0 0 70 70"><circle cx="35" cy="35" r="30" fill="#fff" stroke="#4338ca" stroke-width="2"/><path d="M35,35 L35,5 A30,30 0 0,1 61,35 Z" fill="#6366f1"/><line x1="35" y1="35" x2="35" y2="5" stroke="#4338ca" stroke-width="1.5"/><line x1="35" y1="35" x2="61" y2="35" stroke="#4338ca" stroke-width="1.5"/><line x1="35" y1="35" x2="35" y2="65" stroke="#4338ca" stroke-width="1.5"/><line x1="35" y1="35" x2="9" y2="35" stroke="#4338ca" stroke-width="1.5"/></svg></div>
+<div class="opt" data-q="31" data-val="B" style="text-align:center;"><div style="font-weight:800;color:#6366f1;margin-bottom:4px;">B)</div><svg width="70" height="70" viewBox="0 0 70 70"><circle cx="35" cy="35" r="30" fill="#fff" stroke="#4338ca" stroke-width="2"/><path d="M35,35 L35,5 A30,30 0 0,1 61,35 A30,30 0 0,1 35,65 A30,30 0 0,1 9,35 Z" fill="#6366f1"/><line x1="35" y1="35" x2="35" y2="5" stroke="#4338ca" stroke-width="1.5"/><line x1="35" y1="35" x2="61" y2="35" stroke="#4338ca" stroke-width="1.5"/><line x1="35" y1="35" x2="35" y2="65" stroke="#4338ca" stroke-width="1.5"/><line x1="35" y1="35" x2="9" y2="35" stroke="#4338ca" stroke-width="1.5"/></svg></div>
+<div class="opt" data-q="31" data-val="C" style="text-align:center;"><div style="font-weight:800;color:#6366f1;margin-bottom:4px;">C)</div><svg width="70" height="70" viewBox="0 0 70 70"><circle cx="35" cy="35" r="30" fill="#6366f1" stroke="#4338ca" stroke-width="2"/><line x1="35" y1="35" x2="35" y2="5" stroke="#4338ca" stroke-width="1.5"/><line x1="35" y1="35" x2="61" y2="35" stroke="#4338ca" stroke-width="1.5"/><line x1="35" y1="35" x2="35" y2="65" stroke="#4338ca" stroke-width="1.5"/><line x1="35" y1="35" x2="9" y2="35" stroke="#4338ca" stroke-width="1.5"/></svg></div>
+<div class="opt" data-q="31" data-val="D" style="text-align:center;"><div style="font-weight:800;color:#6366f1;margin-bottom:4px;">D)</div><svg width="70" height="70" viewBox="0 0 70 70"><circle cx="35" cy="35" r="30" fill="#fff" stroke="#4338ca" stroke-width="2"/><path d="M35,35 L35,5 A30,30 0 0,1 61,35 A30,30 0 0,1 35,65 Z" fill="#6366f1"/><line x1="35" y1="35" x2="35" y2="5" stroke="#4338ca" stroke-width="1.5"/><line x1="35" y1="35" x2="61" y2="35" stroke="#4338ca" stroke-width="1.5"/><line x1="35" y1="35" x2="35" y2="65" stroke="#4338ca" stroke-width="1.5"/><line x1="35" y1="35" x2="9" y2="35" stroke="#4338ca" stroke-width="1.5"/></svg></div>
+</div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="C"><div class="q-text"><span class="q-num mc">32</span>Hangi seçenek bir öz kesirdir?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div><div class="options"><div class="opt" data-q="32" data-val="A">A) <span class="fraction"><span class="num">9</span><span class="den">5</span></span></div><div class="opt" data-q="32" data-val="B">B) 3 <span class="fraction"><span class="num">1</span><span class="den">2</span></span></div><div class="opt" data-q="32" data-val="C">C) <span class="fraction"><span class="num">4</span><span class="den">7</span></span></div><div class="opt" data-q="32" data-val="D">D) <span class="fraction"><span class="num">6</span><span class="den">6</span></span></div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="A"><div class="q-text"><span class="q-num mc">33</span>Aşağıdaki sayı doğrusunda ❤️ işaretli nokta hangi kesri göstermektedir?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div>
+<div class="number-line-wrap"><svg class="nl-svg" width="320" height="45" viewBox="0 0 320 45"><line x1="20" y1="25" x2="300" y2="25" stroke="#2d3748" stroke-width="2.5"/><line x1="20" y1="18" x2="20" y2="32" stroke="#2d3748" stroke-width="2.5"/><text x="20" y="43" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d3748">0</text><line x1="300" y1="18" x2="300" y2="32" stroke="#2d3748" stroke-width="2.5"/><text x="300" y="43" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d3748">1</text><line x1="74" y1="19" x2="74" y2="31" stroke="#6366f1" stroke-width="1.5"/><line x1="128" y1="19" x2="128" y2="31" stroke="#6366f1" stroke-width="1.5"/><line x1="182" y1="19" x2="182" y2="31" stroke="#6366f1" stroke-width="1.5"/><line x1="236" y1="19" x2="236" y2="31" stroke="#6366f1" stroke-width="1.5"/><text x="74" y="13" text-anchor="middle" font-size="14">❤️</text></svg></div>
+<div class="options"><div class="opt" data-q="33" data-val="A">A) <span class="fraction"><span class="num">1</span><span class="den">5</span></span></div><div class="opt" data-q="33" data-val="B">B) <span class="fraction"><span class="num">2</span><span class="den">5</span></span></div><div class="opt" data-q="33" data-val="C">C) <span class="fraction"><span class="num">1</span><span class="den">4</span></span></div><div class="opt" data-q="33" data-val="D">D) <span class="fraction"><span class="num">1</span><span class="den">6</span></span></div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="B"><div class="q-text"><span class="q-num mc">34</span>Hangi seçenek bir bileşik kesirdir?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div><div class="options"><div class="opt" data-q="34" data-val="A">A) <span class="fraction"><span class="num">3</span><span class="den">7</span></span></div><div class="opt" data-q="34" data-val="B">B) <span class="fraction"><span class="num">11</span><span class="den">6</span></span></div><div class="opt" data-q="34" data-val="C">C) 2 <span class="fraction"><span class="num">1</span><span class="den">3</span></span></div><div class="opt" data-q="34" data-val="D">D) <span class="fraction"><span class="num">1</span><span class="den">9</span></span></div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="D"><div class="q-text"><span class="q-num mc">35</span>Aşağıdaki dikdörtgenlerde boyalı toplam alan hangi kesri göstermektedir?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div>
+<div style="margin-top:8px;text-align:center;"><svg width="280" height="45" viewBox="0 0 280 45"><rect x="2" y="5" width="20" height="35" fill="#43e97b" stroke="#166534" stroke-width="1.5" rx="2"/><rect x="24" y="5" width="20" height="35" fill="#43e97b" stroke="#166534" stroke-width="1.5" rx="2"/><rect x="46" y="5" width="20" height="35" fill="#43e97b" stroke="#166534" stroke-width="1.5" rx="2"/><rect x="68" y="5" width="20" height="35" fill="#43e97b" stroke="#166534" stroke-width="1.5" rx="2"/><rect x="102" y="5" width="20" height="35" fill="#43e97b" stroke="#166534" stroke-width="1.5" rx="2"/><rect x="124" y="5" width="20" height="35" fill="#43e97b" stroke="#166534" stroke-width="1.5" rx="2"/><rect x="146" y="5" width="20" height="35" fill="#43e97b" stroke="#166534" stroke-width="1.5" rx="2"/><rect x="168" y="5" width="20" height="35" fill="#43e97b" stroke="#166534" stroke-width="1.5" rx="2"/><rect x="202" y="5" width="20" height="35" fill="#43e97b" stroke="#166534" stroke-width="1.5" rx="2"/><rect x="224" y="5" width="20" height="35" fill="#43e97b" stroke="#166534" stroke-width="1.5" rx="2"/><rect x="246" y="5" width="20" height="35" fill="#43e97b" stroke="#166534" stroke-width="1.5" rx="2"/><rect x="268" y="5" width="20" height="35" fill="#fff" stroke="#166534" stroke-width="1.5" rx="2"/></svg></div>
+<div class="options"><div class="opt" data-q="35" data-val="A">A) <span class="fraction"><span class="num">3</span><span class="den">4</span></span></div><div class="opt" data-q="35" data-val="B">B) 1 <span class="fraction"><span class="num">3</span><span class="den">4</span></span></div><div class="opt" data-q="35" data-val="C">C) <span class="fraction"><span class="num">11</span><span class="den">4</span></span></div><div class="opt" data-q="35" data-val="D">D) 2 <span class="fraction"><span class="num">3</span><span class="den">4</span></span></div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="A"><div class="q-text"><span class="q-num mc">36</span><span class="fraction fraction-big"><span class="num">15</span><span class="den">4</span></span> bileşik kesri tamsayılı kesre dönüştürülürse hangisi doğrudur?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div><div class="options"><div class="opt" data-q="36" data-val="A">A) 3 <span class="fraction"><span class="num">3</span><span class="den">4</span></span></div><div class="opt" data-q="36" data-val="B">B) 4 <span class="fraction"><span class="num">1</span><span class="den">4</span></span></div><div class="opt" data-q="36" data-val="C">C) 2 <span class="fraction"><span class="num">3</span><span class="den">4</span></span></div><div class="opt" data-q="36" data-val="D">D) 3 <span class="fraction"><span class="num">1</span><span class="den">4</span></span></div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="C"><div class="q-text"><span class="q-num mc">37</span>Sayı doğrusunda <span class="fraction"><span class="num">7</span><span class="den">3</span></span> kesri hangi iki tam sayı arasında yer alır?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div><div class="options"><div class="opt" data-q="37" data-val="A">A) 0 ile 1</div><div class="opt" data-q="37" data-val="B">B) 1 ile 2</div><div class="opt" data-q="37" data-val="C">C) 2 ile 3</div><div class="opt" data-q="37" data-val="D">D) 3 ile 4</div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="B"><div class="q-text"><span class="q-num mc">38</span>Hangi seçenek tamsayılı kesirdir?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div><div class="options"><div class="opt" data-q="38" data-val="A">A) <span class="fraction"><span class="num">7</span><span class="den">2</span></span></div><div class="opt" data-q="38" data-val="B">B) 4 <span class="fraction"><span class="num">1</span><span class="den">3</span></span></div><div class="opt" data-q="38" data-val="C">C) <span class="fraction"><span class="num">2</span><span class="den">9</span></span></div><div class="opt" data-q="38" data-val="D">D) <span class="fraction"><span class="num">5</span><span class="den">5</span></span></div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="D"><div class="q-text"><span class="q-num mc">39</span>Aşağıdaki şekil hangi kesri göstermektedir?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div>
+<div style="margin-top:8px;text-align:center;"><svg width="240" height="50" viewBox="0 0 240 50"><rect x="2" y="5" width="55" height="40" fill="#f093fb" stroke="#6b21a8" stroke-width="2" rx="4"/><rect x="62" y="5" width="55" height="40" fill="#f093fb" stroke="#6b21a8" stroke-width="2" rx="4"/><rect x="122" y="5" width="55" height="40" fill="#f093fb" stroke="#6b21a8" stroke-width="2" rx="4"/><rect x="182" y="5" width="18" height="40" fill="#f093fb" stroke="#6b21a8" stroke-width="2" rx="2"/><rect x="201" y="5" width="18" height="40" fill="#fff" stroke="#6b21a8" stroke-width="2" rx="2"/><rect x="220" y="5" width="18" height="40" fill="#fff" stroke="#6b21a8" stroke-width="2" rx="2"/></svg></div>
+<div class="options"><div class="opt" data-q="39" data-val="A">A) 3 <span class="fraction"><span class="num">2</span><span class="den">3</span></span></div><div class="opt" data-q="39" data-val="B">B) <span class="fraction"><span class="num">10</span><span class="den">3</span></span></div><div class="opt" data-q="39" data-val="C">C) 3 <span class="fraction"><span class="num">3</span><span class="den">3</span></span></div><div class="opt" data-q="39" data-val="D">D) 3 <span class="fraction"><span class="num">1</span><span class="den">3</span></span></div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="A"><div class="q-text"><span class="q-num mc">40</span>2 <span class="fraction"><span class="num">3</span><span class="den">5</span></span> bileşik kesre dönüştürülürse sonuç ne olur?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div><div class="options"><div class="opt" data-q="40" data-val="A">A) <span class="fraction"><span class="num">13</span><span class="den">5</span></span></div><div class="opt" data-q="40" data-val="B">B) <span class="fraction"><span class="num">11</span><span class="den">5</span></span></div><div class="opt" data-q="40" data-val="C">C) <span class="fraction"><span class="num">10</span><span class="den">5</span></span></div><div class="opt" data-q="40" data-val="D">D) <span class="fraction"><span class="num">7</span><span class="den">5</span></span></div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="C"><div class="q-text"><span class="q-num mc">41</span>Sayı doğrusunda 0 ile 1 arasında 8 eşit parçaya bölünmüştür. <span class="fraction"><span class="num">5</span><span class="den">8</span></span> kesri kaçıncı noktadadır?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div><div class="options"><div class="opt" data-q="41" data-val="A">A) 4. nokta</div><div class="opt" data-q="41" data-val="B">B) 8. nokta</div><div class="opt" data-q="41" data-val="C">C) 5. nokta</div><div class="opt" data-q="41" data-val="D">D) 3. nokta</div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="B"><div class="q-text"><span class="q-num mc">42</span><span class="fraction fraction-big"><span class="num">22</span><span class="den">7</span></span> kesrini tamsayılı kesir olarak yazınız.<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div><div class="options"><div class="opt" data-q="42" data-val="A">A) 2 <span class="fraction"><span class="num">7</span><span class="den">8</span></span></div><div class="opt" data-q="42" data-val="B">B) 3 <span class="fraction"><span class="num">1</span><span class="den">7</span></span></div><div class="opt" data-q="42" data-val="C">C) 4 <span class="fraction"><span class="num">2</span><span class="den">7</span></span></div><div class="opt" data-q="42" data-val="D">D) 3 <span class="fraction"><span class="num">2</span><span class="den">7</span></span></div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="D"><div class="q-text"><span class="q-num mc">43</span>Aşağıdaki dairede boyalı kısım hangi kesri göstermektedir?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div>
+<div style="margin-top:8px;text-align:center;"><svg width="90" height="90" viewBox="0 0 90 90"><circle cx="45" cy="45" r="38" fill="#fff" stroke="#9f1239" stroke-width="2.5"/><path d="M45,45 L45,7 A38,38 0 0,1 71.9,19.1 Z" fill="#f5576c"/><path d="M45,45 L71.9,19.1 A38,38 0 0,1 83,45 Z" fill="#f5576c"/><path d="M45,45 L83,45 A38,38 0 0,1 71.9,70.9 Z" fill="#f5576c"/><path d="M45,45 L71.9,70.9 A38,38 0 0,1 45,83 Z" fill="#f5576c"/><path d="M45,45 L45,83 A38,38 0 0,1 18.1,70.9 Z" fill="#f5576c"/><line x1="45" y1="45" x2="45" y2="7" stroke="#9f1239" stroke-width="1.5"/><line x1="45" y1="45" x2="71.9" y2="19.1" stroke="#9f1239" stroke-width="1.5"/><line x1="45" y1="45" x2="83" y2="45" stroke="#9f1239" stroke-width="1.5"/><line x1="45" y1="45" x2="71.9" y2="70.9" stroke="#9f1239" stroke-width="1.5"/><line x1="45" y1="45" x2="45" y2="83" stroke="#9f1239" stroke-width="1.5"/><line x1="45" y1="45" x2="18.1" y2="70.9" stroke="#9f1239" stroke-width="1.5"/><line x1="45" y1="45" x2="7" y2="45" stroke="#9f1239" stroke-width="1.5"/><line x1="45" y1="45" x2="18.1" y2="19.1" stroke="#9f1239" stroke-width="1.5"/></svg></div>
+<div class="options"><div class="opt" data-q="43" data-val="A">A) <span class="fraction"><span class="num">3</span><span class="den">8</span></span></div><div class="opt" data-q="43" data-val="B">B) <span class="fraction"><span class="num">8</span><span class="den">5</span></span></div><div class="opt" data-q="43" data-val="C">C) <span class="fraction"><span class="num">4</span><span class="den">8</span></span></div><div class="opt" data-q="43" data-val="D">D) <span class="fraction"><span class="num">5</span><span class="den">8</span></span></div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="A"><div class="q-text"><span class="q-num mc">44</span>Hangi kesir sayı doğrusunda 1'den büyük bir noktada yer alır?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div><div class="options"><div class="opt" data-q="44" data-val="A">A) <span class="fraction"><span class="num">9</span><span class="den">8</span></span></div><div class="opt" data-q="44" data-val="B">B) <span class="fraction"><span class="num">5</span><span class="den">8</span></span></div><div class="opt" data-q="44" data-val="C">C) <span class="fraction"><span class="num">7</span><span class="den">8</span></span></div><div class="opt" data-q="44" data-val="D">D) <span class="fraction"><span class="num">3</span><span class="den">8</span></span></div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="C"><div class="q-text"><span class="q-num mc">45</span>Aşağıdaki sayı doğrusunda 🔴 işareti hangi tamsayılı kesri göstermektedir?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div>
+<div class="number-line-wrap"><svg class="nl-svg" width="340" height="55" viewBox="0 0 340 55"><line x1="20" y1="30" x2="320" y2="30" stroke="#2d3748" stroke-width="2.5"/><line x1="20" y1="22" x2="20" y2="38" stroke="#2d3748" stroke-width="2.5"/><text x="20" y="50" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d3748">0</text><line x1="120" y1="20" x2="120" y2="40" stroke="#2d3748" stroke-width="2.5"/><text x="120" y="50" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d3748">1</text><line x1="220" y1="20" x2="220" y2="40" stroke="#2d3748" stroke-width="2.5"/><text x="220" y="50" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d3748">2</text><line x1="320" y1="20" x2="320" y2="40" stroke="#2d3748" stroke-width="2.5"/><text x="320" y="50" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d3748">3</text><line x1="45" y1="24" x2="45" y2="36" stroke="#6366f1" stroke-width="1.2"/><line x1="70" y1="24" x2="70" y2="36" stroke="#6366f1" stroke-width="1.2"/><line x1="95" y1="24" x2="95" y2="36" stroke="#6366f1" stroke-width="1.2"/><line x1="145" y1="24" x2="145" y2="36" stroke="#6366f1" stroke-width="1.2"/><line x1="170" y1="24" x2="170" y2="36" stroke="#6366f1" stroke-width="1.2"/><line x1="195" y1="24" x2="195" y2="36" stroke="#6366f1" stroke-width="1.2"/><line x1="245" y1="24" x2="245" y2="36" stroke="#6366f1" stroke-width="1.2"/><line x1="270" y1="24" x2="270" y2="36" stroke="#6366f1" stroke-width="1.2"/><line x1="295" y1="24" x2="295" y2="36" stroke="#6366f1" stroke-width="1.2"/><circle cx="195" cy="30" r="6" fill="#f5576c"/><text x="195" y="18" text-anchor="middle" font-size="13">🔴</text></svg></div>
+<div class="options"><div class="opt" data-q="45" data-val="A">A) 1 <span class="fraction"><span class="num">1</span><span class="den">4</span></span></div><div class="opt" data-q="45" data-val="B">B) 2 <span class="fraction"><span class="num">1</span><span class="den">4</span></span></div><div class="opt" data-q="45" data-val="C">C) 1 <span class="fraction"><span class="num">3</span><span class="den">4</span></span></div><div class="opt" data-q="45" data-val="D">D) 1 <span class="fraction"><span class="num">2</span><span class="den">4</span></span></div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="B"><div class="q-text"><span class="q-num mc">46</span>Aşağıdakilerden hangisi birim kesirdir?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div><div class="options"><div class="opt" data-q="46" data-val="A">A) <span class="fraction"><span class="num">3</span><span class="den">5</span></span></div><div class="opt" data-q="46" data-val="B">B) <span class="fraction"><span class="num">1</span><span class="den">7</span></span></div><div class="opt" data-q="46" data-val="C">C) <span class="fraction"><span class="num">7</span><span class="den">7</span></span></div><div class="opt" data-q="46" data-val="D">D) <span class="fraction"><span class="num">7</span><span class="den">1</span></span></div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="C"><div class="q-text"><span class="q-num mc">47</span>5 <span class="fraction"><span class="num">2</span><span class="den">6</span></span> tamsayılı kesrini bileşik kesir olarak yazınız.<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div><div class="options"><div class="opt" data-q="47" data-val="A">A) <span class="fraction"><span class="num">28</span><span class="den">6</span></span></div><div class="opt" data-q="47" data-val="B">B) <span class="fraction"><span class="num">30</span><span class="den">6</span></span></div><div class="opt" data-q="47" data-val="C">C) <span class="fraction"><span class="num">32</span><span class="den">6</span></span></div><div class="opt" data-q="47" data-val="D">D) <span class="fraction"><span class="num">25</span><span class="den">6</span></span></div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="A"><div class="q-text"><span class="q-num mc">48</span>Aşağıdaki şekillerden hangisi <span class="fraction"><span class="num">5</span><span class="den">6</span></span> kesrini göstermektedir?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
+<div class="opt" data-q="48" data-val="A" style="text-align:center;"><div style="font-weight:800;color:#6366f1;margin-bottom:4px;">A)</div><svg width="70" height="70" viewBox="0 0 70 70"><circle cx="35" cy="35" r="30" fill="#fff" stroke="#4338ca" stroke-width="2"/><path d="M35,35 L35,5 A30,30 0 0,1 61,17 Z" fill="#6366f1"/><path d="M35,35 L61,17 A30,30 0 0,1 61,53 Z" fill="#6366f1"/><path d="M35,35 L61,53 A30,30 0 0,1 35,65 Z" fill="#6366f1"/><path d="M35,35 L35,65 A30,30 0 0,1 9,53 Z" fill="#6366f1"/><path d="M35,35 L9,53 A30,30 0 0,1 9,17 Z" fill="#6366f1"/><line x1="35" y1="35" x2="35" y2="5" stroke="#4338ca" stroke-width="1.5"/><line x1="35" y1="35" x2="61" y2="17" stroke="#4338ca" stroke-width="1.5"/><line x1="35" y1="35" x2="61" y2="53" stroke="#4338ca" stroke-width="1.5"/><line x1="35" y1="35" x2="35" y2="65" stroke="#4338ca" stroke-width="1.5"/><line x1="35" y1="35" x2="9" y2="53" stroke="#4338ca" stroke-width="1.5"/><line x1="35" y1="35" x2="9" y2="17" stroke="#4338ca" stroke-width="1.5"/></svg></div>
+<div class="opt" data-q="48" data-val="B" style="text-align:center;"><div style="font-weight:800;color:#6366f1;margin-bottom:4px;">B)</div><svg width="70" height="70" viewBox="0 0 70 70"><circle cx="35" cy="35" r="30" fill="#fff" stroke="#4338ca" stroke-width="2"/><path d="M35,35 L35,5 A30,30 0 0,1 61,17 Z" fill="#6366f1"/><path d="M35,35 L61,17 A30,30 0 0,1 61,53 Z" fill="#6366f1"/><path d="M35,35 L61,53 A30,30 0 0,1 35,65 Z" fill="#6366f1"/><line x1="35" y1="35" x2="35" y2="5" stroke="#4338ca" stroke-width="1.5"/><line x1="35" y1="35" x2="61" y2="17" stroke="#4338ca" stroke-width="1.5"/><line x1="35" y1="35" x2="61" y2="53" stroke="#4338ca" stroke-width="1.5"/><line x1="35" y1="35" x2="35" y2="65" stroke="#4338ca" stroke-width="1.5"/><line x1="35" y1="35" x2="9" y2="53" stroke="#4338ca" stroke-width="1.5"/><line x1="35" y1="35" x2="9" y2="17" stroke="#4338ca" stroke-width="1.5"/></svg></div>
+<div class="opt" data-q="48" data-val="C" style="text-align:center;"><div style="font-weight:800;color:#6366f1;margin-bottom:4px;">C)</div><svg width="120" height="30" viewBox="0 0 120 30"><rect x="2" y="2" width="18" height="26" fill="#6366f1" stroke="#4338ca" stroke-width="1.5" rx="2"/><rect x="22" y="2" width="18" height="26" fill="#6366f1" stroke="#4338ca" stroke-width="1.5" rx="2"/><rect x="42" y="2" width="18" height="26" fill="#6366f1" stroke="#4338ca" stroke-width="1.5" rx="2"/><rect x="62" y="2" width="18" height="26" fill="#6366f1" stroke="#4338ca" stroke-width="1.5" rx="2"/><rect x="82" y="2" width="18" height="26" fill="#fff" stroke="#4338ca" stroke-width="1.5" rx="2"/><rect x="102" y="2" width="16" height="26" fill="#fff" stroke="#4338ca" stroke-width="1.5" rx="2"/></svg></div>
+<div class="opt" data-q="48" data-val="D" style="text-align:center;"><div style="font-weight:800;color:#6366f1;margin-bottom:4px;">D)</div><svg width="120" height="30" viewBox="0 0 120 30"><rect x="2" y="2" width="18" height="26" fill="#6366f1" stroke="#4338ca" stroke-width="1.5" rx="2"/><rect x="22" y="2" width="18" height="26" fill="#6366f1" stroke="#4338ca" stroke-width="1.5" rx="2"/><rect x="42" y="2" width="18" height="26" fill="#fff" stroke="#4338ca" stroke-width="1.5" rx="2"/><rect x="62" y="2" width="18" height="26" fill="#fff" stroke="#4338ca" stroke-width="1.5" rx="2"/><rect x="82" y="2" width="18" height="26" fill="#fff" stroke="#4338ca" stroke-width="1.5" rx="2"/><rect x="102" y="2" width="16" height="26" fill="#fff" stroke="#4338ca" stroke-width="1.5" rx="2"/></svg></div>
+</div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="C"><div class="q-text"><span class="q-num mc">49</span><span class="fraction fraction-big"><span class="num">20</span><span class="den">6</span></span> bileşik kesri tamsayılı kesre dönüştürülürse sonuç nedir?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div><div class="options"><div class="opt" data-q="49" data-val="A">A) 2 <span class="fraction"><span class="num">4</span><span class="den">6</span></span></div><div class="opt" data-q="49" data-val="B">B) 4 <span class="fraction"><span class="num">1</span><span class="den">6</span></span></div><div class="opt" data-q="49" data-val="C">C) 3 <span class="fraction"><span class="num">2</span><span class="den">6</span></span></div><div class="opt" data-q="49" data-val="D">D) 2 <span class="fraction"><span class="num">2</span><span class="den">6</span></span></div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="B"><div class="q-text"><span class="q-num mc">50</span>Sayı doğrusunda <span class="fraction"><span class="num">11</span><span class="den">4</span></span> kesri nerededir?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div><div class="options"><div class="opt" data-q="50" data-val="A">A) 1 ile 2 arasında, 1. noktada</div><div class="opt" data-q="50" data-val="B">B) 2 ile 3 arasında, 3. noktada</div><div class="opt" data-q="50" data-val="C">C) 3 ile 4 arasında, 2. noktada</div><div class="opt" data-q="50" data-val="D">D) 0 ile 1 arasında, 3. noktada</div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="A"><div class="q-text"><span class="q-num mc">51</span>Hangi kesir öz kesir DEĞİLDİR?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div><div class="options"><div class="opt" data-q="51" data-val="A">A) <span class="fraction"><span class="num">8</span><span class="den">3</span></span></div><div class="opt" data-q="51" data-val="B">B) <span class="fraction"><span class="num">3</span><span class="den">8</span></span></div><div class="opt" data-q="51" data-val="C">C) <span class="fraction"><span class="num">5</span><span class="den">9</span></span></div><div class="opt" data-q="51" data-val="D">D) <span class="fraction"><span class="num">6</span><span class="den">7</span></span></div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="C"><div class="q-text"><span class="q-num mc">52</span>Aşağıdaki üçgenlerin boyalı toplam alanı hangi tamsayılı kesri göstermektedir?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div>
+<div style="margin-top:8px;text-align:center;"><svg width="260" height="65" viewBox="0 0 260 65"><defs><clipPath id="t1"><polygon points="35,5 5,60 65,60"/></clipPath><clipPath id="t2"><polygon points="100,5 70,60 130,60"/></clipPath><clipPath id="t3"><polygon points="165,5 135,60 195,60"/></clipPath><clipPath id="t4"><polygon points="230,5 200,60 260,60"/></clipPath></defs><polygon points="35,5 5,60 65,60" fill="none" stroke="#9f1239" stroke-width="2"/><rect x="5" y="5" width="60" height="60" fill="#f5576c" clip-path="url(#t1)"/><polygon points="100,5 70,60 130,60" fill="none" stroke="#9f1239" stroke-width="2"/><rect x="70" y="5" width="60" height="60" fill="#f5576c" clip-path="url(#t2)"/><polygon points="165,5 135,60 195,60" fill="none" stroke="#9f1239" stroke-width="2"/><rect x="135" y="5" width="60" height="60" fill="#f5576c" clip-path="url(#t3)"/><polygon points="230,5 200,60 260,60" fill="none" stroke="#9f1239" stroke-width="2"/><rect x="200" y="5" width="30" height="60" fill="#f5576c" clip-path="url(#t4)"/><line x1="230" y1="5" x2="230" y2="60" stroke="#9f1239" stroke-width="1.2" clip-path="url(#t4)"/></svg></div>
+<div class="options"><div class="opt" data-q="52" data-val="A">A) 3 <span class="fraction"><span class="num">2</span><span class="den">2</span></span></div><div class="opt" data-q="52" data-val="B">B) 4 <span class="fraction"><span class="num">1</span><span class="den">2</span></span></div><div class="opt" data-q="52" data-val="C">C) 3 <span class="fraction"><span class="num">1</span><span class="den">2</span></span></div><div class="opt" data-q="52" data-val="D">D) 2 <span class="fraction"><span class="num">1</span><span class="den">2</span></span></div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="B"><div class="q-text"><span class="q-num mc">53</span>6 <span class="fraction"><span class="num">1</span><span class="den">3</span></span> bileşik kesre dönüştürüldüğünde pay nedir?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div><div class="options"><div class="opt" data-q="53" data-val="A">A) 17</div><div class="opt" data-q="53" data-val="B">B) 19</div><div class="opt" data-q="53" data-val="C">C) 21</div><div class="opt" data-q="53" data-val="D">D) 15</div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="D"><div class="q-text"><span class="q-num mc">54</span>Sayı doğrusunda 0 ile 1 arasında 3 eşit parçaya bölünmüşse, <span class="fraction"><span class="num">2</span><span class="den">3</span></span> kesri hangi noktadadır?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div><div class="options"><div class="opt" data-q="54" data-val="A">A) 1. nokta</div><div class="opt" data-q="54" data-val="B">B) 3. nokta</div><div class="opt" data-q="54" data-val="C">C) 0. nokta</div><div class="opt" data-q="54" data-val="D">D) 2. nokta</div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="A"><div class="q-text"><span class="q-num mc">55</span>Aşağıdaki şekillerden hangisinde boyalı parça <span class="fraction"><span class="num">2</span><span class="den">3</span></span> kesrini göstermez?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;">
+<div class="opt" data-q="55" data-val="A" style="text-align:center;"><div style="font-weight:800;margin-bottom:4px;">A)</div><svg width="80" height="30" viewBox="0 0 80 30"><rect x="2" y="2" width="18" height="26" fill="#43e97b" stroke="#166534" stroke-width="1.5" rx="2"/><rect x="22" y="2" width="18" height="26" fill="#fff" stroke="#166534" stroke-width="1.5" rx="2"/><rect x="42" y="2" width="18" height="26" fill="#fff" stroke="#166534" stroke-width="1.5" rx="2"/><rect x="62" y="2" width="16" height="26" fill="#fff" stroke="#166534" stroke-width="1.5" rx="2"/></svg></div>
+<div class="opt" data-q="55" data-val="B" style="text-align:center;"><div style="font-weight:800;margin-bottom:4px;">B)</div><svg width="70" height="70" viewBox="0 0 70 70"><circle cx="35" cy="35" r="30" fill="#fff" stroke="#4338ca" stroke-width="2"/><path d="M35,35 L35,5 A30,30 0 0,1 61,50 Z" fill="#6366f1"/><path d="M35,35 L61,50 A30,30 0 0,1 9,50 Z" fill="#6366f1"/><line x1="35" y1="35" x2="35" y2="5" stroke="#4338ca" stroke-width="1.5"/><line x1="35" y1="35" x2="61" y2="50" stroke="#4338ca" stroke-width="1.5"/><line x1="35" y1="35" x2="9" y2="50" stroke="#4338ca" stroke-width="1.5"/></svg></div>
+<div class="opt" data-q="55" data-val="C" style="text-align:center;"><div style="font-weight:800;margin-bottom:4px;">C)</div><svg width="120" height="30" viewBox="0 0 120 30"><rect x="2" y="2" width="37" height="26" fill="#6366f1" stroke="#4338ca" stroke-width="1.5" rx="2"/><rect x="41" y="2" width="37" height="26" fill="#6366f1" stroke="#4338ca" stroke-width="1.5" rx="2"/><rect x="80" y="2" width="37" height="26" fill="#fff" stroke="#4338ca" stroke-width="1.5" rx="2"/></svg></div>
+<div class="opt" data-q="55" data-val="D" style="text-align:center;"><div style="font-weight:800;margin-bottom:4px;">D)</div><svg width="80" height="65" viewBox="0 0 80 65"><defs><clipPath id="t55d"><polygon points="40,5 5,60 75,60"/></clipPath></defs><polygon points="40,5 5,60 75,60" fill="none" stroke="#9f1239" stroke-width="2"/><rect x="5" y="5" width="23" height="60" fill="#f5576c" clip-path="url(#t55d)"/><rect x="28" y="5" width="23" height="60" fill="#f5576c" clip-path="url(#t55d)"/><rect x="52" y="5" width="23" height="60" fill="#fff" clip-path="url(#t55d)"/><line x1="40" y1="5" x2="28" y2="60" stroke="#9f1239" stroke-width="1" clip-path="url(#t55d)"/><line x1="40" y1="5" x2="52" y2="60" stroke="#9f1239" stroke-width="1" clip-path="url(#t55d)"/></svg></div>
+</div></div>
+
+</div><!-- B3 end -->
+
+<!-- BÖLÜM 4 -->
+<div class="section-title sec4" id="sec4" onclick="toggleSec(this)"><span class="arrow">▼</span> 🔗 BÖLÜM 4: EŞLEŞTİRME — Kesir Gösterimleri (56–70)</div>
+<div class="section-body">
+
+<!-- MATCH 56-60: Shape to Fraction -->
+<div class="q-card match" data-type="match">
+  <div class="q-text"><span class="q-num match">56–60</span>Aşağıdaki şekilleri uygun kesirlerle eşleştiriniz. (Önce bir şekle, sonra kesire tıklayın)<span class="q-type-tag tag-match">Eşleştirme</span></div>
+  <div class="match-game" id="match56">
+    <div class="match-columns">
+      <div>
+        <div class="match-col-title match-left-title">📐 Şekiller</div>
+        <div class="match-item match-left-item" data-match-id="match56" data-left="A" onclick="selectLeft('match56','A',this)">
+          <div style="font-weight:900;font-size:.8rem;margin-bottom:4px;">A</div>
+          <div style="text-align:center;">
+            <svg width="60" height="60" viewBox="0 0 70 70"><circle cx="35" cy="35" r="30" fill="#fff" stroke="#6b21a8" stroke-width="2"/><path d="M35,35 L35,5 A30,30 0 0,1 61,50 Z" fill="#9333ea"/><line x1="35" y1="35" x2="35" y2="5" stroke="#6b21a8" stroke-width="1.5"/><line x1="35" y1="35" x2="61" y2="50" stroke="#6b21a8" stroke-width="1.5"/><line x1="35" y1="35" x2="9" y2="50" stroke="#6b21a8" stroke-width="1.5"/></svg>
+          </div>
+          <span class="match-badge"></span>
+        </div>
+        <div class="match-item match-left-item" data-match-id="match56" data-left="B" onclick="selectLeft('match56','B',this)">
+          <div style="font-weight:900;font-size:.8rem;margin-bottom:4px;">B</div>
+          <div style="text-align:center;">
+            <svg width="100" height="24" viewBox="0 0 100 28"><rect x="2" y="2" width="22" height="24" fill="#9333ea" stroke="#6b21a8" stroke-width="1.5" rx="2"/><rect x="26" y="2" width="22" height="24" fill="#9333ea" stroke="#6b21a8" stroke-width="1.5" rx="2"/><rect x="50" y="2" width="22" height="24" fill="#fff" stroke="#6b21a8" stroke-width="1.5" rx="2"/><rect x="74" y="2" width="22" height="24" fill="#fff" stroke="#6b21a8" stroke-width="1.5" rx="2"/></svg>
+          </div>
+          <span class="match-badge"></span>
+        </div>
+        <div class="match-item match-left-item" data-match-id="match56" data-left="C" onclick="selectLeft('match56','C',this)">
+          <div style="font-weight:900;font-size:.8rem;margin-bottom:4px;">C</div>
+          <div style="text-align:center;">
+            <svg width="70" height="55" viewBox="0 0 80 60"><defs><clipPath id="trC2"><polygon points="40,5 5,55 75,55"/></clipPath></defs><polygon points="40,5 5,55 75,55" fill="none" stroke="#6b21a8" stroke-width="2"/><rect x="5" y="5" width="14" height="55" fill="#9333ea" clip-path="url(#trC2)"/><rect x="19" y="5" width="14" height="55" fill="#9333ea" clip-path="url(#trC2)"/><rect x="33" y="5" width="14" height="55" fill="#9333ea" clip-path="url(#trC2)"/><rect x="47" y="5" width="14" height="55" fill="#fff" clip-path="url(#trC2)"/><rect x="61" y="5" width="14" height="55" fill="#fff" clip-path="url(#trC2)"/></svg>
+          </div>
+          <span class="match-badge"></span>
+        </div>
+        <div class="match-item match-left-item" data-match-id="match56" data-left="D" onclick="selectLeft('match56','D',this)">
+          <div style="font-weight:900;font-size:.8rem;margin-bottom:4px;">D</div>
+          <div style="text-align:center;">
+            <svg width="90" height="24" viewBox="0 0 90 28"><rect x="2" y="2" width="16" height="24" fill="#9333ea" stroke="#6b21a8" stroke-width="1.5" rx="2"/><rect x="20" y="2" width="16" height="24" fill="#9333ea" stroke="#6b21a8" stroke-width="1.5" rx="2"/><rect x="38" y="2" width="16" height="24" fill="#9333ea" stroke="#6b21a8" stroke-width="1.5" rx="2"/><rect x="56" y="2" width="16" height="24" fill="#9333ea" stroke="#6b21a8" stroke-width="1.5" rx="2"/><rect x="74" y="2" width="14" height="24" fill="#fff" stroke="#6b21a8" stroke-width="1.5" rx="2"/></svg>
+          </div>
+          <span class="match-badge"></span>
+        </div>
+      </div>
+      <div>
+        <div class="match-col-title match-right-title">🔢 Kesirler</div>
+        <div class="match-item match-right-item" data-match-id="match56" data-right="1" onclick="selectRight('match56','1',this)" style="font-size:1.1rem;text-align:center;">
+          <span class="fraction fraction-big"><span class="num">2</span><span class="den">4</span></span>
+          <span class="match-badge"></span>
+        </div>
+        <div class="match-item match-right-item" data-match-id="match56" data-right="2" onclick="selectRight('match56','2',this)" style="font-size:1.1rem;text-align:center;">
+          <span class="fraction fraction-big"><span class="num">4</span><span class="den">5</span></span>
+          <span class="match-badge"></span>
+        </div>
+        <div class="match-item match-right-item" data-match-id="match56" data-right="3" onclick="selectRight('match56','3',this)" style="font-size:1.1rem;text-align:center;">
+          <span class="fraction fraction-big"><span class="num">1</span><span class="den">3</span></span>
+          <span class="match-badge"></span>
+        </div>
+        <div class="match-item match-right-item" data-match-id="match56" data-right="4" onclick="selectRight('match56','4',this)" style="font-size:1.1rem;text-align:center;">
+          <span class="fraction fraction-big"><span class="num">3</span><span class="den">5</span></span>
+          <span class="match-badge"></span>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:8px;">
+      <div class="match-score" id="match56-score">Eşleştirilen: 0 / 4</div>
+      <button class="match-reset-btn" onclick="resetMatch('match56')">🔄 Sıfırla</button>
+    </div>
+  </div>
+</div>
+
+<!-- MATCH 61-65: Bilesik → Tamsayili -->
+<div class="q-card match" data-type="match">
+  <div class="q-text"><span class="q-num match">61–65</span>Bileşik kesirleri uygun tamsayılı kesirlerle eşleştiriniz.<span class="q-type-tag tag-match">Eşleştirme</span></div>
+  <div class="match-game" id="match61">
+    <div class="match-columns">
+      <div>
+        <div class="match-col-title match-left-title">🔢 Bileşik Kesir</div>
+        <div class="match-item match-left-item" data-match-id="match61" data-left="A" onclick="selectLeft('match61','A',this)"><span class="fraction fraction-big"><span class="num">7</span><span class="den">2</span></span><span class="match-badge"></span></div>
+        <div class="match-item match-left-item" data-match-id="match61" data-left="B" onclick="selectLeft('match61','B',this)"><span class="fraction fraction-big"><span class="num">13</span><span class="den">3</span></span><span class="match-badge"></span></div>
+        <div class="match-item match-left-item" data-match-id="match61" data-left="C" onclick="selectLeft('match61','C',this)"><span class="fraction fraction-big"><span class="num">17</span><span class="den">5</span></span><span class="match-badge"></span></div>
+        <div class="match-item match-left-item" data-match-id="match61" data-left="D" onclick="selectLeft('match61','D',this)"><span class="fraction fraction-big"><span class="num">11</span><span class="den">4</span></span><span class="match-badge"></span></div>
+        <div class="match-item match-left-item" data-match-id="match61" data-left="E" onclick="selectLeft('match61','E',this)"><span class="fraction fraction-big"><span class="num">18</span><span class="den">7</span></span><span class="match-badge"></span></div>
+      </div>
+      <div>
+        <div class="match-col-title match-right-title">🔢 Tamsayılı Kesir</div>
+        <div class="match-item match-right-item" data-match-id="match61" data-right="1" onclick="selectRight('match61','1',this)">3 <span class="fraction"><span class="num">1</span><span class="den">2</span></span><span class="match-badge"></span></div>
+        <div class="match-item match-right-item" data-match-id="match61" data-right="2" onclick="selectRight('match61','2',this)">4 <span class="fraction"><span class="num">1</span><span class="den">3</span></span><span class="match-badge"></span></div>
+        <div class="match-item match-right-item" data-match-id="match61" data-right="3" onclick="selectRight('match61','3',this)">3 <span class="fraction"><span class="num">2</span><span class="den">5</span></span><span class="match-badge"></span></div>
+        <div class="match-item match-right-item" data-match-id="match61" data-right="4" onclick="selectRight('match61','4',this)">2 <span class="fraction"><span class="num">3</span><span class="den">4</span></span><span class="match-badge"></span></div>
+        <div class="match-item match-right-item" data-match-id="match61" data-right="5" onclick="selectRight('match61','5',this)">2 <span class="fraction"><span class="num">4</span><span class="den">7</span></span><span class="match-badge"></span></div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:8px;">
+      <div class="match-score" id="match61-score">Eşleştirilen: 0 / 5</div>
+      <button class="match-reset-btn" onclick="resetMatch('match61')">🔄 Sıfırla</button>
+    </div>
+  </div>
+</div>
+
+<!-- MATCH 66-70: Number line points -->
+<div class="q-card match" data-type="match">
+  <div class="q-text"><span class="q-num match">66–70</span>Sayı doğrusundaki harfleri uygun kesirlerle eşleştiriniz.<span class="q-type-tag tag-match">Eşleştirme</span></div>
+  <div class="number-line-wrap">
+    <svg class="nl-svg" width="360" height="55" viewBox="0 0 360 55">
+      <line x1="10" y1="35" x2="350" y2="35" stroke="#2d3748" stroke-width="2.5"/>
+      <line x1="10" y1="27" x2="10" y2="43" stroke="#2d3748" stroke-width="2.5"/><text x="10" y="52" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d3748">0</text>
+      <line x1="90" y1="25" x2="90" y2="45" stroke="#2d3748" stroke-width="2.5"/><text x="90" y="52" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d3748">1</text>
+      <line x1="170" y1="25" x2="170" y2="45" stroke="#2d3748" stroke-width="2.5"/><text x="170" y="52" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d3748">2</text>
+      <line x1="250" y1="25" x2="250" y2="45" stroke="#2d3748" stroke-width="2.5"/><text x="250" y="52" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d3748">3</text>
+      <line x1="330" y1="25" x2="330" y2="45" stroke="#2d3748" stroke-width="2.5"/><text x="330" y="52" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d3748">4</text>
+      <line x1="30" y1="29" x2="30" y2="41" stroke="#6366f1" stroke-width="1.2"/>
+      <line x1="50" y1="29" x2="50" y2="41" stroke="#6366f1" stroke-width="1.2"/>
+      <line x1="70" y1="29" x2="70" y2="41" stroke="#6366f1" stroke-width="1.2"/>
+      <line x1="110" y1="29" x2="110" y2="41" stroke="#6366f1" stroke-width="1.2"/>
+      <line x1="130" y1="29" x2="130" y2="41" stroke="#6366f1" stroke-width="1.2"/>
+      <line x1="150" y1="29" x2="150" y2="41" stroke="#6366f1" stroke-width="1.2"/>
+      <line x1="190" y1="29" x2="190" y2="41" stroke="#6366f1" stroke-width="1.2"/>
+      <line x1="210" y1="29" x2="210" y2="41" stroke="#6366f1" stroke-width="1.2"/>
+      <line x1="230" y1="29" x2="230" y2="41" stroke="#6366f1" stroke-width="1.2"/>
+      <line x1="270" y1="29" x2="270" y2="41" stroke="#6366f1" stroke-width="1.2"/>
+      <line x1="290" y1="29" x2="290" y2="41" stroke="#6366f1" stroke-width="1.2"/>
+      <line x1="310" y1="29" x2="310" y2="41" stroke="#6366f1" stroke-width="1.2"/>
+      <text x="50" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#e11d48">A</text><circle cx="50" cy="35" r="5" fill="#e11d48"/>
+      <text x="130" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#2563eb">B</text><circle cx="130" cy="35" r="5" fill="#2563eb"/>
+      <text x="210" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#16a34a">C</text><circle cx="210" cy="35" r="5" fill="#16a34a"/>
+      <text x="290" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#9333ea">D</text><circle cx="290" cy="35" r="5" fill="#9333ea"/>
+      <text x="310" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#ea580c">E</text><circle cx="310" cy="35" r="5" fill="#ea580c"/>
+    </svg>
+  </div>
+  <div class="match-game" id="match66">
+    <div class="match-columns">
+      <div>
+        <div class="match-col-title match-left-title">📍 Nokta</div>
+        <div class="match-item match-left-item" data-match-id="match66" data-left="A" onclick="selectLeft('match66','A',this)" style="color:#e11d48;">A (kırmızı)<span class="match-badge"></span></div>
+        <div class="match-item match-left-item" data-match-id="match66" data-left="B" onclick="selectLeft('match66','B',this)" style="color:#2563eb;">B (mavi)<span class="match-badge"></span></div>
+        <div class="match-item match-left-item" data-match-id="match66" data-left="C" onclick="selectLeft('match66','C',this)" style="color:#16a34a;">C (yeşil)<span class="match-badge"></span></div>
+        <div class="match-item match-left-item" data-match-id="match66" data-left="D" onclick="selectLeft('match66','D',this)" style="color:#9333ea;">D (mor)<span class="match-badge"></span></div>
+        <div class="match-item match-left-item" data-match-id="match66" data-left="E" onclick="selectLeft('match66','E',this)" style="color:#ea580c;">E (turuncu)<span class="match-badge"></span></div>
+      </div>
+      <div>
+        <div class="match-col-title match-right-title">🔢 Kesir</div>
+        <div class="match-item match-right-item" data-match-id="match66" data-right="1" onclick="selectRight('match66','1',this)"><span class="fraction fraction-big"><span class="num">2</span><span class="den">4</span></span><span class="match-badge"></span></div>
+        <div class="match-item match-right-item" data-match-id="match66" data-right="2" onclick="selectRight('match66','2',this)"><span class="fraction fraction-big"><span class="num">6</span><span class="den">4</span></span><span class="match-badge"></span></div>
+        <div class="match-item match-right-item" data-match-id="match66" data-right="3" onclick="selectRight('match66','3',this)"><span class="fraction fraction-big"><span class="num">10</span><span class="den">4</span></span><span class="match-badge"></span></div>
+        <div class="match-item match-right-item" data-match-id="match66" data-right="4" onclick="selectRight('match66','4',this)"><span class="fraction fraction-big"><span class="num">14</span><span class="den">4</span></span><span class="match-badge"></span></div>
+        <div class="match-item match-right-item" data-match-id="match66" data-right="5" onclick="selectRight('match66','5',this)"><span class="fraction fraction-big"><span class="num">15</span><span class="den">4</span></span><span class="match-badge"></span></div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:8px;">
+      <div class="match-score" id="match66-score">Eşleştirilen: 0 / 5</div>
+      <button class="match-reset-btn" onclick="resetMatch('match66')">🔄 Sıfırla</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- B4 end -->
+
+<!-- BÖLÜM 5 -->
+<div class="section-title sec5" id="sec5" onclick="toggleSec(this)"><span class="arrow">▼</span> ✏️ BÖLÜM 5: BOŞLUK DOLDURMA — Dönüşümler & Sayı Doğrusu (71–82)</div>
+<div class="section-body">
+
+<div class="q-card fill" data-type="fill" data-answer="7"><div class="q-text"><span class="q-num fill">71</span><span class="fraction fraction-big"><span class="num">29</span><span class="den">4</span></span> bileşik kesrinde tam kısım <span class="answer-line"></span>'dir.<span class="q-type-tag tag-fill">Boşluk</span></div><div class="answer-box">Tam kısım = <input class="fill-input" data-q="71" type="number" min="0" max="30"/></div></div>
+
+<div class="q-card fill" data-type="fill" data-answer="1"><div class="q-text"><span class="q-num fill">72</span><span class="fraction fraction-big"><span class="num">29</span><span class="den">4</span></span> = 7 <span class="fraction"><span class="num">?</span><span class="den">4</span></span> &nbsp;? yerine gelen sayı nedir?<span class="q-type-tag tag-fill">Boşluk</span></div><div class="answer-box">? = <input class="fill-input" data-q="72" type="number" min="0" max="10"/></div></div>
+
+<div class="q-card fill" data-type="fill" data-answer="23"><div class="q-text"><span class="q-num fill">73</span>4 <span class="fraction"><span class="num">3</span><span class="den">5</span></span> tamsayılı kesrini bileşik kesre dönüştürünüz. Pay = <span class="answer-line"></span><span class="q-type-tag tag-fill">Boşluk</span></div><div class="answer-box">Pay = <input class="fill-input" data-q="73" type="number" min="0" max="40"/></div></div>
+
+<div class="q-card fill" data-type="fill" data-answer="3"><div class="q-text"><span class="q-num fill">74</span><span class="fraction"><span class="num">9</span><span class="den">3</span></span> kesri sayı doğrusunda tam olarak hangi sayıyı göstermektedir?<span class="q-type-tag tag-fill">Boşluk</span></div><div class="answer-box">= <input class="fill-input" data-q="74" type="number" min="0" max="10"/></div></div>
+
+<div class="q-card fill" data-type="fill" data-answer="öz"><div class="q-text"><span class="q-num fill">75</span>Sayı doğrusunda 0 ile 1 arasında gösterilen kesirler <span class="answer-line"></span> kesirdir.<span class="q-type-tag tag-fill">Boşluk</span></div><div class="answer-box">Cevap: <input class="fill-input" data-q="75" type="text" style="width:100px;" placeholder="..."/></div></div>
+
+<div class="q-card fill" data-type="fill" data-answer="25"><div class="q-text"><span class="q-num fill">76</span>8 <span class="fraction"><span class="num">1</span><span class="den">3</span></span> bileşik kesre dönüştürüldüğünde pay nedir?<span class="q-type-tag tag-fill">Boşluk</span></div><div class="answer-box">Pay = <input class="fill-input" data-q="76" type="number" min="0" max="40"/></div></div>
+
+<div class="q-card fill" data-type="fill" data-answer="1"><div class="q-text"><span class="q-num fill">77</span><span class="fraction fraction-big"><span class="num">21</span><span class="den">5</span></span> bileşik kesrinin tamsayılı hali 4 <span class="fraction"><span class="num">?</span><span class="den">5</span></span>'tir.<span class="q-type-tag tag-fill">Boşluk</span></div><div class="answer-box">? = <input class="fill-input" data-q="77" type="number" min="0" max="10"/></div></div>
+
+<div class="q-card fill" data-type="fill" data-answer="bilesik"><div class="q-text"><span class="q-num fill">78</span>Tamsayılı kesirler sayı doğrusunda birer <span class="answer-line"></span> kesir olarak da ifade edilebilir.<span class="q-type-tag tag-fill">Boşluk</span></div><div class="answer-box">Cevap: <input class="fill-input" data-q="78" type="text" style="width:120px;" placeholder="..."/></div></div>
+
+<div class="q-card fill" data-type="fill" data-answer="2"><div class="q-text"><span class="q-num fill">79</span>Aşağıdaki şekilde kaç tam bütün dikdörtgen boyalıdır?<span class="q-type-tag tag-fill">Boşluk</span></div>
+<div style="margin-top:8px;text-align:center;"><svg width="260" height="42" viewBox="0 0 260 42"><rect x="2" y="2" width="28" height="38" fill="#4facfe" stroke="#0369a1" stroke-width="1.5" rx="2"/><rect x="32" y="2" width="28" height="38" fill="#4facfe" stroke="#0369a1" stroke-width="1.5" rx="2"/><rect x="62" y="2" width="28" height="38" fill="#4facfe" stroke="#0369a1" stroke-width="1.5" rx="2"/><rect x="102" y="2" width="28" height="38" fill="#4facfe" stroke="#0369a1" stroke-width="1.5" rx="2"/><rect x="132" y="2" width="28" height="38" fill="#4facfe" stroke="#0369a1" stroke-width="1.5" rx="2"/><rect x="162" y="2" width="28" height="38" fill="#4facfe" stroke="#0369a1" stroke-width="1.5" rx="2"/><rect x="202" y="2" width="28" height="38" fill="#4facfe" stroke="#0369a1" stroke-width="1.5" rx="2"/><rect x="232" y="2" width="26" height="38" fill="#fff" stroke="#0369a1" stroke-width="1.5" rx="2"/></svg></div>
+<div class="answer-box">Tam boyalı dikdörtgen sayısı = <input class="fill-input" data-q="79" type="number" min="0" max="10"/></div></div>
+
+<div class="q-card fill" data-type="fill" data-answer="1"><div class="q-text"><span class="q-num fill">80</span><span class="fraction fraction-big"><span class="num">43</span><span class="den">6</span></span> tamsayılı hali 7 <span class="fraction"><span class="num">?</span><span class="den">6</span></span>'dır.<span class="q-type-tag tag-fill">Boşluk</span></div><div class="answer-box">? = <input class="fill-input" data-q="80" type="number" min="0" max="10"/></div></div>
+
+<div class="q-card fill" data-type="fill" data-answer="1/3"><div class="q-text"><span class="q-num fill">81</span>Sayı doğrusunda 0 ile 1 arasında 3 eşit parçaya bölünmüştür. İlk bölme noktası hangi kesri göstermektedir?<span class="q-type-tag tag-fill">Boşluk</span></div>
+<div class="number-line-wrap"><svg class="nl-svg" width="300" height="45" viewBox="0 0 300 45"><line x1="20" y1="25" x2="280" y2="25" stroke="#2d3748" stroke-width="2.5"/><line x1="20" y1="18" x2="20" y2="32" stroke="#2d3748" stroke-width="2.5"/><text x="20" y="43" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d3748">0</text><line x1="280" y1="18" x2="280" y2="32" stroke="#2d3748" stroke-width="2.5"/><text x="280" y="43" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d3748">1</text><line x1="107" y1="19" x2="107" y2="31" stroke="#f5576c" stroke-width="2"/><line x1="194" y1="19" x2="194" y2="31" stroke="#f5576c" stroke-width="2"/><text x="107" y="13" text-anchor="middle" font-size="14">⭐</text></svg></div>
+<div class="answer-box">⭐ = <input class="fill-input" data-q="81" type="text" style="width:70px;" placeholder="_/_"/></div></div>
+
+<div class="q-card fill" data-type="fill" data-answer="31"><div class="q-text"><span class="q-num fill">82</span>6 <span class="fraction"><span class="num">1</span><span class="den">5</span></span> bileşik kesre dönüştürünüz. Pay = <span class="answer-line"></span><span class="q-type-tag tag-fill">Boşluk</span></div><div class="answer-box">Pay = <input class="fill-input" data-q="82" type="number" min="0" max="50"/></div></div>
+
+</div><!-- B5 end -->
+
+<!-- BÖLÜM 6 -->
+<div class="section-title sec6" id="sec6" onclick="toggleSec(this)"><span class="arrow">▼</span> ✅❌ BÖLÜM 6: DOĞRU / YANLIŞ — Şekil & Sayı Doğrusu (83–92)</div>
+<div class="section-body">
+
+<div class="q-card tf" data-type="tf" data-answer="Y"><div class="q-text"><span class="q-num tf">83</span>Aşağıdaki şekilde boyalı kısım <span class="fraction"><span class="num">3</span><span class="den">4</span></span> kesrini göstermektedir.<span class="q-type-tag tag-tf">D/Y</span></div>
+<div style="margin-top:8px;text-align:center;"><svg width="80" height="80" viewBox="0 0 80 80"><rect x="5" y="5" width="33" height="33" fill="#6366f1" stroke="#4338ca" stroke-width="1.5" rx="2"/><rect x="42" y="5" width="33" height="33" fill="#fff" stroke="#4338ca" stroke-width="1.5" rx="2"/><rect x="5" y="42" width="33" height="33" fill="#fff" stroke="#4338ca" stroke-width="1.5" rx="2"/><rect x="42" y="42" width="33" height="33" fill="#fff" stroke="#4338ca" stroke-width="1.5" rx="2"/></svg></div>
+<div class="options"><div class="opt" data-q="83" data-val="D">✅ Doğru</div><div class="opt" data-q="83" data-val="Y">❌ Yanlış</div></div></div>
+
+<div class="q-card tf" data-type="tf" data-answer="D"><div class="q-text"><span class="q-num tf">84</span><span class="fraction fraction-big"><span class="num">12</span><span class="den">5</span></span> kesri sayı doğrusunda 2 ile 3 arasında yer alır.<span class="q-type-tag tag-tf">D/Y</span></div><div class="options"><div class="opt" data-q="84" data-val="D">✅ Doğru</div><div class="opt" data-q="84" data-val="Y">❌ Yanlış</div></div></div>
+
+<div class="q-card tf" data-type="tf" data-answer="D"><div class="q-text"><span class="q-num tf">85</span>Aşağıdaki dairede boyalı kısım <span class="fraction"><span class="num">1</span><span class="den">4</span></span> kesrini göstermektedir.<span class="q-type-tag tag-tf">D/Y</span></div>
+<div style="margin-top:8px;text-align:center;"><svg width="80" height="80" viewBox="0 0 80 80"><circle cx="40" cy="40" r="34" fill="#fff" stroke="#f5576c" stroke-width="2"/><path d="M40,40 L40,6 A34,34 0 0,1 74,40 Z" fill="#f5576c"/><line x1="40" y1="40" x2="40" y2="6" stroke="#9f1239" stroke-width="1.5"/><line x1="40" y1="40" x2="74" y2="40" stroke="#9f1239" stroke-width="1.5"/><line x1="40" y1="40" x2="40" y2="74" stroke="#9f1239" stroke-width="1.5"/><line x1="40" y1="40" x2="6" y2="40" stroke="#9f1239" stroke-width="1.5"/></svg></div>
+<div class="options"><div class="opt" data-q="85" data-val="D">✅ Doğru</div><div class="opt" data-q="85" data-val="Y">❌ Yanlış</div></div></div>
+
+<div class="q-card tf" data-type="tf" data-answer="Y"><div class="q-text"><span class="q-num tf">86</span>2 <span class="fraction"><span class="num">3</span><span class="den">4</span></span> = <span class="fraction"><span class="num">10</span><span class="den">4</span></span> 'dür.<span class="q-type-tag tag-tf">D/Y</span></div><div class="options"><div class="opt" data-q="86" data-val="D">✅ Doğru</div><div class="opt" data-q="86" data-val="Y">❌ Yanlış</div></div></div>
+
+<div class="q-card tf" data-type="tf" data-answer="D"><div class="q-text"><span class="q-num tf">87</span>Sayı doğrusunda 0 ile 3 arası 6 eşit parçaya bölünmüşse her parça <span class="fraction"><span class="num">1</span><span class="den">2</span></span> büyüklüğündedir.<span class="q-type-tag tag-tf">D/Y</span></div><div class="options"><div class="opt" data-q="87" data-val="D">✅ Doğru</div><div class="opt" data-q="87" data-val="Y">❌ Yanlış</div></div></div>
+
+<div class="q-card tf" data-type="tf" data-answer="Y"><div class="q-text"><span class="q-num tf">88</span>3 <span class="fraction"><span class="num">5</span><span class="den">6</span></span> = <span class="fraction"><span class="num">20</span><span class="den">6</span></span> 'dır.<span class="q-type-tag tag-tf">D/Y</span></div><div class="options"><div class="opt" data-q="88" data-val="D">✅ Doğru</div><div class="opt" data-q="88" data-val="Y">❌ Yanlış</div></div></div>
+
+<div class="q-card tf" data-type="tf" data-answer="D"><div class="q-text"><span class="q-num tf">89</span>Aşağıdaki gösterimde tamsayılı kesir 1 <span class="fraction"><span class="num">2</span><span class="den">3</span></span> 'dür.<span class="q-type-tag tag-tf">D/Y</span></div>
+<div style="margin-top:8px;text-align:center;"><svg width="190" height="40" viewBox="0 0 190 40"><rect x="2" y="2" width="28" height="36" fill="#43e97b" stroke="#166534" stroke-width="1.5" rx="2"/><rect x="32" y="2" width="28" height="36" fill="#43e97b" stroke="#166534" stroke-width="1.5" rx="2"/><rect x="62" y="2" width="28" height="36" fill="#43e97b" stroke="#166534" stroke-width="1.5" rx="2"/><rect x="102" y="2" width="28" height="36" fill="#43e97b" stroke="#166534" stroke-width="1.5" rx="2"/><rect x="132" y="2" width="28" height="36" fill="#43e97b" stroke="#166534" stroke-width="1.5" rx="2"/><rect x="162" y="2" width="26" height="36" fill="#fff" stroke="#166534" stroke-width="1.5" rx="2"/></svg></div>
+<div class="options"><div class="opt" data-q="89" data-val="D">✅ Doğru</div><div class="opt" data-q="89" data-val="Y">❌ Yanlış</div></div></div>
+
+<div class="q-card tf" data-type="tf" data-answer="D"><div class="q-text"><span class="q-num tf">90</span><span class="fraction fraction-big"><span class="num">16</span><span class="den">8</span></span> = 2 tam sayısıdır.<span class="q-type-tag tag-tf">D/Y</span></div><div class="options"><div class="opt" data-q="90" data-val="D">✅ Doğru</div><div class="opt" data-q="90" data-val="Y">❌ Yanlış</div></div></div>
+
+<div class="q-card tf" data-type="tf" data-answer="Y"><div class="q-text"><span class="q-num tf">91</span>Sayı doğrusunda <span class="fraction"><span class="num">3</span><span class="den">6</span></span> kesri 1'den büyük bir yerde işaretlenir.<span class="q-type-tag tag-tf">D/Y</span></div><div class="options"><div class="opt" data-q="91" data-val="D">✅ Doğru</div><div class="opt" data-q="91" data-val="Y">❌ Yanlış</div></div></div>
+
+<div class="q-card tf" data-type="tf" data-answer="D"><div class="q-text"><span class="q-num tf">92</span>5 <span class="fraction"><span class="num">0</span><span class="den">4</span></span> tamsayılı kesri bileşik kesir olarak <span class="fraction"><span class="num">20</span><span class="den">4</span></span> 'e eşittir.<span class="q-type-tag tag-tf">D/Y</span></div><div class="options"><div class="opt" data-q="92" data-val="D">✅ Doğru</div><div class="opt" data-q="92" data-val="Y">❌ Yanlış</div></div></div>
+
+</div><!-- B6 end -->
+
+<!-- BÖLÜM 7 -->
+<div class="section-title sec7" id="sec7" onclick="toggleSec(this)"><span class="arrow">▼</span> 🔵 BÖLÜM 7: ÇOKTAN SEÇMELİ — Karma & Şekil (93–100)</div>
+<div class="section-body">
+
+<div class="q-card mc" data-type="mc" data-answer="C"><div class="q-text"><span class="q-num mc">93</span>Aşağıdaki şekillerden hangisi 2 <span class="fraction"><span class="num">1</span><span class="den">3</span></span> tamsayılı kesrini göstermektedir?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
+<div class="opt" data-q="93" data-val="A" style="text-align:center;"><div style="font-weight:800;margin-bottom:4px;">A) 1 daire + 1/3</div><svg width="80" height="36" viewBox="0 0 180 36"><circle cx="20" cy="18" r="14" fill="#f093fb" stroke="#6b21a8" stroke-width="2"/><circle cx="56" cy="18" r="14" fill="#fff" stroke="#6b21a8" stroke-width="2"/><line x1="56" y1="4" x2="56" y2="32" stroke="#6b21a8" stroke-width="1.2"/><line x1="42" y1="11" x2="70" y2="25" stroke="#6b21a8" stroke-width="1.2"/><path d="M56,18 L56,4 A14,14 0 0,1 68.1,25 Z" fill="#f093fb"/></svg></div>
+<div class="opt" data-q="93" data-val="B" style="text-align:center;"><div style="font-weight:800;margin-bottom:4px;">B) 3 daire + 1/3</div><svg width="100" height="36" viewBox="0 0 200 36"><circle cx="20" cy="18" r="14" fill="#f093fb" stroke="#6b21a8" stroke-width="2"/><circle cx="56" cy="18" r="14" fill="#f093fb" stroke="#6b21a8" stroke-width="2"/><circle cx="92" cy="18" r="14" fill="#f093fb" stroke="#6b21a8" stroke-width="2"/><circle cx="128" cy="18" r="14" fill="#fff" stroke="#6b21a8" stroke-width="2"/><line x1="128" y1="4" x2="128" y2="32" stroke="#6b21a8" stroke-width="1.2"/><line x1="114" y1="11" x2="142" y2="25" stroke="#6b21a8" stroke-width="1.2"/><path d="M128,18 L128,4 A14,14 0 0,1 140.1,25 Z" fill="#f093fb"/></svg></div>
+<div class="opt" data-q="93" data-val="C" style="text-align:center;"><div style="font-weight:800;margin-bottom:4px;">C) 2 daire + 1/3</div><svg width="90" height="36" viewBox="0 0 200 36"><circle cx="20" cy="18" r="14" fill="#f093fb" stroke="#6b21a8" stroke-width="2"/><circle cx="56" cy="18" r="14" fill="#f093fb" stroke="#6b21a8" stroke-width="2"/><circle cx="92" cy="18" r="14" fill="#fff" stroke="#6b21a8" stroke-width="2"/><line x1="92" y1="4" x2="92" y2="32" stroke="#6b21a8" stroke-width="1.2"/><line x1="78" y1="25" x2="106" y2="11" stroke="#6b21a8" stroke-width="1.2"/><path d="M92,18 L92,4 A14,14 0 0,1 104.1,25 Z" fill="#f093fb"/></svg></div>
+<div class="opt" data-q="93" data-val="D" style="text-align:center;"><div style="font-weight:800;margin-bottom:4px;">D) 2 daire + 2/3</div><svg width="90" height="36" viewBox="0 0 200 36"><circle cx="20" cy="18" r="14" fill="#f093fb" stroke="#6b21a8" stroke-width="2"/><circle cx="56" cy="18" r="14" fill="#f093fb" stroke="#6b21a8" stroke-width="2"/><circle cx="92" cy="18" r="14" fill="#fff" stroke="#6b21a8" stroke-width="2"/><line x1="92" y1="4" x2="92" y2="32" stroke="#6b21a8" stroke-width="1.2"/><line x1="78" y1="25" x2="106" y2="11" stroke="#6b21a8" stroke-width="1.2"/><path d="M92,18 L92,4 A14,14 0 0,1 104.1,25 A14,14 0 0,1 79.9,25 Z" fill="#f093fb"/></svg></div>
+</div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="D"><div class="q-text"><span class="q-num mc">94</span>Hangi seçenek hem birim kesir hem de öz kesirdir?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div><div class="options"><div class="opt" data-q="94" data-val="A">A) <span class="fraction"><span class="num">3</span><span class="den">5</span></span></div><div class="opt" data-q="94" data-val="B">B) <span class="fraction"><span class="num">5</span><span class="den">3</span></span></div><div class="opt" data-q="94" data-val="C">C) <span class="fraction"><span class="num">5</span><span class="den">5</span></span></div><div class="opt" data-q="94" data-val="D">D) <span class="fraction"><span class="num">1</span><span class="den">5</span></span></div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="B"><div class="q-text"><span class="q-num mc">95</span>Sayı doğrusunda 1 ile 2 arası 4 eşit parçaya bölünmüştür. 2. bölme noktasının kesir değeri nedir?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div>
+<div class="number-line-wrap"><svg class="nl-svg" width="300" height="45" viewBox="0 0 300 45"><line x1="20" y1="25" x2="280" y2="25" stroke="#2d3748" stroke-width="2.5"/><line x1="20" y1="18" x2="20" y2="32" stroke="#2d3748" stroke-width="2.5"/><text x="20" y="43" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d3748">1</text><line x1="280" y1="18" x2="280" y2="32" stroke="#2d3748" stroke-width="2.5"/><text x="280" y="43" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d3748">2</text><line x1="84" y1="19" x2="84" y2="31" stroke="#6366f1" stroke-width="1.5"/><line x1="150" y1="19" x2="150" y2="31" stroke="#6366f1" stroke-width="1.5"/><circle cx="150" cy="25" r="6" fill="#2563eb"/><line x1="216" y1="19" x2="216" y2="31" stroke="#6366f1" stroke-width="1.5"/></svg></div>
+<div class="options"><div class="opt" data-q="95" data-val="A">A) 1 <span class="fraction"><span class="num">1</span><span class="den">4</span></span></div><div class="opt" data-q="95" data-val="B">B) 1 <span class="fraction"><span class="num">2</span><span class="den">4</span></span></div><div class="opt" data-q="95" data-val="C">C) 1 <span class="fraction"><span class="num">3</span><span class="den">4</span></span></div><div class="opt" data-q="95" data-val="D">D) 1 <span class="fraction"><span class="num">1</span><span class="den">3</span></span></div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="A"><div class="q-text"><span class="q-num mc">96</span>Aşağıdakilerden hangisi tamsayılı kesri bileşik kesre dönüştürme işlemini doğru göstermektedir?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div><div class="options"><div class="opt" data-q="96" data-val="A">A) 3 <span class="fraction"><span class="num">2</span><span class="den">7</span></span> = <span class="fraction"><span class="num">3×7+2</span><span class="den">7</span></span> = <span class="fraction"><span class="num">23</span><span class="den">7</span></span></div><div class="opt" data-q="96" data-val="B">B) 3 <span class="fraction"><span class="num">2</span><span class="den">7</span></span> = <span class="fraction"><span class="num">3+2</span><span class="den">7</span></span> = <span class="fraction"><span class="num">5</span><span class="den">7</span></span></div><div class="opt" data-q="96" data-val="C">C) 3 <span class="fraction"><span class="num">2</span><span class="den">7</span></span> = <span class="fraction"><span class="num">3×2</span><span class="den">7</span></span> = <span class="fraction"><span class="num">6</span><span class="den">7</span></span></div><div class="opt" data-q="96" data-val="D">D) 3 <span class="fraction"><span class="num">2</span><span class="den">7</span></span> = <span class="fraction"><span class="num">3×7</span><span class="den">2</span></span> = <span class="fraction"><span class="num">21</span><span class="den">2</span></span></div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="C"><div class="q-text"><span class="q-num mc">97</span>Aşağıdaki dikdörtgen modeli hangi tamsayılı kesri göstermektedir?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div>
+<div style="margin-top:8px;text-align:center;"><svg width="280" height="44" viewBox="0 0 280 44"><rect x="2" y="2" width="26" height="40" fill="#f5576c" stroke="#9f1239" stroke-width="1.5" rx="2"/><rect x="30" y="2" width="26" height="40" fill="#f5576c" stroke="#9f1239" stroke-width="1.5" rx="2"/><rect x="58" y="2" width="26" height="40" fill="#f5576c" stroke="#9f1239" stroke-width="1.5" rx="2"/><rect x="86" y="2" width="26" height="40" fill="#f5576c" stroke="#9f1239" stroke-width="1.5" rx="2"/><rect x="114" y="2" width="26" height="40" fill="#f5576c" stroke="#9f1239" stroke-width="1.5" rx="2"/><rect x="152" y="2" width="26" height="40" fill="#f5576c" stroke="#9f1239" stroke-width="1.5" rx="2"/><rect x="180" y="2" width="26" height="40" fill="#f5576c" stroke="#9f1239" stroke-width="1.5" rx="2"/><rect x="208" y="2" width="26" height="40" fill="#f5576c" stroke="#9f1239" stroke-width="1.5" rx="2"/><rect x="236" y="2" width="26" height="40" fill="#f5576c" stroke="#9f1239" stroke-width="1.5" rx="2"/><rect x="264" y="2" width="14" height="40" fill="#fff" stroke="#9f1239" stroke-width="1.5" rx="2"/></svg></div>
+<div class="options"><div class="opt" data-q="97" data-val="A">A) 2 <span class="fraction"><span class="num">3</span><span class="den">5</span></span></div><div class="opt" data-q="97" data-val="B">B) 2 <span class="fraction"><span class="num">4</span><span class="den">5</span></span></div><div class="opt" data-q="97" data-val="C">C) 1 <span class="fraction"><span class="num">4</span><span class="den">5</span></span></div><div class="opt" data-q="97" data-val="D">D) 1 <span class="fraction"><span class="num">3</span><span class="den">5</span></span></div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="B"><div class="q-text"><span class="q-num mc">98</span>Hangi bileşik kesir, sayı doğrusunda 3 ile 4 tam sayıları arasında yer alır?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div><div class="options"><div class="opt" data-q="98" data-val="A">A) <span class="fraction"><span class="num">17</span><span class="den">6</span></span></div><div class="opt" data-q="98" data-val="B">B) <span class="fraction"><span class="num">22</span><span class="den">7</span></span></div><div class="opt" data-q="98" data-val="C">C) <span class="fraction"><span class="num">14</span><span class="den">5</span></span></div><div class="opt" data-q="98" data-val="D">D) <span class="fraction"><span class="num">9</span><span class="den">4</span></span></div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="C"><div class="q-text"><span class="q-num mc">99</span>Aşağıdaki sayı doğrusunda gösterilen ● noktası hangi bileşik kesre eşittir?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div>
+<div class="number-line-wrap"><svg class="nl-svg" width="340" height="55" viewBox="0 0 340 55"><line x1="20" y1="35" x2="320" y2="35" stroke="#2d3748" stroke-width="2.5"/><line x1="20" y1="27" x2="20" y2="43" stroke="#2d3748" stroke-width="2.5"/><text x="20" y="50" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d3748">0</text><line x1="100" y1="25" x2="100" y2="45" stroke="#2d3748" stroke-width="2.5"/><text x="100" y="50" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d3748">1</text><line x1="180" y1="25" x2="180" y2="45" stroke="#2d3748" stroke-width="2.5"/><text x="180" y="50" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d3748">2</text><line x1="260" y1="25" x2="260" y2="45" stroke="#2d3748" stroke-width="2.5"/><text x="260" y="50" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d3748">3</text><line x1="40" y1="29" x2="40" y2="41" stroke="#6366f1" stroke-width="1.2"/><line x1="60" y1="29" x2="60" y2="41" stroke="#6366f1" stroke-width="1.2"/><line x1="80" y1="29" x2="80" y2="41" stroke="#6366f1" stroke-width="1.2"/><line x1="120" y1="29" x2="120" y2="41" stroke="#6366f1" stroke-width="1.2"/><line x1="140" y1="29" x2="140" y2="41" stroke="#6366f1" stroke-width="1.2"/><line x1="160" y1="29" x2="160" y2="41" stroke="#6366f1" stroke-width="1.2"/><line x1="200" y1="29" x2="200" y2="41" stroke="#6366f1" stroke-width="1.2"/><line x1="220" y1="29" x2="220" y2="41" stroke="#6366f1" stroke-width="1.2"/><line x1="240" y1="29" x2="240" y2="41" stroke="#6366f1" stroke-width="1.2"/><line x1="280" y1="29" x2="280" y2="41" stroke="#6366f1" stroke-width="1.2"/><line x1="300" y1="29" x2="300" y2="41" stroke="#6366f1" stroke-width="1.2"/><line x1="320" y1="29" x2="320" y2="41" stroke="#6366f1" stroke-width="1.2"/><circle cx="240" cy="35" r="7" fill="#1e3c72"/><text x="240" y="20" text-anchor="middle" font-size="14" fill="#1e3c72">●</text></svg></div>
+<div class="options"><div class="opt" data-q="99" data-val="A">A) <span class="fraction"><span class="num">9</span><span class="den">4</span></span></div><div class="opt" data-q="99" data-val="B">B) <span class="fraction"><span class="num">10</span><span class="den">4</span></span></div><div class="opt" data-q="99" data-val="C">C) <span class="fraction"><span class="num">11</span><span class="den">4</span></span></div><div class="opt" data-q="99" data-val="D">D) <span class="fraction"><span class="num">12</span><span class="den">4</span></span></div></div></div>
+
+<div class="q-card mc" data-type="mc" data-answer="B"><div class="q-text"><span class="q-num mc">100</span>Aşağıdaki seçeneklerden hangisi dönüşümü YANLIŞ göstermektedir?<span class="q-type-tag tag-mc">Çoktan Seçmeli</span></div><div class="options"><div class="opt" data-q="100" data-val="A">A) <span class="fraction"><span class="num">11</span><span class="den">3</span></span> = 3 <span class="fraction"><span class="num">2</span><span class="den">3</span></span></div><div class="opt" data-q="100" data-val="B">B) 4 <span class="fraction"><span class="num">3</span><span class="den">5</span></span> = <span class="fraction"><span class="num">18</span><span class="den">5</span></span></div><div class="opt" data-q="100" data-val="C">C) <span class="fraction"><span class="num">14</span><span class="den">6</span></span> = 2 <span class="fraction"><span class="num">2</span><span class="den">6</span></span></div><div class="opt" data-q="100" data-val="D">D) 2 <span class="fraction"><span class="num">4</span><span class="den">5</span></span> = <span class="fraction"><span class="num">14</span><span class="den">5</span></span></div></div></div>
+
+</div><!-- B7 end -->
+
+<div style="text-align:center;margin-top:20px;">
+  <button class="check-btn" onclick="checkAllAnswers()">🎯 Tüm Cevapları Kontrol Et</button>
+  <button class="reset-btn" onclick="resetAll()">🔄 Testi Sıfırla</button>
+</div>
+<div class="score-card" id="score-card"></div>
+<div style="height:100px;"></div>
+</div>
+
+<button class="download-btn" onclick="downloadPDF()">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+  PDF İndir
+</button>
+
+<script>
+// ===================== ANSWER STATE =====================
+const answers = {};
+const total = 100;
+
+function updateProgress(){
+  const count = Object.keys(answers).length;
+  const pct = Math.round(count/total*100);
+  document.getElementById('prog-bar').style.width = pct+'%';
+  document.getElementById('prog-text').textContent = `Cevaplandı: ${count} / ${total}`;
+}
+
+document.querySelectorAll('.opt[data-q]').forEach(opt=>{
+  opt.addEventListener('click', function(){
+    const q = this.dataset.q;
+    const val = this.dataset.val;
+    document.querySelectorAll(`.opt[data-q="${q}"]`).forEach(s=>s.classList.remove('correct','wrong','selected'));
+    this.classList.add('selected');
+    answers[q] = val;
+    updateProgress();
+  });
+});
+
+document.querySelectorAll('.fill-input[data-q]').forEach(inp=>{
+  inp.addEventListener('input', function(){
+    const val = this.value.trim();
+    if(val) answers[this.dataset.q] = val;
+    else delete answers[this.dataset.q];
+    updateProgress();
+  });
+});
+
+// ===================== SECTION TOGGLE =====================
+function toggleSec(el){
+  el.classList.toggle('collapsed');
+  const body = el.nextElementSibling;
+  if(body.classList.contains('hidden')){
+    body.classList.remove('hidden');
+    body.style.maxHeight = body.scrollHeight+'px';
+  } else {
+    body.classList.add('hidden');
+    body.style.maxHeight='0';
+  }
+}
+
+// ===================== MATCH GAME ENGINE =====================
+// correct answers map: matchId -> {leftKey: rightKey}
+const matchCorrect = {
+  match56: {A:'3', B:'1', C:'4', D:'2'},
+  match61: {A:'1', B:'2', C:'3', D:'4', E:'5'},
+  match66: {A:'1', B:'2', C:'3', D:'4', E:'5'}
+};
+
+const matchState = {};
+
+function initMatch(id){
+  matchState[id] = {
+    selectedLeft: null,
+    selectedLeftEl: null,
+    pairs: {} // leftKey -> rightKey
+  };
+}
+['match56','match61','match66'].forEach(id=>initMatch(id));
+
+function selectLeft(id, key, el){
+  const state = matchState[id];
+  // If already matched, ignore
+  if(el.classList.contains('matched')) return;
+  // Deselect previous
+  if(state.selectedLeftEl) state.selectedLeftEl.classList.remove('selected');
+  // If clicking same one, deselect
+  if(state.selectedLeft === key){
+    state.selectedLeft = null;
+    state.selectedLeftEl = null;
+    return;
+  }
+  state.selectedLeft = key;
+  state.selectedLeftEl = el;
+  el.classList.add('selected');
+}
+
+function selectRight(id, key, el){
+  const state = matchState[id];
+  if(el.classList.contains('matched')) return;
+  if(!state.selectedLeft) return; // no left selected
+
+  const leftKey = state.selectedLeft;
+  const correct = matchCorrect[id];
+
+  if(correct[leftKey] === key){
+    // Correct match!
+    state.pairs[leftKey] = key;
+    // Mark both as matched
+    state.selectedLeftEl.classList.remove('selected');
+    state.selectedLeftEl.classList.add('matched');
+    state.selectedLeftEl.querySelector('.match-badge').textContent = '✅';
+    el.classList.add('matched');
+    el.querySelector('.match-badge').textContent = '✅';
+    // Clear selection
+    state.selectedLeft = null;
+    state.selectedLeftEl = null;
+    // Update score
+    updateMatchScore(id);
+    // Count for global progress
+    answers['match_'+id+'_'+leftKey] = key;
+    updateProgress();
+  } else {
+    // Wrong - flash
+    el.classList.add('wrong-flash');
+    setTimeout(()=>el.classList.remove('wrong-flash'),500);
+    // Shake left item
+    state.selectedLeftEl.style.animation='none';
+    setTimeout(()=>{
+      if(state.selectedLeftEl) state.selectedLeftEl.style.animation='';
+    },100);
+  }
+}
+
+function updateMatchScore(id){
+  const state = matchState[id];
+  const count = Object.keys(state.pairs).length;
+  const total = Object.keys(matchCorrect[id]).length;
+  const el = document.getElementById(id+'-score');
+  if(el) el.textContent = `Eşleştirilen: ${count} / ${total}`;
+  if(count === total){
+    if(el) { el.textContent = `🎉 Tamamlandı! ${count} / ${total}`; el.style.color='#16a34a'; }
+  }
+}
+
+function resetMatch(id){
+  initMatch(id);
+  document.querySelectorAll(`[data-match-id="${id}"]`).forEach(el=>{
+    el.classList.remove('matched','selected','wrong-flash');
+    const badge = el.querySelector('.match-badge');
+    if(badge) badge.textContent='';
+  });
+  const scoreEl = document.getElementById(id+'-score');
+  const total = Object.keys(matchCorrect[id]).length;
+  if(scoreEl){ scoreEl.textContent=`Eşleştirilen: 0 / ${total}`; scoreEl.style.color=''; }
+  // Remove from global answers
+  Object.keys(answers).forEach(k=>{ if(k.startsWith('match_'+id+'_')) delete answers[k]; });
+  updateProgress();
+}
+
+// ===================== CHECK ALL =====================
+function checkAllAnswers(){
+  let correct = 0, answered = 0;
+
+  document.querySelectorAll('.q-card').forEach(card=>{
+    const correctAns = card.dataset.answer;
+    if(!correctAns) return;
+    const opts = card.querySelectorAll('.opt[data-q]');
+    if(opts.length > 0){
+      const q = opts[0].dataset.q;
+      const userVal = answers[q];
+      opts.forEach(o=>{
+        o.classList.remove('correct','wrong','selected');
+        if(o.dataset.val === correctAns) o.classList.add('correct');
+        else if(o.dataset.val === userVal && userVal !== correctAns) o.classList.add('wrong');
+      });
+      if(userVal !== undefined) answered++;
+      if(userVal === correctAns) correct++;
+    }
+    const inputs = card.querySelectorAll('.fill-input[data-q]');
+    if(inputs.length > 0){
+      const inp = inputs[0];
+      const q = inp.dataset.q;
+      const userVal = (answers[q]||'').toString().trim().toLowerCase().replace(/\s+/g,' ');
+      const ans = correctAns.toString().trim().toLowerCase().replace(/\s+/g,' ');
+      if(userVal){
+        answered++;
+        if(userVal === ans){
+          inp.style.borderBottomColor='#43e97b'; inp.style.color='#166534'; correct++;
+        } else {
+          inp.style.borderBottomColor='#f5576c'; inp.style.color='#cc0033';
+        }
+      }
+    }
+  });
+
+  // Check match answers
+  ['match56','match61','match66'].forEach(id=>{
+    const correct_map = matchCorrect[id];
+    const state = matchState[id];
+    Object.keys(correct_map).forEach(lk=>{
+      answered++;
+      if(state.pairs[lk] === correct_map[lk]) correct++;
+    });
+  });
+
+  const sc = document.getElementById('score-card');
+  sc.style.display = 'block';
+  const pct = Math.round(correct/total*100);
+  let emoji = pct>=90?'🏆':pct>=70?'⭐':pct>=50?'👍':'📚';
+  sc.innerHTML = `${emoji} Toplam Skor: <strong>${correct} / ${total}</strong> &nbsp;|&nbsp; Başarı: <strong>%${pct}</strong>`;
+  sc.scrollIntoView({behavior:'smooth'});
+}
+
+// ===================== RESET =====================
+function resetAll(){
+  Object.keys(answers).forEach(k=>delete answers[k]);
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('correct','wrong','selected'));
+  document.querySelectorAll('.fill-input').forEach(i=>{i.value='';i.style.borderBottomColor='#667eea';i.style.color='#3730a3';});
+  document.getElementById('score-card').style.display='none';
+  ['match56','match61','match66'].forEach(id=>resetMatch(id));
+  updateProgress();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ===================== PDF DOWNLOAD =====================
+async function downloadPDF(){
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  toast.textContent = 'PDF hazırlanıyor... ⏳';
+
+  // Open a new window for print-friendly PDF
+  const printWin = window.open('', '_blank', 'width=1000,height=800');
+
+  // Collect all sections content
+  const sections = document.querySelectorAll('.section-body');
+  let allCards = [];
+  document.querySelectorAll('.q-card').forEach(card => allCards.push(card));
+
+  // Build print HTML
+  let cardsHTML = '';
+  allCards.forEach(card => {
+    // Clone card and remove interactive elements for print
+    const clone = card.cloneNode(true);
+    // Remove input values (show blank)
+    clone.querySelectorAll('.fill-input').forEach(inp => {
+      inp.value = '';
+      inp.style.cssText = 'border:none;border-bottom:2px solid #667eea;width:60px;text-align:center;font-size:.9rem;font-weight:700;color:#3730a3;background:transparent;';
+    });
+    // For match games, show as static table
+    const matchGame = clone.querySelector('.match-game');
+    if(matchGame){
+      const id = matchGame.id;
+      // Replace with table view
+      const correct = matchCorrect[id];
+      let tableHTML = '<table style="width:100%;border-collapse:separate;border-spacing:4px;margin-top:8px;">';
+      const leftItems = matchGame.querySelectorAll('.match-left-item');
+      leftItems.forEach(li => {
+        const lKey = li.dataset.left;
+        tableHTML += `<tr>
+          <td style="padding:6px 10px;background:#ede9fe;border-radius:6px;font-size:.85rem;font-weight:700;border:1px solid #d8b4fe;width:50%;">${li.innerHTML.replace(/<span class="match-badge">.*?<\/span>/,'')}</td>
+          <td style="padding:6px 10px;background:#f0fff4;border-radius:6px;font-size:.85rem;font-weight:700;border:1px solid #6ee7b7;width:50%;text-align:center;">
+            <div style="border-bottom:1.5px solid #666;width:80px;display:inline-block;height:16px;"></div>
+          </td>
+        </tr>`;
+      });
+      tableHTML += '</table>';
+      matchGame.innerHTML = tableHTML;
+    }
+    // Remove match-reset-btn and score displays
+    clone.querySelectorAll('.match-reset-btn,.match-score').forEach(el=>el.remove());
+    cardsHTML += clone.outerHTML;
+  });
+
+  const printContent = `<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"/>
+<title>4. Sınıf Kesirler Testi</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#fff;color:#222;}
+.pdf-header{background:#1e3c72;color:#fff;padding:18px 24px;text-align:center;margin-bottom:16px;}
+.pdf-header h1{font-size:1.5rem;font-weight:900;}
+.pdf-header p{font-size:.85rem;opacity:.85;margin-top:4px;}
+.meta{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px;}
+.meta span{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.35);border-radius:20px;padding:2px 10px;font-size:.72rem;font-weight:700;}
+.student-info{display:flex;gap:24px;padding:8px 16px;background:#f0f4ff;border-radius:8px;margin-bottom:12px;font-size:.85rem;font-weight:700;color:#1e3c72;}
+.student-info span{flex:1;}
+.student-line{display:inline-block;border-bottom:1.5px solid #1e3c72;width:140px;margin-left:4px;}
+
+.grid-2col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.section-hdr{background:#667eea;color:#fff;border-radius:8px;padding:6px 14px;font-size:.85rem;font-weight:900;margin:12px 0 8px;grid-column:1/-1;}
+
+.q-card{background:#fff;border-radius:8px;padding:12px 14px;border-left:4px solid #667eea;break-inside:avoid;page-break-inside:avoid;margin-bottom:0;}
+.q-card.tf{border-left-color:#f5576c;}.q-card.mc{border-left-color:#43e97b;}.q-card.match{border-left-color:#f093fb;border-left-width:4px;}.q-card.fill{border-left-color:#4facfe;}
+.q-num{display:inline-flex;align-items:center;justify-content:center;background:#667eea;color:#fff;border-radius:50%;width:22px;height:22px;font-size:.72rem;font-weight:800;margin-right:6px;flex-shrink:0;}
+.q-num.tf{background:#f5576c;}.q-num.mc{background:#43e97b;color:#1a4a2a;}.q-num.match{background:#f093fb;}.q-num.fill{background:#4facfe;color:#0a3a4a;}
+.q-text{font-size:.82rem;font-weight:700;color:#2d3748;display:flex;align-items:flex-start;gap:4px;flex-wrap:wrap;margin-bottom:6px;}
+.q-type-tag{font-size:.6rem;font-weight:800;padding:1px 6px;border-radius:8px;margin-left:auto;white-space:nowrap;}
+.tag-fill{background:#e0f0ff;color:#0077cc;}.tag-tf{background:#ffe0e5;color:#cc0033;}.tag-mc{background:#e0fff0;color:#007733;}.tag-match{background:#f5e0ff;color:#7700cc;}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4px;}
+.opt{background:#f7f8fc;border:1.5px solid #e2e8f0;border-radius:6px;padding:4px 8px;font-size:.78rem;font-weight:600;color:#444;}
+.answer-box{background:#f7f8fc;border-radius:6px;padding:4px 10px;font-size:.78rem;color:#555;border:1px dashed #ccc;margin-top:4px;}
+.fill-input{border:none;border-bottom:1.5px solid #667eea;background:transparent;font-size:.82rem;font-weight:700;color:#3730a3;width:55px;text-align:center;}
+.fraction{display:inline-flex;flex-direction:column;align-items:center;font-weight:800;font-size:.85rem;line-height:1.05;vertical-align:middle;margin:0 2px;}
+.fraction .num{border-bottom:1.5px solid #2d3748;padding:0 3px;}.fraction .den{padding:0 3px;}
+.fraction-big{font-size:1rem;}
+.number-line-wrap{overflow-x:auto;margin:4px 0;}
+.nl-svg{display:block;margin:0 auto;}
+.match-game{margin-top:6px;}
+.match-columns{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.match-col-title{font-weight:800;font-size:.75rem;margin-bottom:4px;padding:2px 6px;border-radius:4px;}
+.match-left-title{background:#ede9fe;color:#5b21b6;}.match-right-title{background:#d1fae5;color:#065f46;}
+.match-item{padding:5px 8px;border-radius:6px;font-weight:700;font-size:.78rem;margin-bottom:4px;border:1.5px solid;}
+.match-left-item{background:#f5e0ff;color:#5b21b6;border-color:#d8b4fe;}
+.match-right-item{background:#f0fff4;color:#065f46;border-color:#6ee7b7;}
+.match-badge{display:none;}
+
+@page{margin:12mm 10mm 12mm 10mm;size:A4;}
+@media print{
+  body{background:#fff!important;}
+  .grid-2col{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;}
+  .q-card{break-inside:avoid;page-break-inside:avoid;}
+  .section-hdr{break-before:auto;page-break-before:auto;}
+}
+</style>
+</head>
+<body>
+<div class="pdf-header">
+  <div style="font-size:1.8rem;margin-bottom:4px;">🍕📐✂️</div>
+  <h1>KESİRLER YAPRAK TESTİ</h1>
+  <p>4. Sınıf Matematik | Kesir Çeşitleri • Gösterimler • Dönüşümler</p>
+  <div class="meta">
+    <span>📋 100 Soru</span><span>🎯 4. Sınıf</span><span>⏱ Süre: Serbest</span><span>📝 Karma Soru Tipi</span>
+  </div>
+</div>
+<div class="student-info">
+  <span>Ad Soyad: <span class="student-line"></span></span>
+  <span>Sınıf: <span class="student-line" style="width:60px;"></span></span>
+  <span>Tarih: <span class="student-line" style="width:80px;"></span></span>
+  <span>Puan: <span class="student-line" style="width:60px;"></span></span>
+</div>
+<div class="grid-2col">
+${cardsHTML}
+</div>
+<script>window.onload=function(){window.print();}<\/script>
+</body>
+</html>`;
+
+  printWin.document.write(printContent);
+  printWin.document.close();
+
+  toast.textContent = '✅ PDF penceresi açıldı - yazdırın veya PDF olarak kaydedin!';
+  setTimeout(()=>toast.classList.remove('show'), 4000);
+}
+</script>
+</body>
+</html>
