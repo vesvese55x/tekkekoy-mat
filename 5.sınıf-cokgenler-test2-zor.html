@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5. Sınıf Matematik – Çember, Daire ve Çokgenler Yaprak Testi</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', sans-serif; background: #f3f4f6; min-height: 100vh; padding-bottom: 64px; }
+
+  .test-header {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+    padding: 32px 16px;
+    margin-bottom: 32px;
+    box-shadow: 0 20px 40px rgba(99,102,241,0.3);
+  }
+
+  .soru-kart {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    padding: 16px;
+    transition: box-shadow 0.2s;
+    break-inside: avoid;
+  }
+  .soru-kart:hover { box-shadow: 0 6px 24px rgba(99,102,241,0.13); }
+
+  .soru-no {
+    background: linear-gradient(135deg,#6366f1,#8b5cf6);
+    color: #fff;
+    border-radius: 50%;
+    width: 30px; height: 30px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  .secenek {
+    display: flex; align-items: center; gap: 8px;
+    cursor: pointer;
+    padding: 7px 12px;
+    border-radius: 8px;
+    border: 2px solid #e5e7eb;
+    margin-bottom: 5px;
+    font-size: 13px;
+    transition: background 0.15s, border-color 0.15s;
+    user-select: none;
+  }
+  .secenek:hover { background: #ede9fe; border-color: #a78bfa; }
+  .secenek input[type=radio] { accent-color: #6366f1; width:15px; height:15px; }
+  .secenek.dogru { background: #d1fae5 !important; border-color: #059669 !important; color: #065f46; font-weight: 700; }
+  .secenek.yanlis { background: #fee2e2 !important; border-color: #dc2626 !important; color: #991b1b; font-weight: 700; }
+
+  .bolum-baslik {
+    grid-column: 1 / -1;
+    background: linear-gradient(90deg,#6366f1,#8b5cf6);
+    color: #fff;
+    border-radius: 12px;
+    padding: 10px 22px;
+    font-size: 15px;
+    font-weight: 800;
+    margin-top: 10px;
+    margin-bottom: 2px;
+    letter-spacing: 0.5px;
+  }
+
+  .btn-kontrol {
+    background: linear-gradient(135deg,#6366f1,#8b5cf6);
+    color: #fff;
+    border: none; border-radius: 14px;
+    padding: 14px 36px;
+    font-size: 17px; font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 18px rgba(99,102,241,0.25);
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .btn-kontrol:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.35); }
+
+  .btn-temizle {
+    background: #fff;
+    color: #6366f1;
+    border: 2px solid #6366f1;
+    border-radius: 14px;
+    padding: 14px 36px;
+    font-size: 17px; font-weight: 800;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-temizle:hover { background: #ede9fe; }
+
+  .sonuc-kutu {
+    background: linear-gradient(135deg,#6366f1,#a855f7);
+    color: #fff;
+    border-radius: 22px;
+    padding: 36px 40px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 800;
+    box-shadow: 0 8px 32px rgba(99,102,241,0.3);
+    line-height: 2;
+  }
+
+  @media (max-width: 700px) {
+    #sorular-grid { grid-template-columns: 1fr !important; }
+  }
+
+  .not-kutusu {
+    background: #fffbeb;
+    border: 1.5px solid #fbbf24;
+    border-radius: 8px;
+    padding: 7px 12px;
+    font-size: 12px;
+    color: #92400e;
+    margin-top: 6px;
+    font-style: italic;
+  }
+</style>
+</head>
+<body class="min-h-screen pb-16">
+
+<!-- HEADER -->
+<div class="test-header">
+  <div style="max-width:900px;margin:0 auto;text-align:center;">
+    <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.2);border-radius:999px;padding:4px 20px;margin-bottom:12px;color:#fff;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">5. Sınıf Matematik</div>
+    <h1 style="font-size:clamp(22px,4vw,38px);font-weight:900;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.2);margin-bottom:8px;">📐 Çember, Daire ve Çokgenler</h1>
+    <p style="color:#e0d7ff;font-size:17px;font-weight:600;">Yaprak Test – 150 Soru &nbsp;|&nbsp; Çoktan Seçmeli</p>
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-top:16px;font-size:13px;">
+      <span style="background:rgba(255,255,255,0.2);color:#fff;border-radius:8px;padding:4px 16px;font-weight:700;">⏱ Süre Serbest</span>
+      <span style="background:rgba(255,255,255,0.2);color:#fff;border-radius:8px;padding:4px 16px;font-weight:700;">📝 150 Soru</span>
+      <span style="background:rgba(255,255,255,0.2);color:#fff;border-radius:8px;padding:4px 16px;font-weight:700;">🎯 4 Seçenek</span>
+    </div>
+  </div>
+</div>
+
+<!-- TEST -->
+<div style="max-width:1200px;margin:0 auto;padding:0 12px;">
+  <form id="testForm">
+    <div id="sorular-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;"></div>
+    <!-- BUTONLAR -->
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-top:48px;">
+      <button type="button" class="btn-temizle" onclick="temizle()">🔄 Sıfırla</button>
+      <button type="button" class="btn-kontrol" onclick="kontrol()">✅ Cevapları Kontrol Et</button>
+    </div>
+    <!-- SONUÇ -->
+    <div id="sonuc-alan" style="display:none;margin-top:32px;"></div>
+  </form>
+</div>
+
+<script>
+// ===================== SORULAR =====================
+const sorular = [
+
+// ============ BÖLÜM 1: ÜÇGENLERİN TEMEL ÖZELLİKLERİ ============
+{ bolum: "🔺 Üçgenler – Temel Bilgiler",
+  soru: "Bir üçgenin kaç kenarı ve kaç köşesi vardır?",
+  svg: `<svg width="120" height="90" viewBox="0 0 120 90">
+    <polygon points="60,8 8,82 112,82" fill="#e0e7ff" stroke="#6366f1" stroke-width="2.5"/>
+    <circle cx="60" cy="8" r="4" fill="#6366f1"/>
+    <circle cx="8" cy="82" r="4" fill="#6366f1"/>
+    <circle cx="112" cy="82" r="4" fill="#6366f1"/>
+    <text x="60" y="55" text-anchor="middle" font-size="12" fill="#4338ca">üçgen</text>
+  </svg>`,
+  secenekler: ["A) 2 kenar, 2 köşe","B) 3 kenar, 3 köşe","C) 4 kenar, 4 köşe","D) 3 kenar, 4 köşe"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Üçgenin iç açıları toplamı kaç derecedir?",
+  svg: `<svg width="120" height="90" viewBox="0 0 120 90">
+    <polygon points="60,6 8,84 112,84" fill="#fce7f3" stroke="#db2777" stroke-width="2.5"/>
+    <text x="60" y="52" text-anchor="middle" font-size="11" fill="#be185d">α + β + γ = ?</text>
+    <text x="22" y="82" font-size="10" fill="#be185d">α</text>
+    <text x="93" y="82" font-size="10" fill="#be185d">γ</text>
+    <text x="57" y="20" font-size="10" fill="#be185d">β</text>
+  </svg>`,
+  secenekler: ["A) 90°","B) 270°","C) 180°","D) 360°"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir üçgenin iki açısı 50° ve 70° ise üçüncü açısı kaç derecedir?",
+  svg: `<svg width="130" height="95" viewBox="0 0 130 95">
+    <polygon points="65,6 8,89 122,89" fill="#d1fae5" stroke="#059669" stroke-width="2.5"/>
+    <text x="18" y="87" font-size="10" fill="#065f46">50°</text>
+    <text x="97" y="87" font-size="10" fill="#065f46">70°</text>
+    <text x="59" y="20" font-size="10" fill="#065f46">?°</text>
+  </svg>`,
+  secenekler: ["A) 50°","B) 60°","C) 70°","D) 80°"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Bir üçgenin iki açısı 45° ve 90° ise üçüncü açısı kaç derecedir?",
+  svg: `<svg width="130" height="95" viewBox="0 0 130 95">
+    <polygon points="8,89 8,6 122,89" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+    <rect x="8" y="77" width="12" height="12" fill="none" stroke="#d97706" stroke-width="2"/>
+    <text x="14" y="72" font-size="10" fill="#92400e">90°</text>
+    <text x="97" y="87" font-size="10" fill="#92400e">45°</text>
+    <text x="18" y="30" font-size="10" fill="#92400e">?°</text>
+  </svg>`,
+  secenekler: ["A) 55°","B) 40°","C) 45°","D) 35°"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir üçgenin iki açısı 60° ve 80° ise üçüncü açısı kaç derecedir?",
+  svg: `<svg width="130" height="95" viewBox="0 0 130 95">
+    <polygon points="65,6 8,89 122,89" fill="#ede9fe" stroke="#7c3aed" stroke-width="2.5"/>
+    <text x="18" y="87" font-size="10" fill="#4c1d95">60°</text>
+    <text x="97" y="87" font-size="10" fill="#4c1d95">80°</text>
+    <text x="59" y="20" font-size="10" fill="#4c1d95">?°</text>
+  </svg>`,
+  secenekler: ["A) 40°","B) 50°","C) 30°","D) 45°"],
+  dogru: "A"
+},
+{ bolum: null,
+  soru: "Bir üçgenin iki açısı 35° ve 75° ise üçüncü açısı kaç derecedir?",
+  secenekler: ["A) 80°","B) 60°","C) 70°","D) 85°"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir üçgenin iki açısı 90° ve 55° ise üçüncü açısı kaç derecedir?",
+  secenekler: ["A) 40°","B) 45°","C) 35°","D) 30°"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir üçgenin iki açısı 30° ve 30° ise üçüncü açısı kaç derecedir?",
+  svg: `<svg width="130" height="95" viewBox="0 0 130 95">
+    <polygon points="65,6 8,89 122,89" fill="#fce7f3" stroke="#be185d" stroke-width="2.5"/>
+    <text x="18" y="87" font-size="10" fill="#be185d">30°</text>
+    <text x="97" y="87" font-size="10" fill="#be185d">30°</text>
+    <text x="59" y="20" font-size="10" fill="#be185d">?°</text>
+  </svg>`,
+  secenekler: ["A) 100°","B) 110°","C) 120°","D) 130°"],
+  dogru: "C"
+},
+
+// ============ BÖLÜM 2: ÜÇGENİN ÇEŞİTLERİ ============
+{ bolum: "🔺 Üçgen Çeşitleri",
+  soru: "Üç kenarı da birbirine eşit olan üçgene ne denir?",
+  svg: `<svg width="120" height="100" viewBox="0 0 120 100">
+    <polygon points="60,5 5,95 115,95" fill="#d1fae5" stroke="#059669" stroke-width="2.5"/>
+    <text x="60" y="58" text-anchor="middle" font-size="10" fill="#065f46">a=a=a</text>
+  </svg>`,
+  secenekler: ["A) İkizkenar üçgen","B) Eşkenar üçgen","C) Çeşitkenar üçgen","D) Dik üçgen"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Yalnızca iki kenarı birbirine eşit olan üçgen hangi türdür?",
+  svg: `<svg width="120" height="100" viewBox="0 0 120 100">
+    <polygon points="60,5 15,95 105,95" fill="#e0e7ff" stroke="#6366f1" stroke-width="2.5"/>
+    <text x="60" y="70" text-anchor="middle" font-size="9" fill="#4338ca">a=a ≠ b</text>
+  </svg>`,
+  secenekler: ["A) Eşkenar üçgen","B) Çeşitkenar üçgen","C) İkizkenar üçgen","D) Geniş açılı üçgen"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir açısı tam 90° olan üçgen ne tür üçgendir?",
+  svg: `<svg width="120" height="100" viewBox="0 0 120 100">
+    <polygon points="10,10 10,90 100,90" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+    <rect x="10" y="78" width="12" height="12" fill="none" stroke="#d97706" stroke-width="2"/>
+    <text x="16" y="72" font-size="10" fill="#92400e">90°</text>
+  </svg>`,
+  secenekler: ["A) Dar açılı üçgen","B) Eşkenar üçgen","C) Dik üçgen","D) Geniş açılı üçgen"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Tüm açıları 90°'den küçük olan üçgen hangi türdür?",
+  secenekler: ["A) Geniş açılı üçgen","B) Dik üçgen","C) İkizkenar üçgen","D) Dar açılı üçgen"],
+  dogru: "D"
+},
+{ bolum: null,
+  soru: "Bir açısı 90°'den büyük olan üçgen hangi türdür?",
+  svg: `<svg width="130" height="95" viewBox="0 0 130 95">
+    <polygon points="5,85 70,5 125,85" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+    <text x="16" y="83" font-size="9" fill="#991b1b">120°</text>
+  </svg>`,
+  secenekler: ["A) Dar açılı üçgen","B) Dik üçgen","C) Geniş açılı üçgen","D) Eşkenar üçgen"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Eşkenar üçgenin her bir iç açısı kaç derecedir?",
+  svg: `<svg width="120" height="100" viewBox="0 0 120 100">
+    <polygon points="60,5 5,95 115,95" fill="#d1fae5" stroke="#059669" stroke-width="2.5"/>
+    <text x="14" y="92" font-size="9" fill="#065f46">?°</text>
+    <text x="97" y="92" font-size="9" fill="#065f46">?°</text>
+    <text x="56" y="22" font-size="9" fill="#065f46">?°</text>
+  </svg>`,
+  secenekler: ["A) 90°","B) 45°","C) 60°","D) 72°"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Hangi özellik çeşitkenar üçgeni tanımlar?",
+  secenekler: ["A) Üç kenarı eşittir","B) İki kenarı eşittir","C) Hiçbir kenarı birbirine eşit değildir","D) Bir açısı 90°'dir"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "İkizkenar üçgende taban açıları için hangisi doğrudur?",
+  svg: `<svg width="120" height="100" viewBox="0 0 120 100">
+    <polygon points="60,5 15,95 105,95" fill="#ede9fe" stroke="#7c3aed" stroke-width="2.5"/>
+    <text x="24" y="91" font-size="9" fill="#4c1d95">α</text>
+    <text x="89" y="91" font-size="9" fill="#4c1d95">α</text>
+    <text x="56" y="22" font-size="9" fill="#4c1d95">β</text>
+  </svg>`,
+  secenekler: ["A) Taban açıları birbirine eşit değildir","B) Taban açıları her zaman 90°'dir","C) Taban açıları birbirine eşittir","D) Taban açıları toplamı 180°'dir"],
+  dogru: "C"
+},
+
+// ============ BÖLÜM 3: ÜÇGENDE KENAR EŞİTSİZLİĞİ ============
+{ bolum: "🔺 Üçgende Kenar Eşitsizliği",
+  soru: "Bir üçgenin iki kenarı 4 cm ve 7 cm ise üçüncü kenar hangi aralıktadır?",
+  svg: `<svg width="140" height="100" viewBox="0 0 140 100">
+    <polygon points="70,8 8,92 132,92" fill="#fce7f3" stroke="#db2777" stroke-width="2" stroke-dasharray="6,3"/>
+    <text x="22" y="58" font-size="10" fill="#be185d">4 cm</text>
+    <text x="90" y="58" font-size="10" fill="#be185d">7 cm</text>
+    <text x="60" y="92" font-size="10" fill="#be185d">? cm</text>
+  </svg>`,
+  secenekler: ["A) 3 cm &lt; x &lt; 11 cm","B) 3 cm ≤ x ≤ 11 cm","C) 4 cm &lt; x &lt; 7 cm","D) 0 cm &lt; x &lt; 14 cm"],
+  dogru: "A"
+},
+{ bolum: null,
+  soru: "İki kenarı 5 cm ve 9 cm olan üçgenin üçüncü kenarı hangi aralıktadır?",
+  secenekler: ["A) 4 cm &lt; x &lt; 14 cm","B) 5 cm &lt; x &lt; 9 cm","C) 9 cm &lt; x &lt; 14 cm","D) 0 &lt; x &lt; 9 cm"],
+  dogru: "A"
+},
+{ bolum: null,
+  soru: "Aşağıdaki kenar uzunluklarından hangisi bir üçgen oluşturamaz?",
+  svg: `<svg width="140" height="55" viewBox="0 0 140 55">
+    <rect x="5" y="5" width="130" height="45" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+    <text x="70" y="20" text-anchor="middle" font-size="11" fill="#92400e" font-weight="bold">Hangi grup üçgen olmaz?</text>
+    <text x="70" y="38" text-anchor="middle" font-size="10" fill="#92400e">a + b &gt; c kuralı</text>
+  </svg>`,
+  secenekler: ["A) 3, 4, 5","B) 5, 6, 8","C) 2, 3, 6","D) 4, 7, 9"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "İki kenarı 6 cm ve 10 cm olan bir üçgenin üçüncü kenarı (x) için hangi eşitsizlik doğrudur?",
+  secenekler: ["A) x &lt; 4","B) 4 &lt; x &lt; 16","C) x &gt; 16","D) x = 8"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Kenarları 3, 5 ve 9 cm olan bir üçgen çizilebilir mi?",
+  secenekler: ["A) Evet, dik üçgen olur","B) Hayır, çünkü 3+5=8 &lt; 9","C) Evet, geniş açılı üçgen olur","D) Evet, çeşitkenar üçgen olur"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "İki kenarı 7 cm ve 7 cm olan bir üçgenin üçüncü kenarı (x) hangi aralıktadır?",
+  svg: `<svg width="130" height="100" viewBox="0 0 130 100">
+    <polygon points="65,6 8,92 122,92" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+    <text x="26" y="56" font-size="10" fill="#065f46">7 cm</text>
+    <text x="82" y="56" font-size="10" fill="#065f46">7 cm</text>
+    <text x="55" y="92" font-size="10" fill="#065f46">? cm</text>
+  </svg>`,
+  secenekler: ["A) 0 &lt; x &lt; 7","B) 0 &lt; x &lt; 14","C) 7 &lt; x &lt; 14","D) x = 7"],
+  dogru: "B"
+},
+
+// ============ BÖLÜM 4: ÇEMBER VE DAİRE ============
+{ bolum: "⭕ Çember ve Daire (π = 3 alınız)",
+  soru: "Yarıçapı 5 cm olan bir çemberin çevresi kaç cm'dir? (π = 3)",
+  svg: `<svg width="120" height="120" viewBox="0 0 120 120">
+    <circle cx="60" cy="60" r="48" fill="#e0e7ff" stroke="#6366f1" stroke-width="2.5"/>
+    <line x1="60" y1="60" x2="108" y2="60" stroke="#dc2626" stroke-width="2"/>
+    <text x="76" y="55" font-size="11" fill="#dc2626" font-weight="bold">r=5</text>
+    <circle cx="60" cy="60" r="3" fill="#6366f1"/>
+  </svg>`,
+  secenekler: ["A) 25 cm","B) 30 cm","C) 15 cm","D) 45 cm"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Yarıçapı 4 cm olan bir dairenin alanı kaç cm²'dir? (π = 3)",
+  svg: `<svg width="120" height="120" viewBox="0 0 120 120">
+    <circle cx="60" cy="60" r="48" fill="#fce7f3" stroke="#db2777" stroke-width="2.5"/>
+    <line x1="60" y1="60" x2="108" y2="60" stroke="#dc2626" stroke-width="2"/>
+    <text x="76" y="55" font-size="11" fill="#dc2626" font-weight="bold">r=4</text>
+    <circle cx="60" cy="60" r="3" fill="#db2777"/>
+    <text x="60" y="72" text-anchor="middle" font-size="9" fill="#be185d">Alan=?</text>
+  </svg>`,
+  secenekler: ["A) 12 cm²","B) 24 cm²","C) 48 cm²","D) 36 cm²"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Çapı 10 cm olan bir çemberin çevresi kaç cm'dir? (π = 3)",
+  svg: `<svg width="120" height="120" viewBox="0 0 120 120">
+    <circle cx="60" cy="60" r="50" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+    <line x1="10" y1="60" x2="110" y2="60" stroke="#dc2626" stroke-width="2"/>
+    <text x="45" y="55" font-size="10" fill="#dc2626" font-weight="bold">d=10</text>
+    <circle cx="60" cy="60" r="3" fill="#d97706"/>
+  </svg>`,
+  secenekler: ["A) 10 cm","B) 20 cm","C) 30 cm","D) 60 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Yarıçapı 6 cm olan bir dairenin alanı kaç cm²'dir? (π = 3)",
+  secenekler: ["A) 18 cm²","B) 54 cm²","C) 108 cm²","D) 36 cm²"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir dairenin alanı 75 cm²'dir. (π = 3) Yarıçapı kaç cm'dir?",
+  svg: `<svg width="120" height="120" viewBox="0 0 120 120">
+    <circle cx="60" cy="60" r="50" fill="#d1fae5" stroke="#059669" stroke-width="2.5"/>
+    <text x="60" y="58" text-anchor="middle" font-size="11" fill="#065f46" font-weight="bold">Alan=75cm²</text>
+    <text x="60" y="74" text-anchor="middle" font-size="10" fill="#065f46">r = ?</text>
+    <circle cx="60" cy="60" r="3" fill="#059669"/>
+  </svg>`,
+  secenekler: ["A) 3 cm","B) 4 cm","C) 5 cm","D) 6 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Çevresi 42 cm olan bir çemberin yarıçapı kaç cm'dir? (π = 3)",
+  secenekler: ["A) 5 cm","B) 6 cm","C) 7 cm","D) 8 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Çapı 8 cm olan bir çemberin çevresi kaç cm'dir? (π = 3)",
+  svg: `<svg width="120" height="120" viewBox="0 0 120 120">
+    <circle cx="60" cy="60" r="48" fill="#ede9fe" stroke="#7c3aed" stroke-width="2.5"/>
+    <line x1="12" y1="60" x2="108" y2="60" stroke="#7c3aed" stroke-width="2"/>
+    <text x="45" y="55" font-size="10" fill="#7c3aed" font-weight="bold">d=8</text>
+    <circle cx="60" cy="60" r="3" fill="#7c3aed"/>
+  </svg>`,
+  secenekler: ["A) 16 cm","B) 24 cm","C) 48 cm","D) 12 cm"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Çapı 6 cm olan bir dairenin alanı kaç cm²'dir? (π = 3)",
+  secenekler: ["A) 18 cm²","B) 27 cm²","C) 36 cm²","D) 12 cm²"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Bir çemberde çap ile yarıçap arasındaki ilişki nedir?",
+  svg: `<svg width="130" height="120" viewBox="0 0 130 120">
+    <circle cx="65" cy="60" r="52" fill="#fce7f3" stroke="#db2777" stroke-width="2"/>
+    <line x1="13" y1="60" x2="117" y2="60" stroke="#dc2626" stroke-width="2"/>
+    <line x1="65" y1="60" x2="117" y2="60" stroke="#059669" stroke-width="2.5"/>
+    <text x="80" y="54" font-size="10" fill="#059669" font-weight="bold">r</text>
+    <text x="28" y="54" font-size="10" fill="#dc2626" font-weight="bold">d</text>
+    <circle cx="65" cy="60" r="3" fill="#db2777"/>
+  </svg>`,
+  secenekler: ["A) Çap = yarıçap","B) Çap = yarıçap / 2","C) Çap = yarıçap × 3","D) Çap = yarıçap × 2"],
+  dogru: "D"
+},
+{ bolum: null,
+  soru: "Yarıçapı 3 cm olan bir çemberin çevresi kaç cm'dir? (π = 3)",
+  secenekler: ["A) 9 cm","B) 12 cm","C) 18 cm","D) 27 cm"],
+  dogru: "C"
+},
+
+// ============ BÖLÜM 5: KARE VE DİKDÖRTGEN ============
+{ bolum: "🟦 Kare – Dikdörtgen: Çevre ve Alan",
+  soru: "Kenar uzunluğu 7 cm olan bir karenin çevresi kaç cm'dir?",
+  svg: `<svg width="110" height="110" viewBox="0 0 110 110">
+    <rect x="10" y="10" width="90" height="90" fill="#dbeafe" stroke="#2563eb" stroke-width="2.5"/>
+    <text x="55" y="62" text-anchor="middle" font-size="12" fill="#1d4ed8" font-weight="bold">7 cm</text>
+  </svg>`,
+  secenekler: ["A) 14 cm","B) 21 cm","C) 28 cm","D) 49 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Kenar uzunluğu 9 cm olan bir karenin alanı kaç cm²'dir?",
+  svg: `<svg width="110" height="110" viewBox="0 0 110 110">
+    <rect x="10" y="10" width="90" height="90" fill="#d1fae5" stroke="#059669" stroke-width="2.5"/>
+    <text x="55" y="55" text-anchor="middle" font-size="11" fill="#065f46">Alan=?</text>
+  </svg>`,
+  secenekler: ["A) 36 cm²","B) 18 cm²","C) 81 cm²","D) 72 cm²"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Uzun kenarı 8 cm, kısa kenarı 5 cm olan dikdörtgenin çevresi kaç cm'dir?",
+  svg: `<svg width="140" height="100" viewBox="0 0 140 100">
+    <rect x="10" y="15" width="120" height="70" fill="#fce7f3" stroke="#db2777" stroke-width="2.5"/>
+    <text x="70" y="12" text-anchor="middle" font-size="11" fill="#be185d">8 cm</text>
+    <text x="70" y="55" text-anchor="middle" font-size="10" fill="#be185d">Çevre = ?</text>
+  </svg>`,
+  secenekler: ["A) 13 cm","B) 26 cm","C) 40 cm","D) 80 cm"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Uzun kenarı 12 cm, kısa kenarı 6 cm olan dikdörtgenin alanı kaç cm²'dir?",
+  svg: `<svg width="140" height="90" viewBox="0 0 140 90">
+    <rect x="8" y="10" width="124" height="70" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+    <text x="70" y="7" text-anchor="middle" font-size="11" fill="#92400e">12 cm</text>
+    <text x="70" y="53" text-anchor="middle" font-size="11" fill="#92400e">Alan = ?</text>
+  </svg>`,
+  secenekler: ["A) 36 cm²","B) 96 cm²","C) 72 cm²","D) 144 cm²"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Çevresi 36 cm olan bir karenin kenar uzunluğu kaç cm'dir?",
+  secenekler: ["A) 4 cm","B) 6 cm","C) 9 cm","D) 12 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Alanı 49 cm² olan karenin çevresi kaç cm'dir?",
+  svg: `<svg width="110" height="110" viewBox="0 0 110 110">
+    <rect x="10" y="10" width="90" height="90" fill="#ede9fe" stroke="#7c3aed" stroke-width="2.5"/>
+    <text x="55" y="55" text-anchor="middle" font-size="13" fill="#4c1d95" font-weight="bold">49 cm²</text>
+    <text x="55" y="72" text-anchor="middle" font-size="10" fill="#4c1d95">Çevre = ?</text>
+  </svg>`,
+  secenekler: ["A) 14 cm","B) 21 cm","C) 28 cm","D) 49 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Uzun kenarı 15 cm, kısa kenarı 8 cm olan dikdörtgenin çevresi kaç cm'dir?",
+  secenekler: ["A) 23 cm","B) 46 cm","C) 120 cm","D) 92 cm"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Çevresi 60 cm olan bir dikdörtgenin uzun kenarı 20 cm ise kısa kenarı kaç cm'dir?",
+  svg: `<svg width="140" height="90" viewBox="0 0 140 90">
+    <rect x="8" y="10" width="124" height="70" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+    <text x="70" y="7" text-anchor="middle" font-size="11" fill="#991b1b">20 cm</text>
+    <text x="70" y="52" text-anchor="middle" font-size="10" fill="#991b1b">Çevre=60 cm</text>
+  </svg>`,
+  secenekler: ["A) 5 cm","B) 8 cm","C) 10 cm","D) 15 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Kare ile dikdörtgen arasındaki temel fark nedir?",
+  secenekler: ["A) Karenin 4 kenarı, dikdörtgenin 3 kenarı vardır","B) Karenin tüm kenarları eşit, dikdörtgende karşılıklı kenarlar eşittir","C) İkisi de aynı şekildir","D) Dikdörtgenin köşe açıları 45°'dir"],
+  dogru: "B"
+},
+
+// ============ BÖLÜM 6: DÖRTGENDE AÇILAR ============
+{ bolum: "🟧 Dörtgende Açılar",
+  soru: "Bir dörtgenin iç açıları toplamı kaç derecedir?",
+  svg: `<svg width="130" height="110" viewBox="0 0 130 110">
+    <polygon points="20,10 110,10 120,100 10,95" fill="#fce7f3" stroke="#db2777" stroke-width="2.5"/>
+    <text x="28" y="22" font-size="9" fill="#be185d">α</text>
+    <text x="100" y="22" font-size="9" fill="#be185d">β</text>
+    <text x="107" y="95" font-size="9" fill="#be185d">γ</text>
+    <text x="16" y="95" font-size="9" fill="#be185d">δ</text>
+    <text x="65" y="60" text-anchor="middle" font-size="10" fill="#be185d">Toplam=?</text>
+  </svg>`,
+  secenekler: ["A) 180°","B) 270°","C) 360°","D) 540°"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir dörtgenin üç açısı 85°, 100° ve 75° ise dördüncü açısı kaç derecedir?",
+  svg: `<svg width="130" height="110" viewBox="0 0 130 110">
+    <polygon points="20,10 110,10 120,100 10,95" fill="#e0e7ff" stroke="#6366f1" stroke-width="2.5"/>
+    <text x="22" y="24" font-size="9" fill="#4338ca">85°</text>
+    <text x="95" y="24" font-size="9" fill="#4338ca">100°</text>
+    <text x="106" y="95" font-size="9" fill="#4338ca">75°</text>
+    <text x="12" y="95" font-size="9" fill="#4338ca">?°</text>
+  </svg>`,
+  secenekler: ["A) 90°","B) 100°","C) 110°","D) 80°"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Bir dörtgenin üç açısı 90°, 90° ve 110° ise dördüncü açısı kaç derecedir?",
+  secenekler: ["A) 60°","B) 70°","C) 80°","D) 90°"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Bir dörtgenin üç açısı 70°, 80° ve 95° ise dördüncü açısı kaç derecedir?",
+  svg: `<svg width="130" height="110" viewBox="0 0 130 110">
+    <polygon points="15,12 115,8 125,98 5,102" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+    <text x="18" y="25" font-size="9" fill="#92400e">70°</text>
+    <text x="100" y="22" font-size="9" fill="#92400e">80°</text>
+    <text x="110" y="96" font-size="9" fill="#92400e">95°</text>
+    <text x="8" y="100" font-size="9" fill="#92400e">?°</text>
+  </svg>`,
+  secenekler: ["A) 105°","B) 115°","C) 95°","D) 125°"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Bir dörtgenin üç açısı 60°, 120° ve 90° ise dördüncü açısı kaç derecedir?",
+  secenekler: ["A) 80°","B) 90°","C) 100°","D) 110°"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Karenin her bir iç açısı kaç derecedir?",
+  svg: `<svg width="110" height="110" viewBox="0 0 110 110">
+    <rect x="10" y="10" width="90" height="90" fill="#dbeafe" stroke="#2563eb" stroke-width="2.5"/>
+    <rect x="10" y="10" width="12" height="12" fill="none" stroke="#2563eb" stroke-width="1.5"/>
+    <rect x="88" y="10" width="12" height="12" fill="none" stroke="#2563eb" stroke-width="1.5"/>
+    <rect x="10" y="88" width="12" height="12" fill="none" stroke="#2563eb" stroke-width="1.5"/>
+    <rect x="88" y="88" width="12" height="12" fill="none" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="55" y="58" text-anchor="middle" font-size="10" fill="#1d4ed8">Her açı = ?</text>
+  </svg>`,
+  secenekler: ["A) 45°","B) 60°","C) 90°","D) 120°"],
+  dogru: "C"
+},
+
+// ============ BÖLÜM 7: ÇOKGEN BİLGİ VE YORUM ============
+{ bolum: "🔷 Çokgenler – Bilgi ve Yorum",
+  soru: "\"Çokgen\" tanımına en uygun açıklama hangisidir?",
+  secenekler: ["A) Yalnızca eğri kenarlardan oluşan kapalı şekil","B) En az 3 doğru parça ile sınırlandırılmış kapalı düzlem şekli","C) Sadece 4 köşesi olan şekil","D) İç açıları toplamı her zaman 360° olan şekil"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Aşağıdaki şekillerden hangisi çokgen DEĞİLDİR?",
+  svg: `<svg width="280" height="80" viewBox="0 0 280 80">
+    <polygon points="25,70 10,20 50,20" fill="#d1fae5" stroke="#059669" stroke-width="1.8"/>
+    <text x="30" y="78" text-anchor="middle" font-size="9" fill="#065f46">A) Üçgen</text>
+    <rect x="75" y="15" width="50" height="55" fill="#dbeafe" stroke="#2563eb" stroke-width="1.8"/>
+    <text x="100" y="78" text-anchor="middle" font-size="9" fill="#1d4ed8">B) Dörtgen</text>
+    <circle cx="175" cy="40" r="28" fill="#fce7f3" stroke="#db2777" stroke-width="1.8"/>
+    <text x="175" y="78" text-anchor="middle" font-size="9" fill="#be185d">C) Çember</text>
+    <polygon points="245,10 270,38 258,70 232,70 220,38" fill="#fef3c7" stroke="#d97706" stroke-width="1.8"/>
+    <text x="246" y="78" text-anchor="middle" font-size="9" fill="#92400e">D) Beşgen</text>
+  </svg>`,
+  secenekler: ["A) Üçgen","B) Dörtgen","C) Çember","D) Beşgen"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir çokgenin kenar sayısı arttıkça ne olur?",
+  secenekler: ["A) İç açılar toplamı azalır","B) İç açılar toplamı artar","C) İç açılar toplamı değişmez","D) Kenar sayısının iç açıyla ilgisi yoktur"],
+  dogru: "B",
+  not: "Bir çokgende iç açıları toplamı daima kenar sayısının 2 eksiğinin 180 ile çarpımına eşittir."
+},
+{ bolum: null,
+  soru: "\"Düzgün çokgen\" ne demektir?",
+  secenekler: ["A) Kenarları ve açıları birbirine eşit olan çokgen","B) Sadece kenarları eşit olan çokgen","C) Sadece açıları eşit olan çokgen","D) 4 kenarı olan çokgen"],
+  dogru: "A"
+},
+{ bolum: null,
+  soru: "Bir çokgenin köşegen sayısını bulmak için hangi formül kullanılır? (n = kenar sayısı)",
+  svg: `<svg width="180" height="60" viewBox="0 0 180 60">
+    <rect x="5" y="5" width="170" height="50" rx="10" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+    <text x="90" y="25" text-anchor="middle" font-size="12" fill="#4c1d95" font-weight="bold">Köşegen = ?</text>
+    <text x="90" y="45" text-anchor="middle" font-size="10" fill="#4c1d95">(n = kenar sayısı)</text>
+  </svg>`,
+  secenekler: ["A) n × (n-2) / 2","B) n × (n-3) / 2","C) (n-2) × 180","D) n × (n-1) / 2"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Bir çokgenin iç açılar toplamını hesaplayan formül nedir? (n = kenar sayısı)",
+  secenekler: ["A) n × 90°","B) n × 180°","C) (n-2) × 180°","D) (n-1) × 180°"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Aşağıdaki çokgen çiftlerinden hangileri hem kenar sayısı hem de iç açılar toplamı bakımından farklıdır?",
+  secenekler: ["A) Kare ve eşkenar dörtgen","B) Üçgen ve beşgen","C) Dikdörtgen ve kare","D) İkizkenar üçgen ve eşkenar üçgen"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Bir çokgenin her dış açısının toplamı kaç derecedir?",
+  secenekler: ["A) 180°","B) 270°","C) 360°","D) Kenar sayısına göre değişir"],
+  dogru: "C"
+},
+
+// ============ BÖLÜM 8: BEŞGENLERİN ÖZELLİKLERİ ============
+{ bolum: "⬠ Beşgen ve Altıgen",
+  soru: "Bir beşgenin iç açılar toplamı kaç derecedir?",
+  svg: `<svg width="120" height="120" viewBox="0 0 120 120">
+    <polygon points="60,5 113,42 93,105 27,105 7,42" fill="#fce7f3" stroke="#db2777" stroke-width="2.5"/>
+    <text x="60" y="62" text-anchor="middle" font-size="10" fill="#be185d">Toplam=?°</text>
+    <text x="60" y="78" text-anchor="middle" font-size="9" fill="#be185d">5 kenar</text>
+  </svg>`,
+  secenekler: ["A) 360°","B) 450°","C) 540°","D) 720°"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Düzgün bir beşgenin her bir iç açısı kaç derecedir?",
+  secenekler: ["A) 90°","B) 100°","C) 108°","D) 120°"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Kenar uzunluğu 7 cm olan düzgün beşgenin çevresi kaç cm'dir?",
+  svg: `<svg width="120" height="120" viewBox="0 0 120 120">
+    <polygon points="60,5 113,42 93,105 27,105 7,42" fill="#d1fae5" stroke="#059669" stroke-width="2.5"/>
+    <text x="60" y="62" text-anchor="middle" font-size="10" fill="#065f46">her kenar=7</text>
+    <text x="60" y="78" text-anchor="middle" font-size="10" fill="#065f46">Çevre=?</text>
+  </svg>`,
+  secenekler: ["A) 28 cm","B) 35 cm","C) 42 cm","D) 21 cm"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Bir altıgenin iç açılar toplamı kaç derecedir?",
+  svg: `<svg width="120" height="120" viewBox="0 0 120 120">
+    <polygon points="60,4 108,30 108,82 60,108 12,82 12,30" fill="#e0e7ff" stroke="#6366f1" stroke-width="2.5"/>
+    <text x="60" y="62" text-anchor="middle" font-size="10" fill="#4338ca">Toplam=?°</text>
+    <text x="60" y="77" text-anchor="middle" font-size="9" fill="#4338ca">6 kenar</text>
+  </svg>`,
+  secenekler: ["A) 540°","B) 720°","C) 900°","D) 1080°"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Düzgün bir altıgenin her bir iç açısı kaç derecedir?",
+  secenekler: ["A) 108°","B) 120°","C) 135°","D) 150°"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Kenar uzunluğu 9 cm olan düzgün altıgenin çevresi kaç cm'dir?",
+  svg: `<svg width="120" height="120" viewBox="0 0 120 120">
+    <polygon points="60,4 108,30 108,82 60,108 12,82 12,30" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+    <text x="60" y="62" text-anchor="middle" font-size="10" fill="#92400e">her kenar=9</text>
+    <text x="60" y="78" text-anchor="middle" font-size="10" fill="#92400e">Çevre=?</text>
+  </svg>`,
+  secenekler: ["A) 36 cm","B) 45 cm","C) 54 cm","D) 63 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Çevresi 40 cm olan düzgün beşgenin bir kenarı kaç cm'dir?",
+  secenekler: ["A) 5 cm","B) 8 cm","C) 10 cm","D) 20 cm"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Çevresi 60 cm olan düzgün altıgenin bir kenarı kaç cm'dir?",
+  svg: `<svg width="120" height="120" viewBox="0 0 120 120">
+    <polygon points="60,4 108,30 108,82 60,108 12,82 12,30" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+    <text x="60" y="62" text-anchor="middle" font-size="10" fill="#991b1b">Çevre=60 cm</text>
+    <text x="60" y="78" text-anchor="middle" font-size="10" fill="#991b1b">Kenar=?</text>
+  </svg>`,
+  secenekler: ["A) 6 cm","B) 8 cm","C) 10 cm","D) 12 cm"],
+  dogru: "C"
+},
+
+// ============ BÖLÜM 9: KÖŞEGEN SAYISI ============
+{ bolum: "📐 Köşegen Sayısı",
+  soru: "Çemberin kaç köşegeni vardır?",
+  svg: `<svg width="110" height="110" viewBox="0 0 110 110">
+    <circle cx="55" cy="55" r="48" fill="#fce7f3" stroke="#db2777" stroke-width="2.5"/>
+    <text x="55" y="60" text-anchor="middle" font-size="11" fill="#be185d">Köşegen=?</text>
+  </svg>`,
+  secenekler: ["A) 0","B) 1","C) 2","D) 3"],
+  dogru: "A"
+},
+{ bolum: null,
+  soru: "Üçgenin kaç köşegeni vardır?",
+  svg: `<svg width="120" height="100" viewBox="0 0 120 100">
+    <polygon points="60,5 5,95 115,95" fill="#d1fae5" stroke="#059669" stroke-width="2.5"/>
+    <text x="60" y="58" text-anchor="middle" font-size="11" fill="#065f46">Köşegen=?</text>
+  </svg>`,
+  secenekler: ["A) 3","B) 1","C) 2","D) 0"],
+  dogru: "D"
+},
+{ bolum: null,
+  soru: "Dörtgenin (kare, dikdörtgen gibi) kaç köşegeni vardır?",
+  svg: `<svg width="120" height="110" viewBox="0 0 120 110">
+    <rect x="10" y="10" width="100" height="80" fill="#dbeafe" stroke="#2563eb" stroke-width="2.5"/>
+    <line x1="10" y1="10" x2="110" y2="90" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <line x1="110" y1="10" x2="10" y2="90" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="60" y="56" text-anchor="middle" font-size="11" fill="#1d4ed8">Köşegen=?</text>
+  </svg>`,
+  secenekler: ["A) 1","B) 2","C) 3","D) 4"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Beşgenin kaç köşegeni vardır? (Formül: n(n-3)/2)",
+  svg: `<svg width="120" height="120" viewBox="0 0 120 120">
+    <polygon points="60,5 113,42 93,105 27,105 7,42" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+    <line x1="60" y1="5" x2="93" y2="105" stroke="#d97706" stroke-width="1.2" stroke-dasharray="4,3"/>
+    <line x1="60" y1="5" x2="27" y2="105" stroke="#d97706" stroke-width="1.2" stroke-dasharray="4,3"/>
+    <line x1="113" y1="42" x2="27" y2="105" stroke="#d97706" stroke-width="1.2" stroke-dasharray="4,3"/>
+    <line x1="113" y1="42" x2="7" y2="42" stroke="#d97706" stroke-width="1.2" stroke-dasharray="4,3"/>
+    <line x1="93" y1="105" x2="7" y2="42" stroke="#d97706" stroke-width="1.2" stroke-dasharray="4,3"/>
+    <text x="60" y="64" text-anchor="middle" font-size="10" fill="#92400e">Köşegen=?</text>
+  </svg>`,
+  secenekler: ["A) 4","B) 5","C) 6","D) 7"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Altıgenin kaç köşegeni vardır? (Formül: n(n-3)/2)",
+  svg: `<svg width="120" height="120" viewBox="0 0 120 120">
+    <polygon points="60,4 108,30 108,82 60,108 12,82 12,30" fill="#ede9fe" stroke="#7c3aed" stroke-width="2.5"/>
+    <line x1="60" y1="4" x2="108" y2="82" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4,3"/>
+    <line x1="60" y1="4" x2="60" y2="108" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4,3"/>
+    <line x1="60" y1="4" x2="12" y2="82" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4,3"/>
+    <line x1="108" y1="30" x2="12" y2="82" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4,3"/>
+    <line x1="108" y1="30" x2="12" y2="30" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4,3"/>
+    <line x1="108" y1="30" x2="60" y2="108" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4,3"/>
+    <line x1="108" y1="82" x2="12" y2="30" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4,3"/>
+    <line x1="108" y1="82" x2="12" y2="82" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4,3"/>
+    <line x1="60" y1="108" x2="12" y2="30" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4,3"/>
+    <text x="60" y="64" text-anchor="middle" font-size="10" fill="#4c1d95">Köşegen=?</text>
+  </svg>`,
+  secenekler: ["A) 6","B) 7","C) 9","D) 12"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Sekizgenin (8 kenarlı) köşegen sayısı kaçtır? (Formül: n(n-3)/2)",
+  secenekler: ["A) 16","B) 20","C) 24","D) 28"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "7 kenarlı bir çokgenin (yedigen) köşegen sayısı kaçtır?",
+  secenekler: ["A) 10","B) 12","C) 14","D) 16"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir çokgenin köşegen sayısı 9'dur. Bu çokgenin kaç kenarı vardır?",
+  svg: `<svg width="160" height="60" viewBox="0 0 160 60">
+    <rect x="5" y="5" width="150" height="50" rx="10" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
+    <text x="80" y="22" text-anchor="middle" font-size="11" fill="#065f46" font-weight="bold">Köşegen sayısı = 9</text>
+    <text x="80" y="42" text-anchor="middle" font-size="10" fill="#065f46">Kaç kenarlıdır?</text>
+  </svg>`,
+  secenekler: ["A) 5","B) 6","C) 7","D) 8"],
+  dogru: "B"
+},
+
+// ============ BÖLÜM 10: KARMA ÇOKGEN SORULARI ============
+{ bolum: "🔶 Karma Çokgen Soruları",
+  soru: "Aşağıdakilerden hangisi düzgün çokgen değildir?",
+  svg: `<svg width="280" height="80" viewBox="0 0 280 80">
+    <polygon points="30,70 8,25 52,25" fill="#d1fae5" stroke="#059669" stroke-width="1.8"/>
+    <text x="30" y="78" text-anchor="middle" font-size="8" fill="#065f46">A) Eşkenar △</text>
+    <rect x="75" y="15" width="50" height="50" fill="#dbeafe" stroke="#2563eb" stroke-width="1.8"/>
+    <text x="100" y="78" text-anchor="middle" font-size="8" fill="#1d4ed8">B) Kare</text>
+    <polygon points="175,5 195,30 187,60 163,60 155,30" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.8"/>
+    <text x="175" y="78" text-anchor="middle" font-size="8" fill="#4c1d95">C) Düzgün 5gen</text>
+    <polygon points="230,5 270,25 280,65 220,70 210,30" fill="#fce7f3" stroke="#db2777" stroke-width="1.8"/>
+    <text x="248" y="78" text-anchor="middle" font-size="8" fill="#be185d">D) Bu dörtgen</text>
+  </svg>`,
+  secenekler: ["A) Eşkenar üçgen","B) Kare","C) Düzgün beşgen","D) Kenarları farklı uzunluktaki dörtgen"],
+  dogru: "D"
+},
+{ bolum: null,
+  soru: "Bir üçgenin iç açılarından biri 90°'dir. Bu üçgen aynı zamanda ikizkenar olabilir mi?",
+  secenekler: ["A) Hayır, dik üçgen ikizkenar olamaz","B) Evet, dik açılı ikizkenar üçgen olabilir","C) Yalnızca eşkenar üçgen dik açılı olabilir","D) Üçgenler hiçbir zaman ikizkenar ve dik olamaz"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Çevresi 48 cm olan eşkenar üçgenin her kenarı kaç cm'dir?",
+  svg: `<svg width="130" height="110" viewBox="0 0 130 110">
+    <polygon points="65,5 5,105 125,105" fill="#fce7f3" stroke="#db2777" stroke-width="2.5"/>
+    <text x="65" y="62" text-anchor="middle" font-size="11" fill="#be185d">Çevre=48 cm</text>
+    <text x="65" y="78" text-anchor="middle" font-size="10" fill="#be185d">Kenar=?</text>
+  </svg>`,
+  secenekler: ["A) 12 cm","B) 14 cm","C) 16 cm","D) 24 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Üçgenin bir iç açısı ile o açıya komşu dış açının toplamı kaç derecedir?",
+  secenekler: ["A) 90°","B) 180°","C) 270°","D) 360°"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Aşağıdaki ifadelerden hangisi doğrudur?",
+  secenekler: ["A) Her dikdörtgen aynı zamanda karedır","B) Her kare aynı zamanda dikdörtgendir","C) Her üçgen aynı zamanda dörtgendir","D) Her çokgen aynı zamanda çemberdir"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Bir beşgenin iç açıları toplamı, bir dörtgenin iç açıları toplamından kaç derece fazladır?",
+  secenekler: ["A) 90°","B) 120°","C) 180°","D) 360°"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir dikdörtgenin alanı 60 cm², uzun kenarı 10 cm ise kısa kenarı kaç cm'dir?",
+  svg: `<svg width="140" height="90" viewBox="0 0 140 90">
+    <rect x="8" y="10" width="124" height="70" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+    <text x="70" y="7" text-anchor="middle" font-size="11" fill="#92400e">10 cm</text>
+    <text x="70" y="52" text-anchor="middle" font-size="11" fill="#92400e">Alan=60 cm²</text>
+  </svg>`,
+  secenekler: ["A) 4 cm","B) 5 cm","C) 6 cm","D) 8 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir üçgenin çevresi 24 cm'dir. Üçgen eşkenar ise her kenarı kaç cm'dir?",
+  secenekler: ["A) 6 cm","B) 7 cm","C) 8 cm","D) 12 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir çokgen hem dörtgen hem de düzgün şekildir. Tüm iç açıları eşit ve 90°'dir. Bu şekil hangisidir?",
+  svg: `<svg width="100" height="100" viewBox="0 0 100 100">
+    <rect x="10" y="10" width="80" height="80" fill="#dbeafe" stroke="#2563eb" stroke-width="2.5"/>
+    <rect x="10" y="10" width="12" height="12" fill="none" stroke="#2563eb" stroke-width="1.5"/>
+    <rect x="78" y="10" width="12" height="12" fill="none" stroke="#2563eb" stroke-width="1.5"/>
+    <rect x="10" y="78" width="12" height="12" fill="none" stroke="#2563eb" stroke-width="1.5"/>
+    <rect x="78" y="78" width="12" height="12" fill="none" stroke="#2563eb" stroke-width="1.5"/>
+  </svg>`,
+  secenekler: ["A) Dikdörtgen","B) Eşkenar dörtgen","C) Kare","D) Yamuk"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir dairenin yarıçapı 2 katına çıkarılırsa alanı kaç katına çıkar?",
+  secenekler: ["A) 2 katına","B) 4 katına","C) 6 katına","D) 8 katına"],
+  dogru: "B"
+},
+
+// ============ BÖLÜM 11: ÜÇGENLERİN AÇILARI – İLERİ ============
+{ bolum: "🔺 Üçgende Açı – İleri Sorular",
+  soru: "Bir üçgenin iki açısı eşit, üçüncü açısı 80°'dir. Eşit açıların her biri kaç derecedir?",
+  svg: `<svg width="130" height="95" viewBox="0 0 130 95">
+    <polygon points="65,6 8,89 122,89" fill="#ede9fe" stroke="#7c3aed" stroke-width="2.5"/>
+    <text x="18" y="87" font-size="9" fill="#4c1d95">α</text>
+    <text x="100" y="87" font-size="9" fill="#4c1d95">α</text>
+    <text x="58" y="22" font-size="9" fill="#4c1d95">80°</text>
+  </svg>`,
+  secenekler: ["A) 40°","B) 50°","C) 60°","D) 80°"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Eşkenar üçgenin bir açısı 60° ise diğer iki açısının toplamı kaç derecedir?",
+  secenekler: ["A) 60°","B) 90°","C) 120°","D) 180°"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Dik üçgende iki keskin açının toplamı kaç derecedir?",
+  svg: `<svg width="120" height="100" viewBox="0 0 120 100">
+    <polygon points="10,10 10,90 110,90" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+    <rect x="10" y="78" width="12" height="12" fill="none" stroke="#d97706" stroke-width="2"/>
+    <text x="22" y="72" font-size="9" fill="#92400e">90°</text>
+    <text x="16" y="30" font-size="9" fill="#92400e">α</text>
+    <text x="88" y="88" font-size="9" fill="#92400e">β</text>
+    <text x="60" y="62" text-anchor="middle" font-size="9" fill="#92400e">α+β=?</text>
+  </svg>`,
+  secenekler: ["A) 90°","B) 120°","C) 150°","D) 180°"],
+  dogru: "A"
+},
+{ bolum: null,
+  soru: "Bir üçgenin açıları oranı 1:2:3 şeklindedir. En büyük açı kaç derecedir?",
+  secenekler: ["A) 60°","B) 80°","C) 90°","D) 120°"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "İkizkenar bir üçgenin tepe açısı 40°'dir. Taban açılarının her biri kaç derecedir?",
+  svg: `<svg width="130" height="105" viewBox="0 0 130 105">
+    <polygon points="65,6 8,100 122,100" fill="#fce7f3" stroke="#db2777" stroke-width="2.5"/>
+    <text x="59" y="20" font-size="9" fill="#be185d">40°</text>
+    <text x="18" y="97" font-size="9" fill="#be185d">?°</text>
+    <text x="98" y="97" font-size="9" fill="#be185d">?°</text>
+  </svg>`,
+  secenekler: ["A) 60°","B) 65°","C) 70°","D) 75°"],
+  dogru: "C"
+},
+
+// ============ BÖLÜM 12: EK DAİRE / ÇEMBER ============
+{ bolum: "⭕ Çember – Ek Sorular (π = 3)",
+  soru: "Çevresi 54 cm olan çemberin çapı kaç cm'dir? (π = 3)",
+  secenekler: ["A) 6 cm","B) 9 cm","C) 12 cm","D) 18 cm"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Alanı 48 cm² olan dairenin yarıçapı kaç cm'dir? (π = 3)",
+  svg: `<svg width="120" height="120" viewBox="0 0 120 120">
+    <circle cx="60" cy="60" r="50" fill="#d1fae5" stroke="#059669" stroke-width="2.5"/>
+    <text x="60" y="57" text-anchor="middle" font-size="11" fill="#065f46" font-weight="bold">Alan=48 cm²</text>
+    <text x="60" y="73" text-anchor="middle" font-size="10" fill="#065f46">r=?</text>
+  </svg>`,
+  secenekler: ["A) 2 cm","B) 3 cm","C) 4 cm","D) 5 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Yarıçapı 10 cm olan dairenin alanı kaç cm²'dir? (π = 3)",
+  secenekler: ["A) 100 cm²","B) 200 cm²","C) 300 cm²","D) 400 cm²"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Çemberin merkezi ile çember üzerindeki bir nokta arasındaki uzaklığa ne denir?",
+  svg: `<svg width="130" height="120" viewBox="0 0 130 120">
+    <circle cx="65" cy="60" r="52" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+    <circle cx="65" cy="60" r="4" fill="#6366f1"/>
+    <line x1="65" y1="60" x2="117" y2="60" stroke="#dc2626" stroke-width="2.5"/>
+    <text x="65" y="52" text-anchor="middle" font-size="9" fill="#dc2626">←— r —→</text>
+    <text x="65" y="100" text-anchor="middle" font-size="9" fill="#4338ca">Bu uzunluk nedir?</text>
+  </svg>`,
+  secenekler: ["A) Çap","B) Çevre","C) Yarıçap","D) Köşegen"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Çapı 14 cm olan bir dairenin alanı kaç cm²'dir? (π = 3)",
+  secenekler: ["A) 42 cm²","B) 98 cm²","C) 147 cm²","D) 196 cm²"],
+  dogru: "C"
+},
+
+// ============ BÖLÜM 13: KARE – DİKDÖRTGEN EK ============
+{ bolum: "🟦 Kare – Dikdörtgen: Ek Sorular",
+  soru: "Alanı 64 cm² olan bir karenin kenar uzunluğu kaç cm'dir?",
+  svg: `<svg width="110" height="110" viewBox="0 0 110 110">
+    <rect x="10" y="10" width="90" height="90" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+    <text x="55" y="55" text-anchor="middle" font-size="13" fill="#92400e" font-weight="bold">64 cm²</text>
+    <text x="55" y="72" text-anchor="middle" font-size="10" fill="#92400e">Kenar=?</text>
+  </svg>`,
+  secenekler: ["A) 6 cm","B) 7 cm","C) 8 cm","D) 9 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Uzun kenarı 14 cm, kısa kenarı 5 cm olan dikdörtgenin çevresi kaç cm'dir?",
+  secenekler: ["A) 19 cm","B) 28 cm","C) 38 cm","D) 70 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Çevresi 44 cm olan bir dikdörtgenin uzun kenarı 14 cm ise alanı kaç cm²'dir?",
+  svg: `<svg width="140" height="85" viewBox="0 0 140 85">
+    <rect x="8" y="8" width="124" height="68" fill="#d1fae5" stroke="#059669" stroke-width="2.5"/>
+    <text x="70" y="5" text-anchor="middle" font-size="11" fill="#065f46">14 cm</text>
+    <text x="70" y="48" text-anchor="middle" font-size="10" fill="#065f46">Çevre=44 cm</text>
+  </svg>`,
+  secenekler: ["A) 88 cm²","B) 112 cm²","C) 126 cm²","D) 140 cm²"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Karenin çevresi ile alanı sayıca eşit ise kenar uzunluğu kaç cm'dir?",
+  secenekler: ["A) 2 cm","B) 3 cm","C) 4 cm","D) 5 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir dikdörtgenin uzun kenarı kısa kenarının 3 katı ve çevresi 48 cm ise kısa kenarı kaç cm'dir?",
+  secenekler: ["A) 4 cm","B) 5 cm","C) 6 cm","D) 8 cm"],
+  dogru: "C"
+},
+
+// ============ BÖLÜM 14: ÇOKGEN ÇEŞİTLERİ ============
+{ bolum: "🔷 Çokgen Çeşitleri ve Sınıflandırma",
+  soru: "6 kenarlı çokgenin özel adı nedir?",
+  svg: `<svg width="120" height="120" viewBox="0 0 120 120">
+    <polygon points="60,4 108,30 108,82 60,108 12,82 12,30" fill="#e0e7ff" stroke="#6366f1" stroke-width="2.5"/>
+    <text x="60" y="62" text-anchor="middle" font-size="11" fill="#4338ca">6 kenar</text>
+    <text x="60" y="78" text-anchor="middle" font-size="11" fill="#4338ca">Adı=?</text>
+  </svg>`,
+  secenekler: ["A) Beşgen","B) Altıgen","C) Yedigen","D) Sekizgen"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "5 kenarlı çokgenin özel adı nedir?",
+  svg: `<svg width="120" height="120" viewBox="0 0 120 120">
+    <polygon points="60,5 113,42 93,105 27,105 7,42" fill="#fce7f3" stroke="#db2777" stroke-width="2.5"/>
+    <text x="60" y="62" text-anchor="middle" font-size="11" fill="#be185d">5 kenar</text>
+    <text x="60" y="78" text-anchor="middle" font-size="11" fill="#be185d">Adı=?</text>
+  </svg>`,
+  secenekler: ["A) Dörtgen","B) Altıgen","C) Beşgen","D) Yedigen"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "8 kenarlı çokgenin adı nedir?",
+  secenekler: ["A) Yedigen","B) Sekizgen","C) Ongen","D) Altıgen"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Aşağıdaki çokgenlerden hangisinin iç açılar toplamı en büyüktür?",
+  secenekler: ["A) Üçgen","B) Dörtgen","C) Beşgen","D) Altıgen"],
+  dogru: "D"
+},
+{ bolum: null,
+  soru: "Bir çokgenin kenar sayısı n ise köşe sayısı kaçtır?",
+  secenekler: ["A) n-1","B) n","C) n+1","D) 2n"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Aşağıdaki hangi şekil çokgen grubuna dahil değildir?",
+  svg: `<svg width="280" height="80" viewBox="0 0 280 80">
+    <polygon points="30,70 8,25 52,25" fill="#d1fae5" stroke="#059669" stroke-width="1.8"/>
+    <text x="30" y="78" text-anchor="middle" font-size="8" fill="#065f46">A) Üçgen</text>
+    <polygon points="78,5 115,5 125,65 68,65" fill="#fef3c7" stroke="#d97706" stroke-width="1.8"/>
+    <text x="96" y="78" text-anchor="middle" font-size="8" fill="#92400e">B) Dörtgen</text>
+    <ellipse cx="175" cy="40" rx="32" ry="22" fill="#fce7f3" stroke="#db2777" stroke-width="1.8"/>
+    <text x="175" y="78" text-anchor="middle" font-size="8" fill="#be185d">C) Elips</text>
+    <polygon points="245,10 270,38 258,70 232,70 220,38" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.8"/>
+    <text x="247" y="78" text-anchor="middle" font-size="8" fill="#4c1d95">D) Beşgen</text>
+  </svg>`,
+  secenekler: ["A) Üçgen","B) Dörtgen","C) Elips","D) Beşgen"],
+  dogru: "C"
+},
+
+// ============ BÖLÜM 15: ZOR / KARMA ============
+{ bolum: "⭐ Zor / Karma Sorular",
+  soru: "Bir beşgenin iç açıları 100°, 95°, 110°, 115° ve x°'dir. x kaçtır?",
+  svg: `<svg width="130" height="120" viewBox="0 0 130 120">
+    <polygon points="65,5 120,42 100,110 30,110 10,42" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+    <text x="65" y="65" text-anchor="middle" font-size="9" fill="#92400e">100°+95°+110°</text>
+    <text x="65" y="78" text-anchor="middle" font-size="9" fill="#92400e">+115°+x°=540°</text>
+  </svg>`,
+  secenekler: ["A) 110°","B) 120°","C) 130°","D) 125°"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Yarıçapı 7 cm olan çemberin çevresi ile yarıçapı 5 cm olan çemberin çevresi arasındaki fark kaç cm'dir? (π = 3)",
+  secenekler: ["A) 6 cm","B) 12 cm","C) 18 cm","D) 24 cm"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Kenarı 6 cm olan bir karenin alanı ile uzun kenarı 9, kısa kenarı 4 cm olan dikdörtgenin alanı farkı kaç cm²'dir?",
+  svg: `<svg width="290" height="90" viewBox="0 0 290 90">
+    <rect x="10" y="15" width="70" height="70" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+    <text x="45" y="55" text-anchor="middle" font-size="10" fill="#1d4ed8">6×6</text>
+    <text x="95" y="52" text-anchor="middle" font-size="16" fill="#374151">-</text>
+    <rect x="110" y="28" width="90" height="44" fill="#fce7f3" stroke="#db2777" stroke-width="2"/>
+    <text x="155" y="54" text-anchor="middle" font-size="10" fill="#be185d">9×4</text>
+    <text x="215" y="52" text-anchor="middle" font-size="16" fill="#374151">=?</text>
+  </svg>`,
+  secenekler: ["A) 0 cm²","B) 2 cm²","C) 36 cm²","D) 4 cm²"],
+  dogru: "A"
+},
+{ bolum: null,
+  soru: "Bir altıgenin iç açıları toplamı ile bir üçgenin iç açıları toplamı arasındaki fark kaç derecedir?",
+  secenekler: ["A) 360°","B) 420°","C) 540°","D) 720°"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Yarıçapı 3 cm olan dairenin alanı, kenarı 6 cm olan karenin alanının yüzde kaçıdır? (π = 3)",
+  secenekler: ["A) %50","B) %75","C) %25","D) %100"],
+  dogru: "A"
+},
+{ bolum: null,
+  soru: "\"Kenar-kenar-kenar eşitsizliği\" kuralına göre hangi kenar uzunluğu grubu üçgen oluşturur?",
+  svg: `<svg width="290" height="60" viewBox="0 0 290 60">
+    <rect x="5" y="5" width="280" height="50" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+    <text x="145" y="22" text-anchor="middle" font-size="11" fill="#4c1d95" font-weight="bold">a + b &gt; c kuralı</text>
+    <text x="145" y="42" text-anchor="middle" font-size="10" fill="#4c1d95">Hangi grup üçgen oluşturur?</text>
+  </svg>`,
+  secenekler: ["A) 1, 2, 5","B) 4, 5, 10","C) 6, 7, 12","D) 3, 3, 8"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir dikdörtgenin uzun kenarı kısa kenarının 2 katıdır. Çevresi 54 cm ise alanı kaç cm²'dir?",
+  secenekler: ["A) 108 cm²","B) 126 cm²","C) 162 cm²","D) 81 cm²"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "4 kenarlı şekillerin (dörtgenler) köşegen sayısı hangi şekilden fazladır?",
+  svg: `<svg width="280" height="80" viewBox="0 0 280 80">
+    <polygon points="30,70 8,25 52,25" fill="#d1fae5" stroke="#059669" stroke-width="1.8"/>
+    <text x="30" y="78" text-anchor="middle" font-size="8" fill="#065f46">A) Üçgen</text>
+    <circle cx="155" cy="38" r="28" fill="#fce7f3" stroke="#db2777" stroke-width="1.8"/>
+    <text x="155" y="78" text-anchor="middle" font-size="8" fill="#be185d">B) Çember</text>
+    <polygon points="230,5 270,38 258,70 232,70 215,38" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.8"/>
+    <text x="247" y="78" text-anchor="middle" font-size="8" fill="#4c1d95">C) Beşgen</text>
+  </svg>`,
+  secenekler: ["A) Üçgenden fazla, Beşgenden az","B) Çemberden az","C) Yalnızca üçgenden fazladır","D) Hiçbir şekilden fazla değildir"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir üçgenin açıları 2x, 3x ve 4x biçimindedir. En küçük açı kaç derecedir?",
+  secenekler: ["A) 20°","B) 30°","C) 40°","D) 50°"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Kenar uzunluğu 5 cm olan düzgün beşgenin çevresi ile kenar uzunluğu 4 cm olan düzgün altıgenin çevresi farkı kaç cm'dir?",
+  secenekler: ["A) 0 cm","B) 1 cm","C) 2 cm","D) 3 cm"],
+  dogru: "B"
+},
+
+// ============ BÖLÜM 16: SON SORULAR KARMA PEKİŞTİRME ============
+{ bolum: "🔺 Son Sorular: Karma Pekiştirme",
+  soru: "Bir üçgenin iç açısının dış açısı hangi özelliği taşır?",
+  secenekler: ["A) İç açı ile dış açının toplamı 90°'dir","B) İç açı ile dış açının toplamı 360°'dir","C) İç açı ile dış açının toplamı 180°'dir","D) Dış açı her zaman 90°'dir"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir dörtgenin köşegen sayısı kaçtır ve bu köşegenler dörtgeni kaç üçgene böler?",
+  svg: `<svg width="130" height="110" viewBox="0 0 130 110">
+    <rect x="10" y="10" width="110" height="90" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+    <line x1="10" y1="10" x2="120" y2="100" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <line x1="120" y1="10" x2="10" y2="100" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="65" y="58" text-anchor="middle" font-size="9" fill="#1d4ed8">Köşegen=2</text>
+    <text x="65" y="72" text-anchor="middle" font-size="9" fill="#1d4ed8">Üçgen=?</text>
+  </svg>`,
+  secenekler: ["A) 2 köşegen, 2 üçgen","B) 2 köşegen, 4 üçgen","C) 4 köşegen, 4 üçgen","D) 2 köşegen, 3 üçgen"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Aşağıdaki ifadelerden hangisi yanlıştır?",
+  secenekler: ["A) Üçgenin iç açılar toplamı 180°'dir","B) Dörtgenin iç açılar toplamı 360°'dir","C) Beşgenin iç açılar toplamı 540°'dir","D) Altıgenin iç açılar toplamı 900°'dir"],
+  dogru: "D"
+},
+{ bolum: null,
+  soru: "Kenarları 8 cm, 6 cm ve 10 cm olan üçgen hangi tür üçgendir? (Pythagoras: 6²+8²=10²)",
+  svg: `<svg width="130" height="95" viewBox="0 0 130 95">
+    <polygon points="10,90 10,10 120,90" fill="#fce7f3" stroke="#db2777" stroke-width="2.5"/>
+    <rect x="10" y="78" width="12" height="12" fill="none" stroke="#db2777" stroke-width="1.5"/>
+    <text x="8" y="52" font-size="9" fill="#be185d">6</text>
+    <text x="60" y="88" font-size="9" fill="#be185d">8</text>
+    <text x="65" y="45" font-size="9" fill="#be185d">10</text>
+  </svg>`,
+  secenekler: ["A) Dar açılı üçgen","B) Geniş açılı üçgen","C) Dik üçgen","D) Eşkenar üçgen"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Düzgün üçgen (eşkenar üçgen) ile düzgün altıgen aynı kenar uzunluğuna (4 cm) sahipse aralarındaki çevre farkı kaç cm'dir?",
+  secenekler: ["A) 4 cm","B) 8 cm","C) 12 cm","D) 16 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir çemberin yarıçapı ile aynı uzunlukta kenarı olan karenin çevresi 48 cm ise çemberin alanı kaç cm²'dir? (π = 3)",
+  secenekler: ["A) 48 cm²","B) 108 cm²","C) 144 cm²","D) 192 cm²"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Bir beşgenin köşegen sayısı ile bir altıgenin köşegen sayısının farkı kaçtır?",
+  secenekler: ["A) 2","B) 3","C) 4","D) 5"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir dikdörtgenin uzun kenarı 16 cm, kısa kenarı 9 cm'dir. Çevresi ve alanı ne olur?",
+  svg: `<svg width="145" height="88" viewBox="0 0 145 88">
+    <rect x="8" y="8" width="128" height="72" fill="#d1fae5" stroke="#059669" stroke-width="2.5"/>
+    <text x="72" y="5" text-anchor="middle" font-size="10" fill="#065f46">16 cm</text>
+    <text x="2" y="48" font-size="10" fill="#065f46">9</text>
+    <text x="72" y="50" text-anchor="middle" font-size="10" fill="#065f46">Çevre ve Alan?</text>
+  </svg>`,
+  secenekler: ["A) Çevre=48 cm, Alan=132 cm²","B) Çevre=50 cm, Alan=144 cm²","C) Çevre=52 cm, Alan=152 cm²","D) Çevre=56 cm, Alan=160 cm²"],
+  dogru: "B"
+},
+
+// ============ BÖLÜM 17: EK 50 SORU ============
+{ bolum: "🧩 Ek Sorular – Pekiştirme Seti",
+  soru: "Bir üçgenin iki açısı 55° ve 65° ise üçüncü açısı kaçtır?",
+  secenekler: ["A) 50°","B) 55°","C) 60°","D) 65°"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir üçgenin iki açısı 40° ve 100° ise üçüncü açısı kaçtır?",
+  secenekler: ["A) 30°","B) 40°","C) 50°","D) 60°"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Bir üçgenin iki açısı 25° ve 115° ise üçüncü açısı kaçtır?",
+  secenekler: ["A) 30°","B) 40°","C) 45°","D) 50°"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Aşağıdakilerden hangisi ikizkenar dik üçgenin açı ölçüleridir?",
+  secenekler: ["A) 30°, 60°, 90°","B) 45°, 45°, 90°","C) 50°, 50°, 80°","D) 60°, 60°, 60°"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Üçgenin bir dış açısı, uzak iki iç açının toplamına eşittir. Bir dış açı 130° ise uzak iç açılardan biri 70° ise diğeri kaçtır?",
+  secenekler: ["A) 50°","B) 55°","C) 60°","D) 65°"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Kenarları 5, 12 ve 13 olan bir üçgen hangi türdür? (5²+12²=13²)",
+  secenekler: ["A) Dar açılı","B) Geniş açılı","C) Dik","D) Eşkenar"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Çeşitkenar üçgenin kaç tane simetri ekseni vardır?",
+  secenekler: ["A) 0","B) 1","C) 2","D) 3"],
+  dogru: "A"
+},
+{ bolum: null,
+  soru: "İkizkenar üçgenin kaç tane simetri ekseni vardır?",
+  secenekler: ["A) 0","B) 1","C) 2","D) 3"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Eşkenar üçgenin kaç tane simetri ekseni vardır?",
+  secenekler: ["A) 1","B) 2","C) 3","D) 4"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Yarıçapı 8 cm olan çemberin çevresi kaçtır? (π = 3)",
+  secenekler: ["A) 24 cm","B) 36 cm","C) 48 cm","D) 64 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Yarıçapı 9 cm olan dairenin alanı kaçtır? (π = 3)",
+  secenekler: ["A) 162 cm²","B) 243 cm²","C) 81 cm²","D) 324 cm²"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Çevresi 36 cm olan çemberin yarıçapı kaçtır? (π = 3)",
+  secenekler: ["A) 4 cm","B) 5 cm","C) 6 cm","D) 7 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Alanı 27 cm² olan dairenin yarıçapı kaçtır? (π = 3)",
+  secenekler: ["A) 2 cm","B) 3 cm","C) 4 cm","D) 5 cm"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Çapı 20 cm olan çemberin çevresi kaçtır? (π = 3)",
+  secenekler: ["A) 30 cm","B) 40 cm","C) 60 cm","D) 80 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Yarıçapı 2 katına çıkarılan bir çemberin çevresi kaç katına çıkar?",
+  secenekler: ["A) 2 katına","B) 4 katına","C) 8 katına","D) Değişmez"],
+  dogru: "A"
+},
+{ bolum: null,
+  soru: "Kenar uzunluğu 11 cm olan düzgün beşgenin çevresi kaçtır?",
+  secenekler: ["A) 44 cm","B) 55 cm","C) 66 cm","D) 77 cm"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Kenar uzunluğu 6 cm olan düzgün altıgenin çevresi kaçtır?",
+  secenekler: ["A) 24 cm","B) 30 cm","C) 36 cm","D) 42 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Çevresi 56 cm olan düzgün yedigenin bir kenarı kaçtır?",
+  secenekler: ["A) 6 cm","B) 7 cm","C) 8 cm","D) 9 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir ongenin (10 kenarlı) iç açılar toplamı kaçtır? [(10-2)×180]",
+  secenekler: ["A) 1080°","B) 1260°","C) 1440°","D) 1620°"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Düzgün sekizgenin her bir iç açısı kaçtır? [(8-2)×180÷8]",
+  secenekler: ["A) 120°","B) 125°","C) 135°","D) 140°"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Kenar uzunluğu 5 cm olan karenin alanı kaçtır?",
+  secenekler: ["A) 20 cm²","B) 25 cm²","C) 30 cm²","D) 35 cm²"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Alanı 100 cm² olan karenin çevresi kaçtır?",
+  secenekler: ["A) 20 cm","B) 30 cm","C) 40 cm","D) 50 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Uzun kenarı 18 cm, kısa kenarı 7 cm olan dikdörtgenin alanı kaçtır?",
+  secenekler: ["A) 108 cm²","B) 120 cm²","C) 126 cm²","D) 144 cm²"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Çevresi 80 cm olan bir dikdörtgenin uzun kenarı 25 cm ise kısa kenarı kaçtır?",
+  secenekler: ["A) 10 cm","B) 15 cm","C) 20 cm","D) 30 cm"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Kare ile eşkenar üçgen arasındaki ortak özellik nedir?",
+  secenekler: ["A) Her ikisinin de tüm açıları eşittir","B) Her ikisinin de tüm kenarları eşittir","C) Her ikisinin de köşe sayısı eşittir","D) Her ikisi de dik açı içerir"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Bir dikdörtgenin uzun kenarı kısa kenarından 6 cm uzundur. Çevresi 40 cm ise uzun kenarı kaçtır?",
+  secenekler: ["A) 10 cm","B) 11 cm","C) 12 cm","D) 13 cm"],
+  dogru: "D"
+},
+{ bolum: null,
+  soru: "9 kenarlı bir çokgenin (dokuzgen) köşegen sayısı kaçtır? [9×(9-3)/2]",
+  secenekler: ["A) 24","B) 27","C) 30","D) 36"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "10 kenarlı bir çokgenin (ongen) köşegen sayısı kaçtır? [10×(10-3)/2]",
+  secenekler: ["A) 25","B) 30","C) 35","D) 40"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir dörtgenin dört açısı eşit ise bu dörtgen ne olabilir?",
+  secenekler: ["A) Sadece kare","B) Kare veya dikdörtgen","C) Sadece eşkenar dörtgen","D) Yamuk"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Düzgün çokgenlerde dış açıların toplamı hep kaç derecedir?",
+  secenekler: ["A) 180°","B) 270°","C) 360°","D) Kenar sayısına bağlıdır"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir beşgenin iç açılar toplamı ile bir üçgenin iç açılar toplamının oranı nedir?",
+  secenekler: ["A) 2:1","B) 3:1","C) 4:1","D) 5:1"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Üçgendeki en uzun kenar hangi açının karşısındadır?",
+  secenekler: ["A) En küçük açının","B) En büyük açının","C) Orta büyüklükteki açının","D) Her açının karşısındaki kenar eşittir"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "İki kenarı 8 cm ve 15 cm olan üçgenin üçüncü kenarı (x) hangi aralıktadır?",
+  secenekler: ["A) 7 &lt; x &lt; 23","B) 8 &lt; x &lt; 15","C) 0 &lt; x &lt; 23","D) x = 17"],
+  dogru: "A"
+},
+{ bolum: null,
+  soru: "Bir üçgenin kenarları 10, 10 ve 10 cm ise bu üçgenin türü ve her açısı nedir?",
+  secenekler: ["A) İkizkenar, her açı 60°","B) Eşkenar, her açı 60°","C) Çeşitkenar, açılar farklı","D) Dik, bir açı 90°"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Çemberin bir yarısına ne ad verilir?",
+  secenekler: ["A) Dilim","B) Yay","C) Yarım çember","D) Kesit"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Daire ile çember arasındaki fark nedir?",
+  secenekler: ["A) İkisi de aynıdır","B) Daire içi dolu bölgedir, çember yalnızca dış çizgidir","C) Çember içi dolu, daire yalnızca çizgidir","D) Aralarında hiçbir fark yoktur"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Bir karenin köşegeni karenin kenarıyla nasıl bir ilişki içindedir?",
+  secenekler: ["A) Köşegen = kenar","B) Köşegen &lt; kenar","C) Köşegen &gt; kenar","D) İkisi arasında ilişki yoktur"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Düzgün altıgenin bir köşegeninin uzunluğu kenar uzunluğunun 2 katıdır. Kenar 5 cm ise bu köşegen kaç cm'dir?",
+  secenekler: ["A) 5 cm","B) 8 cm","C) 10 cm","D) 12 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir çokgenin köşegen sayısı 20 ise bu çokgen kaç kenarlıdır? [n(n-3)/2=20]",
+  secenekler: ["A) 7","B) 8","C) 9","D) 10"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Yamuk hangi özelliğiyle dikdörtgenden ayrılır?",
+  secenekler: ["A) Yamuğun yalnızca bir çift paralel kenarı vardır","B) Yamuğun köşe açıları 90°'dir","C) Yamuk dörtgen değildir","D) Yamuğun hiç köşegeni yoktur"],
+  dogru: "A"
+},
+{ bolum: null,
+  soru: "Kenar uzunluğu 3 cm olan düzgün ongenin çevresi kaçtır?",
+  secenekler: ["A) 20 cm","B) 25 cm","C) 30 cm","D) 35 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "İç açıları toplamı 1080° olan çokgen kaç kenarlıdır? [(n-2)×180=1080]",
+  secenekler: ["A) 6","B) 7","C) 8","D) 9"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir dörtgenin üç açısı birbirine eşit, her biri 80°'dir. Dördüncü açısı kaçtır?",
+  secenekler: ["A) 100°","B) 110°","C) 120°","D) 130°"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Alanı 300 cm² olan dairenin yarıçapı kaçtır? (π = 3)",
+  secenekler: ["A) 8 cm","B) 9 cm","C) 10 cm","D) 12 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Çapı 18 cm olan çemberin yarıçapı kaçtır?",
+  secenekler: ["A) 6 cm","B) 7 cm","C) 9 cm","D) 12 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir ikizkenar üçgenin eşit kenarları 9 cm, tabanı 6 cm ise çevresi kaçtır?",
+  secenekler: ["A) 20 cm","B) 22 cm","C) 24 cm","D) 26 cm"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir eşkenar üçgenin çevresi 45 cm ise her kenarı kaçtır?",
+  secenekler: ["A) 12 cm","B) 13 cm","C) 14 cm","D) 15 cm"],
+  dogru: "D"
+},
+{ bolum: null,
+  soru: "Kare bir dikdörtgen midir?",
+  secenekler: ["A) Hayır, kare hiçbir zaman dikdörtgen değildir","B) Evet, kare aynı zamanda dikdörtgendir","C) Yalnızca bazı kareler dikdörtgendir","D) Yalnızca büyük kareler dikdörtgendir"],
+  dogru: "B"
+},
+{ bolum: null,
+  soru: "Bir çokgenin iç açılar toplamı 900° ise bu çokgen kaç kenarlıdır?",
+  secenekler: ["A) 5","B) 6","C) 7","D) 8"],
+  dogru: "C"
+},
+{ bolum: null,
+  soru: "Bir dikdörtgenin alanı 90 cm², kısa kenarı 6 cm ise uzun kenarı kaçtır?",
+  secenekler: ["A) 12 cm","B) 13 cm","C) 14 cm","D) 15 cm"],
+  dogru: "D"
+},
+{ bolum: null,
+  soru: "Düzgün bir çokgenin bir iç açısı 108° ise bu çokgenin kaç kenarı vardır?",
+  secenekler: ["A) 4","B) 5","C) 6","D) 8"],
+  dogru: "B"
+}
+
+];
+
+// ===================== OLUŞTURMA =====================
+function soruHTML(s, idx) {
+  let svgHtml = s.svg ? `<div style="display:flex;justify-content:center;margin:8px 0;">${s.svg}</div>` : '';
+  let notHtml = s.not ? `<div class="not-kutusu">📌 Not: ${s.not}</div>` : '';
+  let secHtml = '';
+  const harfler = ['A','B','C','D'];
+  s.secenekler.forEach((sec, i) => {
+    secHtml += `<label class="secenek" id="lbl_${idx}_${harfler[i]}">
+      <input type="radio" name="s${idx}" value="${harfler[i]}">
+      <span>${sec}</span>
+    </label>`;
+  });
+  return `
+    <div class="soru-kart" id="kart_${idx}">
+      <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;">
+        <div class="soru-no">${idx+1}</div>
+        <p style="font-weight:700;color:#1f2937;font-size:13.5px;line-height:1.45;margin-top:4px;">${s.soru}</p>
+      </div>
+      ${svgHtml}
+      ${notHtml}
+      <div style="margin-top:8px;">${secHtml}</div>
+      <div id="aciklama_${idx}" style="display:none;margin-top:8px;font-size:12px;font-weight:700;border-radius:8px;padding:6px 12px;"></div>
+    </div>`;
+}
+
+window.onload = function() {
+  const grid = document.getElementById('sorular-grid');
+  let html = '';
+  let currentBolum = null;
+  sorular.forEach((s, i) => {
+    if (s.bolum && s.bolum !== currentBolum) {
+      currentBolum = s.bolum;
+      html += `<div class="bolum-baslik">${s.bolum}</div>`;
+    }
+    html += soruHTML(s, i);
+  });
+  grid.innerHTML = html;
+};
+
+function kontrol() {
+  let dogru = 0, yanlis = 0, bos = 0;
+  sorular.forEach((s, i) => {
+    const harfler = ['A','B','C','D'];
+    const secilen = document.querySelector(`input[name="s${i}"]:checked`);
+    const aciklama = document.getElementById(`aciklama_${i}`);
+    harfler.forEach(h => {
+      const lbl = document.getElementById(`lbl_${i}_${h}`);
+      if (lbl) lbl.classList.remove('dogru','yanlis');
+    });
+    if (!secilen) {
+      bos++;
+      aciklama.style.background = '#fefce8';
+      aciklama.style.color = '#92400e';
+      aciklama.style.border = '1.5px solid #fbbf24';
+      aciklama.textContent = '⚠️ Bu soruyu boş bıraktınız. Doğru cevap: ' + s.dogru + ') ' + s.secenekler[['A','B','C','D'].indexOf(s.dogru)];
+      aciklama.style.display = 'block';
+      const lbl = document.getElementById(`lbl_${i}_${s.dogru}`);
+      if (lbl) lbl.classList.add('dogru');
+    } else if (secilen.value === s.dogru) {
+      dogru++;
+      const lbl = document.getElementById(`lbl_${i}_${s.dogru}`);
+      if (lbl) lbl.classList.add('dogru');
+      aciklama.style.background = '#d1fae5';
+      aciklama.style.color = '#065f46';
+      aciklama.style.border = '1.5px solid #059669';
+      aciklama.textContent = '✅ Doğru!';
+      aciklama.style.display = 'block';
+    } else {
+      yanlis++;
+      const lblY = document.getElementById(`lbl_${i}_${secilen.value}`);
+      if (lblY) lblY.classList.add('yanlis');
+      const lblD = document.getElementById(`lbl_${i}_${s.dogru}`);
+      if (lblD) lblD.classList.add('dogru');
+      aciklama.style.background = '#fee2e2';
+      aciklama.style.color = '#991b1b';
+      aciklama.style.border = '1.5px solid #dc2626';
+      aciklama.textContent = '❌ Yanlış! Doğru cevap: ' + s.dogru + ') ' + s.secenekler[['A','B','C','D'].indexOf(s.dogru)];
+      aciklama.style.display = 'block';
+    }
+  });
+  const toplam = sorular.length;
+  const puan = Math.round((dogru/toplam)*100);
+  let emoji = puan >= 85 ? '🏆' : puan >= 70 ? '⭐' : puan >= 50 ? '📚' : '💪';
+  let mesaj = puan >= 85 ? 'Mükemmel!' : puan >= 70 ? 'Çok iyi!' : puan >= 50 ? 'Fena değil, çalışmaya devam!' : 'Biraz daha çalışalım!';
+  const sonuc = document.getElementById('sonuc-alan');
+  sonuc.innerHTML = `<div class="sonuc-kutu">
+    ${emoji} ${mesaj}<br>
+    <span style="font-size:32px;font-weight:900;">${puan}</span>/100 Puan<br>
+    <span style="font-size:16px;font-weight:600;">✅ Doğru: ${dogru} &nbsp;|&nbsp; ❌ Yanlış: ${yanlis} &nbsp;|&nbsp; ⬜ Boş: ${bos} &nbsp;|&nbsp; Toplam: ${toplam}</span>
+  </div>`;
+  sonuc.style.display = 'block';
+  sonuc.scrollIntoView({behavior:'smooth'});
+}
+
+function temizle() {
+  document.getElementById('testForm').reset();
+  sorular.forEach((s, i) => {
+    const harfler = ['A','B','C','D'];
+    harfler.forEach(h => {
+      const lbl = document.getElementById(`lbl_${i}_${h}`);
+      if (lbl) lbl.classList.remove('dogru','yanlis');
+    });
+    const aciklama = document.getElementById(`aciklama_${i}`);
+    if (aciklama) { aciklama.style.display = 'none'; aciklama.textContent = ''; }
+  });
+  document.getElementById('sonuc-alan').style.display = 'none';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+
+<!-- FOOTER -->
+<footer style="margin-top:64px;padding:24px;text-align:center;color:#9ca3af;font-size:13px;">
+  <div style="max-width:900px;margin:0 auto;">
+    <span style="font-weight:700;color:#a78bfa;">5. Sınıf Matematik</span>
+    · Çember, Daire ve Çokgenler Yaprak Testi · 150 Soru
+  </div>
+</footer>
+</body>
+</html>
