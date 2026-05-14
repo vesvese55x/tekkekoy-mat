@@ -1,0 +1,2767 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doğal Sayılar - Yaprak Test</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+  :root {
+    --primary: #4f46e5;
+    --primary-light: #818cf8;
+    --secondary: #0ea5e9;
+    --accent: #f59e0b;
+    --success: #10b981;
+    --danger: #ef4444;
+    --purple: #8b5cf6;
+    --pink: #ec4899;
+    --bg: #f8faff;
+    --card: #ffffff;
+    --border: #e0e7ff;
+    --text: #1e1b4b;
+    --muted: #6b7280;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 13px;
+  }
+
+  /* ===== PRINT STYLES ===== */
+  @media print {
+    body { background: white; font-size: 11.5px; }
+    .no-print { display: none !important; }
+    .page {
+      page-break-after: always;
+      width: 210mm;
+      min-height: 297mm;
+      padding: 10mm 12mm;
+      background: white;
+      box-shadow: none;
+      margin: 0;
+    }
+    .page:last-child { page-break-after: avoid; }
+    .question-card { break-inside: avoid; }
+    .header-bar { background: #4f46e5 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .topic-badge { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .q-num { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .option-label { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .score-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+
+  /* ===== SCREEN LAYOUT ===== */
+  .no-print {
+    position: fixed; top: 0; left: 0; right: 0;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: white;
+    padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    z-index: 999;
+    box-shadow: 0 4px 20px rgba(79,70,229,0.4);
+  }
+  .no-print h1 { font-size: 16px; font-weight: 800; }
+  .no-print span { font-size: 12px; opacity: 0.85; }
+  .print-btn {
+    background: white; color: #4f46e5;
+    border: none; border-radius: 8px;
+    padding: 8px 20px; font-weight: 800;
+    font-size: 13px; cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .print-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+
+  .pages-wrapper {
+    padding-top: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    padding-bottom: 40px;
+  }
+
+  /* ===== PAGE ===== */
+  .page {
+    width: 794px;
+    min-height: 1123px;
+    background: white;
+    box-shadow: 0 8px 40px rgba(79,70,229,0.12);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ===== HEADER ===== */
+  .header-bar {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #0ea5e9 100%);
+    padding: 16px 24px 14px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .header-bar::before {
+    content: '';
+    position: absolute; top: -30px; right: -30px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+  }
+  .header-bar::after {
+    content: '';
+    position: absolute; bottom: -20px; right: 80px;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .header-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .school-info { font-size: 10px; opacity: 0.85; line-height: 1.6; }
+  .school-info strong { font-size: 13px; display: block; margin-bottom: 2px; }
+  .test-title {
+    font-size: 22px; font-weight: 900;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    letter-spacing: -0.5px;
+  }
+  .test-subtitle { font-size: 11px; opacity: 0.9; margin-top: 2px; }
+  .header-meta {
+    display: flex; gap: 16px; margin-top: 8px;
+  }
+  .meta-item {
+    background: rgba(255,255,255,0.15);
+    border-radius: 6px; padding: 4px 10px;
+    font-size: 10px; display: flex; align-items: center; gap: 4px;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .meta-item strong { font-size: 12px; }
+
+  .score-boxes {
+    display: flex; gap: 8px; margin-top: 8px;
+  }
+  .score-box {
+    flex: 1; background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 8px; padding: 5px 8px;
+    text-align: center;
+  }
+  .score-box .label { font-size: 9px; opacity: 0.8; }
+  .score-box .val { font-size: 15px; font-weight: 800; }
+  .score-box .line {
+    margin-top: 2px; height: 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.4);
+    width: 60px; margin: 4px auto 0;
+  }
+
+  /* ===== PAGE INDICATOR ===== */
+  .page-indicator {
+    display: flex; justify-content: flex-end;
+    padding: 6px 24px 0;
+    font-size: 10px; color: var(--muted);
+  }
+  .page-indicator span {
+    background: #e0e7ff; color: #4f46e5;
+    padding: 2px 10px; border-radius: 20px;
+    font-weight: 700;
+  }
+
+  /* ===== COLUMNS ===== */
+  .columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    flex: 1;
+    padding: 10px 16px 14px;
+  }
+  .col {
+    padding: 0 8px;
+  }
+  .col:first-child {
+    border-right: 2px dashed #e0e7ff;
+    padding-right: 16px;
+  }
+  .col:last-child { padding-left: 16px; }
+
+  /* ===== TOPIC SECTION ===== */
+  .topic-section { margin-bottom: 10px; }
+  .topic-header {
+    display: flex; align-items: center; gap: 6px;
+    margin-bottom: 6px; padding-bottom: 4px;
+    border-bottom: 2px solid;
+    position: relative;
+  }
+  .topic-number {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 900;
+    color: white; flex-shrink: 0;
+  }
+  .topic-title {
+    font-size: 10.5px; font-weight: 900;
+    letter-spacing: 0.2px;
+  }
+  .topic-badge {
+    margin-left: auto;
+    font-size: 8.5px; padding: 1px 6px;
+    border-radius: 10px; font-weight: 700;
+    white-space: nowrap;
+  }
+
+  /* Topic color themes */
+  .t1  { --tc: #4f46e5; --tc-bg: #eef2ff; }
+  .t2  { --tc: #7c3aed; --tc-bg: #f5f3ff; }
+  .t3  { --tc: #0ea5e9; --tc-bg: #f0f9ff; }
+  .t4  { --tc: #059669; --tc-bg: #f0fdf4; }
+  .t5  { --tc: #d97706; --tc-bg: #fffbeb; }
+  .t6  { --tc: #dc2626; --tc-bg: #fef2f2; }
+  .t7  { --tc: #7c3aed; --tc-bg: #f5f3ff; }
+  .t8  { --tc: #0891b2; --tc-bg: #ecfeff; }
+  .t9  { --tc: #be185d; --tc-bg: #fdf2f8; }
+  .t10 { --tc: #4f46e5; --tc-bg: #eef2ff; }
+  .t11 { --tc: #15803d; --tc-bg: #f0fdf4; }
+  .t12 { --tc: #b45309; --tc-bg: #fefce8; }
+  .t13 { --tc: #6d28d9; --tc-bg: #f5f3ff; }
+  .t14 { --tc: #0369a1; --tc-bg: #f0f9ff; }
+  .t15 { --tc: #9d174d; --tc-bg: #fdf2f8; }
+  .t16 { --tc: #065f46; --tc-bg: #ecfdf5; }
+  .t17 { --tc: #7c2d12; --tc-bg: #fff7ed; }
+  .t18 { --tc: #1e3a8a; --tc-bg: #eff6ff; }
+  .t19 { --tc: #4c1d95; --tc-bg: #faf5ff; }
+  .t20 { --tc: #7f1d1d; --tc-bg: #fff1f2; }
+
+  .topic-section .topic-header { border-color: var(--tc); }
+  .topic-section .topic-number { background: var(--tc); }
+  .topic-section .topic-title { color: var(--tc); }
+  .topic-section .topic-badge { background: var(--tc-bg); color: var(--tc); border: 1px solid var(--tc); }
+
+  /* ===== QUESTION CARD ===== */
+  .question-card {
+    background: #fafbff;
+    border: 1px solid #e8ecff;
+    border-radius: 7px;
+    margin-bottom: 5px;
+    padding: 6px 8px;
+    position: relative;
+    transition: box-shadow 0.2s;
+  }
+  .question-card:hover { box-shadow: 0 2px 8px rgba(79,70,229,0.12); }
+
+  .q-row {
+    display: flex; align-items: flex-start; gap: 5px;
+  }
+  .q-num {
+    min-width: 20px; height: 20px;
+    border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 900;
+    color: white; flex-shrink: 0; margin-top: 0px;
+    background: var(--tc);
+  }
+  .q-text {
+    font-size: 11px; line-height: 1.5;
+    color: #1e1b4b; flex: 1;
+    font-weight: 600;
+  }
+  .q-text em {
+    font-style: normal;
+    font-weight: 800;
+    color: var(--tc);
+  }
+
+  /* Options */
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px 6px;
+    margin-top: 5px;
+    padding-left: 25px;
+  }
+  .option {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 10.5px; color: #374151;
+  }
+  .option-label {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8.5px; font-weight: 800;
+    color: white; flex-shrink: 0;
+    background: var(--tc);
+    opacity: 0.75;
+  }
+  .option-text { font-weight: 600; }
+
+  /* Table inside question */
+  .q-table {
+    margin: 4px 0 4px 25px;
+    border-collapse: collapse;
+    font-size: 10px;
+  }
+  .q-table th, .q-table td {
+    border: 1px solid #d1d5db;
+    padding: 2px 6px;
+    text-align: center;
+  }
+  .q-table th { background: #e0e7ff; font-weight: 800; color: #4f46e5; }
+
+  /* ===== FOOTER ===== */
+  .page-footer {
+    border-top: 2px solid #e0e7ff;
+    padding: 8px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: #f8faff;
+  }
+  .footer-left { font-size: 9px; color: var(--muted); }
+  .footer-mid {
+    display: flex; gap: 4px;
+  }
+  .footer-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #c7d2fe;
+  }
+  .footer-dot.active { background: #4f46e5; }
+  .footer-right { font-size: 9px; color: var(--muted); font-weight: 700; }
+
+  /* ===== ANSWER KEY ===== */
+  .answer-key {
+    background: linear-gradient(135deg, #1e1b4b, #312e81);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    margin: 8px 16px 14px;
+  }
+  .answer-key-title {
+    font-size: 11px; font-weight: 900;
+    margin-bottom: 6px; opacity: 0.9;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .answer-key-title::before {
+    content: '🔑';
+    font-size: 12px;
+  }
+  .answer-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 3px;
+  }
+  .answer-item {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 4px;
+    text-align: center;
+    padding: 2px;
+  }
+  .answer-item .anum { font-size: 8px; opacity: 0.7; }
+  .answer-item .aans { font-size: 10px; font-weight: 900; color: #fbbf24; }
+
+  /* ===== INSTRUCTIONS ===== */
+  .instructions {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 7px;
+    padding: 6px 10px;
+    margin: 0 16px 8px;
+    font-size: 9.5px;
+    color: #92400e;
+    line-height: 1.6;
+  }
+  .instructions strong { color: #b45309; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR (no print) -->
+<div class="no-print">
+  <div>
+    <h1>📐 Doğal Sayılar Yaprak Test — 150 Soru</h1>
+    <span>4 Sayfa · 20 Konu Başlığı · PDF için Yazdır</span>
+  </div>
+  <button class="print-btn" onclick="window.print()">🖨️ PDF Olarak Kaydet</button>
+</div>
+
+<div class="pages-wrapper">
+
+<!-- ==================== SAYFA 1 ==================== -->
+<div class="page">
+  <div class="header-bar">
+    <div class="header-top">
+      <div class="school-info">
+        <strong>🏫 ............................................</strong>
+        İlkokulu / Ortaokulu &nbsp;&nbsp; Sınıf: 4 / ......&nbsp;&nbsp; Ad Soyad: ..................................
+      </div>
+      <div style="text-align:right">
+        <div class="test-title">DOĞAL SAYILAR</div>
+        <div class="test-subtitle">Kapsamlı Yaprak Test • 150 Soru</div>
+      </div>
+    </div>
+    <div class="header-meta">
+      <div class="meta-item">📅 Tarih: <strong>..../..../......</strong></div>
+      <div class="meta-item">⏱️ Süre: <strong>90 dk</strong></div>
+      <div class="meta-item">📝 Toplam: <strong>150 Soru</strong></div>
+      <div class="meta-item">⭐ Puan: <strong>her soru 0,67 puan</strong></div>
+    </div>
+    <div class="score-boxes">
+      <div class="score-box"><div class="label">DOĞRU</div><div class="val">___</div></div>
+      <div class="score-box"><div class="label">YANLIŞ</div><div class="val">___</div></div>
+      <div class="score-box"><div class="label">BOŞ</div><div class="val">___</div></div>
+      <div class="score-box"><div class="label">NET</div><div class="val">___</div></div>
+      <div class="score-box"><div class="label">PUAN</div><div class="val">___</div></div>
+    </div>
+  </div>
+
+  <div class="instructions">
+    <strong>⚠️ Dikkat:</strong> Her sorunun yalnızca bir doğru cevabı vardır. Cevap anahtarı son sayfada verilmiştir. Yanışlardan puan kırılmaz. Süreyi verimli kullan!
+  </div>
+
+  <div class="page-indicator"><span>Sayfa 1 / 4</span></div>
+
+  <div class="columns">
+    <!-- SOL SÜTUN -->
+    <div class="col">
+
+      <!-- KONU 1: Doğal Sayıların Okunuşu -->
+      <div class="topic-section t1">
+        <div class="topic-header">
+          <div class="topic-number">1</div>
+          <div class="topic-title">Doğal Sayıların Okunuşu</div>
+          <div class="topic-badge">S.1–8</div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row">
+            <div class="q-num">1</div>
+            <div class="q-text"><em>47 853</em> sayısının okunuşu aşağıdakilerden hangisidir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">Kırk yedi bin sekiz yüz elli üç</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">Dört yüz yetmiş sekiz bin elli üç</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">Kırk yedi bin sekiz yüz otuz beş</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">Dört yüz yedi bin sekiz yüz elli</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row">
+            <div class="q-num">2</div>
+            <div class="q-text">Aşağıdaki sayılardan hangisinin okunuşunda <em>"bin"</em> kelimesi söylenmez?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">1 000</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">1 001</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">999</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">10 000</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row">
+            <div class="q-num">3</div>
+            <div class="q-text"><em>60 070</em> sayısının okunuşu hangisidir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">Altı bin yetmiş</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">Altmış yedi</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">Altmış bin yetmiş</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">Altı yüz yetmiş</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row">
+            <div class="q-num">4</div>
+            <div class="q-text">Onlar basamağı <em>0</em> olan iki haneli bir sayının okunuşunda "sıfır" söylenir mi? Bu durumu en iyi açıklayan seçenek hangisidir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">Evet, her zaman söylenir</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">Hayır, iki haneli sayı olamaz</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">Evet, ama sadece onlar basamağında</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">Bu sorunun cevabı belirsizdir</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row">
+            <div class="q-num">5</div>
+            <div class="q-text">Hangi sayının okunuşunda toplam <em>4 kelime</em> kullanılır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">315</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">3 015</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">3 150</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">31 500</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row">
+            <div class="q-num">6</div>
+            <div class="q-text"><em>Seksen dört bin dokuz</em> okunuşuna karşılık gelen sayı hangisidir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">84 900</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">84 009</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">8 409</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">840 009</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row">
+            <div class="q-num">7</div>
+            <div class="q-text">Bir sayının okunuşunda <em>"bin"</em> kelimesinden önce herhangi bir sayı söylenmiyorsa, bu sayı kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">100</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">1 000</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">10 000</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">100 000</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row">
+            <div class="q-num">8</div>
+            <div class="q-text">Okunuşu <em>"İki yüz üç bin kırk"</em> olan sayının rakamla yazılışı nedir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">23 040</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">203 040</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">200 340</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">203 400</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KONU 2: Okunuşu Verilen Doğal Sayıların Yazılışı -->
+      <div class="topic-section t2">
+        <div class="topic-header">
+          <div class="topic-number">2</div>
+          <div class="topic-title">Okunuşu Verilen Sayıların Yazılışı</div>
+          <div class="topic-badge">S.9–16</div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row">
+            <div class="q-num">9</div>
+            <div class="q-text"><em>"Elli altı bin dört yüz yirmi yedi"</em> sayısının rakamla yazılışı hangisidir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">56 427</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">56 472</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">65 427</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">56 247</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row">
+            <div class="q-num">10</div>
+            <div class="q-text"><em>"Doksan bin dokuz"</em> sayısını rakamla yazdığında kaç basamaklıdır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">4</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">5</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">6</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">7</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row">
+            <div class="q-num">11</div>
+            <div class="q-text">Aşağıdaki okunuşlardan hangisi <em>yanlış</em> eşleştirilmiştir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">7 070 → Yedi bin yetmiş</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">7 700 → Yedi bin yedi yüz</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">7 007 → Yedi bin yedi</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">7 000 → Yedi bin sıfır</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row">
+            <div class="q-num">12</div>
+            <div class="q-text">Mehmet, öğretmeninden <em>"yirmi bin yirmi"</em> sayısını tahtaya yazmasını istedi. Doğru yazılış hangisidir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">2 020</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">20 020</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">20 200</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">202 000</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row">
+            <div class="q-num">13</div>
+            <div class="q-text">Bir banka hesabında <em>"beş yüz bin lira"</em> bulunmaktadır. Bu miktar rakamla nasıl yazılır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">50 000</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">500 000</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">5 000</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">5 000 000</div></div>
+          </div>
+        </div>
+
+      </div>
+
+    </div><!-- /col-left -->
+
+    <!-- SAĞ SÜTUN -->
+    <div class="col">
+
+        <div class="topic-section t2">
+          <div class="topic-header" style="opacity:0;height:4px;margin-bottom:0;"></div>
+
+          <div class="question-card">
+            <div class="q-row">
+              <div class="q-num">14</div>
+              <div class="q-text">Hangi sayı <em>"üç yüz bin üç yüz üç"</em> okunuşuna karşılık gelir?</div>
+            </div>
+            <div class="options">
+              <div class="option"><div class="option-label">A</div><div class="option-text">300 303</div></div>
+              <div class="option"><div class="option-label">B</div><div class="option-text">303 300</div></div>
+              <div class="option"><div class="option-label">C</div><div class="option-text">300 033</div></div>
+              <div class="option"><div class="option-label">D</div><div class="option-text">303 030</div></div>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <div class="q-row">
+              <div class="q-num">15</div>
+              <div class="q-text">Aşağıdaki seçeneklerden hangisinde rakam ile okunuş <em>doğru</em> eşleştirilmiştir?</div>
+            </div>
+            <div class="options">
+              <div class="option"><div class="option-label">A</div><div class="option-text">11 011 → On bir bin on bir</div></div>
+              <div class="option"><div class="option-label">B</div><div class="option-text">11 011 → On bir bin yüz on bir</div></div>
+              <div class="option"><div class="option-label">C</div><div class="option-text">11 011 → Yüz bir bin on bir</div></div>
+              <div class="option"><div class="option-label">D</div><div class="option-text">11 011 → On bin yüz on</div></div>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <div class="q-row">
+              <div class="q-num">16</div>
+              <div class="q-text">Dört basamaklı en küçük sayının okunuşu hangisidir?</div>
+            </div>
+            <div class="options">
+              <div class="option"><div class="option-label">A</div><div class="option-text">Dokuz yüz doksan dokuz</div></div>
+              <div class="option"><div class="option-label">B</div><div class="option-text">On bin</div></div>
+              <div class="option"><div class="option-label">C</div><div class="option-text">Bin</div></div>
+              <div class="option"><div class="option-label">D</div><div class="option-text">Yüz</div></div>
+            </div>
+          </div>
+        </div>
+
+      <!-- KONU 3: Büyük Basamaklı -->
+      <div class="topic-section t3">
+        <div class="topic-header">
+          <div class="topic-number">3</div>
+          <div class="topic-title">Büyük Basamaklı Sayıların Okunuşu</div>
+          <div class="topic-badge">S.17–24</div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row">
+            <div class="q-num">17</div>
+            <div class="q-text"><em>873 426</em> sayısının okunuşu aşağıdakilerden hangisidir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">Seksen yedi bin üç yüz kırk iki</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">Sekiz yüz yetmiş üç bin dört yüz yirmi altı</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">Sekiz yüz yetmiş üç bin kırk iki altı</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">Sekiz yüz yetmiş üç bin dört yüz altı</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row">
+            <div class="q-num">18</div>
+            <div class="q-text">Altı basamaklı bir sayının binler bölüğünde <em>405</em>, birler bölüğünde <em>070</em> bulunmaktadır. Bu sayının okunuşu hangisidir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">Dört yüz beş bin yetmiş</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">Kırk beş bin yedi</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">Dört yüz elli bin yedi</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">Dört yüz beş bin sıfır yetmiş</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row">
+            <div class="q-num">19</div>
+            <div class="q-text"><em>100 000</em> sayısının okunuşu nedir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">On bin</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">Bir yüz bin</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">Yüz bin</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">Bir milyon</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row">
+            <div class="q-num">20</div>
+            <div class="q-text">Hangi sayının okunuşunda <em>"iki yüz"</em> ifadesi binler bölüğünü tanımlar?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">200 000</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">200 500</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">2 005</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">20 500</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row">
+            <div class="q-num">21</div>
+            <div class="q-text">Bir şehrin nüfusu <em>654 320</em> kişidir. Bu sayı nasıl okunur?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">Altı yüz elli dört bin üç yüz yirmi</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">Altmış beş bin dört yüz otuz iki</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">Altı yüz kırk beş bin üç yüz iki</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">Altı yüz elli dört bin iki yüz otuz</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row">
+            <div class="q-num">22</div>
+            <div class="q-text">Türkiye'nin yüzölçümü yaklaşık <em>783 562 km²</em>'dir. Bu sayının okunuşunda binler bölüğü nasıl söylenir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">Yedi sekiz üç bin</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">Yedi yüz seksen üç bin</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">Seksen üç bin</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">Yedi bin seksen üç</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row">
+            <div class="q-num">23</div>
+            <div class="q-text">Aşağıdaki sayılardan hangisi <em>en büyük</em>tür ve okunuşu nedir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">98 765 → Doksan sekiz bin yedi yüz altmış beş</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">100 000 → Yüz bin</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">99 999 → Doksan dokuz bin dokuz yüz doksan dokuz</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">10 000 → On bin</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row">
+            <div class="q-num">24</div>
+            <div class="q-text"><em>909 090</em> sayısının doğru okunuşu hangisidir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">Dokuz yüz dokuz bin sıfır doksan</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">Dokuz yüz dokuz bin doksan</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">Dokuz bin dokuz yüz doksan</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">Doksan bin dokuz yüz on</div></div>
+          </div>
+        </div>
+
+      </div>
+
+    </div><!-- /col-right -->
+  </div><!-- /columns -->
+
+  <div class="page-footer">
+    <div class="footer-left">📐 Doğal Sayılar Yaprak Test · 4. Sınıf Matematik</div>
+    <div class="footer-mid">
+      <div class="footer-dot active"></div><div class="footer-dot"></div><div class="footer-dot"></div><div class="footer-dot"></div>
+    </div>
+    <div class="footer-right">Sayfa 1/4</div>
+  </div>
+</div><!-- /page1 -->
+
+
+<!-- ==================== SAYFA 2 ==================== -->
+<div class="page">
+  <div class="header-bar" style="padding:8px 24px 6px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div class="test-title" style="font-size:16px;">DOĞAL SAYILAR — Devam</div>
+      <div style="font-size:10px;opacity:0.85;">Ad Soyad: ......................................&nbsp;&nbsp; Sınıf: .......</div>
+    </div>
+  </div>
+
+  <div class="page-indicator"><span>Sayfa 2 / 4</span></div>
+
+  <div class="columns">
+    <!-- SOL -->
+    <div class="col">
+
+      <!-- KONU 4 -->
+      <div class="topic-section t4">
+        <div class="topic-header">
+          <div class="topic-number">4</div>
+          <div class="topic-title">Büyük Basamaklı Sayıların Yazılışı</div>
+          <div class="topic-badge">S.25–32</div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">25</div>
+            <div class="q-text"><em>"Dört yüz kırk dört bin dört yüz kırk dört"</em> sayısı rakamla nasıl yazılır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">44 444</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">444 440</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">444 444</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">404 404</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">26</div>
+            <div class="q-text"><em>"Bir yüz bin bir"</em> sayısının rakamla yazılışı hangisidir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">10 001</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">100 100</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">100 001</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">101 001</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">27</div>
+            <div class="q-text">Türkiye'nin yüzölçümü <em>"yedi yüz seksen üç bin beş yüz altmış iki"</em> km²'dir. Rakamla yazınız.</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">73 562</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">783 526</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">783 562</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">738 562</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">28</div>
+            <div class="q-text">Aşağıdaki sayılardan hangisi <em>"iki yüz elli bin"</em> olarak okunur?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">25 000</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">250 000</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">2 500</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">205 000</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">29</div>
+            <div class="q-text">Ahmet rakamla yazdığı sayıyı oku: <em>"Altı yüz elli iki bin yüz on yedi."</em> Bu sayıda hangi basamakta <em>2</em> rakamı bulunur?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">Onlar binler</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">Binler</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">Yüzler</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">Yüz binler</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">30</div>
+            <div class="q-text">Hangi ifade <em>yanlış</em> yazılmıştır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">Yüz bin → 100 000</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">On bin → 10 000</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">Bin → 1 000</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">Yüz → 1 000</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">31</div>
+            <div class="q-text"><em>"Yirmi dokuz bin seksen"</em> okunuşuna göre binler bölüğü ile birler bölüğündeki sayıların toplamı nedir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">29 + 80 = 109</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">29 + 8 = 37</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">290 + 80 = 370</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">29 + 800 = 829</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">32</div>
+            <div class="q-text">Beş basamaklı en büyük sayı kaç olarak okunur?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">Doksan dokuz bin dokuz yüz doksan</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">Doksan dokuz bin dokuz yüz doksan dokuz</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">Yüz bin</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">Dokuz yüz doksan dokuz</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KONU 5 -->
+      <div class="topic-section t5">
+        <div class="topic-header">
+          <div class="topic-number">5</div>
+          <div class="topic-title">Doğal Sayılarda Basamak ve Bölükler</div>
+          <div class="topic-badge">S.33–40</div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">33</div>
+            <div class="q-text"><em>372 481</em> sayısında yüz binler basamağındaki rakamın sayı değeri nedir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">3</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">30 000</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">300 000</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">3 000</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">34</div>
+            <div class="q-text"><em>64 259</em> sayısında binler basamağındaki rakam ile onlar basamağındaki rakamın <em>basamak değerleri toplamı</em> kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">4 050</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">4 052</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">4 059</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">4 500</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">35</div>
+            <div class="q-text">Bir sayıda onlar basamağındaki rakam <em>7</em>'dir. Bu rakamın basamak değeri nedir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">7</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">70</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">700</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">7 000</div></div>
+          </div>
+        </div>
+
+      </div>
+
+    </div><!-- /col-left -->
+
+    <!-- SAĞ -->
+    <div class="col">
+
+      <div class="topic-section t5">
+        <div class="topic-header" style="opacity:0;height:4px;margin-bottom:0;"></div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">36</div>
+            <div class="q-text"><em>508 364</em> sayısında binler bölüğündeki sayı hangisidir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">508</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">364</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">83</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">50</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">37</div>
+            <div class="q-text">3 tane on binlik, 5 tane binlik ve 7 tane birlikten oluşan sayı hangisidir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">35 007</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">35 700</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">30 507</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">305 007</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">38</div>
+            <div class="q-text"><em>780 045</em> sayısında kaç tane yüzlük vardır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">7 800</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">780</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">78</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">7 800 450</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">39</div>
+            <div class="q-text">Hangi sayıda <em>onlar basamağındaki rakam</em>, <em>binler basamağındaki rakamdan</em> büyüktür?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">53 271</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">14 380</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">23 740</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">67 132</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">40</div>
+            <div class="q-text">Altı basamaklı bir sayıda yüz binler, on binler ve binler basamaklarındaki rakamlar hangi <em>bölüğü</em> oluşturur?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">Birler bölüğü</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">Onlar bölüğü</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">Binler bölüğü</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">Yüzler bölüğü</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KONU 6 -->
+      <div class="topic-section t6">
+        <div class="topic-header">
+          <div class="topic-number">6</div>
+          <div class="topic-title">Doğal Sayıları Çözümleme</div>
+          <div class="topic-badge">S.41–48</div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">41</div>
+            <div class="q-text"><em>46 235</em> sayısının çözümlenmiş hali aşağıdakilerden hangisidir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">(4×10000)+(6×1000)+(2×100)+(3×10)+(5×1)</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">(4×1000)+(6×100)+(2×10)+(3×1)+5</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">(4×100000)+(6×10000)+(2×1000)+(3×100)+(5×10)</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">(46×1000)+(235×1)</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">42</div>
+            <div class="q-text"><em>(5×100000)+(3×1000)+(7×10)</em> işleminin sonucu kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">503 070</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">530 070</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">500 370</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">503 700</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">43</div>
+            <div class="q-text">Çözümlemesi <em>(6×10000)+(0×1000)+(8×100)+(5×10)+(2×1)</em> olan sayı hangisidir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">68 520</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">60 852</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">608 520</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">60 582</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">44</div>
+            <div class="q-text">Bir sayının çözümlemesinde <em>yüzler</em> basamağının katkısı <em>400</em>'dür. Bu sayının yüzler basamağındaki rakam nedir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">40</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">4</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">400</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">4 000</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">45</div>
+            <div class="q-text">Hangi çözümleme <em>yanlış</em>tır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">7 325 = (7×1000)+(3×100)+(2×10)+(5×1)</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">400 = (4×100)</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">6 040 = (6×1000)+(4×10)</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">5 209 = (5×1000)+(2×100)+(9×1)</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">46</div>
+            <div class="q-text">Birler bölüğünde <em>135</em>, binler bölüğünde <em>42</em> olan sayının çözümlenmiş hali hangisidir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">(4×10000)+(2×1000)+(1×100)+(3×10)+(5×1)</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">(1×10000)+(3×1000)+(5×100)+(4×10)+(2×1)</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">(4×1000)+(2×100)+(1×10)+(3×1)+5</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">(4×100000)+(2×10000)+(1×100)+(3×10)+(5×1)</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">47</div>
+            <div class="q-text">Aşağıdaki sayılardan hangisi <em>en az 4 terimli</em> çözümlemeye sahiptir ve sıfır basamak içermez?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">1 000</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">2 304</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">5 678</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">9 010</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">48</div>
+            <div class="q-text"><em>■×10000 + 7×1000 + 0×100 + 4×10 + 9×1 = 97 049</em> olduğuna göre ■ yerine hangi rakam gelmelidir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">7</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">9</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">6</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">8</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KONU 7 -->
+      <div class="topic-section t7">
+        <div class="topic-header">
+          <div class="topic-number">7</div>
+          <div class="topic-title">Doğal Sayılarda Karşılaştırma ve Sıralama</div>
+          <div class="topic-badge">S.49–56</div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">49</div>
+            <div class="q-text"><em>4A3 > 435</em> eşitsizliğinde A yerine gelebilecek rakamların toplamı kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">30</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">25</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">35</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">20</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">50</div>
+            <div class="q-text">Aşağıdaki sayıları <em>küçükten büyüğe</em> doğru sıralandığında ikinci sıraya hangisi gelir?<br/><em>48 231 · 48 321 · 47 999 · 49 001</em></div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">49 001</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">48 321</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">48 231</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">47 999</div></div>
+          </div>
+        </div>
+
+      </div>
+
+    </div><!-- /col-right -->
+  </div><!-- /columns -->
+
+  <div class="page-footer">
+    <div class="footer-left">📐 Doğal Sayılar Yaprak Test · 4. Sınıf Matematik</div>
+    <div class="footer-mid">
+      <div class="footer-dot"></div><div class="footer-dot active"></div><div class="footer-dot"></div><div class="footer-dot"></div>
+    </div>
+    <div class="footer-right">Sayfa 2/4</div>
+  </div>
+</div><!-- /page2 -->
+
+
+<!-- ==================== SAYFA 3 ==================== -->
+<div class="page">
+  <div class="header-bar" style="padding:8px 24px 6px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div class="test-title" style="font-size:16px;">DOĞAL SAYILAR — Devam</div>
+      <div style="font-size:10px;opacity:0.85;">Ad Soyad: ......................................&nbsp;&nbsp; Sınıf: .......</div>
+    </div>
+  </div>
+
+  <div class="page-indicator"><span>Sayfa 3 / 4</span></div>
+
+  <div class="columns">
+    <!-- SOL -->
+    <div class="col">
+
+      <!-- KONU 7 devam -->
+      <div class="topic-section t7">
+        <div class="topic-header">
+          <div class="topic-number">7</div>
+          <div class="topic-title">Karşılaştırma ve Sıralama (devam)</div>
+          <div class="topic-badge">S.51–56</div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">51</div>
+            <div class="q-text"><em>5, 9, 0, 3, 7</em> rakamlarını birer kez kullanarak oluşturulabilecek en büyük 5 basamaklı sayı hangisidir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">97 530</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">97 503</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">97 350</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">93 750</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">52</div>
+            <div class="q-text"><em>2, 0, 8, 1</em> rakamlarını birer kez kullanarak oluşturulan en küçük 4 basamaklı <em>çift</em> sayı hangisidir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">1 028</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">1 082</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">1 208</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">1 280</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">53</div>
+            <div class="q-text">Aşağıdaki sayılardan hangisi <em>88 099</em> ile <em>88 201</em> arasında yer alır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">88 099</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">88 150</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">88 210</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">88 090</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">54</div>
+            <div class="q-text">Aşağıdaki eşitsizliklerden hangisi <em>doğru</em>dur?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">9 999 &gt; 10 000</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">65 432 &lt; 65 342</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">100 000 &gt; 99 999</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">23 500 = 25 300</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">55</div>
+            <div class="q-text">Bir sayı serisinde ardışık sayılar şunlardır: <em>49 998, 49 999, ?, 50 001.</em> Eksik sayı nedir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">50 000</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">49 997</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">50 002</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">49 990</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">56</div>
+            <div class="q-text">Kaç adet 5 basamaklı sayı; <em>hem yüz binler basamağı 0</em> olmak üzere, <em>hem de binler basamağı 9</em> olan sayı bulunabilir? (Diğer basamaklar serbest)</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">100</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">1 000</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">900</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">10</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KONU 8 -->
+      <div class="topic-section t8">
+        <div class="topic-header">
+          <div class="topic-number">8</div>
+          <div class="topic-title">Doğal Sayılarda Toplama İşlemi</div>
+          <div class="topic-badge">S.57–64</div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">57</div>
+            <div class="q-text"><em>48 763 + 27 485 = ?</em></div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">76 248</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">76 148</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">75 248</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">76 348</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">58</div>
+            <div class="q-text">Bir kutuda <em>38 456</em> boncuk, diğer kutuda <em>41 799</em> boncuk vardır. Toplam kaç boncuk vardır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">80 255</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">80 155</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">79 255</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">80 245</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">59</div>
+            <div class="q-text"><em>■ + 34 560 = 100 000</em> eşitliğinde ■ yerine ne gelmelidir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">65 440</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">64 440</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">65 540</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">66 440</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">60</div>
+            <div class="q-text">Toplama işleminde <em>değişme özelliği</em> neyi ifade eder?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">Toplananların sırası sonucu değiştirir</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">Toplananların sırası değişse de sonuç aynıdır</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">Her sayıya 0 eklenince sayı 2 katına çıkar</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">Toplama işlemi daima yalnız yapılır</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">61</div>
+            <div class="q-text">Üç ardışık sayının toplamı <em>99</em>'dur. Bu sayıların en büyüğü nedir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">32</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">33</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">34</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">35</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">62</div>
+            <div class="q-text">Bir pazarda sabah <em>12 450</em>, öğleden sonra <em>8 760</em>, akşam <em>5 325</em> müşteri geldi. Toplam müşteri sayısı kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">26 535</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">25 535</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">26 435</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">27 535</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">63</div>
+            <div class="q-text"><em>9 999 + 1 = ?</em> sonucunda kaç basamaklı bir sayı elde edilir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">4 basamaklı</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">5 basamaklı</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">6 basamaklı</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">3 basamaklı</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">64</div>
+            <div class="q-text">Toplamları <em>75 000</em> olan iki sayıdan biri <em>38 750</em> ise diğeri kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">36 250</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">36 150</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">37 250</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">36 350</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /col-left -->
+
+    <!-- SAĞ -->
+    <div class="col">
+
+      <!-- KONU 9 -->
+      <div class="topic-section t9">
+        <div class="topic-header">
+          <div class="topic-number">9</div>
+          <div class="topic-title">Doğal Sayılarda Çıkarma İşlemi</div>
+          <div class="topic-badge">S.65–72</div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">65</div>
+            <div class="q-text"><em>80 000 – 37 456 = ?</em></div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">42 544</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">43 544</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">42 644</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">42 444</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">66</div>
+            <div class="q-text">Bir şehirde <em>215 430</em> kişi yaşamaktadır. Bunun <em>98 720</em>'si kadındır. Erkek sayısı kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">116 710</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">116 810</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">117 710</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">116 720</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">67</div>
+            <div class="q-text">Bir fabrika <em>50 000</em> ürün üretecek, şimdiye kadar <em>23 847</em> üretmiştir. Kalan miktar kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">26 153</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">27 153</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">26 053</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">26 253</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">68</div>
+            <div class="q-text">Çıkarma işleminin sonucuna ne ad verilir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">Toplam</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">Çarpım</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">Fark</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">Bölüm</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">69</div>
+            <div class="q-text"><em>A – 14 390 = 35 610</em> ise A kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">50 000</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">49 000</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">51 000</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">50 100</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">70</div>
+            <div class="q-text">Aşağıdaki çıkarma işlemlerinden hangisi <em>yanlış</em>tır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">1 000 – 1 = 999</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">10 000 – 10 = 9 990</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">100 – 99 = 0</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">100 000 – 1 = 99 999</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">71</div>
+            <div class="q-text">Bir doğal sayıdan kendisini çıkardığımızda sonuç her zaman kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">1</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">-1</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">0</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">Sayının kendisi</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">72</div>
+            <div class="q-text">İki sayının farkı <em>15 750</em>'dir. Büyük sayı <em>48 300</em> ise küçük sayı kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">32 550</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">33 550</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">32 450</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">32 650</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KONU 10 -->
+      <div class="topic-section t10">
+        <div class="topic-header">
+          <div class="topic-number">10</div>
+          <div class="topic-title">Zihinden Toplama – Çıkarma</div>
+          <div class="topic-badge">S.73–80</div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">73</div>
+            <div class="q-text">Zihinden <em>4 700 + 2 500</em> işleminin sonucu kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">6 200</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">7 200</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">7 100</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">6 900</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">74</div>
+            <div class="q-text">Zihinden <em>9 000 – 3 750</em> işleminin en kolay yolu hangisidir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">9000 – 4000 + 250 = 5 250</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">9000 – 3000 – 750 = 5 250</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">9000 – 3750 = 5 250 (ikisi de doğru)</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">Tüm seçenekler doğru</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">75</div>
+            <div class="q-text">Zihinden <em>38 + 47</em> işlemini yaparken <em>tamamlama yöntemi</em> kullansak nasıl düşünürüz?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">38+2=40, 40+45=85</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">30+40=70, 8+7=15, 70+15=85</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">Her ikisi de doğru</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">38+47 zihinden yapılamaz</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">76</div>
+            <div class="q-text">Zihinden <em>5 000 – 1 = ?</em></div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">4 999</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">4 990</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">5 001</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">4 909</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">77</div>
+            <div class="q-text">Bir çocuğun harçlığı <em>850 TL</em>'dir. <em>375 TL</em> harcadı. Zihinden kaç TL kaldı?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">475 TL</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">485 TL</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">465 TL</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">495 TL</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">78</div>
+            <div class="q-text">Zihinden <em>999 + 999</em> işleminin en pratik yolu hangisidir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">1000+1000-2 = 1 998</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">900+900+99 = 1 899</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">999×2 = 1 998</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">A ve C seçenekleri doğru</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">79</div>
+            <div class="q-text">Zihinden <em>700 – 348</em> işleminde <em>"eksiltme yöntemi"</em> kullanılırsa hangi adımlar izlenir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">700-300=400, 400-48=352</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">700-350=350, 350+2=352</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">Her iki yol da doğru sonuç verir</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">700-348 zihinden yapılamaz</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">80</div>
+            <div class="q-text"><em>10 000 – 5 500 + 2 000</em> işlemini zihinden yapınca sonuç kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">6 500</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">5 500</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">7 500</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">6 000</div></div>
+          </div>
+        </div>
+
+      </div>
+
+    </div><!-- /col-right -->
+  </div>
+
+  <div class="page-footer">
+    <div class="footer-left">📐 Doğal Sayılar Yaprak Test · 4. Sınıf Matematik</div>
+    <div class="footer-mid">
+      <div class="footer-dot"></div><div class="footer-dot"></div><div class="footer-dot active"></div><div class="footer-dot"></div>
+    </div>
+    <div class="footer-right">Sayfa 3/4</div>
+  </div>
+</div><!-- /page3 -->
+
+
+<!-- ==================== SAYFA 4 ==================== -->
+<div class="page">
+  <div class="header-bar" style="padding:8px 24px 6px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div class="test-title" style="font-size:16px;">DOĞAL SAYILAR — Devam</div>
+      <div style="font-size:10px;opacity:0.85;">Ad Soyad: ......................................&nbsp;&nbsp; Sınıf: .......</div>
+    </div>
+  </div>
+
+  <div class="page-indicator"><span>Sayfa 4 / 4</span></div>
+
+  <div class="columns">
+    <!-- SOL -->
+    <div class="col">
+
+      <!-- KONU 11 -->
+      <div class="topic-section t11">
+        <div class="topic-header">
+          <div class="topic-number">11</div>
+          <div class="topic-title">Doğal Sayılarda Yuvarlama</div>
+          <div class="topic-badge">S.81–88</div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">81</div>
+            <div class="q-text"><em>74 638</em> sayısını <em>binler</em> basamağına yuvarlayınız.</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">74 000</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">75 000</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">70 000</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">74 600</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">82</div>
+            <div class="q-text"><em>348 500</em> sayısını <em>yüz binler</em> basamağına yuvarlayınız.</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">300 000</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">350 000</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">400 000</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">340 000</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">83</div>
+            <div class="q-text">Bir sayı <em>on binler</em> basamağına yuvarlandığında <em>60 000</em> oluyor. Bu sayı aşağıdakilerden hangisi <em>olamaz</em>?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">55 001</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">64 999</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">65 000</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">57 432</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">84</div>
+            <div class="q-text">Yuvarlama kuralına göre onlar basamağına göre yuvarlandığında <em>hangisi 4 500 olmaz?</em></div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">4 497</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">4 504</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">4 496</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">4 500</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">85</div>
+            <div class="q-text">Bir market <em>günlük yaklaşık</em> kaç müşteri ağırlıyor? Müşteri sayısı <em>2 347</em> ise <em>yüzler</em> basamağına yuvarla.</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">2 000</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">2 300</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">2 400</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">2 350</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">86</div>
+            <div class="q-text">Hangi sayı binler basamağına yuvarlandığında <em>hem 5 000 hem de 6 000 olabilir</em>? (Mümkün değilse "olmaz" seçeneği doğrudur)</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">5 499</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">5 500</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">Olmaz — bir sayı iki farklı sonuca yuvarlayamaz</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">5 000</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">87</div>
+            <div class="q-text"><em>99 950</em> sayısı binler basamağına yuvarlandığında kaç olur?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">99 000</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">100 000</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">99 900</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">99 950</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">88</div>
+            <div class="q-text">Bir sayının yüzler basamağına yuvarlanmış hali <em>7 200</em>'dür. Yuvarlama öncesi sayı aşağıdakilerden hangisi <em>olamaz</em>?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">7 150</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">7 249</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">7 250</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">7 180</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KONU 12 -->
+      <div class="topic-section t12">
+        <div class="topic-header">
+          <div class="topic-number">12</div>
+          <div class="topic-title">Doğal Sayılarda Çarpma İşlemi</div>
+          <div class="topic-badge">S.89–96</div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">89</div>
+            <div class="q-text"><em>456 × 78 = ?</em></div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">35 568</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">35 468</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">36 568</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">34 568</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">90</div>
+            <div class="q-text"><em>1 000 × 365 = ?</em> Bu çarpımın pratikte ne anlama geldiğini açıklayan seçenek hangisidir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">Yılda 1 000 gün olduğunu gösterir</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">365'in sonuna 3 sıfır eklemek kadar kolaydır: 365 000</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">1000'in 365 katı zaten 1000'dir</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">365 + 1000 = 1 365'tir</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">91</div>
+            <div class="q-text">Çarpma işleminin <em>değişme özelliğine</em> göre <em>47 × 83 = 83 × 47</em> doğru mudur?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">Hayır, yanlıştır</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">Evet, her zaman doğrudur</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">Yalnızca tek sayılarda doğrudur</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">Sadece 2 basamaklı sayılarda geçerlidir</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">92</div>
+            <div class="q-text"><em>236 × 45</em> işleminde <em>dağılma özelliği</em> kullanılırsa: 236 × (40 + 5) = 236×40 + 236×5 = ?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">10 620</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">10 520</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">10 420</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">11 520</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">93</div>
+            <div class="q-text">Bir pakette <em>144</em> kalem varsa, <em>25 pakette</em> toplam kaç kalem vardır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">3 600</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">3 500</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">3 700</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">3 400</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">94</div>
+            <div class="q-text">Herhangi bir sayıyı <em>0</em> ile çarptığımızda sonuç kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">Sayının kendisi</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">1</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">0</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">Tanımsızdır</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">95</div>
+            <div class="q-text"><em>■ × 12 = 1 440</em> eşitliğinde ■ kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">110</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">120</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">115</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">130</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">96</div>
+            <div class="q-text">İki çarpanın çarpımı <em>5 400</em>'dür. Bir çarpan <em>90</em> ise diğeri kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">50</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">60</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">70</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">80</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /col-left -->
+
+    <!-- SAĞ -->
+    <div class="col">
+
+      <!-- KONU 13 -->
+      <div class="topic-section t13">
+        <div class="topic-header">
+          <div class="topic-number">13</div>
+          <div class="topic-title">Çarpma İşlemi Problemleri</div>
+          <div class="topic-badge">S.97–102</div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">97</div>
+            <div class="q-text">Bir uçakta <em>48</em> koltuk sırası, her sırada <em>6</em> koltuk bulunmaktadır. Bu uçakta toplam kaç yolcu taşınabilir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">288</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">278</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">298</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">268</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">98</div>
+            <div class="q-text">Bir fabrika günde <em>1 250</em> araba üretiyor. Bu fabrika <em>365 günde</em> kaç araba üretir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">456 250</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">456 125</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">465 250</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">456 000</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">99</div>
+            <div class="q-text">Ali'nin kitabı <em>248</em> sayfalıdır. Aynı kitaptan <em>35 tane</em> alınırsa toplam sayfa sayısı kaç olur?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">8 680</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">8 780</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">8 580</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">8 480</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">100</div>
+            <div class="q-text">Bir mağaza saatte <em>47 TL</em> elektrik ücreti ödüyor. <em>24 saatte</em> toplam kaç TL elektrik ücreti öder?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">1 128 TL</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">1 028 TL</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">1 228 TL</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">1 148 TL</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">101</div>
+            <div class="q-text">Bir çiftçinin <em>15 dönüm</em> arazisi var. Her dönümden <em>320 kg</em> buğday alıyor. Toplam kaç kg buğday alır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">4 800 kg</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">4 700 kg</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">4 900 kg</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">5 000 kg</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">102</div>
+            <div class="q-text">Koşan bir at saatte <em>64 km</em> yol alıyor. Bu at <em>12 saatte</em> kaç km yol alır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">768 km</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">748 km</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">778 km</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">758 km</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KONU 14 -->
+      <div class="topic-section t14">
+        <div class="topic-header">
+          <div class="topic-number">14</div>
+          <div class="topic-title">Doğal Sayılarda Bölme İşlemi</div>
+          <div class="topic-badge">S.103–110</div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">103</div>
+            <div class="q-text"><em>8 748 ÷ 12 = ?</em></div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">729</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">719</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">739</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">749</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">104</div>
+            <div class="q-text"><em>36 000 ÷ 400 = ?</em></div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">9</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">90</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">900</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">9 000</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">105</div>
+            <div class="q-text">Bir sayıyı kendisine böldüğümüzde sonuç kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">0</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">Sayının kendisi</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">1</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">Tanımsız</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">106</div>
+            <div class="q-text"><em>4 950 ÷ ■ = 55</em> ise ■ kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">80</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">90</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">70</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">85</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">107</div>
+            <div class="q-text"><em>56 848 ÷ 56 = ?</em> işleminin bölümü kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">1 015</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">1 016</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">1 014</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">1 017</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">108</div>
+            <div class="q-text">Bölme işleminde <em>bölüm × bölen + kalan = bölünen</em> eşitliğine göre; bölünen <em>587</em>, bölen <em>25</em> ise bölüm ve kalan nedir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">Bölüm: 23, Kalan: 12</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">Bölüm: 23, Kalan: 10</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">Bölüm: 24, Kalan: 12</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">Bölüm: 22, Kalan: 17</div></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- KONU 15 -->
+      <div class="topic-section t15">
+        <div class="topic-header">
+          <div class="topic-number">15</div>
+          <div class="topic-title">Bölme İşlemi Problemleri</div>
+          <div class="topic-badge">S.109–114</div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">109</div>
+            <div class="q-text"><em>480</em> öğrenci <em>16</em> sınıfa eşit olarak dağıtılacak. Her sınıfta kaç öğrenci olur?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">28</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">30</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">32</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">35</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">110</div>
+            <div class="q-text">Bir çuval <em>75 kg</em> pirinç var. Bu pirinci <em>15 kg</em>'lık torbalara koyacak. Kaç torba gerekir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">4</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">5</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">6</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">7</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">111</div>
+            <div class="q-text"><em>1 260 TL</em>'yi <em>4</em> kardeş eşit paylaşacak. Her kardeşe kaç TL düşer?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">305 TL</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">315 TL</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">325 TL</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">310 TL</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">112</div>
+            <div class="q-text">Bir otobüs <em>3 saatte</em> <em>240 km</em> yol alıyor. Saatte kaç km hız yapıyor?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">70 km/sa</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">80 km/sa</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">75 km/sa</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">85 km/sa</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">113</div>
+            <div class="q-text">Bir çiftçinin <em>875 elması</em> var. Her kutuya <em>25 elma</em> koyarsa kaç kutu doldurur?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">30</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">35</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">40</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">45</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">114</div>
+            <div class="q-text">Bir kitabevinde <em>4 560 kitap</em> var. Bu kitaplar <em>24 rafa eşit dağıtılırsa</em> her rafta kaç kitap olur?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">180</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">190</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">185</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">195</div></div>
+          </div>
+        </div>
+
+      </div>
+
+    </div><!-- /col-right -->
+  </div><!-- /columns -->
+
+  <div class="page-footer">
+    <div class="footer-left">📐 Doğal Sayılar Yaprak Test · 4. Sınıf Matematik</div>
+    <div class="footer-mid">
+      <div class="footer-dot"></div><div class="footer-dot"></div><div class="footer-dot"></div><div class="footer-dot active"></div>
+    </div>
+    <div class="footer-right">Sayfa 4/4</div>
+  </div>
+</div><!-- /page4 -->
+
+
+<!-- ==================== SAYFA 5 (S.115-150 + Cevap Anahtarı) ==================== -->
+<div class="page">
+  <div class="header-bar" style="padding:8px 24px 6px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div class="test-title" style="font-size:16px;">DOĞAL SAYILAR — Son Bölüm</div>
+      <div style="font-size:10px;opacity:0.85;">Ad Soyad: ......................................&nbsp;&nbsp; Sınıf: .......</div>
+    </div>
+  </div>
+  <div class="page-indicator"><span>Ek Sayfa / Sorular 115–150 + Cevap Anahtarı</span></div>
+
+  <div class="columns">
+    <!-- SOL -->
+    <div class="col">
+
+      <!-- KONU 16 -->
+      <div class="topic-section t16">
+        <div class="topic-header">
+          <div class="topic-number">16</div>
+          <div class="topic-title">Çarpma ve Bölmede Tahmin</div>
+          <div class="topic-badge">S.115–120</div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">115</div>
+            <div class="q-text"><em>48 × 21</em> işleminin tahmini sonucu hangi seçenekte en doğru gösterilmiştir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">50 × 20 = 1 000</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">40 × 20 = 800</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">50 × 30 = 1 500</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">48 × 20 = 960</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">116</div>
+            <div class="q-text"><em>379 ÷ 19</em> işleminin tahmini bölümü kaçtır? (Yakın onlara yuvarla)</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">400 ÷ 20 ≈ 20</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">380 ÷ 20 = 19</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">Gerçek değer 20 ile aynı aralıktadır</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">Tüm seçenekler doğrudur</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">117</div>
+            <div class="q-text">Bir markette <em>53 kutu çay</em> var, her kutuda <em>48 poşet</em> bulunuyor. Tahmin ile toplam poşet sayısı kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">~2 000</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">~2 500</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">~3 000</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">~1 500</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">118</div>
+            <div class="q-text">Tahmin yoluyla <em>8 240 ÷ 42 ≈ ?</em> işleminin en yakın tahmini hangisidir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">200</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">190</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">180</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">210</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">119</div>
+            <div class="q-text">Tahmin yöntemiyle hangi seçenekte <em>yanlış</em> tahmin yapılmıştır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">32 × 48 ≈ 30 × 50 = 1 500</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">67 × 19 ≈ 70 × 20 = 1 400</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">48 ÷ 6 ≈ 50 ÷ 5 = 10</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">25 × 41 ≈ 25 × 40 = 1 000</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">120</div>
+            <div class="q-text">Bir spor salonuna hafta içi her gün <em>127 kişi</em> geliyor. <em>5 hafta</em> boyunca tahminen kaç kişi gelir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">~2 500 kişi</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">~3 000 kişi</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">~3 500 kişi</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">~4 000 kişi</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KONU 17 -->
+      <div class="topic-section t17">
+        <div class="topic-header">
+          <div class="topic-number">17</div>
+          <div class="topic-title">Zihinden Çarpma ve Bölme</div>
+          <div class="topic-badge">S.121–128</div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">121</div>
+            <div class="q-text">Zihinden <em>25 × 4 = ?</em></div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">90</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">100</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">105</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">95</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">122</div>
+            <div class="q-text">Zihinden <em>600 ÷ 30 = ?</em></div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">2</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">20</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">200</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">2 000</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">123</div>
+            <div class="q-text">Zihinden <em>15 × 20</em> işlemi için en pratik yol hangisidir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">15×2=30, 30×10=300</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">10×20+5×20=200+100=300</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">Her ikisi de doğru</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">Zihinden yapılamaz</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">124</div>
+            <div class="q-text">Zihinden <em>3 600 ÷ 9 = ?</em></div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">40</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">400</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">4 000</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">4</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">125</div>
+            <div class="q-text">Zihinden <em>50 × 50 = ?</em></div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">250</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">2 500</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">500</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">25 000</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">126</div>
+            <div class="q-text">Zihinden <em>720 ÷ 8</em> işlemini kolayca yapmanın yolu hangisidir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">72÷8=9, 720÷8=90</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">720÷4=180, 180÷2=90</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">Her ikisi de doğru</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">720÷8=80</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">127</div>
+            <div class="q-text">Zihinden <em>125 × 8 = ?</em></div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">900</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">1 000</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">1 100</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">800</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">128</div>
+            <div class="q-text">Zihinden <em>99 × 6</em> işleminin en pratik yolu ve sonucu nedir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">100×6=600, 600-6=594</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">99×6=604</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">90×6+9=549</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">99×6=584</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /col-left -->
+
+    <!-- SAĞ -->
+    <div class="col">
+
+      <!-- KONU 18 -->
+      <div class="topic-section t18">
+        <div class="topic-header">
+          <div class="topic-number">18</div>
+          <div class="topic-title">Bölme İşleminde Kalanı Yorumlama</div>
+          <div class="topic-badge">S.129–134</div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">129</div>
+            <div class="q-text"><em>47 öğrenci</em> 4'erli gruplara ayrılacak. Kaç tam grup oluşur, kaç öğrenci artar?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">11 grup, 3 artar</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">12 grup, 2 artar</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">11 grup, 2 artar</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">12 grup, 1 artar</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">130</div>
+            <div class="q-text"><em>130 kişiyi</em> 12 kişilik minibüslere taşıyacaklar. En az kaç minibüs gerekir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">10</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">11</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">12</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">9</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">131</div>
+            <div class="q-text"><em>85 ÷ 6 = 14</em> bölüm, <em>1</em> kalan olduğunda; kalan ne anlama gelir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">Tam bölünmüştür, hepsi paylaşılmıştır</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">1 birim artmış, paylaşılamamıştır</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">Kalan sayı daima 0'dır</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">Bir daha bölmek gerekir</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">132</div>
+            <div class="q-text"><em>250 kitabı</em> 7'şer kitap verecek şekilde dağıtacaklar. Kaç öğrenciye tam 7 kitap verilebilir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">35</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">36</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">37</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">34</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">133</div>
+            <div class="q-text">Bir sayı 8'e bölündüğünde kalan en fazla kaç olabilir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">8</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">9</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">7</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">6</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">134</div>
+            <div class="q-text">Bölüm <em>15</em>, bölen <em>7</em>, kalan <em>4</em> ise bölünen kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">105</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">109</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">111</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">104</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KONU 19 -->
+      <div class="topic-section t19">
+        <div class="topic-header">
+          <div class="topic-number">19</div>
+          <div class="topic-title">Çarpma ve Bölmede Bilinmeyeni Bulma</div>
+          <div class="topic-badge">S.135–142</div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">135</div>
+            <div class="q-text"><em>■ × 8 = 480</em> ise ■ kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">50</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">60</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">70</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">80</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">136</div>
+            <div class="q-text"><em>840 ÷ ■ = 24</em> ise ■ kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">30</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">35</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">40</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">45</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">137</div>
+            <div class="q-text"><em>■ ÷ 15 = 48</em> ise ■ kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">700</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">720</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">740</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">680</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">138</div>
+            <div class="q-text"><em>5 × ■ = 3 × 150</em> eşitliğinde ■ kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">80</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">90</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">85</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">95</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">139</div>
+            <div class="q-text">Bir sayının <em>12 katı</em> ile <em>8 katı</em> arasındaki fark <em>200</em>'dür. Bu sayı kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">40</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">50</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">60</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">70</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">140</div>
+            <div class="q-text"><em>■ × 7 + 5 = 54</em> eşitliğinde ■ kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">6</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">7</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">8</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">9</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">141</div>
+            <div class="q-text">Bir sayı <em>9</em> ile çarpılıp <em>36</em> çıkarılıyor ve sonuç <em>144</em> oluyor. Sayı kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">18</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">20</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">22</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">24</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">142</div>
+            <div class="q-text"><em>(■ + 30) ÷ 5 = 24</em> ise ■ kaçtır?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">80</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">90</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">100</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">110</div></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- KONU 20 -->
+      <div class="topic-section t20">
+        <div class="topic-header">
+          <div class="topic-number">20</div>
+          <div class="topic-title">Dört İşlem İçeren Problemler</div>
+          <div class="topic-badge">S.143–150</div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">143</div>
+            <div class="q-text">Ahmet <em>250 TL</em> harçlıktan <em>3 kitap × 45 TL</em> ve <em>2 defter × 12 TL</em> harcadı. Elinde kaç TL kaldı?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">95 TL</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">111 TL</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">85 TL</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">101 TL</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">144</div>
+            <div class="q-text">Bir fabrikada sabah <em>1 200</em>, öğleden sonra <em>900</em> ürün üretildi. Bu ürünler <em>7 kamyona eşit</em> yüklendi. Her kamyonda kaç ürün var?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">280</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">290</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">300</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">310</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">145</div>
+            <div class="q-text">Bir okul kütüphanesinde <em>3 rafta 240'ar kitap</em> var. Bu kitapların <em>5'te 1'i</em> ödünç alındı. Kütüphanede kaç kitap kaldı?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">480</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">576</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">580</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">520</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">146</div>
+            <div class="q-text">Ali <em>5 haftada 35 sayfayı</em> okumuştur; Veli, Ali'nin <em>4 katı</em> hızda okumaktadır. Veli aynı sürede kaç sayfa okur?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">120</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">140</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">150</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">160</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">147</div>
+            <div class="q-text">Bir otelin <em>12 katı</em> ve her katta <em>18 oda</em> vardır. Odaların <em>¼'ü doludur</em>. Kaç oda boştur?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">162</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">144</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">108</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">54</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">148</div>
+            <div class="q-text">Bir markette elma <em>8 TL/kg</em>, armut <em>6 TL/kg</em>'dir. <em>5 kg elma ve 3 kg armut</em> alındığında toplam ücret ve <em>100 TL'den kalan para</em> nedir?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">Toplam: 58 TL, Kalan: 42 TL</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">Toplam: 52 TL, Kalan: 48 TL</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">Toplam: 60 TL, Kalan: 40 TL</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">Toplam: 55 TL, Kalan: 45 TL</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">149</div>
+            <div class="q-text">Bir trende <em>8 vagon</em>, her vagonda <em>64 koltuk</em> var. İstasyonda <em>125 kişi</em> indi, <em>98 kişi</em> bindi. Trende başlangıçta <em>312 kişi</em> varsa şimdi kaç kişi var?</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">285</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">275</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">295</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">265</div></div>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <div class="q-row"><div class="q-num">150</div>
+            <div class="q-text">Bir çocuk <em>3 günde 126 TL</em> biriktiriyor. Bu hızla <em>6 haftada</em> ne kadar biriktirir? (1 hafta = 7 gün)</div>
+          </div>
+          <div class="options">
+            <div class="option"><div class="option-label">A</div><div class="option-text">1 764 TL</div></div>
+            <div class="option"><div class="option-label">B</div><div class="option-text">1 680 TL</div></div>
+            <div class="option"><div class="option-label">C</div><div class="option-text">1 848 TL</div></div>
+            <div class="option"><div class="option-label">D</div><div class="option-text">1 512 TL</div></div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /col-right -->
+  </div><!-- /columns -->
+
+  <!-- CEVAP ANAHTARI -->
+  <div class="answer-key">
+    <div class="answer-key-title">CEVAP ANAHTARI</div>
+    <div class="answer-grid">
+      <div class="answer-item"><div class="anum">1</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">2</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">3</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">4</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">5</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">6</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">7</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">8</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">9</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">10</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">11</div><div class="aans">D</div></div>
+      <div class="answer-item"><div class="anum">12</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">13</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">14</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">15</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">16</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">17</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">18</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">19</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">20</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">21</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">22</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">23</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">24</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">25</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">26</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">27</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">28</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">29</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">30</div><div class="aans">D</div></div>
+      <div class="answer-item"><div class="anum">31</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">32</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">33</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">34</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">35</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">36</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">37</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">38</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">39</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">40</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">41</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">42</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">43</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">44</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">45</div><div class="aans">D</div></div>
+      <div class="answer-item"><div class="anum">46</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">47</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">48</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">49</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">50</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">51</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">52</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">53</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">54</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">55</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">56</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">57</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">58</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">59</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">60</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">61</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">62</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">63</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">64</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">65</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">66</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">67</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">68</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">69</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">70</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">71</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">72</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">73</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">74</div><div class="aans">D</div></div>
+      <div class="answer-item"><div class="anum">75</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">76</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">77</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">78</div><div class="aans">D</div></div>
+      <div class="answer-item"><div class="anum">79</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">80</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">81</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">82</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">83</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">84</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">85</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">86</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">87</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">88</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">89</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">90</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">91</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">92</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">93</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">94</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">95</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">96</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">97</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">98</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">99</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">100</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">101</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">102</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">103</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">104</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">105</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">106</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">107</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">108</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">109</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">110</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">111</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">112</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">113</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">114</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">115</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">116</div><div class="aans">D</div></div>
+      <div class="answer-item"><div class="anum">117</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">118</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">119</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">120</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">121</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">122</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">123</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">124</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">125</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">126</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">127</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">128</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">129</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">130</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">131</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">132</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">133</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">134</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">135</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">136</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">137</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">138</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">139</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">140</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">141</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">142</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">143</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">144</div><div class="aans">C</div></div>
+      <div class="answer-item"><div class="anum">145</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">146</div><div class="aans">B</div></div>
+      <div class="answer-item"><div class="anum">147</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">148</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">149</div><div class="aans">A</div></div>
+      <div class="answer-item"><div class="anum">150</div><div class="aans">A</div></div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <div class="footer-left">📐 Doğal Sayılar Yaprak Test · 4. Sınıf Matematik · Tüm hakları saklıdır.</div>
+    <div class="footer-mid">
+      <div class="footer-dot"></div><div class="footer-dot"></div><div class="footer-dot"></div><div class="footer-dot"></div><div class="footer-dot active"></div>
+    </div>
+    <div class="footer-right">Son Sayfa</div>
+  </div>
+</div><!-- /page5 -->
+
+</div><!-- /pages-wrapper -->
+
+</body>
+</html>
