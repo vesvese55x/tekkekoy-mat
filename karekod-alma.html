@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Öğrenci Karekod Alma Rehberi – Matematik Kursu</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      min-height: 100vh;
+      color: #2d3436;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: linear-gradient(135deg, #e63946 0%, #c1121f 100%);
+      color: white;
+      text-align: center;
+      padding: 36px 20px 28px;
+      box-shadow: 0 4px 20px rgba(198,18,31,.35);
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 200px; height: 200px;
+      background: rgba(255,255,255,.08);
+      border-radius: 50%;
+    }
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -40px;
+      width: 250px; height: 250px;
+      background: rgba(255,255,255,.05);
+      border-radius: 50%;
+    }
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 50px;
+      padding: 6px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .5px;
+      margin-bottom: 16px;
+      backdrop-filter: blur(10px);
+    }
+    .header h1 {
+      font-size: clamp(22px, 5vw, 32px);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 8px rgba(0,0,0,.2);
+    }
+    .header p {
+      font-size: 15px;
+      opacity: .9;
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    /* ── ALERT BOX ── */
+    .alert-box {
+      max-width: 780px;
+      margin: 28px auto 0;
+      padding: 0 16px;
+    }
+    .alert {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 18px 22px;
+      border-radius: 16px;
+      font-size: 14.5px;
+      line-height: 1.7;
+      font-weight: 500;
+      text-align: justify;
+    }
+    .alert-warning {
+      background: #fff3cd;
+      border: 1.5px solid #ffc107;
+      color: #7d5a00;
+    }
+    .alert-icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+
+    /* ── MAIN ── */
+    .container {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 20px 16px 60px;
+    }
+
+    /* ── SECTION TITLE ── */
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 20px;
+      font-weight: 800;
+      color: #2d3436;
+      margin: 36px 0 20px;
+    }
+    .section-title-icon {
+      width: 42px; height: 42px;
+      background: linear-gradient(135deg, #e63946, #c1121f);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(198,18,31,.3);
+    }
+
+    /* ── STEP CARDS ── */
+    .steps-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .step-card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.07);
+      overflow: hidden;
+      border: 1px solid #f0f0f0;
+      display: flex;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .step-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(0,0,0,.12);
+    }
+
+    .step-number-col {
+      width: 72px;
+      background: linear-gradient(180deg, #e63946 0%, #c1121f 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 22px 8px;
+      flex-shrink: 0;
+    }
+    .step-num {
+      width: 38px; height: 38px;
+      background: rgba(255,255,255,.2);
+      border: 2px solid rgba(255,255,255,.4);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      font-weight: 900;
+      color: white;
+    }
+    .step-emoji-col {
+      font-size: 22px;
+      margin-top: 12px;
+    }
+
+    .step-content {
+      padding: 22px 24px;
+      flex: 1;
+    }
+    .step-content h3 {
+      font-size: 17px;
+      font-weight: 800;
+      color: #2d3436;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .step-content p {
+      font-size: 14.5px;
+      color: #555;
+      line-height: 1.75;
+      margin-bottom: 12px;
+      text-align: justify;
+    }
+    .step-content p:last-child { margin-bottom: 0; }
+
+    /* store buttons */
+    .store-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .store-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #e63946;
+      color: white;
+      text-decoration: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-weight: 700;
+      transition: background .2s, transform .15s;
+    }
+    .store-btn:hover { background: #c1121f; transform: scale(1.03); }
+    .store-btn.outline {
+      background: transparent;
+      border: 2px solid #e63946;
+      color: #e63946;
+    }
+    .store-btn.outline:hover { background: #fff0f1; }
+
+    /* ── SCREENSHOT SECTION – ortalanmış ── */
+    .screenshots-section {
+      margin-top: 18px;
+      display: flex;
+      justify-content: center;
+    }
+    .screenshots-row {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding-bottom: 4px;
+    }
+    .screenshot-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .screenshot-item .phone-frame {
+      width: 170px;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 3px solid #e63946;
+      box-shadow: 0 8px 28px rgba(198,18,31,.18);
+      background: #fff;
+    }
+    .screenshot-item .phone-frame svg {
+      display: block;
+      width: 100%;
+    }
+    .screenshot-item p {
+      font-size: 12.5px;
+      color: #666;
+      margin-top: 10px;
+      max-width: 170px;
+      font-weight: 700;
+      text-align: center !important;
+      line-height: 1.5;
+    }
+
+    /* tip box */
+    .tip-box {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      background: #f0fdf4;
+      border: 1.5px solid #86efac;
+      border-radius: 12px;
+      padding: 13px 16px;
+      margin-top: 16px;
+      font-size: 13.5px;
+      color: #166534;
+      line-height: 1.65;
+      text-align: justify;
+    }
+    .tip-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+    .highlight {
+      display: inline-block;
+      background: #fff3cd;
+      color: #7d5a00;
+      border-radius: 6px;
+      padding: 2px 8px;
+      font-weight: 700;
+      font-size: 13.5px;
+    }
+
+    .tag {
+      background: #e63946;
+      color: white;
+      border-radius: 6px;
+      padding: 2px 9px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* ── IMPORTANT NOTICE ── */
+    .important-notice {
+      background: white;
+      border-radius: 20px;
+      padding: 28px 26px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.08);
+      border: 2px solid #e63946;
+      margin-top: 32px;
+    }
+    .important-notice h2 {
+      font-size: 19px;
+      font-weight: 800;
+      color: #e63946;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .notice-items {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .notice-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 14.5px;
+      line-height: 1.75;
+      color: #2d3436;
+      text-align: justify;
+    }
+    .notice-dot {
+      width: 10px; height: 10px;
+      background: #e63946;
+      border-radius: 50%;
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+
+    /* ── HELP CARD ── */
+    .help-card {
+      background: linear-gradient(135deg, #e63946, #c1121f);
+      border-radius: 20px;
+      padding: 32px 28px;
+      color: white;
+      margin-top: 24px;
+      box-shadow: 0 8px 28px rgba(198,18,31,.35);
+      text-align: center;
+    }
+    .help-card h2 {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+    .help-card p {
+      font-size: 15px;
+      opacity: .95;
+      line-height: 1.8;
+      max-width: 560px;
+      margin: 0 auto;
+      text-align: justify;
+    }
+    .help-card .emoji-big { font-size: 52px; display: block; margin-bottom: 16px; }
+
+    /* ── FOOTER ── */
+    .footer {
+      background: #2d3436;
+      color: rgba(255,255,255,.7);
+      text-align: center;
+      padding: 22px 20px;
+      font-size: 13px;
+      margin-top: 20px;
+      line-height: 1.7;
+    }
+    .footer strong { color: white; }
+
+    /* ── PRINT STYLES ── */
+    @media print {
+      .header { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .step-number-col { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .help-card { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .step-card:hover { transform: none; box-shadow: none; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 540px) {
+      .step-card { flex-direction: column; }
+      .step-number-col {
+        width: 100%; height: 56px;
+        flex-direction: row;
+        padding: 0 20px;
+        gap: 12px;
+        justify-content: flex-start;
+      }
+      .step-emoji-col { margin-top: 0; }
+      .store-buttons { flex-direction: column; }
+      .store-btn { justify-content: center; }
+      .screenshot-item .phone-frame { width: 150px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     HEADER
+════════════════════════════════════════════════ -->
+<div class="header">
+  <div class="header-badge">📐 GSB BİZ &nbsp;·&nbsp; KAREKOD ALMA</div>
+  <h1>📱 Öğrenci Karekodu Nasıl Alınır?</h1>
+  <p>
+    GSB Biz uygulaması üzerinden öğrencinize ait karekodu <strong>kolayca alın</strong>,
+    fotokopi alarak her derse hazır geliniz!
+  </p>
+</div>
+
+<!-- UYARI KUTUSU -->
+<div class="alert-box">
+  <div class="alert alert-warning">
+    <span class="alert-icon">⚠️</span>
+    <div>
+      <strong>Önemli Duyuru:</strong> Matematik dersimizde yoklama, öğrenciye ait
+      <strong>karekod (QR Kod) fotokopisi</strong> ile alınmaktadır. Her öğrencinin
+      karekod fotokopisini her derse yanında bulundurması <u>zorunludur</u>.
+      Lütfen aşağıdaki adımları dikkatle uygulayın.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     MAIN CONTAINER
+════════════════════════════════════════════════ -->
+<div class="container">
+
+  <div class="section-title">
+    <div class="section-title-icon">📋</div>
+    Adım Adım Karekod Alma Rehberi
+  </div>
+
+  <div class="steps-grid">
+
+    <!-- ══ ADIM 1 ══ -->
+    <div class="step-card">
+      <div class="step-number-col">
+        <div class="step-num">1</div>
+        <div class="step-emoji-col">📲</div>
+      </div>
+      <div class="step-content">
+        <h3>GSB Biz Uygulamasını İndirin <span class="tag">Ücretsiz</span></h3>
+        <p>
+          Telefonunuza <strong>GSB Biz</strong> uygulamasını indirin. Telefonunuz
+          <strong>Android</strong> ise Google Play Store'a, <strong>iPhone (iOS)</strong> ise
+          App Store'a tıklayarak uygulamayı yükleyin ve açın. Alternatif olarak tarayıcınızdan
+          <a href="https://biz.gsb.gov.tr" target="_blank" style="color:#e63946;font-weight:700;">biz.gsb.gov.tr</a>
+          adresini açıp <em>"Siteye Devam Et"</em> butonuna basabilirsiniz.
+        </p>
+
+        <div class="store-buttons">
+          <a class="store-btn" href="https://play.google.com/store/search?q=gsb+biz&c=apps" target="_blank">
+            🤖 Google Play Store (Android)
+          </a>
+          <a class="store-btn" href="https://apps.apple.com/tr/app/gsb-biz/id1498047824" target="_blank">
+            🍎 App Store (iPhone)
+          </a>
+          <a class="store-btn outline" href="https://biz.gsb.gov.tr" target="_blank">
+            🌐 biz.gsb.gov.tr Sitesini Aç
+          </a>
+        </div>
+
+        <!-- GSB BİZ AÇILIŞ EKRANI -->
+        <div class="screenshots-section">
+          <div class="screenshots-row">
+            <div class="screenshot-item">
+              <div class="phone-frame">
+                <svg viewBox="0 0 320 620" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;background:#b0b0b0;">
+                  <rect width="320" height="620" fill="#9a9a9a"/>
+                  <!-- Adres çubuğu -->
+                  <rect x="10" y="10" width="300" height="36" rx="10" fill="#f0f0f0"/>
+                  <text x="160" y="33" font-family="Arial" font-size="12" fill="#444" text-anchor="middle">biz.gsb.gov.tr</text>
+                  <!-- Modal popup -->
+                  <rect x="28" y="70" width="264" height="490" rx="18" fill="white" filter="drop-shadow(0 8px 24px rgba(0,0,0,.3))"/>
+                  <!-- BİZ logosu -->
+                  <rect x="110" y="100" width="100" height="100" rx="24" fill="#e63946"/>
+                  <text x="155" y="174" font-family="Arial" font-weight="900" font-size="42" fill="white">biz</text>
+                  <circle cx="200" cy="170" r="7" fill="white"/>
+                  <!-- Alt başlık -->
+                  <text x="160" y="232" font-family="Arial" font-weight="700" font-size="15" fill="#e63946" text-anchor="middle">Mobil App Uygulama İndir</text>
+                  <!-- Google Play -->
+                  <rect x="46" y="250" width="228" height="48" rx="10" fill="#e63946"/>
+                  <text x="160" y="280" font-family="Arial" font-weight="700" font-size="15" fill="white" text-anchor="middle">Google Play Store  ↓</text>
+                  <!-- App Store -->
+                  <rect x="46" y="308" width="228" height="48" rx="10" fill="#e63946"/>
+                  <text x="160" y="338" font-family="Arial" font-weight="700" font-size="15" fill="white" text-anchor="middle">App Store  ↓</text>
+                  <!-- App Gallery -->
+                  <rect x="46" y="366" width="228" height="48" rx="10" fill="#e63946"/>
+                  <text x="160" y="396" font-family="Arial" font-weight="700" font-size="15" fill="white" text-anchor="middle">App Gallery  ↓</text>
+                  <!-- Siteye Devam Et -->
+                  <rect x="46" y="430" width="228" height="48" rx="10" fill="white" stroke="#e63946" stroke-width="2.5"/>
+                  <text x="160" y="460" font-family="Arial" font-weight="700" font-size="15" fill="#e63946" text-anchor="middle">Siteye Devam Et</text>
+                </svg>
+              </div>
+              <p>biz.gsb.gov.tr<br>açılış ekranı</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tip-box">
+          <span class="tip-icon">💡</span>
+          <span>
+            Uygulamayı indirmek istemiyorsanız <strong>biz.gsb.gov.tr</strong> adresini telefonunuzun
+            tarayıcısında açıp <em>"Siteye Devam Et"</em> butonuna basarak web üzerinden de devam edebilirsiniz.
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ADIM 2 ══ -->
+    <div class="step-card">
+      <div class="step-number-col">
+        <div class="step-num">2</div>
+        <div class="step-emoji-col">🔐</div>
+      </div>
+      <div class="step-content">
+        <h3>E-Devlet ile Giriş Yapın <span class="tag">Veli Girişi</span></h3>
+        <p>
+          Uygulamayı veya web sitesini açtığınızda sağ üst köşedeki
+          <span class="highlight">🔴 E-Devlet ile Giriş</span> butonuna tıklayın.
+          <strong>Veli olarak kendi e-Devlet bilgilerinizle</strong> giriş yapın.
+          Giriş tamamlandığında uygulamanın ana sayfası açılacaktır.
+        </p>
+
+        <!-- Ana Sayfa ekranı -->
+        <div class="screenshots-section">
+          <div class="screenshots-row">
+            <div class="screenshot-item">
+              <div class="phone-frame">
+                <svg viewBox="0 0 320 530" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;background:#f5f5f5;">
+                  <!-- Üst bar -->
+                  <rect width="320" height="58" fill="white" filter="drop-shadow(0 1px 4px rgba(0,0,0,.08))"/>
+                  <text x="22" y="38" font-family="Arial" font-weight="900" font-size="24" fill="#e63946">biz</text>
+                  <circle cx="60" cy="32" r="5" fill="#e63946"/>
+                  <!-- E-Devlet Giriş butonu -->
+                  <rect x="118" y="12" width="152" height="32" rx="8" fill="#e63946"/>
+                  <text x="194" y="33" font-family="Arial" font-size="11" font-weight="700" fill="white" text-anchor="middle">🔑 E-Devlet ile Giriş</text>
+                  <!-- Hamburger -->
+                  <text x="302" y="37" font-family="Arial" font-size="22" fill="#555" text-anchor="middle">≡</text>
+                  <!-- Hoş geldin -->
+                  <text x="18" y="78" font-family="Arial" font-size="13" fill="#aaa" font-style="italic">Hoş Geldin ...</text>
+                  <!-- Üst döngü kartları -->
+                  <circle cx="48"  cy="122" r="36" fill="#9b59b6"/>
+                  <circle cx="130" cy="122" r="36" fill="#3498db"/>
+                  <circle cx="212" cy="122" r="36" fill="#e74c3c"/>
+                  <circle cx="290" cy="122" r="36" fill="#f39c12"/>
+                  <!-- Satır 1 -->
+                  <rect x="8"   y="170" width="70" height="56" rx="10" fill="#6c5ce7"/>
+                  <text x="43"  y="203" font-family="Arial" font-size="8.5" fill="white" text-anchor="middle">Öneri/Talep</text>
+                  <rect x="86"  y="170" width="70" height="56" rx="10" fill="#e63946"/>
+                  <text x="121" y="203" font-family="Arial" font-size="8.5" fill="white" text-anchor="middle">Genciz</text>
+                  <rect x="164" y="170" width="70" height="56" rx="10" fill="#0984e3"/>
+                  <text x="199" y="203" font-family="Arial" font-size="8.5" fill="white" text-anchor="middle">Komşum</text>
+                  <rect x="242" y="170" width="70" height="56" rx="10" fill="#fd7f6f"/>
+                  <text x="277" y="197" font-family="Arial" font-size="8" fill="white" text-anchor="middle">Gençlik</text>
+                  <text x="277" y="209" font-family="Arial" font-size="8" fill="white" text-anchor="middle">Merkezi</text>
+                  <!-- Satır 2 -->
+                  <rect x="8"   y="234" width="70" height="56" rx="10" fill="#00b894"/>
+                  <text x="43"  y="261" font-family="Arial" font-size="8" fill="white" text-anchor="middle">Gençlik</text>
+                  <text x="43"  y="273" font-family="Arial" font-size="8" fill="white" text-anchor="middle">Kampları</text>
+                  <rect x="86"  y="234" width="70" height="56" rx="10" fill="#00cec9"/>
+                  <text x="121" y="267" font-family="Arial" font-size="8.5" fill="white" text-anchor="middle">Sporcuyuz</text>
+                  <rect x="164" y="234" width="70" height="56" rx="10" fill="#74b9ff"/>
+                  <text x="199" y="261" font-family="Arial" font-size="8" fill="white" text-anchor="middle">Teknoloji</text>
+                  <text x="199" y="273" font-family="Arial" font-size="8" fill="white" text-anchor="middle">Destek</text>
+                  <rect x="242" y="234" width="70" height="56" rx="10" fill="#fd79a8"/>
+                  <text x="277" y="261" font-family="Arial" font-size="8" fill="white" text-anchor="middle">Yurt</text>
+                  <text x="277" y="273" font-family="Arial" font-size="8" fill="white" text-anchor="middle">İşlemleri</text>
+                  <!-- Satır 3 -->
+                  <rect x="8"   y="298" width="70" height="56" rx="10" fill="#fdcb6e"/>
+                  <text x="43"  y="325" font-family="Arial" font-size="8" fill="white" text-anchor="middle">Kredi/Burs</text>
+                  <text x="43"  y="337" font-family="Arial" font-size="8" fill="white" text-anchor="middle">İşlemleri</text>
+                  <rect x="86"  y="298" width="70" height="56" rx="10" fill="#55efc4"/>
+                  <text x="121" y="331" font-family="Arial" font-size="8.5" fill="white" text-anchor="middle">Eğitim</text>
+                  <rect x="164" y="298" width="70" height="56" rx="10" fill="#e17055"/>
+                  <text x="199" y="331" font-family="Arial" font-size="8.5" fill="white" text-anchor="middle">Kampanyalar</text>
+                  <rect x="242" y="298" width="70" height="56" rx="10" fill="#a29bfe"/>
+                  <text x="277" y="331" font-family="Arial" font-size="8.5" fill="white" text-anchor="middle">Biz Blog</text>
+                  <!-- Satır 4 -->
+                  <rect x="8"   y="362" width="70" height="56" rx="10" fill="#e63946"/>
+                  <text x="43"  y="389" font-family="Arial" font-size="8" fill="white" text-anchor="middle">BİZ Tükkan/</text>
+                  <text x="43"  y="401" font-family="Arial" font-size="8" fill="white" text-anchor="middle">Anketler</text>
+                  <rect x="86"  y="362" width="70" height="56" rx="10" fill="#636e72"/>
+                  <text x="121" y="395" font-family="Arial" font-size="8.5" fill="white" text-anchor="middle">Duyurular</text>
+                  <rect x="164" y="362" width="70" height="56" rx="10" fill="#6c5ce7"/>
+                  <text x="199" y="389" font-family="Arial" font-size="8" fill="white" text-anchor="middle">Psikososyal</text>
+                  <text x="199" y="401" font-family="Arial" font-size="8" fill="white" text-anchor="middle">Destek</text>
+                  <rect x="242" y="362" width="70" height="56" rx="10" fill="#f9ca24"/>
+                  <text x="277" y="389" font-family="Arial" font-size="8" fill="white" text-anchor="middle">Asansör</text>
+                  <text x="277" y="401" font-family="Arial" font-size="8" fill="white" text-anchor="middle">Takip</text>
+                  <!-- Alt bar -->
+                  <rect x="0" y="432" width="320" height="58" fill="white" stroke="#eee" stroke-width="1"/>
+                  <text x="35"  y="460" font-family="Arial" font-size="20" fill="#e63946" text-anchor="middle">🏠</text>
+                  <text x="35"  y="478" font-family="Arial" font-size="9" fill="#e63946" text-anchor="middle">Ana Sayfa</text>
+                  <text x="107" y="460" font-family="Arial" font-size="20" fill="#888" text-anchor="middle">🎓</text>
+                  <text x="107" y="478" font-family="Arial" font-size="9" fill="#888" text-anchor="middle">Genciz</text>
+                  <text x="179" y="460" font-family="Arial" font-size="20" fill="#888" text-anchor="middle">🏃</text>
+                  <text x="179" y="478" font-family="Arial" font-size="9" fill="#888" text-anchor="middle">Sporcuyuz</text>
+                  <text x="251" y="460" font-family="Arial" font-size="20" fill="#888" text-anchor="middle">☰</text>
+                  <text x="251" y="478" font-family="Arial" font-size="9" fill="#888" text-anchor="middle">KYGM</text>
+                  <text x="295" y="460" font-family="Arial" font-size="20" fill="#888" text-anchor="middle">🛒</text>
+                  <text x="295" y="478" font-family="Arial" font-size="9" fill="#888" text-anchor="middle">Sepetim</text>
+                </svg>
+              </div>
+              <p>Uygulama ana sayfası</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tip-box">
+          <span class="tip-icon">💡</span>
+          <span>
+            e-Devlet şifreniz yoksa <a href="https://www.turkiye.gov.tr" target="_blank"
+            style="color:#166534;font-weight:700;">turkiye.gov.tr</a> adresinden veya
+            herhangi bir <strong>PTT şubesinden</strong> ücretsiz alabilirsiniz.
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ADIM 3 ══ -->
+    <div class="step-card">
+      <div class="step-number-col">
+        <div class="step-num">3</div>
+        <div class="step-emoji-col">☰</div>
+      </div>
+      <div class="step-content">
+        <h3>Sağ Üstteki Menüyü Açın → "Velayet Girişi"ne Basın</h3>
+        <p>
+          E-Devlet ile giriş yaptıktan sonra sağ üst köşedeki
+          <span class="highlight">≡ üst üste 3 çizgi (hamburger menü)</span> ikonuna tıklayın.
+          Açılan yan menüde aşağı kaydırın ve listenin en altında yer alan
+          <strong style="color:#e63946;">"Velayet Girişi"</strong> seçeneğine tıklayın.
+        </p>
+
+        <!-- Menü ekranı -->
+        <div class="screenshots-section">
+          <div class="screenshots-row">
+            <div class="screenshot-item">
+              <div class="phone-frame">
+                <svg viewBox="0 0 320 620" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;background:#999;">
+                  <!-- Karartılmış arka plan -->
+                  <rect width="140" height="620" fill="#666" opacity=".75"/>
+                  <!-- Menü paneli -->
+                  <rect x="125" y="0" width="195" height="620" fill="white" filter="drop-shadow(-8px 0 20px rgba(0,0,0,.2))"/>
+                  <!-- Kullanıcı adı -->
+                  <text x="140" y="40" font-family="Arial" font-weight="800" font-size="11" fill="#e63946">ÖĞRENCİNİN</text>
+                  <text x="140" y="56" font-family="Arial" font-weight="800" font-size="11" fill="#e63946">ADI-SOYADI</text>
+                  <text x="140" y="74" font-family="Arial" font-size="12" fill="#888">Puan &nbsp;<tspan font-weight="700" fill="#2d3436">0 Biz</tspan></text>
+                  <line x1="125" y1="84" x2="320" y2="84" stroke="#eee" stroke-width="1.2"/>
+                  <!-- Menü öğeleri -->
+                  <text x="140" y="112" font-family="Arial" font-size="13" fill="#2d3436">Ana Sayfa</text>
+                  <text x="308" y="112" font-family="Arial" font-size="18" fill="#e63946" text-anchor="end">›</text>
+                  <line x1="125" y1="124" x2="320" y2="124" stroke="#eee" stroke-width=".8"/>
+
+                  <text x="140" y="150" font-family="Arial" font-size="13" fill="#2d3436">Profil</text>
+                  <text x="308" y="150" font-family="Arial" font-size="18" fill="#e63946" text-anchor="end">›</text>
+                  <line x1="125" y1="162" x2="320" y2="162" stroke="#eee" stroke-width=".8"/>
+
+                  <text x="140" y="188" font-family="Arial" font-size="13" fill="#2d3436">Siparişlerim</text>
+                  <text x="308" y="188" font-family="Arial" font-size="18" fill="#e63946" text-anchor="end">›</text>
+                  <line x1="125" y1="200" x2="320" y2="200" stroke="#eee" stroke-width=".8"/>
+
+                  <text x="140" y="226" font-family="Arial" font-size="13" fill="#2d3436">Sepetim</text>
+                  <text x="308" y="226" font-family="Arial" font-size="18" fill="#e63946" text-anchor="end">›</text>
+                  <line x1="125" y1="238" x2="320" y2="238" stroke="#eee" stroke-width=".8"/>
+
+                  <text x="140" y="264" font-family="Arial" font-size="13" fill="#2d3436">Duyurular</text>
+                  <text x="308" y="264" font-family="Arial" font-size="18" fill="#e63946" text-anchor="end">›</text>
+                  <line x1="125" y1="276" x2="320" y2="276" stroke="#eee" stroke-width=".8"/>
+
+                  <text x="140" y="302" font-family="Arial" font-size="13" fill="#2d3436">Öneri/Talep</text>
+                  <text x="308" y="302" font-family="Arial" font-size="18" fill="#e63946" text-anchor="end">›</text>
+                  <line x1="125" y1="314" x2="320" y2="314" stroke="#eee" stroke-width=".8"/>
+
+                  <text x="140" y="340" font-family="Arial" font-size="13" fill="#2d3436">Hakkında</text>
+                  <text x="308" y="340" font-family="Arial" font-size="18" fill="#e63946" text-anchor="end">›</text>
+                  <line x1="125" y1="352" x2="320" y2="352" stroke="#eee" stroke-width=".8"/>
+
+                  <text x="140" y="378" font-family="Arial" font-size="13" fill="#2d3436">SSS</text>
+                  <text x="308" y="378" font-family="Arial" font-size="18" fill="#e63946" text-anchor="end">›</text>
+                  <line x1="125" y1="390" x2="320" y2="390" stroke="#eee" stroke-width=".8"/>
+
+                  <text x="140" y="416" font-family="Arial" font-size="13" fill="#2d3436">GSB Edu</text>
+                  <text x="308" y="416" font-family="Arial" font-size="18" fill="#e63946" text-anchor="end">›</text>
+                  <line x1="125" y1="428" x2="320" y2="428" stroke="#eee" stroke-width=".8"/>
+
+                  <text x="140" y="454" font-family="Arial" font-size="13" fill="#2d3436">Etkinlik Yoklama</text>
+                  <text x="308" y="454" font-family="Arial" font-size="18" fill="#e63946" text-anchor="end">›</text>
+                  <line x1="125" y1="466" x2="320" y2="466" stroke="#eee" stroke-width=".8"/>
+
+                  <!-- VELAyet GİRİŞİ — vurgulu -->
+                  <rect x="125" y="468" width="195" height="54" fill="#fff0f1"/>
+                  <text x="140" y="502" font-family="Arial" font-size="15" font-weight="800" fill="#e63946">Velayet Girişi</text>
+                  <text x="308" y="502" font-family="Arial" font-size="18" fill="#e63946" text-anchor="end">›</text>
+                  <text x="113" y="502" font-family="Arial" font-size="18" fill="#e63946" text-anchor="middle">👈</text>
+                  <line x1="125" y1="522" x2="320" y2="522" stroke="#eee" stroke-width=".8"/>
+
+                  <!-- Çıkış Yap -->
+                  <rect x="125" y="524" width="195" height="52" fill="#f8f8f8"/>
+                  <text x="140" y="556" font-family="Arial" font-size="13" fill="#aaa">Çıkış Yap</text>
+                </svg>
+              </div>
+              <p>Menüde "Velayet Girişi"<br>seçeneğine basın 👆</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tip-box">
+          <span class="tip-icon">☝️</span>
+          <span>
+            Menüyü açmak için <strong>sağ üst köşedeki ≡ üç çizgi</strong> ikonuna basmayı unutmayın.
+            Menü açıldıktan sonra <strong>"Velayet Girişi"</strong> seçeneğini bulana kadar aşağı kaydırın.
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ADIM 4 ══ -->
+    <div class="step-card">
+      <div class="step-number-col">
+        <div class="step-num">4</div>
+        <div class="step-emoji-col">📝</div>
+      </div>
+      <div class="step-content">
+        <h3>Öğrencinin TC Kimlik No ve Doğum Tarihini Girin</h3>
+        <p>
+          Velayet Girişi ekranında <strong>öğrencinin TC Kimlik Numarasını</strong> (11 haneli)
+          ve <strong>doğum tarihini</strong> ilgili alanlara girin. Bilgiler sistemde doğrulandıktan
+          sonra öğrencinizin profil sayfası ekranınızda açılacaktır.
+        </p>
+
+        <!-- TC giriş formu mockup -->
+        <div class="screenshots-section">
+          <div class="screenshots-row">
+            <div class="screenshot-item">
+              <div class="phone-frame">
+                <svg viewBox="0 0 320 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;background:#f8f8f8;">
+                  <rect width="320" height="58" fill="white" filter="drop-shadow(0 1px 4px rgba(0,0,0,.08))"/>
+                  <text x="22" y="38" font-family="Arial" font-weight="900" font-size="20" fill="#e63946">biz</text>
+                  <circle cx="52" cy="32" r="5" fill="#e63946"/>
+                  <text x="160" y="36" font-family="Arial" font-weight="700" font-size="14" fill="#2d3436" text-anchor="middle">Velayet Girişi</text>
+                  <!-- TC no -->
+                  <text x="20" y="86" font-family="Arial" font-size="12" fill="#888">Öğrenci TC Kimlik Numarası</text>
+                  <rect x="20" y="92" width="280" height="48" rx="10" fill="white" stroke="#e63946" stroke-width="1.8"/>
+                  <text x="36" y="122" font-family="Arial" font-size="15" fill="#bbb">12345678901</text>
+                  <!-- Doğum tarihi -->
+                  <text x="20" y="162" font-family="Arial" font-size="12" fill="#888">Doğum Tarihi</text>
+                  <rect x="20" y="168" width="280" height="48" rx="10" fill="white" stroke="#ccc" stroke-width="1.5"/>
+                  <text x="36" y="198" font-family="Arial" font-size="15" fill="#bbb">GG / AA / YYYY</text>
+                  <text x="286" y="198" font-family="Arial" font-size="18" fill="#aaa" text-anchor="end">📅</text>
+                  <!-- Giriş Yap butonu -->
+                  <rect x="20" y="236" width="280" height="52" rx="14" fill="#e63946"/>
+                  <text x="160" y="268" font-family="Arial" font-weight="800" font-size="16" fill="white" text-anchor="middle">Giriş Yap</text>
+                </svg>
+              </div>
+              <p>TC ve doğum tarihi<br>giriş ekranı</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tip-box">
+          <span class="tip-icon">✅</span>
+          <span>
+            TC Kimlik Numarası <strong>11 haneli</strong> olmalıdır. Bilgileri doğru girdiğinizden
+            emin olun; yanlış giriş yapılırsa sistem hata verecektir.
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ADIM 5 ══ -->
+    <div class="step-card">
+      <div class="step-number-col">
+        <div class="step-num">5</div>
+        <div class="step-emoji-col">🔍</div>
+      </div>
+      <div class="step-content">
+        <h3>Sayfayı Yukarı Kaydırın → Karekodu Bulun → Tıklayın</h3>
+        <p>
+          Velayet girişi başarılı olduktan sonra sayfayı <strong>yukarı kaydırın</strong>.
+          Öğrencinize ait <strong>karekod (QR Kod)</strong> ekranda görünecektir.
+          Karekodun üzerine tıkladığınızda <strong>tam ekranda büyüyerek</strong> açılır ve
+          bu görüntünün ekran görüntüsünü alabilirsiniz.
+        </p>
+
+        <!-- QR ekranı mockup -->
+        <div class="screenshots-section">
+          <div class="screenshots-row">
+            <div class="screenshot-item">
+              <div class="phone-frame">
+                <svg viewBox="0 0 320 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;background:#f8f8f8;">
+                  <rect width="320" height="58" fill="white"/>
+                  <text x="22" y="38" font-family="Arial" font-weight="900" font-size="20" fill="#e63946">biz</text>
+                  <circle cx="52" cy="32" r="5" fill="#e63946"/>
+                  <!-- Kart -->
+                  <rect x="16" y="68" width="288" height="400" rx="18" fill="white" stroke="#f0f0f0" stroke-width="1.5"/>
+                  <text x="160" y="104" font-family="Arial" font-weight="800" font-size="15" fill="#2d3436" text-anchor="middle">Öğrenci Karekodu</text>
+                  <text x="160" y="122" font-family="Arial" font-size="11" fill="#888" text-anchor="middle">↑ Yukarı kaydırınca görünür</text>
+                  <!-- QR Kod -->
+                  <rect x="76" y="138" width="168" height="168" rx="12" fill="white" stroke="#2d3436" stroke-width="3"/>
+                  <!-- Sol üst finder -->
+                  <rect x="86"  y="148" width="44" height="44" rx="5" fill="#2d3436"/>
+                  <rect x="92"  y="154" width="32" height="32" rx="3" fill="white"/>
+                  <rect x="98"  y="160" width="20" height="20" fill="#2d3436"/>
+                  <!-- Sağ üst finder -->
+                  <rect x="194" y="148" width="44" height="44" rx="5" fill="#2d3436"/>
+                  <rect x="200" y="154" width="32" height="32" rx="3" fill="white"/>
+                  <rect x="206" y="160" width="20" height="20" fill="#2d3436"/>
+                  <!-- Sol alt finder -->
+                  <rect x="86"  y="256" width="44" height="44" rx="5" fill="#2d3436"/>
+                  <rect x="92"  y="262" width="32" height="32" rx="3" fill="white"/>
+                  <rect x="98"  y="268" width="20" height="20" fill="#2d3436"/>
+                  <!-- QR noktaları -->
+                  <rect x="146" y="152" width="8" height="8" fill="#2d3436"/>
+                  <rect x="158" y="152" width="8" height="8" fill="#2d3436"/>
+                  <rect x="170" y="152" width="8" height="8" fill="#2d3436"/>
+                  <rect x="182" y="152" width="8" height="8" fill="#2d3436"/>
+                  <rect x="146" y="164" width="8" height="8" fill="#2d3436"/>
+                  <rect x="170" y="164" width="8" height="8" fill="#2d3436"/>
+                  <rect x="146" y="176" width="8" height="8" fill="#2d3436"/>
+                  <rect x="158" y="176" width="8" height="8" fill="#2d3436"/>
+                  <rect x="182" y="176" width="8" height="8" fill="#2d3436"/>
+                  <rect x="146" y="188" width="8" height="8" fill="#2d3436"/>
+                  <rect x="158" y="188" width="8" height="8" fill="#2d3436"/>
+                  <rect x="170" y="188" width="8" height="8" fill="#2d3436"/>
+                  <rect x="146" y="200" width="8" height="8" fill="#2d3436"/>
+                  <rect x="182" y="200" width="8" height="8" fill="#2d3436"/>
+                  <rect x="158" y="212" width="8" height="8" fill="#2d3436"/>
+                  <rect x="170" y="212" width="8" height="8" fill="#2d3436"/>
+                  <rect x="182" y="212" width="8" height="8" fill="#2d3436"/>
+                  <rect x="146" y="224" width="8" height="8" fill="#2d3436"/>
+                  <rect x="158" y="224" width="8" height="8" fill="#2d3436"/>
+                  <rect x="182" y="224" width="8" height="8" fill="#2d3436"/>
+                  <rect x="146" y="236" width="8" height="8" fill="#2d3436"/>
+                  <rect x="170" y="236" width="8" height="8" fill="#2d3436"/>
+                  <rect x="194" y="200" width="8" height="8" fill="#2d3436"/>
+                  <rect x="206" y="200" width="8" height="8" fill="#2d3436"/>
+                  <rect x="218" y="200" width="8" height="8" fill="#2d3436"/>
+                  <rect x="194" y="212" width="8" height="8" fill="#2d3436"/>
+                  <rect x="218" y="212" width="8" height="8" fill="#2d3436"/>
+                  <rect x="206" y="224" width="8" height="8" fill="#2d3436"/>
+                  <rect x="218" y="224" width="8" height="8" fill="#2d3436"/>
+                  <rect x="194" y="236" width="8" height="8" fill="#2d3436"/>
+                  <rect x="206" y="236" width="8" height="8" fill="#2d3436"/>
+
+                  <text x="160" y="336" font-family="Arial" font-size="12" fill="#888" text-anchor="middle">👆 Üzerine tıklayın</text>
+                  <text x="160" y="352" font-family="Arial" font-size="12" fill="#888" text-anchor="middle">→ Tam ekranda açılır</text>
+                  <text x="160" y="400" font-family="Arial" font-size="32" text-anchor="middle">📸</text>
+                  <text x="160" y="430" font-family="Arial" font-size="12" fill="#e63946" font-weight="700" text-anchor="middle">Ekran görüntüsü alın!</text>
+                </svg>
+              </div>
+              <p>Karekodu bulun<br>ve tıklayın 👆</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tip-box">
+          <span class="tip-icon">📱</span>
+          <span>
+            <strong>Ekran görüntüsü nasıl alınır?</strong><br>
+            • <strong>Android:</strong> Güç tuşu + Ses Kısma tuşuna aynı anda basın<br>
+            • <strong>iPhone:</strong> Güç tuşu + Ses Açma tuşuna aynı anda basın (veya Yan buton + Home)
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ADIM 6 ══ -->
+    <div class="step-card">
+      <div class="step-number-col">
+        <div class="step-num">6</div>
+        <div class="step-emoji-col">🖨️</div>
+      </div>
+      <div class="step-content">
+        <h3>Fotokopi Alın ve Her Derse Getirin! <span class="tag">Zorunlu</span></h3>
+        <p>
+          Tam ekranda açılan karekodun <strong>ekran görüntüsünü alın</strong>. Bu görüntüyü
+          fotokopi merkezine götürün ve <strong>fotokopi alın</strong>. Öğrenciniz bu
+          fotokopi karekodunu <strong>her matematik dersine yanında getirmelidir</strong>.
+        </p>
+
+        <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:16px;">
+          <!-- Fotokopi yolu -->
+          <div style="flex:1; min-width:220px; background:#f0fdf4; border:1.5px solid #86efac; border-radius:14px; padding:16px;">
+            <div style="font-size:24px; margin-bottom:8px;">📱 → 🖨️ → 📄</div>
+            <div style="font-size:14px; font-weight:800; color:#166534; margin-bottom:10px;">Fotokopi alma adımları</div>
+            <ol style="font-size:13px; color:#15803d; padding-left:18px; line-height:1.9; text-align:left;">
+              <li>Karekodu tam ekranda açın</li>
+              <li>Ekran görüntüsü alın</li>
+              <li>Fotoğrafı fotokopici dükkanına götürün</li>
+              <li>A4 kağıda fotokopi alın</li>
+            </ol>
+          </div>
+
+          <!-- WhatsApp yolu -->
+          <div style="flex:1; min-width:220px; background:#eff6ff; border:1.5px solid #93c5fd; border-radius:14px; padding:16px;">
+            <div style="font-size:24px; margin-bottom:8px;">💬 → 📞</div>
+            <div style="font-size:14px; font-weight:800; color:#1e40af; margin-bottom:10px;">Fotokopi imkânı yoksa?</div>
+            <p style="font-size:13px; color:#1d4ed8; line-height:1.75; text-align:justify;">
+              Ekran görüntüsünü <strong>WhatsApp üzerinden öğretmene gönderin</strong>.
+              Öğretmen fotokopisini alıp öğrenciye ders başında teslim edecektir.
+            </p>
+          </div>
+        </div>
+
+        <div class="tip-box" style="background:#fff7ed; border-color:#fed7aa; color:#9a3412;">
+          <span class="tip-icon">🌟</span>
+          <span>
+            <strong>Öneri:</strong> Fotokopinin <strong>şeffaf</strong> dosya veya plastik bir kılıf içinde
+            saklanması, uzun süre sağlam kalmasını sağlar ve tekrar fotokopi almanıza gerek kalmaz.
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /steps-grid -->
+
+  <!-- ════════════════════════════════════
+       ÖNEMLİ HATIRLATMALAR
+  ════════════════════════════════════ -->
+  <div class="important-notice">
+    <h2>📌 Önemli Hatırlatmalar</h2>
+    <div class="notice-items">
+
+      <div class="notice-item">
+        <div class="notice-dot"></div>
+        <div>
+          <strong>Karekod fotokopisi her ders için zorunludur:</strong>
+          Matematik dersimizde yoklama yalnızca <em>öğrencinin karekod fotokopisiyle</em> alınmaktadır.
+          Öğrencilerin karekod fotokopisini <strong>her derse yanlarında getirmeleri şarttır.</strong>
+        </div>
+      </div>
+
+      <div class="notice-item">
+        <div class="notice-dot"></div>
+        <div>
+          <strong>İlk ders – özel destek:</strong>
+          Karekod alamayan ya da fotokopi yaptıramayan velilerimiz,
+          <span style="color:#e63946; font-weight:700;">öğrencileriyle birlikte ilk derse gelebilirler.</span>
+          Öğretmenimiz karekod fotokopisi almanızda bizzat yardımcı olacaktır. 🤝
+        </div>
+      </div>
+
+      <div class="notice-item">
+        <div class="notice-dot"></div>
+        <div>
+          <strong>WhatsApp ile gönderin:</strong>
+          Fotokopi imkânı olmayanlar, karekod ekran görüntüsünü
+          <strong>WhatsApp üzerinden öğretmene</strong> iletebilir.
+          Öğretmen fotokopisini alıp derste öğrenciye verecektir.
+        </div>
+      </div>
+
+      <div class="notice-item">
+        <div class="notice-dot"></div>
+      </div>
+
+      <div class="notice-item">
+        <div class="notice-dot"></div>
+        <div>
+          <strong>e-Devlet şifreniz yoksa:</strong>
+          <a href="https://www.turkiye.gov.tr" target="_blank"
+             style="color:#e63946; font-weight:700;">turkiye.gov.tr</a> adresinden
+          veya en yakın <strong>PTT şubesinden</strong> ücretsiz e-Devlet şifresi alabilirsiniz.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+  <!-- ════════════════════════════════════
+       KISA ÖZET (6 ADIM)
+  ════════════════════════════════════ -->
+  <div style="background:white; border-radius:20px; padding:28px 26px; box-shadow:0 4px 24px rgba(0,0,0,.08); margin-top:24px;">
+    <div class="section-title" style="margin-top:0; margin-bottom:20px;">
+      <div class="section-title-icon">⚡</div>
+      Kısa Özet – 6 Adımda Karekod
+    </div>
+    <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:12px;">
+
+      <div style="background:#fff5f5; border-radius:14px; padding:16px; border-left:4px solid #e63946;">
+        <div style="font-size:22px;">1️⃣</div>
+        <div style="font-size:13.5px; font-weight:800; margin-top:8px; color:#2d3436;">GSB Biz uygulamasını indir</div>
+        <div style="font-size:12px; color:#888; margin-top:4px;">Play Store veya App Store'dan</div>
+      </div>
+
+      <div style="background:#fff5f5; border-radius:14px; padding:16px; border-left:4px solid #e63946;">
+        <div style="font-size:22px;">2️⃣</div>
+        <div style="font-size:13.5px; font-weight:800; margin-top:8px; color:#2d3436;">E-Devlet ile giriş yap</div>
+        <div style="font-size:12px; color:#888; margin-top:4px;">Velinin e-Devlet bilgileriyle</div>
+      </div>
+
+      <div style="background:#fff5f5; border-radius:14px; padding:16px; border-left:4px solid #e63946;">
+        <div style="font-size:22px;">3️⃣</div>
+        <div style="font-size:13.5px; font-weight:800; margin-top:8px; color:#2d3436;">≡ Menü → Velayet Girişi</div>
+        <div style="font-size:12px; color:#888; margin-top:4px;">Sağ üst 3 çizgi menüden</div>
+      </div>
+
+      <div style="background:#fff5f5; border-radius:14px; padding:16px; border-left:4px solid #e63946;">
+        <div style="font-size:22px;">4️⃣</div>
+        <div style="font-size:13.5px; font-weight:800; margin-top:8px; color:#2d3436;">TC + Doğum Tarihi gir</div>
+        <div style="font-size:12px; color:#888; margin-top:4px;">Öğrencinin bilgileri</div>
+      </div>
+
+      <div style="background:#fff5f5; border-radius:14px; padding:16px; border-left:4px solid #e63946;">
+        <div style="font-size:22px;">5️⃣</div>
+        <div style="font-size:13.5px; font-weight:800; margin-top:8px; color:#2d3436;">Karekodu bul → Tıkla</div>
+        <div style="font-size:12px; color:#888; margin-top:4px;">Yukarı kaydır → tam ekran</div>
+      </div>
+
+      <div style="background:#fff5f5; border-radius:14px; padding:16px; border-left:4px solid #e63946;">
+        <div style="font-size:22px;">6️⃣</div>
+        <div style="font-size:13.5px; font-weight:800; margin-top:8px; color:#2d3436;">Ekran görüntüsü → Fotokopi</div>
+        <div style="font-size:12px; color:#888; margin-top:4px;">Her derse fotokopini getir ✅</div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<!-- ═══════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════ -->
+<div class="footer">
+  <strong>📐 TEKKEKÖY GM MATEMATİK YAZ KURSU @2026 </strong><br>
+</div>
+
+</body>
+</html>
