@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧮 Matematik Doğal Sayılarda İşlemler Testi (1. Ödev) | 4-5. Sınıf</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f4f6fb;--surface:#ffffff;--surface2:#f0f2f8;--surface3:#e8ebf5;
+  --border:rgba(99,102,241,.14);--border2:rgba(99,102,241,.26);
+  --primary:#5b5fc7;--primary2:#7c3aed;--accent:#f59e0b;
+  --green:#059669;--green-bg:#d1fae5;--green-border:#6ee7b7;
+  --red:#dc2626;--red-bg:#fee2e2;--red-border:#fca5a5;
+  --text:#0f0e1e;--text2:#52566e;--text3:#8b90a7;
+  --shadow:0 2px 16px rgba(91,95,199,.10);--shadow-lg:0 8px 40px rgba(91,95,199,.18);
+  --glass:rgba(255,255,255,.92);--radius:16px;--radius-sm:10px;
+  --header-h:58px;
+}
+[data-theme="dark"]{
+  --bg:#0c0b17;--surface:#14122a;--surface2:#1e1b38;--surface3:#252243;
+  --border:rgba(139,92,246,.2);--border2:rgba(139,92,246,.38);
+  --text:#eceaff;--text2:#9996c0;--text3:#5e5a88;
+  --glass:rgba(20,18,42,.94);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);min-height:100vh;color:var(--text);overflow-x:hidden;transition:background .3s,color .3s}
+/* ─── SCROLL PROGRESS ─── */
+.scroll-progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#5b5fc7,#a855f7,#ec4899);z-index:9999;transition:width .1s linear;border-radius:0 2px 2px 0}
+/* ─── HEADER ─── */
+.hero-header{background:linear-gradient(110deg,#3730a3 0%,#5b5fc7 35%,#7c3aed 70%,#be185d 100%);height:var(--header-h);padding:0 1.6rem;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(55,48,163,.4);display:flex;align-items:center}
+.hero-inner{display:flex;align-items:center;justify-content:space-between;width:100%;gap:.8rem;flex-wrap:nowrap}
+.hero-left{display:flex;align-items:center;gap:.75rem;min-width:0}
+.hero-logo{width:36px;height:36px;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.35);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0}
+.hero-title{font-size:clamp(.9rem,2vw,1.1rem);font-weight:800;color:#fff;letter-spacing:-.02em;white-space:nowrap}
+.hero-sub{font-size:.68rem;color:rgba(255,255,255,.65);font-weight:500;margin-top:.05rem}
+.hero-right{display:flex;align-items:center;gap:.45rem;flex-shrink:0}
+.hero-badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:.18rem .65rem;font-size:.65rem;font-weight:700;color:rgba(255,255,255,.9);white-space:nowrap}
+.timer-display{display:inline-flex;align-items:center;gap:.25rem;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:.18rem .65rem;font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700;color:#fff}
+.student-chip-hdr{display:inline-flex;align-items:center;gap:.3rem;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);border-radius:20px;padding:.2rem .75rem;font-size:.72rem;font-weight:700;color:#fff;cursor:pointer;transition:all .18s;white-space:nowrap}
+.student-chip-hdr:hover{background:rgba(255,255,255,.28)}
+.dark-toggle{background:rgba(255,255,255,.13);border:1.5px solid rgba(255,255,255,.28);border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.95rem;transition:all .18s;flex-shrink:0}
+.dark-toggle:hover{background:rgba(255,255,255,.28)}
+/* ─── STATS BAR ─── */
+.stats-bar{background:var(--glass);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:.55rem 1.6rem;display:flex;justify-content:center;align-items:center;gap:1.8rem;flex-wrap:wrap;position:sticky;top:var(--header-h);z-index:100;box-shadow:0 1px 12px rgba(91,95,199,.08)}
+.stat-item{display:flex;align-items:center;gap:.4rem;font-weight:700;font-size:.8rem;color:var(--text)}
+.stat-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.stat-sep{width:1px;height:18px;background:var(--border2);flex-shrink:0}
+.progress-wrap-outer{display:flex;align-items:center;gap:.6rem;flex:1;max-width:380px;min-width:120px}
+.progress-track{flex:1;height:6px;background:var(--surface3);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#5b5fc7,#a855f7,#ec4899);border-radius:3px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.progress-pct{font-size:.7rem;font-weight:800;color:var(--primary);min-width:32px;text-align:right;font-family:'JetBrains Mono',monospace}
+/* ─── QUIZ MODE BAR ─── */
+.quiz-mode-bar{background:linear-gradient(90deg,#3730a3,#5b5fc7);color:#fff;padding:.55rem 1.6rem;display:none;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,.15)}
+.quiz-mode-bar.active{display:flex}
+.quiz-progress-txt{font-size:.8rem;font-weight:700}
+.quiz-nav{display:flex;gap:.4rem}
+.quiz-nav-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:20px;padding:.28rem .85rem;font-size:.76rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .18s}
+.quiz-nav-btn:hover{background:rgba(255,255,255,.3)}
+.quiz-nav-btn:disabled{opacity:.35;cursor:not-allowed}
+/* ─── SEARCH ─── */
+.search-bar-wrap{padding:.75rem 1.6rem .35rem;max-width:1120px;margin:0 auto}
+.search-wrap{position:relative}
+.search-bar{width:100%;background:var(--surface);border:1.5px solid var(--border);border-radius:50px;padding:.52rem 1.1rem .52rem 2.6rem;font-size:.86rem;font-weight:600;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:all .22s;box-shadow:var(--shadow)}
+.search-bar:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(91,95,199,.15)}
+.search-icon{position:absolute;left:.85rem;top:50%;transform:translateY(-50%);font-size:.9rem;pointer-events:none;opacity:.5}
+/* ─── TAB NAV ─── */
+.tab-nav{display:flex;gap:.35rem;padding:.6rem 1.6rem .35rem;overflow-x:auto;scrollbar-width:none;flex-wrap:wrap;justify-content:center;max-width:1120px;margin:0 auto}
+.tab-nav::-webkit-scrollbar{display:none}
+.tab-btn{background:var(--surface);border:1.5px solid var(--border);color:var(--text2);border-radius:20px;padding:.38rem 1rem;font-size:.76rem;font-weight:700;cursor:pointer;transition:all .22s;white-space:nowrap;font-family:'Inter',sans-serif;display:inline-flex;align-items:center;gap:.3rem}
+.tab-btn:hover{background:var(--surface3);color:var(--primary);border-color:var(--border2)}
+.tab-btn.active{background:var(--primary);border-color:transparent;color:#fff;box-shadow:0 4px 16px rgba(91,95,199,.35)}
+[data-theme="dark"] .tab-btn{background:var(--surface2)}
+.sec-count{font-size:.62rem;font-weight:800;background:rgba(91,95,199,.15);color:var(--primary);border-radius:10px;padding:.08rem .38rem;transition:all .22s}
+.tab-btn.active .sec-count{background:rgba(255,255,255,.22);color:#fff}
+/* ─── SECTIONS ─── */
+.section{display:none;padding:1rem 1.6rem 1.4rem;max-width:1120px;margin:0 auto;animation:fadeUp .28s ease}
+.section.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.section-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem;padding:.9rem 1.2rem;border-radius:var(--radius);position:relative;overflow:hidden;border:1.5px solid transparent}
+.section-icon{font-size:1.8rem;flex-shrink:0}
+.section-title{font-size:1.15rem;font-weight:800;letter-spacing:-.02em}
+.section-subtitle{font-size:.75rem;opacity:.7;margin-top:.1rem;font-weight:500}
+.section-score-bar{margin-left:auto;text-align:right;flex-shrink:0}
+.section-score-pct{font-size:1.3rem;font-weight:900;font-family:'JetBrains Mono',monospace}
+.section-score-lbl{font-size:.62rem;font-weight:700;opacity:.65;margin-top:.1rem}
+.hdr-purple{background:linear-gradient(135deg,#ede9fe,#f5f3ff);border-color:#c4b5fd!important}.hdr-purple .section-title{color:#4f46e5}.hdr-purple .section-score-pct{color:#6366f1}
+.hdr-pink{background:linear-gradient(135deg,#fce7f3,#fdf2f8);border-color:#f9a8d4!important}.hdr-pink .section-title{color:#be185d}.hdr-pink .section-score-pct{color:#ec4899}
+.hdr-green{background:linear-gradient(135deg,#d1fae5,#ecfdf5);border-color:#6ee7b7!important}.hdr-green .section-title{color:#065f46}.hdr-green .section-score-pct{color:#059669}
+.hdr-orange{background:linear-gradient(135deg,#fef3c7,#fffbeb);border-color:#fcd34d!important}.hdr-orange .section-title{color:#92400e}.hdr-orange .section-score-pct{color:#d97706}
+.hdr-blue{background:linear-gradient(135deg,#dbeafe,#eff6ff);border-color:#93c5fd!important}.hdr-blue .section-title{color:#1d4ed8}.hdr-blue .section-score-pct{color:#3b82f6}
+.hdr-indigo{background:linear-gradient(135deg,#e0e7ff,#eef2ff);border-color:#a5b4fc!important}.hdr-indigo .section-title{color:#3730a3}.hdr-indigo .section-score-pct{color:#4f46e5}
+.hdr-teal{background:linear-gradient(135deg,#ccfbf1,#f0fdfa);border-color:#5eead4!important}.hdr-teal .section-title{color:#0f4a3e}.hdr-teal .section-score-pct{color:#0d9488}
+[data-theme="dark"] .hdr-purple{background:linear-gradient(135deg,#1e1a40,#2a2560)}
+[data-theme="dark"] .hdr-pink{background:linear-gradient(135deg,#2a1225,#3a1535)}
+[data-theme="dark"] .hdr-green{background:linear-gradient(135deg,#0a2218,#0e2d22)}
+[data-theme="dark"] .hdr-orange{background:linear-gradient(135deg,#251a08,#2e2010)}
+[data-theme="dark"] .hdr-blue{background:linear-gradient(135deg,#0d1e3a,#122448)}
+[data-theme="dark"] .hdr-indigo{background:linear-gradient(135deg,#151230,#1c1840)}
+[data-theme="dark"] .hdr-teal{background:linear-gradient(135deg,#081a18,#0c2220)}
+/* ─── QUESTION GRID ─── */
+.question-grid{display:grid;gap:.9rem}
+.question-grid.two-col{grid-template-columns:repeat(auto-fill,minmax(440px,1fr))}
+/* ─── Q-CARD ─── */
+.q-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:1.1rem 1.2rem;transition:transform .22s,box-shadow .22s,border-color .22s;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.q-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--radius) var(--radius) 0 0;background:var(--card-accent,#5b5fc7)}
+.q-card-inner{position:relative;z-index:1}
+.th-purple{--card-accent:linear-gradient(90deg,#6366f1,#8b5cf6)}
+.th-pink{--card-accent:linear-gradient(90deg,#ec4899,#f43f5e)}
+.th-green{--card-accent:linear-gradient(90deg,#10b981,#34d399)}
+.th-orange{--card-accent:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.th-blue{--card-accent:linear-gradient(90deg,#3b82f6,#60a5fa)}
+.th-indigo{--card-accent:linear-gradient(90deg,#4f46e5,#6366f1)}
+.th-teal{--card-accent:linear-gradient(90deg,#0d9488,#14b8a6)}
+.q-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);border-color:var(--border2)}
+.q-card.answered{border-color:var(--green-border);background:linear-gradient(160deg,var(--surface) 80%,#f0fdf4)}
+.q-card.wrong-ans{border-color:var(--red-border);background:linear-gradient(160deg,var(--surface) 80%,#fff5f5)}
+[data-theme="dark"] .q-card.answered{background:linear-gradient(160deg,var(--surface) 75%,#052e16)}
+[data-theme="dark"] .q-card.wrong-ans{background:linear-gradient(160deg,var(--surface) 75%,#2d0f0f)}
+.q-header{display:flex;align-items:center;gap:.5rem;margin-bottom:.7rem}
+.q-number{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;font-size:.7rem;font-weight:800;flex-shrink:0;color:#fff;font-family:'JetBrains Mono',monospace}
+.nb-purple{background:#6366f1}.nb-pink{background:#ec4899}.nb-green{background:#10b981}
+.nb-orange{background:#f59e0b}.nb-blue{background:#3b82f6}.nb-indigo{background:#4f46e5}.nb-teal{background:#0d9488}
+.q-tag{font-size:.6rem;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.7px;background:var(--surface2);border-radius:6px;padding:.12rem .48rem;border:1px solid var(--border)}
+.diff-badge{font-size:.57rem;font-weight:800;border-radius:6px;padding:.1rem .42rem;text-transform:uppercase;letter-spacing:.5px;margin-left:auto}
+.diff-easy{background:#d1fae5;color:#065f46}
+.diff-medium{background:#fef3c7;color:#92400e}
+.diff-hard{background:#fee2e2;color:#991b1b}
+.q-text{font-size:.93rem;font-weight:700;line-height:1.65;margin-bottom:.9rem;color:var(--text);word-break:break-word}
+.q-text .math{background:#ede9fe;border-radius:6px;padding:.1rem .45rem;font-family:'JetBrains Mono',monospace;font-size:.98rem;font-weight:700;color:#4f46e5}
+[data-theme="dark"] .q-text .math{background:#2d1b69;color:#a78bfa}
+/* ─── MCQ OPTIONS ─── */
+.mcq-options{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;width:100%}
+.mcq-opt{background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.58rem .85rem;cursor:pointer;transition:all .18s;font-weight:600;font-size:.85rem;display:flex;align-items:center;gap:.5rem;font-family:'Inter',sans-serif;color:var(--text);word-break:break-word}
+.mcq-opt:hover{background:linear-gradient(135deg,#ede9fe,#f5f3ff);border-color:#a5b4fc;transform:translateX(2px)}
+.mcq-opt.correct{background:linear-gradient(135deg,#d1fae5,#ecfdf5)!important;border-color:#34d399!important;color:#065f46!important}
+.mcq-opt.wrong{background:linear-gradient(135deg,#fee2e2,#fff5f5)!important;border-color:#fca5a5!important;color:#991b1b!important}
+.opt-letter{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:6px;background:rgba(91,95,199,.12);font-size:.7rem;font-weight:800;flex-shrink:0;transition:all .18s;font-family:'JetBrains Mono',monospace}
+[data-theme="dark"] .opt-letter{background:#2d2b4e}
+.mcq-opt:hover .opt-letter{background:#c4b5fd;color:#4f46e5}
+.mcq-opt.correct .opt-letter{background:#6ee7b7;color:#065f46}
+.mcq-opt.wrong .opt-letter{background:#fca5a5;color:#991b1b}
+.opt-text{flex:1}
+/* ─── FILL INPUT ─── */
+.fill-row{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;width:100%}
+.fill-input{background:var(--surface2);border:2px solid #a5b4fc;border-radius:var(--radius-sm);padding:.55rem 1rem;color:var(--text);font-size:1rem;font-weight:700;font-family:'JetBrains Mono',monospace;width:160px;text-align:center;transition:all .22s;outline:none}
+[data-theme="dark"] .fill-input{background:var(--surface2);border-color:#7c3aed}
+.fill-input:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.fill-input.correct{border-color:#10b981;background:var(--green-bg);color:#065f46}
+.fill-input.wrong-fill{border-color:#ef4444;background:var(--red-bg);color:#991b1b}
+.fill-input::placeholder{color:#a5b4fc;font-size:.8rem;font-family:'Inter',sans-serif;font-weight:500}
+.check-btn{background:var(--primary);border:none;color:#fff;border-radius:var(--radius-sm);padding:.5rem 1rem;font-weight:700;cursor:pointer;font-size:.8rem;font-family:'Inter',sans-serif;transition:all .18s;box-shadow:0 3px 10px rgba(91,95,199,.28);display:inline-flex;align-items:center;gap:.3rem}
+.check-btn:hover{filter:brightness(1.1);transform:scale(1.04)}
+.result-badge{display:inline-flex;align-items:center;gap:.32rem;padding:.22rem .68rem;border-radius:20px;font-size:.75rem;font-weight:700;margin-top:.55rem;animation:popIn .25s ease}
+@keyframes popIn{from{transform:scale(.75);opacity:0}to{transform:scale(1);opacity:1}}
+.badge-ok{background:var(--green-bg);color:var(--green);border:1.5px solid var(--green-border)}
+.badge-no{background:var(--red-bg);color:var(--red);border:1.5px solid var(--red-border)}
+/* ─── ACTIVITY ─── */
+.activity-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:1.3rem;margin-bottom:1.2rem;box-shadow:var(--shadow)}
+.activity-title{font-size:1rem;font-weight:800;margin-bottom:.75rem;color:var(--text)}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.match-col{display:flex;flex-direction:column;gap:.45rem}
+.match-item{background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.58rem .8rem;cursor:pointer;transition:all .2s;font-weight:700;font-size:.82rem;text-align:center;min-height:42px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;color:var(--text)}
+.match-item:hover{border-color:#a5b4fc;background:linear-gradient(135deg,#ede9fe,#f5f3ff)}
+.match-item.sel{border-color:#f59e0b;background:linear-gradient(135deg,#fef3c7,#fffbeb);color:#92400e;box-shadow:0 0 0 3px rgba(245,158,11,.18)}
+.match-item.ok{border-color:#10b981;background:linear-gradient(135deg,#d1fae5,#ecfdf5);color:#065f46;pointer-events:none}
+.match-item.fail{border-color:#ef4444;background:var(--red-bg);color:#991b1b}
+/* ─── SCORE PANEL ─── */
+.score-panel{position:fixed;bottom:1.2rem;right:1.2rem;background:var(--glass);backdrop-filter:blur(24px);border:1.5px solid var(--border2);border-radius:18px;padding:.8rem 1.1rem;z-index:200;box-shadow:0 8px 40px rgba(91,95,199,.24);min-width:156px}
+.score-pdf-btn{display:block;width:100%;margin-top:.45rem;background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;border:none;border-radius:8px;padding:.38rem .5rem;font-size:.68rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .18s}
+.score-pdf-btn:hover{filter:brightness(1.1)}
+.score-title{font-size:.62rem;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.score-val{font-size:1.7rem;font-weight:900;font-family:'JetBrains Mono',monospace;background:linear-gradient(135deg,#5b5fc7,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1}
+.score-pct-bar{height:4px;background:var(--surface3);border-radius:2px;overflow:hidden;margin:.3rem 0}
+.score-pct-fill{height:100%;background:linear-gradient(90deg,#5b5fc7,#ec4899);border-radius:2px;transition:width .5s}
+/* ─── ACTION BAR ─── */
+.action-bar{display:flex;gap:.7rem;justify-content:center;padding:1.3rem 1.6rem 1.6rem;flex-wrap:wrap}
+.btn-primary{background:var(--primary);color:#fff;border:none;border-radius:50px;padding:.72rem 1.8rem;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .22s;box-shadow:0 4px 16px rgba(91,95,199,.32)}
+.btn-primary:hover{filter:brightness(1.12);transform:translateY(-2px)}
+.btn-secondary{background:var(--surface);color:var(--text);border:1.5px solid var(--border);border-radius:50px;padding:.72rem 1.8rem;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .22s}
+.btn-secondary:hover{background:var(--surface2);border-color:var(--border2);transform:translateY(-2px)}
+.btn-danger{background:linear-gradient(135deg,#ef4444,#f43f5e);color:#fff;border:none;border-radius:50px;padding:.72rem 1.8rem;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .22s;box-shadow:0 4px 16px rgba(239,68,68,.25)}
+.btn-danger:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.btn-finish{background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#fff;border:none;border-radius:50px;padding:.72rem 1.8rem;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .22s;box-shadow:0 4px 16px rgba(245,158,11,.32);position:relative;overflow:hidden}
+.btn-finish::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);transform:translateX(-100%);animation:shimmer 2.2s infinite}
+@keyframes shimmer{100%{transform:translateX(100%)}}
+.btn-pdf{background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff;border:none;border-radius:50px;padding:.72rem 1.8rem;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .22s;box-shadow:0 4px 16px rgba(20,184,166,.3);display:inline-flex;align-items:center;gap:.45rem}
+.btn-pdf:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.kbd-hint{display:inline-flex;align-items:center;gap:.3rem;font-size:.67rem;color:var(--text3);font-weight:600}
+.kbd{background:var(--surface2);border:1.5px solid var(--border);border-radius:4px;padding:.08rem .32rem;font-family:'JetBrains Mono',monospace;font-size:.65rem}
+/* ─── MODALS ─── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,8,28,.65);backdrop-filter:blur(18px);z-index:300;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal-box{background:var(--surface);border:1.5px solid var(--border2);border-radius:24px;padding:2rem 2rem 1.7rem;max-width:580px;width:95%;text-align:center;animation:scaleIn .3s cubic-bezier(.34,1.56,.64,1);max-height:92vh;overflow-y:auto;box-shadow:0 20px 64px rgba(91,95,199,.28)}
+@keyframes scaleIn{from{transform:scale(.72);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-emoji{font-size:3.5rem;margin-bottom:.4rem;display:block}
+.modal-title{font-size:1.55rem;font-weight:900;color:var(--text);letter-spacing:-.02em}
+.modal-score{font-size:2.4rem;font-weight:900;font-family:'JetBrains Mono',monospace;background:linear-gradient(135deg,#5b5fc7,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.modal-msg{color:var(--text2);margin:.6rem 0 1rem;font-size:.9rem;font-weight:600}
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin:.85rem 0}
+.result-cell{border-radius:12px;padding:.8rem .4rem;text-align:center;border:1.5px solid transparent}
+.result-cell .rc-num{font-size:1.9rem;font-weight:900;font-family:'JetBrains Mono',monospace}
+.result-cell .rc-lbl{font-size:.63rem;font-weight:700;margin-top:.12rem;opacity:.75}
+.rc-correct{background:#d1fae5;border-color:#6ee7b7}.rc-correct .rc-num,.rc-correct .rc-lbl{color:#065f46}
+.rc-wrong{background:#fee2e2;border-color:#fca5a5}.rc-wrong .rc-num,.rc-wrong .rc-lbl{color:#991b1b}
+.rc-empty{background:#ede9fe;border-color:#c4b5fd}.rc-empty .rc-num,.rc-empty .rc-lbl{color:#4f46e5}
+.detail-list{max-height:320px;overflow-y:auto;margin:.9rem 0;text-align:left;padding-right:.25rem}
+.detail-list::-webkit-scrollbar{width:4px}.detail-list::-webkit-scrollbar-thumb{background:#c4b5fd;border-radius:2px}
+.detail-item{display:flex;align-items:flex-start;gap:.5rem;padding:.5rem .8rem;border-radius:10px;margin-bottom:.38rem;font-size:.8rem;font-weight:600;line-height:1.5}
+.detail-item.di-correct{background:#f0fdf4;border:1.5px solid #86efac}
+.detail-item.di-wrong{background:#fff5f5;border:1.5px solid #fca5a5}
+.detail-item.di-empty{background:#f5f3ff;border:1.5px solid #ddd6fe}
+.detail-icon{font-size:1rem;flex-shrink:0}
+.reset-modal-inner{background:var(--surface);border:1.5px solid var(--red-border);border-radius:20px;padding:1.8rem;max-width:360px;width:93%;text-align:center;animation:scaleIn .28s ease}
+/* ─── NAME MODAL ─── */
+.name-modal{display:flex;position:fixed;inset:0;background:linear-gradient(135deg,rgba(55,48,163,.25),rgba(190,24,93,.15));backdrop-filter:blur(24px);z-index:500;align-items:center;justify-content:center}
+.name-box{background:var(--surface);border:1.5px solid var(--border2);border-radius:24px;padding:2.5rem 2rem;max-width:440px;width:93%;text-align:center;animation:scaleIn .4s cubic-bezier(.34,1.56,.64,1);box-shadow:0 24px 72px rgba(91,95,199,.22)}
+.name-logo{font-size:3rem;margin-bottom:.4rem}
+.name-title{font-size:1.85rem;font-weight:900;margin-bottom:.35rem;letter-spacing:-.03em;background:linear-gradient(135deg,#5b5fc7,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.name-subtitle{color:var(--text2);font-size:.88rem;margin-bottom:1.5rem;line-height:1.6;font-weight:500}
+.name-input{background:var(--surface2);border:2px solid #a5b4fc;border-radius:var(--radius-sm);padding:.88rem 1.2rem;color:var(--text);font-size:1rem;font-weight:700;font-family:'Inter',sans-serif;width:100%;text-align:center;outline:none;transition:all .22s}
+.name-input:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.name-btn{background:var(--primary);color:#fff;border:none;border-radius:50px;padding:.88rem 2.2rem;font-size:.96rem;font-weight:800;cursor:pointer;font-family:'Inter',sans-serif;transition:all .22s;margin-top:1.1rem;width:100%;box-shadow:0 5px 20px rgba(91,95,199,.38)}
+.name-btn:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.name-notice{margin-top:.9rem;font-size:.72rem;color:var(--text3);font-weight:500}
+.name-features{display:grid;grid-template-columns:1fr 1fr;gap:.42rem;margin:.85rem 0 .45rem;text-align:left}
+.name-feat{display:flex;align-items:center;gap:.38rem;font-size:.72rem;font-weight:600;color:var(--text2);background:var(--surface2);border-radius:8px;padding:.28rem .55rem;border:1px solid var(--border)}
+/* ─── LOADING ─── */
+.loading-overlay{display:none;position:fixed;inset:0;background:rgba(255,255,255,.88);backdrop-filter:blur(12px);z-index:600;align-items:center;justify-content:center;flex-direction:column;gap:.9rem}
+[data-theme="dark"] .loading-overlay{background:rgba(12,11,23,.9)}
+.loading-overlay.show{display:flex}
+.loading-spinner{width:48px;height:48px;border:3.5px solid var(--surface3);border-top-color:var(--primary);border-radius:50%;animation:spin .9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-weight:800;color:var(--primary);font-size:.92rem}
+.loading-progress-txt{font-size:.78rem;color:var(--text2);font-weight:600}
+/* ─── MISC ─── */
+.confetti-piece{position:fixed;width:8px;height:8px;top:-20px;animation:confetti-fall linear forwards;z-index:400;border-radius:2px}
+@keyframes confetti-fall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+.streak-banner{display:none;align-items:center;justify-content:center;gap:.45rem;padding:.38rem 1rem;background:linear-gradient(90deg,#f59e0b,#fbbf24);font-size:.8rem;font-weight:800;color:#fff;position:fixed;top:0;left:0;right:0;z-index:600;animation:slideDown .35s ease}
+.streak-banner.show{display:flex}
+@keyframes slideDown{from{transform:translateY(-100%)}to{transform:translateY(0)}}
+.back-to-top{position:fixed;bottom:1.2rem;left:1.2rem;background:var(--primary);border:none;border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.05rem;color:#fff;z-index:200;box-shadow:0 4px 16px rgba(91,95,199,.36);transition:all .22s;opacity:0;pointer-events:none}
+.back-to-top.visible{opacity:1;pointer-events:auto}
+.back-to-top:hover{transform:translateY(-3px)}
+.prob-box{background:linear-gradient(135deg,#fef3c7,#fffbeb);border:1.5px dashed #fcd34d;border-radius:12px;padding:1rem 1.1rem;margin-bottom:.85rem;font-size:.9rem;line-height:1.7;color:#92400e;font-weight:700}
+[data-theme="dark"] .prob-box{background:linear-gradient(135deg,#292016,#1c1a0a);border-color:#92400e;color:#fde68a}
+@media(max-width:640px){
+  .question-grid.two-col{grid-template-columns:1fr}
+  .mcq-options{grid-template-columns:1fr}
+  .hero-right{gap:.25rem}
+  .score-panel{min-width:136px;padding:.6rem .85rem}
+  .name-features{grid-template-columns:1fr}
+  .quiz-mode-bar{flex-direction:column;align-items:flex-start}
+  .stats-bar{gap:1rem;padding:.5rem 1rem}
+  .tab-nav{padding:.5rem 1rem .3rem}
+  .section{padding:.9rem 1rem 1.2rem}
+  .action-bar{padding:1rem}
+}
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<div class="streak-banner" id="streakBanner">
+  <span>🔥</span><span id="streakText">3 Doğru Üst Üste!</span><span>🔥</span>
+  <button onclick="document.getElementById('streakBanner').classList.remove('show')" style="background:none;border:none;color:#fff;cursor:pointer;margin-left:.5rem;font-size:1rem;">✕</button>
+</div>
+
+<div class="name-modal" id="nameModal" style="display:none;">
+  <div class="name-box">
+    <div class="name-logo">🧮</div>
+    <div class="name-title">Matematik Testi</div>
+    <div class="name-subtitle">4-5. Sınıf · 250+ Soru · 8 Konu<br>Başlamadan önce adını gir!</div>
+    <div class="name-features">
+      <div class="name-feat">✅ 8 Farklı Konu</div>
+      <div class="name-feat">📝 250+ Soru</div>
+      <div class="name-feat">🏆 Anlık Puanlama</div>
+      <div class="name-feat">📄 PDF İndir</div>
+      <div class="name-feat">⏱️ Süre Takibi</div>
+      <div class="name-feat">🌙 Gece Modu</div>
+      <div class="name-feat">🔥 Streak Sistemi</div>
+      <div class="name-feat">🎯 Quiz Modu</div>
+    </div>
+    <input class="name-input" id="nameInput" type="text" placeholder="Adın Soyadın..." maxlength="50" autocomplete="off">
+    <button class="name-btn" onclick="startTest()">🚀 Teste Başla</button>
+    <div class="name-notice">💾 İlerlemeniz otomatik kaydedilir</div>
+  </div>
+</div>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-text" id="loadingText">Yükleniyor...</div>
+  <div class="loading-progress-txt" id="loadingProgress"></div>
+</div>
+
+<div class="modal-overlay" id="resetModal">
+  <div class="reset-modal-inner">
+    <div style="font-size:2.5rem;margin-bottom:.5rem;">⚠️</div>
+    <div style="font-size:1.2rem;font-weight:900;color:var(--text);margin-bottom:.5rem;">Testi Sıfırla?</div>
+    <div style="font-size:.88rem;color:var(--text2);font-weight:700;margin-bottom:1.2rem;">Tüm cevaplar ve puanlar silinir.</div>
+    <div style="display:flex;gap:.7rem;justify-content:center;">
+      <button class="btn-danger" onclick="doReset()">🗑️ Sıfırla</button>
+      <button class="btn-secondary" onclick="document.getElementById('resetModal').classList.remove('show')">İptal</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="finishModal">
+  <div class="modal-box">
+    <span class="modal-emoji" id="fm-emoji">🏆</span>
+    <div class="modal-title">Test Tamamlandı!</div>
+    <div style="font-size:.88rem;color:var(--text2);margin:.3rem 0;font-weight:700;" id="fm-student"></div>
+    <div class="modal-score" id="fm-score"></div>
+    <div class="modal-msg" id="fm-msg"></div>
+    <div class="result-grid">
+      <div class="result-cell rc-correct"><div class="rc-num" id="fm-cor">0</div><div class="rc-lbl">✅ Doğru</div></div>
+      <div class="result-cell rc-wrong"><div class="rc-num" id="fm-wrg">0</div><div class="rc-lbl">❌ Yanlış</div></div>
+      <div class="result-cell rc-empty"><div class="rc-num" id="fm-emp">0</div><div class="rc-lbl">⬜ Boş</div></div>
+    </div>
+    <div class="detail-list" id="fm-detail-list"></div>
+    <div style="display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-top:.8rem;">
+      <button class="btn-pdf" onclick="document.getElementById('finishModal').classList.remove('show');downloadPDF()">📄 PDF İndir</button>
+      <button class="btn-secondary" onclick="document.getElementById('finishModal').classList.remove('show')">Kapat</button>
+    </div>
+  </div>
+</div>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<header class="hero-header">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-logo">🧮</div>
+      <div>
+        <div class="hero-title">Matematik Doğal Sayılarda İşlemler Testi (1. Ödev)</div>
+        <div class="hero-sub">4-5. Sınıf | Doğal Sayılarda İşlemler</div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <span class="hero-badge">8 Konu</span>
+      <span class="hero-badge" id="qCountBadge">... Soru</span>
+      <div class="timer-display" id="timerDisplay">⏱️ 00:00</div>
+      <button class="student-chip-hdr" onclick="document.getElementById('nameModal').style.display='flex'" id="studentChip">👤 Öğrenci</button>
+      <button class="dark-toggle" onclick="toggleDark()" id="darkToggle" title="Gece Modu">🌙</button>
+    </div>
+  </div>
+</header>
+
+<div class="quiz-mode-bar" id="quizModeBar">
+  <div class="quiz-progress-txt" id="quizProgressTxt">Soru 1 / 0</div>
+  <div class="quiz-nav">
+    <button class="quiz-nav-btn" id="quizPrev" onclick="quizNav(-1)">← Önceki</button>
+    <button class="quiz-nav-btn" id="quizNext" onclick="quizNav(1)">Sonraki →</button>
+    <button class="quiz-nav-btn" onclick="exitQuizMode()">✕ Quiz Modu Çık</button>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat-item"><span class="stat-dot" style="background:#059669"></span><span>Dogru <strong id="statCor">0</strong></span></div>
+  <div class="stat-sep"></div>
+  <div class="stat-item"><span class="stat-dot" style="background:#dc2626"></span><span>Yanlis <strong id="statWrg">0</strong></span></div>
+  <div class="stat-sep"></div>
+  <div class="stat-item"><span class="stat-dot" style="background:#94a3b8"></span><span>Bos <strong id="statEmp">0</strong></span></div>
+  <div class="stat-sep"></div>
+  <div class="stat-item"><span class="stat-dot" style="background:#5b5fc7"></span><span>Cevaplanan <strong id="statAns">0</strong></span></div>
+  <div class="progress-wrap-outer">
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="progress-pct" id="progressPct">%0</div>
+  </div>
+</div>
+
+<div class="search-bar-wrap">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="search-bar" id="searchBar" type="text" placeholder="Soru ara... (örn: toplama, yuvarlama, örüntü)" oninput="filterQuestions(this.value)">
+  </div>
+</div>
+
+<nav class="tab-nav" id="tabNav">
+  <button class="tab-btn active" onclick="switchTab('s1',this)">➕ Toplama-Çıkarma <span class="sec-count" id="cnt-s1"></span></button>
+  <button class="tab-btn" onclick="switchTab('s2',this)">✖️ Çarpma-Bölme <span class="sec-count" id="cnt-s2"></span></button>
+  <button class="tab-btn" onclick="switchTab('s3',this)">🔢 Sayılar <span class="sec-count" id="cnt-s3"></span></button>
+  <button class="tab-btn" onclick="switchTab('s6',this)">🔢 Sayıların Okunuşu <span class="sec-count" id="cnt-s6"></span></button>
+  <button class="tab-btn" onclick="switchTab('s4',this)">🔄 Yuvarlama <span class="sec-count" id="cnt-s4"></span></button>
+  <button class="tab-btn" onclick="switchTab('s5',this)">🔣 Örüntüler <span class="sec-count" id="cnt-s5"></span></button>
+  <button class="tab-btn" onclick="switchTab('s8',this)">🧩 Karma <span class="sec-count" id="cnt-s8"></span></button>
+  <button class="tab-btn" onclick="switchTab('s9',this)">🎯 Etkinlik <span class="sec-count" id="cnt-s9"></span></button>
+</nav>
+
+<div class="section active" id="sec-s1">
+  <div class="section-header hdr-purple">
+    <div class="section-icon">+</div>
+    <div><div class="section-title">Toplama ve Cikarma</div><div class="section-subtitle">Dogal sayilarda toplama ve cikarma islemleri</div></div>
+    <div class="section-score-bar"><div class="section-score-pct" id="score-s1">-</div><div class="section-score-lbl">Basari</div></div>
+  </div>
+  <div class="question-grid two-col" id="grid-s1"></div>
+</div>
+<div class="section" id="sec-s2">
+  <div class="section-header hdr-pink">
+    <div class="section-icon">x</div>
+    <div><div class="section-title">Carpma ve Bolme</div><div class="section-subtitle">Dogal sayilarda carpma ve bolme islemleri</div></div>
+    <div class="section-score-bar"><div class="section-score-pct" id="score-s2">-</div><div class="section-score-lbl">Basari</div></div>
+  </div>
+  <div class="question-grid two-col" id="grid-s2"></div>
+</div>
+<div class="section" id="sec-s3">
+  <div class="section-header hdr-green">
+    <div class="section-icon">#</div>
+    <div><div class="section-title">Sayilar</div><div class="section-subtitle">9 basamakli sayilara kadar okuma, yazma ve basamak degerleri</div></div>
+    <div class="section-score-bar"><div class="section-score-pct" id="score-s3">-</div><div class="section-score-lbl">Basari</div></div>
+  </div>
+  <div class="question-grid two-col" id="grid-s3"></div>
+</div>
+<div class="section" id="sec-s4">
+  <div class="section-header hdr-orange">
+    <div class="section-icon">~</div>
+    <div><div class="section-title">Yuvarlama</div><div class="section-subtitle">En yakin onluga, yuzluge ve binlige yuvarlama</div></div>
+    <div class="section-score-bar"><div class="section-score-pct" id="score-s4">-</div><div class="section-score-lbl">Basari</div></div>
+  </div>
+  <div class="question-grid two-col" id="grid-s4"></div>
+</div>
+<div class="section" id="sec-s5">
+  <div class="section-header hdr-blue">
+    <div class="section-icon">=</div>
+    <div><div class="section-title">Oruntuler</div><div class="section-subtitle">Sayi ve sekil oruntuler</div></div>
+    <div class="section-score-bar"><div class="section-score-pct" id="score-s5">-</div><div class="section-score-lbl">Basari</div></div>
+  </div>
+  <div class="question-grid two-col" id="grid-s5"></div>
+</div>
+<div class="section" id="sec-s6">
+  <div class="section-header hdr-indigo">
+    <div class="section-icon">🔢</div>
+    <div><div class="section-title">Sayıların Okunuşu</div><div class="section-subtitle">Büyük sayıları yazı ile okuma ve yazma</div></div>
+    <div class="section-score-bar"><div class="section-score-pct" id="score-s6">-</div><div class="section-score-lbl">Basari</div></div>
+  </div>
+  <div class="question-grid two-col" id="grid-s6"></div>
+</div>
+<div class="section" id="sec-s8">
+  <div class="section-header hdr-indigo">
+    <div class="section-icon">?</div>
+    <div><div class="section-title">Karma Sorular</div><div class="section-subtitle">Dort islem ve problem cozme</div></div>
+    <div class="section-score-bar"><div class="section-score-pct" id="score-s8">-</div><div class="section-score-lbl">Basari</div></div>
+  </div>
+  <div class="question-grid two-col" id="grid-s8"></div>
+</div>
+<div class="section" id="sec-s9">
+  <div class="section-header hdr-teal">
+    <div class="section-icon">*</div>
+    <div><div class="section-title">Etkinlik</div><div class="section-subtitle">Eglenceli matematik etkinlikleri</div></div>
+    <div class="section-score-bar"><div class="section-score-pct" id="score-s9">-</div><div class="section-score-lbl">Basari</div></div>
+  </div>
+  <div class="question-grid" id="grid-s9"></div>
+</div>
+
+<div class="action-bar">
+  <button class="btn-finish" onclick="finishTest()">🏁 Testi Bitir &amp; Sonuçları Gör</button>
+  <button class="btn-pdf" onclick="downloadPDF()">📄 PDF İndir</button>
+  <button class="btn-primary" onclick="enterQuizMode()">🎯 Quiz Modu</button>
+  <button class="btn-danger" onclick="confirmReset()">🔄 Sıfırla</button>
+</div>
+<div style="text-align:center;padding:.4rem 1rem 1.5rem;font-size:.67rem;color:var(--text3);font-weight:500;">
+  <span class="kbd-hint"><span class="kbd">Tab</span> sonraki &nbsp;|&nbsp; <span class="kbd">Enter</span> cevapla &nbsp;|&nbsp; <span class="kbd">Ctrl+D</span> gece modu &nbsp;|&nbsp; <span class="kbd">Ctrl+Enter</span> bitir</span>
+</div>
+
+<div class="score-panel" id="scorePanel">
+  <div class="score-title">ANLIK SKOR</div>
+  <div class="score-val" id="scorePanelVal">0/0</div>
+  <div class="score-pct-bar"><div class="score-pct-fill" id="scorePctFill" style="width:0%"></div></div>
+  <div style="font-size:.68rem;font-weight:700;color:var(--text3);" id="scorePanelPct">%0 basari</div>
+  <button class="score-pdf-btn" onclick="downloadPDF()">PDF Indir</button>
+  <button class="score-pdf-btn" style="background:linear-gradient(135deg,#0f766e,#14b8a6);margin-top:.38rem;" onclick="finishTest()">Bitir &amp; Sonuc</button>
+</div>
+
+<script>
+'use strict';
+const QUESTIONS_DB = {
+  s1: [
+    {id:'q1_1',type:'mcq',tag:'Toplama',diff:'easy',text:'345 + 278 = ?',opts:['613','623','633','643'],ans:'B'},
+    {id:'q1_2',type:'mcq',tag:'Çıkarma',diff:'easy',text:'1000 - 437 = ?',opts:['563','573','553','583'],ans:'A'},
+    {id:'q1_3',type:'fill',tag:'Hesap',diff:'easy',text:'347 + 568 + 215 = ?',correct:'1130'},
+    {id:'q1_4',type:'mcq',tag:'Problem',diff:'medium',text:'Ahmet\'in 1250 TL\'si var. 375 TL harcayıp 840 TL daha koyuyor. Sonunda kaç TL olur?',opts:['1715','1625','1850','1480'],ans:'A'},
+    {id:'q1_5',type:'fill',tag:'Hesap',diff:'easy',text:'10.000 - 3.456 - 1.234 = ?',correct:'5310'},
+    {id:'q1_6',type:'mcq',tag:'Basamak',diff:'medium',text:'99.999\'dan büyük en küçük 6 basamaklı sayı hangisidir?',opts:['100.000','100.001','999.999','100.010'],ans:'A'},
+    {id:'q1_7',type:'mcq',tag:'Problem',diff:'medium',text:'Bir trende 45 yolcu binip 28 yolcu indi. Şimdiki yolcu sayısı 65 ise başlangıçta kaç yolcu vardı?',opts:['82','84','86','88'],ans:'B'},
+    {id:'q1_8',type:'fill',tag:'Hesap',diff:'easy',text:'2345 + 3678 = ?',correct:'6023'},
+    {id:'q1_9',type:'mcq',tag:'Problem',diff:'medium',text:'Bir sınıfta 24 kız ve 18 erkek öğrenci var. Okul gezisine 7 öğrenci katılamadı. Geziye kaç öğrenci gitti?',opts:['35','38','40','42'],ans:'A'},
+    {id:'q1_10',type:'mcq',tag:'Toplama',diff:'easy',text:'4567 + 2345 + 1088 = ?',opts:['7990','8000','8010','7980'],ans:'B'},
+    {id:'q1_11',type:'fill',tag:'Problem',diff:'medium',text:'Bir fabrika Ocak\'ta 4580, Şubat\'ta 3720 ürün üretti. Toplam kaç ürün?',correct:'8300'},
+    {id:'q1_12',type:'mcq',tag:'Çıkarma',diff:'easy',text:'50.000 - 28.456 = ?',opts:['21.544','22.544','21.444','22.444'],ans:'A'},
+    {id:'q1_13',type:'mcq',tag:'Problem',diff:'hard',text:'Bir öğrencinin 5 dersten aldığı notlar 85, 90, 78, 92, 95. Notların toplamı kaçtır?',opts:['430','435','440','445'],ans:'C'},
+    {id:'q1_14',type:'fill',tag:'Hesap',diff:'easy',text:'9999 + 1 = ?',correct:'10000'},
+    {id:'q1_15',type:'mcq',tag:'Problem',diff:'medium',text:'Ali\'nin 3450 TL birikimi var. Her ay 750 TL birikim yapıyor. 4 ay sonra kaç TL birikimi olur?',opts:['6450','6350','6550','6250'],ans:'A'},
+    {id:'q1_16',type:'mcq',tag:'Toplama',diff:'easy',text:'123 + 456 + 789 = ?',opts:['1368','1358','1378','1348'],ans:'A'},
+    {id:'q1_17',type:'fill',tag:'Çıkarma',diff:'medium',text:'100.000 - 45.678 = ?',correct:'54322'},
+    {id:'q1_18',type:'mcq',tag:'Problem',diff:'medium',text:'Bir kitaplıkta 1250 kitap var. 380 kitap verildi, 240 kitap alındı. Şimdi kaç kitap var?',opts:['1100','1110','1120','1130'],ans:'B'},
+    {id:'q1_19',type:'mcq',tag:'Toplama',diff:'hard',text:'Ardışık 4 sayının toplamı 90 ise en büyük sayı kaçtır?',opts:['21','24','25','23'],ans:'B'},
+    {id:'q1_20',type:'fill',tag:'Problem',diff:'medium',text:'Pazartesi 345, Salı 278, Çarşamba 412 yolcu taşındı. Toplam kaç yolcu?',correct:'1035'},
+    {id:'q1_21',type:'mcq',tag:'Çıkarma',diff:'easy',text:'7654 - 3219 = ?',opts:['4435','4535','4335','4445'],ans:'A'},
+    {id:'q1_22',type:'mcq',tag:'Problem',diff:'hard',text:'Bir depo 12.450 ton kapasiteli. İçinde 8.675 ton mal var. En fazla kaç ton daha koyulabilir?',opts:['3.675','3.775','3.875','3.975'],ans:'B'},
+    {id:'q1_23',type:'fill',tag:'Hesap',diff:'easy',text:'5000 - 1234 = ?',correct:'3766'},
+    {id:'q1_24',type:'mcq',tag:'Toplama',diff:'medium',text:'Üç basamaklı en büyük sayı ile iki basamaklı en büyük sayının toplamı kaçtır?',opts:['1088','1098','1108','1118'],ans:'B'},
+    {id:'q1_25',type:'mcq',tag:'Problem',diff:'medium',text:'Bir mağaza Ocak\'ta 5430 TL, Şubat\'ta 4870 TL, Mart\'ta 6120 TL kazandı. Toplam kazanç?',opts:['16.320','16.420','16.220','16.520'],ans:'B'},
+    {id:'q1_26',type:'fill',tag:'Çıkarma',diff:'hard',text:'Bir sayıdan 3456 çıkarılınca 7890 elde ediliyor. O sayı kaçtır?',correct:'11346'},
+    {id:'q1_27',type:'mcq',tag:'Toplama',diff:'easy',text:'2468 + 1357 = ?',opts:['3825','3815','3835','3845'],ans:'A'},
+    {id:'q1_28',type:'mcq',tag:'Problem',diff:'hard',text:'Aşağıdaki bölgelerdeki nüfuslar: A=24.560, B=31.240, C=18.750. En kalabalık ile en az kalabalık bölge arasındaki fark kaçtır?',opts:['12.490','11.490','12.590','11.590'],ans:'A'},
+    {id:'q1_29',type:'fill',tag:'Hesap',diff:'medium',text:'9876 - 5432 + 1111 = ?',correct:'5555'},
+    {id:'q1_30',type:'mcq',tag:'Problem',diff:'medium',text:'Bir kamyon 3 seferde toplam 12.450 kg yük taşıdı. 1. seferde 4.200 kg, 2. seferde 3.980 kg taşıdıysa 3. seferde kaç kg taşıdı?',opts:['4.170','4.270','4.370','4.070'],ans:'B'},
+    {id:'q1_31',type:'mcq',tag:'Toplama',diff:'easy',text:'1111 + 2222 + 3333 = ?',opts:['6666','6556','6776','6446'],ans:'A'},
+    {id:'q1_32',type:'fill',tag:'Problem',diff:'hard',text:'İki sayının toplamı 9870. Büyük sayı küçük sayıdan 1234 fazla ise büyük sayı kaçtır?',correct:'5552'},
+    {id:'q1_33',type:'mcq',tag:'Çıkarma',diff:'medium',text:'Bir şehrin geçen yıl nüfusu 245.780 idi. Bu yıl 12.345 kişi taşındı, 8.670 kişi doğdu. Şimdiki nüfus?',opts:['242.105','241.005','242.005','241.105'],ans:'A'},
+    {id:'q1_34',type:'mcq',tag:'Problem',diff:'medium',text:'Dört arkadaş birlikte 6480 TL biriktirdi. Her biri eşit biriktirdiyse her birinin payı kaçtır?',opts:['1550','1620','1680','1600'],ans:'B'},
+    {id:'q1_35',type:'mcq',tag:'Toplama',diff:'easy',text:'999 + 999 + 999 = ?',opts:['2997','2999','3000','3003'],ans:'A'},
+    {id:'q1_36',type:'fill',tag:'Problem',diff:'hard',text:'Üç kardeşin yaşları toplamı 48. Büyük kardeş ortancadan 5, küçükten 10 yaş büyük. Büyük kardeşin yaşı?',correct:'21'},
+    {id:'q1_37',type:'mcq',tag:'Çıkarma',diff:'medium',text:'Bir havuzda 15.000 litre su var. Günde 850 litre buharlaşıyor. 10 gün sonra kaç litre kalır?',opts:['6500','7000','6600','6700'],ans:'A'},
+    {id:'q1_38',type:'fill',tag:'Hesap',diff:'hard',text:'12345 + 23456 + 34567 = ?',correct:'70368'},
+    {id:'q1_39',type:'mcq',tag:'Problem',diff:'hard',text:'A kümesinde 45, B kümesinde 38 eleman var. İki kümede ortak 12 eleman varsa toplam farklı eleman sayısı kaçtır?',opts:['69','71','73','75'],ans:'B'},
+    {id:'q1_40',type:'mcq',tag:'Toplama',diff:'medium',text:'1 den 100\'e kadar olan çift sayıların toplamı kaçtır?',opts:['2450','2500','2550','2600'],ans:'C'}
+  ],
+  s2: [
+    {id:'q2_1',type:'mcq',tag:'Çarpma',diff:'easy',text:'48 × 25 = ?',opts:['1100','1150','1200','1250'],ans:'C'},
+    {id:'q2_2',type:'fill',tag:'Hesap',diff:'easy',text:'125 × 8 = ?',correct:'1000'},
+    {id:'q2_3',type:'mcq',tag:'Bölme',diff:'easy',text:'756 ÷ 4 = ?',opts:['179','188','189','194'],ans:'C'},
+    {id:'q2_4',type:'mcq',tag:'Problem',diff:'medium',text:'3 saatte 180 km giden aracın saatteki hızı kaç km\'dir?',opts:['50','55','60','65'],ans:'C'},
+    {id:'q2_5',type:'fill',tag:'Problem',diff:'easy',text:'Bir kutuda 24 kalem var. 18 kutu kalemin toplam sayısı?',correct:'432'},
+    {id:'q2_6',type:'mcq',tag:'Problem',diff:'medium',text:'Bir dikdörtgenin uzunluğu 12 cm, genişliği 9 cm ise çevresi kaç cm?',opts:['40','42','44','46'],ans:'B'},
+    {id:'q2_7',type:'mcq',tag:'Bölme',diff:'easy',text:'1296 ÷ 6 = ?',opts:['206','214','216','220'],ans:'C'},
+    {id:'q2_8',type:'mcq',tag:'Problem',diff:'medium',text:'Bir fabrika her gün 840 ürün üretiyor. 15 günde kaç ürün üretir?',opts:['12.000','12.400','12.600','13.000'],ans:'C'},
+    {id:'q2_9',type:'fill',tag:'Hesap',diff:'medium',text:'345 × 12 = ?',correct:'4140'},
+    {id:'q2_10',type:'mcq',tag:'Bölme',diff:'medium',text:'4536 ÷ 8 = ?',opts:['556','567','578','589'],ans:'B'},
+    {id:'q2_11',type:'mcq',tag:'Çarpma',diff:'easy',text:'99 × 11 = ?',opts:['1079','1089','1099','1069'],ans:'B'},
+    {id:'q2_12',type:'fill',tag:'Problem',diff:'medium',text:'Bir sınıfta 6 sıra ve her sırada 7 öğrenci var. Toplam öğrenci sayısı?',correct:'42'},
+    {id:'q2_13',type:'mcq',tag:'Bölme',diff:'hard',text:'Bölen 7, bölüm 123, kalan 4 ise bölünen kaçtır?',opts:['855','861','865','875'],ans:'B'},
+    {id:'q2_14',type:'mcq',tag:'Çarpma',diff:'medium',text:'350 × 40 = ?',opts:['13.000','14.000','15.000','16.000'],ans:'B'},
+    {id:'q2_15',type:'fill',tag:'Hesap',diff:'easy',text:'72 ÷ 8 = ?',correct:'9'},
+    {id:'q2_16',type:'mcq',tag:'Problem',diff:'hard',text:'Bir araba 8 L benzinle 96 km gidebiliyor. 1 L benzinle kaç km gider?',opts:['10','11','12','13'],ans:'C'},
+    {id:'q2_17',type:'mcq',tag:'Çarpma',diff:'medium',text:'25 × 25 = ?',opts:['575','600','625','650'],ans:'C'},
+    {id:'q2_18',type:'fill',tag:'Problem',diff:'medium',text:'Her raf 12 kitap alıyor. 15 raf doldurmak için kaç kitap gerekir?',correct:'180'},
+    {id:'q2_19',type:'mcq',tag:'Bölme',diff:'medium',text:'2700 ÷ 45 = ?',opts:['50','55','60','65'],ans:'C'},
+    {id:'q2_20',type:'mcq',tag:'Problem',diff:'hard',text:'Bir çiftçi 45 dönüm araziye 120 kg/dönüm gübre attı. Toplam gübre miktarı kaç kg?',opts:['5300','5400','5500','5600'],ans:'B'},
+    {id:'q2_21',type:'fill',tag:'Hesap',diff:'medium',text:'456 × 7 = ?',correct:'3192'},
+    {id:'q2_22',type:'mcq',tag:'Bölme',diff:'easy',text:'360 ÷ 12 = ?',opts:['25','28','30','32'],ans:'C'},
+    {id:'q2_23',type:'mcq',tag:'Problem',diff:'medium',text:'Bir market günde 480 ekmek satıyor. Bir haftada toplam kaç ekmek satar?',opts:['3260','3320','3360','3400'],ans:'C'},
+    {id:'q2_24',type:'fill',tag:'Çarpma',diff:'hard',text:'123 × 45 = ?',correct:'5535'},
+    {id:'q2_25',type:'mcq',tag:'Bölme',diff:'hard',text:'9876 ÷ 12 = ?',opts:['820','823','822','825'],ans:'B'},
+    {id:'q2_26',type:'mcq',tag:'Çarpma',diff:'medium',text:'75 × 8 = ?',opts:['580','590','600','610'],ans:'C'},
+    {id:'q2_27',type:'fill',tag:'Problem',diff:'hard',text:'Bir araç saatte 85 km gidiyor. 6 saatte kaç km yol alır?',correct:'510'},
+    {id:'q2_28',type:'mcq',tag:'Bölme',diff:'medium',text:'Bir sınıftaki 168 öğrenci 8 gruba eşit bölünürse her grupta kaç öğrenci olur?',opts:['19','21','23','25'],ans:'B'},
+    {id:'q2_29',type:'mcq',tag:'Çarpma',diff:'easy',text:'6 × 7 × 8 = ?',opts:['316','326','336','346'],ans:'C'},
+    {id:'q2_30',type:'fill',tag:'Problem',diff:'medium',text:'Her paket 24 bisküvi içeriyor. 35 paket bisküvinin toplamı?',correct:'840'},
+    {id:'q2_31',type:'mcq',tag:'Bölme',diff:'hard',text:'Bir sayı 13\'e bölündüğünde bölüm 47, kalan 9 olur. Sayı kaçtır?',opts:['619','620','621','622'],ans:'C'},
+    {id:'q2_32',type:'mcq',tag:'Çarpma',diff:'medium',text:'144 × 25 = ?',opts:['3500','3550','3600','3650'],ans:'C'},
+    {id:'q2_33',type:'fill',tag:'Hesap',diff:'medium',text:'840 ÷ 7 = ?',correct:'120'},
+    {id:'q2_34',type:'mcq',tag:'Problem',diff:'hard',text:'Bir işçi günde 8 saat çalışıyor ve saatte 45 TL kazanıyor. 22 günde toplam kaç TL kazanır?',opts:['7820','7900','7920','8000'],ans:'C'},
+    {id:'q2_35',type:'mcq',tag:'Çarpma',diff:'medium',text:'14 × 15 = ?',opts:['190','200','210','220'],ans:'C'},
+    {id:'q2_36',type:'fill',tag:'Bölme',diff:'hard',text:'9867 ÷ 3 = ?',correct:'3289'},
+    {id:'q2_37',type:'mcq',tag:'Problem',diff:'hard',text:'Bir havuzun hacmi 2400 litre. Dakikada 8 litre boşaltılıyor. Tamamen boşalması kaç dakika sürer?',opts:['280','290','300','310'],ans:'C'},
+    {id:'q2_38',type:'mcq',tag:'Çarpma',diff:'hard',text:'111 × 111 = ?',opts:['11.221','12.321','11.321','12.221'],ans:'B'},
+    {id:'q2_39',type:'fill',tag:'Problem',diff:'medium',text:'Bir sınıfın üçte biri 8 öğrenci ise toplam öğrenci sayısı kaçtır?',correct:'24'},
+    {id:'q2_40',type:'mcq',tag:'Bölme',diff:'hard',text:'Bir arazi 6 eşit parçaya bölünüyor. Her parça 345 m² ise toplam arazi kaç m²?',opts:['2000','2050','2070','2100'],ans:'C'}
+  ],
+  s3: [
+    {id:'q3_1',type:'mcq',tag:'Basamak',diff:'easy',text:'456.789 sayısında yüzler basamağının değeri kaçtır?',opts:['7','70','700','7000'],ans:'C'},
+    {id:'q3_2',type:'mcq',tag:'Sıralama',diff:'medium',text:'8.450, 8.045, 8.504, 8.405 sayılarını küçükten büyüğe sırala.',opts:['8.045<8.405<8.450<8.504','8.045<8.450<8.405<8.504','8.405<8.045<8.450<8.504','8.504<8.450<8.405<8.045'],ans:'A'},
+    {id:'q3_3',type:'fill',tag:'Yazı',diff:'easy',text:'İki yüz elli altı bin üç yüz yetmiş sekiz sayısını rakamla yaz.',correct:'256378'},
+    {id:'q3_4',type:'mcq',tag:'Basamak',diff:'easy',text:'87.654 sayısında on binler basamağındaki rakam hangisidir?',opts:['8','7','6','5'],ans:'A'},
+    {id:'q3_5',type:'fill',tag:'Yazı',diff:'medium',text:'4 × 100.000 + 5 × 10.000 + 3 × 1.000 + 7 × 10 + 2 işleminin sonucu kaçtır?',correct:'453072'},
+    {id:'q3_6',type:'mcq',tag:'Basamak',diff:'medium',text:'Bir sayının binler basamağı 5, yüzler basamağı 0, onlar basamağı 3, birler basamağı 7 ise sayı kaçtır?',opts:['5.037','5.307','5.370','5.703'],ans:'A'},
+    {id:'q3_7',type:'mcq',tag:'Doğal Sayı',diff:'easy',text:'En küçük 5 basamaklı sayı kaçtır?',opts:['9.999','10.000','10.001','99.999'],ans:'B'},
+    {id:'q3_8',type:'fill',tag:'Basamak',diff:'easy',text:'345.678 sayısında onlar basamağındaki rakam kaçtır?',correct:'7'},
+    {id:'q3_9',type:'mcq',tag:'Doğal Sayı',diff:'hard',text:'Dört basamaklı en büyük tek sayı kaçtır?',opts:['9.997','9.998','9.999','9.990'],ans:'C'},
+    {id:'q3_10',type:'mcq',tag:'Karşılaştırma',diff:'medium',text:'Hangisi en büyüktür?',opts:['9×10.000 + 9×1.000','90.000 + 9.000 + 900','9×10.000 + 9×100 + 9','98.900'],ans:'B'},
+    {id:'q3_11',type:'mcq',tag:'Yazı',diff:'medium',text:'Dört yüz elli yedi bin iki yüz otuz dört sayısı rakamla nasıl yazılır?',opts:['457.234','450.234','475.234','457.243'],ans:'A'},
+    {id:'q3_12',type:'fill',tag:'Basamak',diff:'medium',text:'9 basamaklı en büyük doğal sayı ile 9 basamaklı en küçük doğal sayı arasındaki fark kaçtır?',correct:'888888888'},
+    {id:'q3_13',type:'mcq',tag:'Sıralama',diff:'medium',text:'Aşağıdaki sayılardan hangisi en küçüktür?',opts:['123.456','132.465','123.465','132.456'],ans:'C'},
+    {id:'q3_14',type:'mcq',tag:'Basamak Değeri',diff:'hard',text:'7.845.632 sayısında yüz binler basamağındaki rakam ile on binler basamağındaki rakamın farkı kaçtır?',opts:['3','4','5','6'],ans:'B'},
+    {id:'q3_15',type:'fill',tag:'Yazı',diff:'medium',text:'On iki milyon üç yüz kırk beş bin altı yüz yetmiş sekiz sayısını rakamla yaz.',correct:'12345678'},
+    {id:'q3_16',type:'mcq',tag:'Basamak',diff:'easy',text:'999.999 sayısından bir büyük sayı kaçtır?',opts:['1.000.000','999.000','1.000.999','100.000'],ans:'A'},
+    {id:'q3_17',type:'mcq',tag:'Doğal Sayı',diff:'medium',text:'En büyük 6 basamaklı sayı kaçtır?',opts:['999.999','1.000.000','99.999','999.998'],ans:'A'},
+    {id:'q3_18',type:'fill',tag:'Basamak',diff:'medium',text:'345.678.901 sayısında milyonlar basamağındaki rakam kaçtır?',correct:'5'},
+    {id:'q3_19',type:'mcq',tag:'Yazı',diff:'easy',text:'Üç yüz elli bin sayısı rakamla nasıl yazılır?',opts:['350.000','35.000','3.500','305.000'],ans:'A'},
+    {id:'q3_20',type:'mcq',tag:'Basamak Değeri',diff:'medium',text:'5.678.912 sayısında 7 rakamının basamak değeri kaçtır?',opts:['70.000','7.000','700','700.000'],ans:'A'},
+    {id:'q3_21',type:'fill',tag:'Yazı',diff:'hard',text:'Yüz yirmi üç milyon dört yüz elli altı bin yedi yüz seksen dokuz sayısını rakamla yaz.',correct:'123456789'},
+    {id:'q3_22',type:'mcq',tag:'Karşılaştırma',diff:'hard',text:'Aşağıdaki sayılardan hangisi 100.000\'e en yakındır?',opts:['98.500','99.600','100.200','97.800'],ans:'C'},
+    {id:'q3_23',type:'mcq',tag:'Doğal Sayı',diff:'easy',text:'En küçük 6 basamaklı sayı kaçtır?',opts:['99.999','100.000','100.001','999.999'],ans:'B'},
+    {id:'q3_24',type:'fill',tag:'Basamak',diff:'easy',text:'78.910 sayısında birler basamağındaki rakam kaçtır?',correct:'0'},
+    {id:'q3_25',type:'mcq',tag:'Basamak Değeri',diff:'medium',text:'23.456.789 sayısında 4 rakamının basamak değeri kaçtır?',opts:['400.000','40.000','4.000','4'],ans:'A'},
+    {id:'q3_26',type:'mcq',tag:'Yazı',diff:'medium',text:'Beş yüz altmış yedi bin sekiz yüz doksan bir sayısı rakamla nasıl yazılır?',opts:['567.891','576.891','567.981','657.891'],ans:'A'},
+    {id:'q3_27',type:'fill',tag:'Yazı',diff:'medium',text:'İki milyon üç yüz kırk beş bin altı yüz yetmiş yedi sayısını rakamla yaz.',correct:'2345677'},
+    {id:'q3_28',type:'mcq',tag:'Karşılaştırma',diff:'medium',text:'Aşağıdakilerden hangisi 2.000.000\'dan büyüktür?',opts:['1.999.999','2.000.001','1.999.998','2.000.000'],ans:'B'},
+    {id:'q3_29',type:'mcq',tag:'Basamak',diff:'hard',text:'456.789.123 sayısında kaç tane rakam vardır?',opts:['7','8','9','10'],ans:'C'},
+    {id:'q3_30',type:'fill',tag:'Basamak Değeri',diff:'medium',text:'8.901.234 sayısında 9 rakamının basamak değeri kaçtır?',correct:'900000'}
+  ],
+  s4: [
+    {id:'q4_1',type:'mcq',tag:'Yuvarlama',diff:'easy',text:'4.567 sayısını en yakın yüzlüğe yuvarla.',opts:['4.500','4.600','4.000','5.000'],ans:'B'},
+    {id:'q4_2',type:'mcq',tag:'Tahmin',diff:'easy',text:'187 + 214 işleminin sonucu en yakın onluğa yuvarlanarak tahmin edilirse sonuç kaçtır?',opts:['390','400','410','380'],ans:'B'},
+    {id:'q4_3',type:'fill',tag:'Yuvarlama',diff:'easy',text:'13.467 sayısını en yakın binliğe yuvarla.',correct:'13000'},
+    {id:'q4_4',type:'mcq',tag:'Problem',diff:'medium',text:'1.247 TL\'lik ürünün fiyatı en yakın yüzlüğe yuvarlanırsa kaç TL olur?',opts:['1.200','1.300','1.000','1.250'],ans:'B'},
+    {id:'q4_5',type:'mcq',tag:'Yuvarlama',diff:'easy',text:'47 sayısını en yakın onluğa yuvarla.',opts:['40','50','45','60'],ans:'B'},
+    {id:'q4_6',type:'fill',tag:'Tahmin',diff:'medium',text:'358 × 4 işleminin sonucunu en yakın yüzlüğe yuvarlayarak tahmin et.',correct:'1600'},
+    {id:'q4_7',type:'mcq',tag:'Yuvarlama',diff:'medium',text:'9.850 sayısını en yakın binliğe yuvarla.',opts:['9.000','10.000','9.800','9.900'],ans:'B'},
+    {id:'q4_8',type:'mcq',tag:'Problem',diff:'medium',text:'4 kitabın fiyatları: 18, 24, 31, 27 TL. Her fiyat en yakın onluğa yuvarlanırsa toplam kaç TL olur?',opts:['90','100','110','80'],ans:'B'},
+    {id:'q4_9',type:'fill',tag:'Yuvarlama',diff:'easy',text:'2.345 sayısını en yakın onluğa yuvarla.',correct:'2350'},
+    {id:'q4_10',type:'mcq',tag:'Tahmin',diff:'medium',text:'298 × 5 işleminin sonucu en yakın yüzlüğe yuvarlanarak tahmin edilirse sonuç kaçtır?',opts:['1.400','1.500','1.600','1.300'],ans:'B'},
+    {id:'q4_11',type:'mcq',tag:'Yuvarlama',diff:'easy',text:'45.321 sayısını en yakın on binliğe yuvarla.',opts:['40.000','45.000','50.000','45.300'],ans:'C'},
+    {id:'q4_12',type:'fill',tag:'Problem',diff:'hard',text:'Bir malın gerçek fiyatı 4.750 TL. En yakın yüzlüğe yuvarlandığında fiyat ile gerçek fiyat arasındaki fark kaç TL\'dir?',correct:'250'},
+    {id:'q4_13',type:'mcq',tag:'Tahmin',diff:'hard',text:'5 arkadaş alışveriş yaptı: 47, 83, 62, 29, 54 TL. Her tutar en yakın onluğa yuvarlanırsa toplam kaç TL olur?',opts:['270','275','280','265'],ans:'A'},
+    {id:'q4_14',type:'mcq',tag:'Yuvarlama',diff:'easy',text:'38 sayısını en yakın onluğa yuvarla.',opts:['30','40','35','50'],ans:'B'},
+    {id:'q4_15',type:'fill',tag:'Yuvarlama',diff:'easy',text:'87.654 sayısını en yakın yüzlüğe yuvarla.',correct:'87700'},
+    {id:'q4_16',type:'mcq',tag:'Yuvarlama',diff:'easy',text:'999 sayısını en yakın yüzlüğe yuvarla.',opts:['900','1.000','990','1.100'],ans:'B'},
+    {id:'q4_17',type:'fill',tag:'Tahmin',diff:'medium',text:'68 + 74 + 82 işleminin her sayı en yakın onluğa yuvarlanarak tahmini?',correct:'230'},
+    {id:'q4_18',type:'mcq',tag:'Yuvarlama',diff:'hard',text:'123.456.789 sayısını en yakın milyonluğa yuvarla.',opts:['123.000.000','124.000.000','120.000.000','130.000.000'],ans:'A'},
+    {id:'q4_19',type:'mcq',tag:'Problem',diff:'medium',text:'Bir araç 387 km yol yaptı. Bu mesafe en yakın onluğa yuvarlanırsa kaç km olur?',opts:['380','390','400','370'],ans:'B'},
+    {id:'q4_20',type:'fill',tag:'Yuvarlama',diff:'easy',text:'6.549 sayısını en yakın onluğa yuvarla.',correct:'6550'},
+    {id:'q4_21',type:'mcq',tag:'Tahmin',diff:'medium',text:'492 ÷ 4 işleminin sonucu en yakın yüzlüğe yuvarlanarak tahmin edilirse sonuç kaçtır?',opts:['100','125','120','130'],ans:'B'},
+    {id:'q4_22',type:'mcq',tag:'Yuvarlama',diff:'easy',text:'65 sayısını en yakın onluğa yuvarla.',opts:['60','70','65','80'],ans:'B'},
+    {id:'q4_23',type:'fill',tag:'Problem',diff:'hard',text:'Üç ürünün fiyatları: 234 TL, 567 TL, 891 TL. Her fiyat en yakın yüzlüğe yuvarlanırsa toplam tahmini kaç TL?',correct:'1700'},
+    {id:'q4_24',type:'mcq',tag:'Yuvarlama',diff:'hard',text:'456.789 sayısını en yakın on binliğe yuvarla.',opts:['450.000','460.000','456.000','456.800'],ans:'B'},
+    {id:'q4_25',type:'fill',tag:'Tahmin',diff:'medium',text:'47 × 21 işleminin her sayı en yakın onluğa yuvarlanarak tahmini?',correct:'1000'},
+    {id:'q4_26',type:'mcq',tag:'Yuvarlama',diff:'easy',text:'Hangi sayı en yakın onluğa yuvarlandığında 40 olur?',opts:['34','36','44','46'],ans:'B'},
+    {id:'q4_27',type:'mcq',tag:'Problem',diff:'medium',text:'Bir alışverişte 147, 263, 88 ve 312 TL harcandı. Tüm değerler en yakın yüzlüğe yuvarlanırsa toplam tahmini kaç TL?',opts:['700','750','800','850'],ans:'C'},
+    {id:'q4_28',type:'fill',tag:'Yuvarlama',diff:'easy',text:'45 sayısını en yakın onluğa yuvarla.',correct:'50'},
+    {id:'q4_29',type:'mcq',tag:'Yuvarlama',diff:'medium',text:'7.845 sayısını en yakın yüzlüğe yuvarla.',opts:['7.800','7.900','7.845','7.850'],ans:'A'},
+    {id:'q4_30',type:'fill',tag:'Yuvarlama',diff:'medium',text:'234.567 sayısını en yakın binliğe yuvarla.',correct:'235000'}
+  ],
+  s6: [
+    {id:'s6q1',sec:'s6',type:'mcq',diff:'easy',tag:'Okunuş',text:'<strong>3.245</strong> sayısını doğru okuyan seçeneği işaretleyin.',opts:['Üç bin iki yüz kırk beş','Üç yüz iki yüz kırk beş','Üç bin iki yüz dört beş','Otuz iki yüz kırk beş'],ans:'A'},
+    {id:'s6q2',sec:'s6',type:'mcq',diff:'easy',tag:'Yazılış',text:'"On dört bin beş yüz yirmi" sayısını rakamla yazınız.',opts:['14.520','14.052','140.520','14.502'],ans:'A'},
+    {id:'s6q3',sec:'s6',type:'fill',diff:'easy',tag:'Okunuş',text:'<strong>7.008</strong> sayısını sözel olarak yazın (örn: yedi bin sekiz)',correct:'yedi bin sekiz'},
+    {id:'s6q4',sec:'s6',type:'mcq',diff:'easy',tag:'Okunuş',text:'<strong>52.000</strong> sayısını doğru okuyan seçeneği bulun.',opts:['Elli iki bin','Beş bin iki yüz','Beş yüz iki bin','Elli iki yüz'],ans:'A'},
+    {id:'s6q5',sec:'s6',type:'fill',diff:'easy',tag:'Yazılış',text:'"Yirmi bin" sayısını rakamla yazın:',correct:'20000'},
+    {id:'s6q6',sec:'s6',type:'mcq',diff:'easy',tag:'Okunuş',text:'<strong>80.500</strong> sayısını doğru okuyan seçeneği işaretleyin.',opts:['Seksen bin beş yüz','Sekiz bin beş yüz','Seksen beş yüz','Seksen bin elli'],ans:'A'},
+    {id:'s6q7',sec:'s6',type:'fill',diff:'easy',tag:'Yazılış',text:'"Dört yüz bin" sayısını rakamla yazın:',correct:'400000'},
+    {id:'s6q8',sec:'s6',type:'mcq',diff:'easy',tag:'Okunuş',text:'<strong>100.010</strong> sayısını doğru okuyan seçeneği bulun.',opts:['Yüz bin on','Bir milyon on','Yüz on bin','On bin yüz'],ans:'A'},
+    {id:'s6q9',sec:'s6',type:'fill',diff:'easy',tag:'Yazılış',text:'"Altı yüz elli bin" sayısını rakamla yazın:',correct:'650000'},
+    {id:'s6q10',sec:'s6',type:'mcq',diff:'easy',tag:'Karşılaştırma',text:'Hangi eşleştirme doğrudur?',opts:['10.000 = On bin','10.000 = Yüz bin','10.000 = Bin','10.000 = On milyon'],ans:'A'},
+    {id:'s6q11',sec:'s6',type:'mcq',diff:'medium',tag:'Okunuş',text:'<strong>125.430</strong> sayısını doğru okutan seçeneği bulun.',opts:['Yüz yirmi beş bin dört yüz otuz','Bir yüz yirmi beş bin dört yüz otuz','Yüz iki bin dört yüz otuz','Yüz yirmi beş yüz dört otuz'],ans:'A'},
+    {id:'s6q12',sec:'s6',type:'mcq',diff:'medium',tag:'Yazılış',text:'"Üç yüz elli bin altı yüz yetmiş sekiz" sayısını rakamla yazın.',opts:['350.678','305.678','35.678','300.678'],ans:'A'},
+    {id:'s6q13',sec:'s6',type:'fill',diff:'medium',tag:'Okunuş',text:'<strong>1.000.000</strong> sayısı nasıl okunur? (sözel olarak yazın)',correct:'bir milyon'},
+    {id:'s6q14',sec:'s6',type:'mcq',diff:'medium',tag:'Okunuş',text:'<strong>2.050.300</strong> sayısını doğru okuyan seçeneği bulun.',opts:['İki milyon elli bin üç yüz','İki milyon beş bin üç yüz','Yirmi milyon elli yüz','İki bin elli yüz'],ans:'A'},
+    {id:'s6q15',sec:'s6',type:'fill',diff:'medium',tag:'Yazılış',text:'"Kırk beş bin yüz" sayısını rakamla yazın (sadece rakam):',correct:'45100'},
+    {id:'s6q16',sec:'s6',type:'mcq',diff:'medium',tag:'Okunuş',text:'<strong>730.050</strong> sayısını doğru okuyan seçeneği bulun.',opts:['Yedi yüz otuz bin elli','Yetmiş üç bin elli','Yedi yüz üç bin elli','Yedi milyon otuz bin elli'],ans:'A'},
+    {id:'s6q17',sec:'s6',type:'fill',diff:'medium',tag:'Yazılış',text:'"İki milyon yüz bin" sayısını rakamla yazın:',correct:'2100000'},
+    {id:'s6q18',sec:'s6',type:'mcq',diff:'medium',tag:'Karşılaştırma',text:'Aşağıdakilerden hangisi "Bir milyon"u doğru ifade eder?',opts:['1.000.000','100.000','10.000.000','1.000'],ans:'A'},
+    {id:'s6q19',sec:'s6',type:'fill',diff:'medium',tag:'Yazılış',text:'"Beş milyon üç yüz bin" sayısını rakamla yazın:',correct:'5300000'},
+    {id:'s6q20',sec:'s6',type:'mcq',diff:'medium',tag:'Okunuş',text:'<strong>4.007.060</strong> sayısını doğru okuyan seçeneği bulun.',opts:['Dört milyon yedi bin altmış','Dört milyon yetmiş bin altı','Kırk milyon yedi altmış','Dört yüz bin yedi altmış'],ans:'A'},
+    {id:'s6q21',sec:'s6',type:'mcq',diff:'hard',tag:'Okunuş',text:'<strong>9.999.999</strong> sayısını doğru okuyan seçenek hangisidir?',opts:['Dokuz milyon dokuz yüz doksan dokuz bin dokuz yüz doksan dokuz','Dokuz milyon dokuz bin dokuz yüz doksan dokuz','Dokuz yüz doksan dokuz bin dokuz yüz doksan dokuz','Dokuz milyon dokuz yüz doksan dokuz'],ans:'A'},
+    {id:'s6q22',sec:'s6',type:'fill',diff:'hard',tag:'Yazılış',text:'"Bir milyon dört yüz otuz iki bin beş yüz altmış" sayısını rakamla yazın:',correct:'1432560'},
+    {id:'s6q23',sec:'s6',type:'mcq',diff:'hard',tag:'Karşılaştırma',text:'Hangi eşleştirme doğrudur?',opts:['500.000 = Beş yüz bin','500.000 = Elli bin','500.000 = Beş milyon','500.000 = Beş bin'],ans:'A'},
+    {id:'s6q24',sec:'s6',type:'fill',diff:'hard',tag:'Okunuş',text:'<strong>3.060.040</strong> sayısını sözel olarak yazın (küçük harf):',correct:'üç milyon altmış bin kırk'},
+    {id:'s6q25',sec:'s6',type:'mcq',diff:'hard',tag:'Yazılış',text:'"Yedi milyon sekiz yüz on dokuz bin iki yüz on beş" sayısını rakamla yazın.',opts:['7.819.215','7.819.215','7.891.215','7.819.125'],ans:'A'},
+    {id:'s6q26',sec:'s6',type:'fill',diff:'hard',tag:'Yazılış',text:'"Altı milyon beş yüz yetmiş bin üç yüz" sayısını rakamla yazın:',correct:'6570300'},
+    {id:'s6q27',sec:'s6',type:'mcq',diff:'hard',tag:'Okunuş',text:'<strong>8.000.008</strong> sayısını doğru okuyan seçeneği bulun.',opts:['Sekiz milyon sekiz','Sekiz milyon sekiz bin','Seksen milyon sekiz','Sekiz bin sekiz'],ans:'A'},
+    {id:'s6q28',sec:'s6',type:'fill',diff:'hard',tag:'Yazılış',text:'"Dokuz milyon dokuz yüz doksan bin dokuz yüz doksan" sayısını rakamla yazın:',correct:'9990990'},
+    {id:'s6q29',sec:'s6',type:'mcq',diff:'hard',tag:'Karşılaştırma',text:'<strong>5.040.200</strong> sayısı ile <strong>5.400.020</strong> sayısından büyük olan hangisidir?',opts:['5.400.020','5.040.200','İkisi eşit','Karşılaştırılamaz'],ans:'A'},
+    {id:'s6q30',sec:'s6',type:'fill',diff:'hard',tag:'Okunuş',text:'<strong>1.001.001</strong> sayısını sözel olarak yazın (küçük harf):',correct:'bir milyon bir bin bir'},
+  ],
+  s5: [
+    {id:'q5_1',type:'mcq',tag:'Sayı Örüntüsü',diff:'easy',text:'2, 5, 8, 11, ... örüntüsünün 8. terimi kaçtır?',opts:['20','23','24','26'],ans:'B'},
+    {id:'q5_2',type:'mcq',tag:'Örüntü',diff:'medium',text:'1, 3, 6, 10, 15, ... örüntüsünün 7. terimi kaçtır?',opts:['21','24','28','30'],ans:'C'},
+    {id:'q5_3',type:'fill',tag:'Kural Bul',diff:'medium',text:'4, 8, 16, 32, 64, ... örüntüsünün 6. terimi?',correct:'128'},
+    {id:'q5_4',type:'mcq',tag:'Örüntü',diff:'medium',text:'100, 93, 86, 79, ... örüntüsünde 6. terim kaçtır?',opts:['58','62','65','72'],ans:'A'},
+    {id:'q5_5',type:'mcq',tag:'Kare Sayı',diff:'easy',text:'1, 4, 9, 16, 25 ... Bu dizide 10. kare sayısı kaçtır?',opts:['81','100','121','64'],ans:'B'},
+    {id:'q5_6',type:'fill',tag:'Kural',diff:'medium',text:'3, 6, 12, 24, ... Bu örüntünün 7. terimi?',correct:'192'},
+    {id:'q5_7',type:'mcq',tag:'Kural Bul',diff:'medium',text:'n. terim = 3n + 1 kuralına göre 8. terim kaçtır?',opts:['22','24','25','28'],ans:'C'},
+    {id:'q5_8',type:'mcq',tag:'Fibonacci',diff:'hard',text:'Fibonacci dizisi: 1,1,2,3,5,8,13... 9. terimi kaçtır?',opts:['21','34','55','89'],ans:'B'},
+    {id:'q5_9',type:'fill',tag:'Örüntü',diff:'easy',text:'5, 10, 15, 20, 25, ... dizisinin 10. terimi?',correct:'50'},
+    {id:'q5_10',type:'mcq',tag:'Şekil Örüntüsü',diff:'medium',text:'Üçgen sayısı: 1,4,9,16,... Bu dizi hangi kurala göre oluşturulmuştur?',opts:['n+3','n²','2n-1','n×3'],ans:'B'},
+    {id:'q5_11',type:'mcq',tag:'Sayı Örüntüsü',diff:'hard',text:'2, 6, 18, 54, ... Bu dizinin 6. terimi kaçtır?',opts:['162','486','324','648'],ans:'B'},
+    {id:'q5_12',type:'fill',tag:'Kural Bul',diff:'hard',text:'1, 2, 4, 7, 11, 16, ... Bir sonraki terim?',correct:'22'},
+    {id:'q5_13',type:'mcq',tag:'Örüntü',diff:'medium',text:'1, 1, 2, 3, 5, 8, 13, 21, ... Bu dizinin 10. terimi kaçtır?',opts:['34','55','89','42'],ans:'B'},
+    {id:'q5_14',type:'mcq',tag:'Sayı Örüntüsü',diff:'easy',text:'3, 7, 11, 15, ... örüntüsünün kuralı nedir?',opts:['Her seferinde 3 artar','Her seferinde 4 artar','Her seferinde 5 artar','Her seferinde 3 azalır'],ans:'B'},
+    {id:'q5_15',type:'fill',tag:'Kural',diff:'medium',text:'n. terim = 2×n kuralına göre 5. terim kaçtır?',correct:'10'},
+    {id:'q5_16',type:'mcq',tag:'Örüntü',diff:'hard',text:'512, 256, 128, 64, ... Bir sonraki terim kaçtır?',opts:['32','16','8','24'],ans:'A'},
+    {id:'q5_17',type:'mcq',tag:'Sayı Örüntüsü',diff:'medium',text:'1, 3, 7, 15, 31, ... Bu dizinin bir sonraki terimi kaçtır?',opts:['47','63','60','57'],ans:'B'},
+    {id:'q5_18',type:'fill',tag:'Örüntü',diff:'easy',text:'10, 20, 30, 40, 50, ... 8. terim kaçtır?',correct:'80'},
+    {id:'q5_19',type:'mcq',tag:'Şekil Örüntüsü',diff:'hard',text:'Bir örüntüde 1. adımda 3 kare, 2. adımda 5 kare, 3. adımda 7 kare kullanılıyor. 10. adımda kaç kare kullanılır?',opts:['19','21','23','25'],ans:'B'},
+    {id:'q5_20',type:'mcq',tag:'Sayı Örüntüsü',diff:'easy',text:'100, 90, 80, 70, ... Bir sonraki terim?',opts:['65','60','55','50'],ans:'B'},
+    {id:'q5_21',type:'fill',tag:'Kural Bul',diff:'hard',text:'Sayı örüntüsü: 1, 5, 13, 25, 41 ... Bir sonraki terim?',correct:'61'},
+    {id:'q5_22',type:'mcq',tag:'Örüntü',diff:'medium',text:'5, 10, 20, 40, 80, ... Bu dizinin 7. terimi kaçtır?',opts:['160','240','320','400'],ans:'C'},
+    {id:'q5_23',type:'mcq',tag:'Sayı Örüntüsü',diff:'hard',text:'1+3+5+7+9+... şeklinde art arda gelen tek sayıların toplamı kare sayıya eşittir. 1\'den 19\'a kadar tek sayıların toplamı kaçtır?',opts:['81','100','121','64'],ans:'B'},
+    {id:'q5_24',type:'fill',tag:'Kural',diff:'medium',text:'Bir örüntüde her terim bir öncekinin 3 katı. 1. terim 2 ise 5. terim kaçtır?',correct:'162'},
+    {id:'q5_25',type:'mcq',tag:'Sayı Örüntüsü',diff:'easy',text:'6, 12, 18, 24, ... dizisinin 9. terimi kaçtır?',opts:['48','54','60','66'],ans:'B'},
+    {id:'q5_26',type:'fill',tag:'Örüntü',diff:'hard',text:'1, 8, 27, 64, ... Bu dizinin kuralı n³. 5. terim kaçtır?',correct:'125'},
+    {id:'q5_27',type:'mcq',tag:'Kural Bul',diff:'medium',text:'0, 3, 8, 15, 24, ... Bu dizinin kuralı nedir?',opts:['n²-1','n²+1','n²-n','n×(n-1)'],ans:'A'},
+    {id:'q5_28',type:'mcq',tag:'Sayı Örüntüsü',diff:'medium',text:'7, 14, 21, 28, ... Bu dizi 7\'nin katları. 12. terim kaçtır?',opts:['77','84','91','98'],ans:'B'},
+    {id:'q5_29',type:'fill',tag:'Örüntü',diff:'easy',text:'1, 4, 7, 10, ... 10. terim kaçtır?',correct:'28'},
+    {id:'q5_30',type:'mcq',tag:'Kural',diff:'hard',text:'Bir örüntüde 5. terim 47, her terim bir öncekinden 8 fazla. 1. terim kaçtır?',opts:['13','15','17','19'],ans:'B'},
+    {id:'q5_31',type:'mcq',tag:'Şekil Örüntüsü',diff:'medium',text:'Her adımda 3 çubuk eklenerek oluşturulan şekillerde 1. adımda 3 çubuk var. 7. adımda kaç çubuk vardır?',opts:['18','21','24','27'],ans:'B'},
+    {id:'q5_32',type:'fill',tag:'Örüntü',diff:'medium',text:'12, 6, 3, 1.5, ... Bir sonraki terim?',correct:'0.75'}
+  ],
+  s8: [
+    {id:'q8_1',type:'mcq',tag:'İşlem Sırası',diff:'medium',text:'8 + 4 × 3 - 6 ÷ 2 işleminin sonucu kaçtır?',opts:['15','17','13','11'],ans:'A'},
+    {id:'q8_2',type:'fill',tag:'İşlem Sırası',diff:'medium',text:'100 ÷ 4 + 100 × 4 - 4 = ?',correct:'421'},
+    {id:'q8_3',type:'mcq',tag:'İşlem Sırası',diff:'medium',text:'(15 + 25) × 3 - 50 ÷ 5 işleminin sonucu kaçtır?',opts:['110','115','120','125'],ans:'A'},
+    {id:'q8_4',type:'fill',tag:'İşlem Sırası',diff:'medium',text:'(24 ÷ 6) × 3 + 7 = ?',correct:'19'},
+    {id:'q8_5',type:'mcq',tag:'Problem',diff:'hard',text:'Bir iş yeri 3 vardiyada çalışıyor. Her vardiya 8 saat, 15 işçi var. Günlük toplam insan-saat?',opts:['320','340','360','380'],ans:'C'},
+    {id:'q8_6',type:'mcq',tag:'Problem',diff:'medium',text:'Bir okulda 345 kız ve 268 erkek öğrenci var. 45 öğrenci mezun olursa okulda kaç öğrenci kalır?',opts:['548','568','588','608'],ans:'B'},
+    {id:'q8_7',type:'fill',tag:'İşlem Sırası',diff:'easy',text:'18 + 6 × 4 - 12 ÷ 3 = ?',correct:'38'},
+    {id:'q8_8',type:'mcq',tag:'Problem',diff:'medium',text:'Bir market 450 TL\'ye aldığı ürünü 120 TL karla satarsa satış fiyatı kaç TL\'dir?',opts:['560','570','580','590'],ans:'B'},
+    {id:'q8_9',type:'mcq',tag:'İşlem Sırası',diff:'medium',text:'7 + 3 × (8 - 4) ÷ 2 işleminin sonucu kaçtır?',opts:['13','14','20','17'],ans:'A'},
+    {id:'q8_10',type:'fill',tag:'İşlem Sırası',diff:'hard',text:'[(24 ÷ 6) × 3 + 7] - [18 ÷ (2+1)] = ?',correct:'16'},
+    {id:'q8_11',type:'mcq',tag:'Problem',diff:'medium',text:'Bir boru saatte 45 L su dolduruyor. 6 saatte kaç litre su doldurur?',opts:['250','260','270','280'],ans:'C'},
+    {id:'q8_12',type:'mcq',tag:'İşlem Sırası',diff:'medium',text:'5 × (4 + 3) - 2 × 6 işleminin sonucu kaçtır?',opts:['23','25','27','29'],ans:'A'},
+    {id:'q8_13',type:'fill',tag:'Problem',diff:'medium',text:'Bir musluk dakikada 12 L su akıtıyor. 1 saat (60 dakika) içinde kaç litre su akar?',correct:'720'},
+    {id:'q8_14',type:'mcq',tag:'İşlem Sırası',diff:'easy',text:'25 + 15 - 10 + 5 işleminin sonucu kaçtır?',opts:['35','25','30','40'],ans:'A'},
+    {id:'q8_15',type:'mcq',tag:'Problem',diff:'hard',text:'Bir boru saatte 45 L su dolduruyor, başka bir boru saatte 30 L boşaltıyor. Başlangıçta 120 L varsa 4 saat sonra ne kadar su kalır?',opts:['150','160','170','180'],ans:'B'},
+    {id:'q8_16',type:'fill',tag:'İşlem Sırası',diff:'medium',text:'72 ÷ 8 + 3 × 5 = ?',correct:'24'},
+    {id:'q8_17',type:'mcq',tag:'Problem',diff:'medium',text:'Bir mağaza 450 TL\'ye aldığı ürünü 90 TL karla satarsa satış fiyatı kaç TL?',opts:['520','530','540','550'],ans:'C'},
+    {id:'q8_18',type:'mcq',tag:'İşlem Sırası',diff:'hard',text:'6 × (12 - 7) + 48 ÷ 6 işleminin sonucu kaçtır?',opts:['38','40','42','44'],ans:'B'},
+    {id:'q8_19',type:'fill',tag:'Problem',diff:'hard',text:'Bir musluğun debisi 12 L/dk. 1,5 saatte kaç litre su akar?',correct:'1080'},
+    {id:'q8_20',type:'mcq',tag:'İşlem Sırası',diff:'medium',text:'10 × 4 + 10 × 3 işleminin sonucu kaçtır?',opts:['70','60','80','50'],ans:'A'},
+    {id:'q8_21',type:'mcq',tag:'Problem',diff:'medium',text:'Ali her gün 8 soru çözdü, Mehmet her gün 12 soru çözdü. 30 günde ikisi birlikte toplam kaç soru çözdü?',opts:['580','600','620','640'],ans:'B'},
+    {id:'q8_22',type:'fill',tag:'İşlem Sırası',diff:'medium',text:'4 × 9 + 16 ÷ 4 = ?',correct:'40'},
+    {id:'q8_23',type:'mcq',tag:'Problem',diff:'hard',text:'Bir havuzda 1800 litre su var. Her gün 120 litre doldurulup 75 litre boşaltılıyor. 10 gün sonra kaç litre su olur?',opts:['2100','2200','2250','2300'],ans:'C'},
+    {id:'q8_24',type:'mcq',tag:'İşlem Sırası',diff:'hard',text:'(36 ÷ 4 + 2) × 3 - 10 işleminin sonucu kaçtır?',opts:['22','24','26','28'],ans:'B'},
+    {id:'q8_25',type:'fill',tag:'Problem',diff:'medium',text:'Bir sınıfta 28 öğrenci var. Her 4 öğrenciye 1 kitap dağıtıldığında toplam kaç kitap dağıtılır?',correct:'7'},
+    {id:'q8_26',type:'mcq',tag:'İşlem Sırası',diff:'medium',text:'9 × 5 - 9 × 3 işleminin sonucu kaçtır?',opts:['18','20','22','24'],ans:'A'},
+    {id:'q8_27',type:'mcq',tag:'Problem',diff:'medium',text:'Bir mağaza 450 TL\'ye aldığı ürünü 135 TL karla satarsa satış fiyatı kaç TL\'dir?',opts:['565','575','585','595'],ans:'C'},
+    {id:'q8_28',type:'fill',tag:'İşlem Sırası',diff:'easy',text:'56 ÷ 7 + 4 × 3 = ?',correct:'20'},
+    {id:'q8_29',type:'mcq',tag:'İşlem Sırası',diff:'medium',text:'12 + (8 × 2) - (16 ÷ 4) işleminin sonucu kaçtır?',opts:['24','26','28','30'],ans:'A'},
+    {id:'q8_30',type:'mcq',tag:'Problem',diff:'medium',text:'Bir sınıfta 40 öğrenci var. Sınavdan geçen öğrenci sayısı 28 ise kaç öğrenci kaldı?',opts:['10','12','14','16'],ans:'B'},
+    {id:'q8_31',type:'fill',tag:'Problem',diff:'hard',text:'İki sayının ortalaması 25. Sayılardan biri 18 ise diğeri kaçtır?',correct:'32'},
+    {id:'q8_32',type:'mcq',tag:'İşlem Sırası',diff:'easy',text:'20 ÷ 4 × 5 işleminin sonucu kaçtır?',opts:['20','25','30','15'],ans:'B'},
+    {id:'q8_33',type:'fill',tag:'Problem',diff:'medium',text:'Bir bahçıvan 8 günde 240 çiçek dikti. Her gün kaç çiçek dikmiştir?',correct:'30'},
+    {id:'q8_34',type:'mcq',tag:'Problem',diff:'hard',text:'Bir havuz 1200 litre kapasitelidir. 2 musluk birlikte saatte 80 L dolduruyor. Havuz tamamen kaç saatte dolar?',opts:['12','13','14','15'],ans:'D'},
+    {id:'q8_35',type:'mcq',tag:'İşlem Sırası',diff:'hard',text:'(7 + 8) × 4 - 6 × 3 ÷ 2 işleminin sonucu kaçtır?',opts:['51','54','57','60'],ans:'B'}
+  ],
+  s9: [
+    {id:'q9_act1',type:'activity',
+     title:'🎯 Eşleştirme Aktivitesi – İşlem Sonuçları',
+     pairs:[
+       {left:'12 × 8',right:'96'},{left:'144 ÷ 12',right:'12'},
+       {left:'25 × 4',right:'100'},{left:'15 × 6',right:'90'},
+       {left:'72 ÷ 8',right:'9'},{left:'7 × 14',right:'98'}
+     ]},
+    {id:'q9_act2',type:'activity',
+     title:'🔗 Eşleştirme – Sayı Yuvarlama',
+     pairs:[
+       {left:'47 → onluk',right:'50'},{left:'134 → yüzlük',right:'100'},
+       {left:'2.456 → binlik',right:'2.000'},{left:'8.750 → binlik',right:'9.000'},
+       {left:'365 → onluk',right:'370'},{left:'9.890 → binlik',right:'10.000'}
+     ]},
+    {id:'q9_1',type:'mcq',tag:'Dört İşlem',diff:'easy',text:'(48 + 12) × 5 - 100 ÷ 4 işleminin sonucu kaçtır?',opts:['255','275','300','285'],ans:'B'},
+    {id:'q9_2',type:'fill',tag:'Dört İşlem',diff:'easy',text:'84 ÷ 7 + 15 × 4 - 20 = ?',correct:'52'},
+    {id:'q9_3',type:'mcq',tag:'Problem',diff:'medium',text:'Bir çiftçinin 4 tarlası var. Her tarlada 125 ağaç, her ağaçta 48 meyve. Toplam meyve sayısı kaçtır?',opts:['23.000','24.000','25.000','26.000'],ans:'B'},
+    {id:'q9_4',type:'mcq',tag:'Dört İşlem',diff:'medium',text:'9 × (100 - 64) ÷ 4 + 18 işleminin sonucu kaçtır?',opts:['97','99','100','99'],ans:'B'},
+    {id:'q9_5',type:'fill',tag:'Problem',diff:'medium',text:'Bir fabrika günde 3 vardiyada çalışıyor. Her vardiyada 4 makine var ve her makine saatte 25 ürün üretiyor. Günde (8 saat/vardiya) toplam kaç ürün üretilir?',correct:'2400'},
+    {id:'q9_6',type:'mcq',tag:'Problem',diff:'hard',text:'Ali 450 TL, Veli 630 TL birikimi olan arkadaşına borç verdi. Veli borcun yarısını ödedi. Ali\'nin şimdi kaç TL si var?',opts:['715','765','750','780'],ans:'B'},
+    {id:'q9_7',type:'mcq',tag:'Dört İşlem',diff:'hard',text:'[(144 ÷ 12) + (7 × 8)] - [(6 × 9) - (4 × 3)] işleminin sonucu kaçtır?',opts:['32','34','36','38'],ans:'C'},
+    {id:'q9_8',type:'fill',tag:'Problem',diff:'medium',text:'Bir depoda 5 katta 12 raf var. Her rafta 36 kutu. 8 katu boş raf varsa toplam dolu kutu sayısı kaçtır?',correct:'1872'},
+    {id:'q9_9',type:'mcq',tag:'Problem',diff:'hard',text:'Bir market 7 günde 2.856 ekmek sattı. Günde ortalama kaç ekmek satar? (Bölme işlemi)',opts:['406','408','410','412'],ans:'B'},
+    {id:'q9_10',type:'mcq',tag:'Dört İşlem',diff:'medium',text:'5 × 5 × 5 - 5 × (5 + 5) işleminin sonucu kaçtır?',opts:['65','75','85','95'],ans:'B'},
+    {id:'q9_11',type:'fill',tag:'Problem',diff:'medium',text:'Bir okuldaki 840 öğrenci eşit olarak 7 şubeye ayrılıyor. Her şubede kaç öğrenci vardır?',correct:'120'},
+    {id:'q9_12',type:'mcq',tag:'Problem',diff:'medium',text:'Bir çoban 360 koyununu 8 ağıla eşit dağıtacak, 4 ağılı da kiraya verecek. Geriye kaç koyun kalır?',opts:['170','180','190','200'],ans:'B'},
+    {id:'q9_13',type:'mcq',tag:'Dört İşlem',diff:'easy',text:'(120 ÷ 8) × 3 + (90 ÷ 6) - 10 işleminin sonucu kaçtır?',opts:['60','55','50','45'],ans:'A'},
+    {id:'q9_14',type:'fill',tag:'Problem',diff:'medium',text:'Bir araba saatte 90 km gidiyor. 4 saatte kaç km gider? 540 km gitmek için kaç saat daha gerekir?',correct:'2'},
+    {id:'q9_15',type:'mcq',tag:'Problem',diff:'hard',text:'Bir sayının 3 katından 75 çıkarılırsa 150 elde ediliyor. Sayı kaçtır?',opts:['65','75','80','85'],ans:'B'},
+    {id:'q9_16',type:'mcq',tag:'Dört İşlem',diff:'medium',text:'250 × 4 ÷ 5 + 125 - 25 işleminin sonucu kaçtır?',opts:['290','295','300','305'],ans:'C'},
+    {id:'q9_17',type:'fill',tag:'Problem',diff:'easy',text:'Bir sınıfta 6 sıra, her sırada 5 öğrenci var. Öğretmen dahil kaç kişi var?',correct:'31'},
+    {id:'q9_18',type:'mcq',tag:'Problem',diff:'hard',text:'Bir sayının 4 fazlasının 6 katı 144\'e eşittir. Sayı kaçtır?',opts:['18','20','22','24'],ans:'B'},
+    {id:'q9_19',type:'mcq',tag:'Dört İşlem',diff:'medium',text:'Ardışık 5 doğal sayının toplamı 85 ise bu sayıların en küçüğü kaçtır?',opts:['13','14','15','16'],ans:'C'},
+    {id:'q9_20',type:'fill',tag:'Problem',diff:'medium',text:'Bir depoda 12 kutuda toplam 480 kalem var. 3 kutu daha gelirse toplam kaç kalem olur?',correct:'600'}
+  ]
+};
+// SCRIPT_PART2
+const STORAGE_KEY = 'matTestV2';
+let state = {studentName:'',answers:{},completed:false,startTime:null,darkMode:false,streak:0,bestStreak:0,currentTab:'s1'};
+let timerInterval=null;
+let quizMode=false, quizIdx=0, quizQuestions=[];
+
+function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify({studentName:state.studentName,answers:state.answers,startTime:state.startTime,darkMode:state.darkMode,bestStreak:state.bestStreak}));}catch(e){}}
+function loadState(){try{const d=JSON.parse(localStorage.getItem(STORAGE_KEY));if(d){state.studentName=d.studentName||'';state.answers=d.answers||{};state.startTime=d.startTime||null;state.darkMode=!!d.darkMode;state.bestStreak=d.bestStreak||0;}}catch(e){}}
+
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function getThemeClass(secId){
+  const themes={s1:'purple',s2:'pink',s3:'green',s6:'indigo',s4:'orange',s5:'blue',s8:'indigo',s9:'teal'};
+  return themes[secId]||'purple';
+}
+function getDiffClass(d){return d==='easy'?'diff-easy':d==='medium'?'diff-medium':'diff-hard';}
+function getDiffLabel(d){return d==='easy'?'Kolay':d==='medium'?'Orta':'Zor';}
+
+function getAllQuestions(){
+  const all=[];
+  ['s1','s2','s3','s6','s4','s5','s8','s9'].forEach(sec=>{
+    (QUESTIONS_DB[sec]||[]).forEach(q=>{if(q.type!=='activity')all.push({...q,sec});});
+  });
+  return all;
+}
+function getQuestionById(id){return getAllQuestions().find(q=>q.id===id);}
+
+function renderQuestion(q,sec,num){
+  const th=getThemeClass(sec);
+  const answered=state.answers[q.id];
+  if(q.type==='activity')return renderActivity(q,th);
+  const isCorrect=answered&&answered.correct===true;
+  const isWrong=answered&&answered.correct===false;
+  let cls='q-card th-'+th+(isCorrect?' answered':'')+(isWrong?' wrong-ans':'');
+  let diffBadge=`<span class="diff-badge ${getDiffClass(q.diff)}">${getDiffLabel(q.diff)}</span>`;
+  const label=num||'•';
+  let html=`<div class="${cls}" data-qid="${q.id}" data-tag="${q.tag||''}">
+    <div class="q-card-inner">
+      <div class="q-header">
+        <span class="q-number nb-${th}">${label}</span>
+        <span class="q-tag">${q.tag||''}</span>
+        ${diffBadge}
+      </div>
+      <div class="q-text">${formatQ(q.text)}</div>`;
+  if(q.type==='mcq'){
+    html+='<div class="mcq-options">';
+    const letters=['A','B','C','D'];
+    q.opts.forEach((opt,i)=>{
+      const letter=letters[i];
+      let oc='';if(answered){if(letter===q.ans)oc='correct';else if(letter===answered.val)oc='wrong';}
+      html+=`<div class="mcq-opt ${oc}" onclick="answerMCQ('${q.id}','${letter}',this)">
+        <span class="opt-letter">${letter}</span><span class="opt-text">${formatQ(opt)}</span></div>`;
+    });
+    html+='</div>';
+    if(answered){
+      html+=`<div class="result-badge ${isCorrect?'badge-ok':'badge-no'}">${isCorrect?'✓ Doğru!':'✗ Yanlış. Doğru: '+q.ans}</div>`;
+    }
+  } else if(q.type==='fill'){
+    let ic='';if(answered){ic=isCorrect?'correct':'wrong-fill';}
+    const v=answered?answered.val:'';
+    html+=`<div class="fill-row">
+      <div class="fill-input-wrap">
+        <input class="fill-input ${ic}" type="text" inputmode="numeric" placeholder="Cevabın..."
+          value="${v.replace(/"/g,'&quot;')}" onkeydown="if(event.key==='Enter')checkFill('${q.id}',this)"
+          ${answered?'disabled':''}>
+      </div>`;
+    if(!answered)html+=`<button class="check-btn" onclick="checkFill('${q.id}',this.parentElement.querySelector('.fill-input'))">✓ Cevapla</button>`;
+    if(answered)html+=`<div class="result-badge ${isCorrect?'badge-ok':'badge-no'}">${isCorrect?'✓ Doğru!':'✗ Doğru cevap: '+q.correct}</div>`;
+    html+='</div>';
+  }
+  html+='</div></div>';
+  return html;
+}
+
+function formatQ(txt){
+  if(!txt)return'';
+  return String(txt).replace(/\*\*(.*?)\*\*/g,'<span class="math">$1</span>');
+}
+
+function renderActivity(q,th){
+  let html=`<div class="activity-card">
+    <div class="activity-title">${q.title}</div>
+    <div class="match-grid">`;
+  const leftHtml=q.pairs.map((p,i)=>`<div class="match-item" data-act="${q.id}" data-side="left" data-idx="${i}" onclick="matchClick('${q.id}','left',${i})">${p.left}</div>`).join('');
+  const rightHtml=shuffle(q.pairs.map((p,i)=>({...p,origIdx:i}))).map((p,i)=>`<div class="match-item" data-act="${q.id}" data-side="right" data-idx="${i}" data-orig="${p.origIdx}" onclick="matchClick('${q.id}','right',${i})">${p.right}</div>`).join('');
+  html+=`<div class="match-col" id="left-${q.id}">${leftHtml}</div><div class="match-col" id="right-${q.id}">${rightHtml}</div>`;
+  html+='</div><div id="actResult-'+q.id+'" style="margin-top:.8rem;"></div></div>';
+  return html;
+}
+
+const matchSel={};
+function matchClick(actId,side,idx){
+  if(!matchSel[actId])matchSel[actId]={};
+  const items=document.querySelectorAll(`.match-item[data-act="${actId}"]`);
+  const cur=matchSel[actId];
+  if(cur[side]===idx){cur[side]=null;}
+  else{cur[side]=idx;}
+  items.forEach(it=>{
+    if(it.dataset.act!==actId)return;
+    it.classList.remove('sel');
+    if(cur[it.dataset.side]!==undefined&&cur[it.dataset.side]!==null&&cur[it.dataset.side]==it.dataset.idx)it.classList.add('sel');
+  });
+  if(cur.left!==undefined&&cur.left!==null&&cur.right!==undefined&&cur.right!==null){
+    const leftItem=document.querySelector(`.match-item[data-act="${actId}"][data-side="left"][data-idx="${cur.left}"]`);
+    const rightItem=document.querySelector(`.match-item[data-act="${actId}"][data-side="right"][data-idx="${cur.right}"]`);
+    const leftOrig=parseInt(leftItem.dataset.idx);
+    const rightOrig=parseInt(rightItem.dataset.orig);
+    if(leftOrig===rightOrig){
+      leftItem.classList.remove('sel');leftItem.classList.add('ok');
+      rightItem.classList.remove('sel');rightItem.classList.add('ok');
+      leftItem.onclick=null;rightItem.onclick=null;
+    } else {
+      leftItem.classList.add('fail');rightItem.classList.add('fail');
+      setTimeout(()=>{leftItem.classList.remove('fail','sel');rightItem.classList.remove('fail','sel');},800);
+    }
+    matchSel[actId]={};
+    const total=q_pairsCount(actId);
+    const okCount=document.querySelectorAll(`.match-item[data-act="${actId}"].ok`).length;
+    if(okCount===total*2){
+      document.getElementById('actResult-'+actId).innerHTML='<div class="result-badge badge-ok">🎉 Tüm eşleşmeler doğru!</div>';
+    }
+  }
+}
+function q_pairsCount(actId){const q=QUESTIONS_DB.s9.find(x=>x.id===actId);return q?q.pairs.length:0;}
+
+function renderSection(secId){
+  const grid=document.getElementById('grid-'+secId);
+  if(!grid)return;
+  const qs=QUESTIONS_DB[secId]||[];
+  let num=0;
+  grid.innerHTML=qs.map(q=>{if(q.type!=='activity')num++;return renderQuestion(q,secId,num);}).join('');
+  const cnt=document.getElementById('cnt-'+secId);
+  if(cnt)cnt.textContent=qs.filter(q=>q.type!=='activity').length;
+}
+
+function answerMCQ(qid,letter,el){
+  if(state.answers[qid])return;
+  const q=getQuestionById(qid);if(!q)return;
+  const correct=letter===q.ans;
+  state.answers[qid]={val:letter,correct:correct};
+  const card=el.closest('.q-card');
+  card.querySelectorAll('.mcq-opt').forEach(o=>{
+    const l=o.querySelector('.opt-letter').textContent;
+    if(l===q.ans)o.classList.add('correct');
+    else if(l===letter)o.classList.add('wrong');
+  });
+  card.classList.add(correct?'answered':'wrong-ans');
+  const inner=card.querySelector('.q-card-inner');
+  let badge=inner.querySelector('.result-badge');
+  if(!badge){badge=document.createElement('div');badge.className='result-badge '+(correct?'badge-ok':'badge-no');badge.textContent=correct?'✓ Doğru!':'✗ Yanlış. Doğru: '+q.ans;inner.appendChild(badge);}
+  updateStreak(correct);updateStats();saveState();
+}
+
+function checkFill(qid,input){
+  if(state.answers[qid])return;
+  const q=getQuestionById(qid);if(!q)return;
+  const val=(input.value||'').trim().replace(/\./g,'').replace(/,/g,'.');
+  const correctVal=String(q.correct).trim();
+  const correct=val===correctVal;
+  state.answers[qid]={val:val,correct:correct};
+  input.classList.add(correct?'correct':'wrong-fill');input.disabled=true;
+  const btn=input.parentElement.parentElement.querySelector('.check-btn');
+  if(btn)btn.remove();
+  const row=input.parentElement.parentElement;
+  let badge=row.querySelector('.result-badge');
+  if(!badge){badge=document.createElement('div');badge.className='result-badge '+(correct?'badge-ok':'badge-no');badge.textContent=correct?'✓ Doğru!':'✗ Doğru cevap: '+q.correct;row.appendChild(badge);}
+  const card=input.closest('.q-card');
+  if(card)card.classList.add(correct?'answered':'wrong-ans');
+  updateStreak(correct);updateStats();saveState();
+}
+
+function updateStreak(correct){
+  if(correct){state.streak++;if(state.streak>state.bestStreak)state.bestStreak=state.streak;
+    if(state.streak>=3){const b=document.getElementById('streakBanner');document.getElementById('streakText').textContent=state.streak+' Doğru Üst Üste!';b.classList.add('show');setTimeout(()=>b.classList.remove('show'),2500);}
+  } else {state.streak=0;}
+}
+
+function updateStats(){
+  const all=getAllQuestions();
+  const total=all.length;
+  let cor=0,wrg=0,ans=0;
+  all.forEach(q=>{const a=state.answers[q.id];if(a){ans++;if(a.correct)cor++;else wrg++;}});
+  const emp=total-ans;
+  document.getElementById('statCor').textContent=cor;
+  document.getElementById('statWrg').textContent=wrg;
+  document.getElementById('statEmp').textContent=emp;
+  document.getElementById('statAns').textContent=ans;
+  const pct=Math.round((ans/total)*100);
+  document.getElementById('progressFill').style.width=pct+'%';
+  document.getElementById('progressPct').textContent='%'+pct;
+  document.getElementById('scorePanelVal').textContent=cor+'/'+total;
+  const scorePct=total>0?Math.round((cor/total)*100):0;
+  document.getElementById('scorePanelPct').textContent='%'+scorePct+' basari';
+  document.getElementById('scorePctFill').style.width=scorePct+'%';
+  // Per-section scores
+  ['s1','s2','s3','s6','s4','s5','s8','s9'].forEach(sec=>{
+    const qs=(QUESTIONS_DB[sec]||[]).filter(q=>q.type!=='activity');
+    let sc=0,sa=0;
+    qs.forEach(q=>{const a=state.answers[q.id];if(a){sa++;if(a.correct)sc++;}});
+    const el=document.getElementById('score-'+sec);
+    if(el){
+      if(sa===0){el.textContent='-';}
+      else{const p=Math.round(sc/qs.length*100);el.textContent='%'+p;}
+    }
+  });
+}
+
+function switchTab(secId,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  const sec=document.getElementById('sec-'+secId);if(sec)sec.classList.add('active');
+  if(btn)btn.classList.add('active');else{const tb=document.querySelector(`.tab-btn[onclick*="${secId}"]`);if(tb)tb.classList.add('active');}
+  state.currentTab=secId;filterQuestions(document.getElementById('searchBar').value);
+}
+
+function filterQuestions(term){
+  term=(term||'').toLowerCase().trim();
+  if(!term){document.querySelectorAll('.q-card').forEach(c=>c.style.display='');return;}
+  document.querySelectorAll('.q-card').forEach(c=>{const txt=c.textContent.toLowerCase();c.style.display=txt.includes(term)?'':'none';});
+}
+
+function toggleDark(){
+  state.darkMode=!state.darkMode;
+  document.documentElement.setAttribute('data-theme',state.darkMode?'dark':'light');
+  document.getElementById('darkToggle').textContent=state.darkMode?'☀️':'🌙';
+  saveState();
+}
+
+function startTimer(){
+  if(!state.startTime)state.startTime=Date.now();
+  if(timerInterval)clearInterval(timerInterval);
+  timerInterval=setInterval(()=>{
+    const el=Math.floor((Date.now()-state.startTime)/1000);
+    const m=String(Math.floor(el/60)).padStart(2,'0');
+    const s=String(el%60).padStart(2,'0');
+    document.getElementById('timerDisplay').textContent='⏱️ '+m+':'+s;
+  },1000);
+}
+
+function startTest(){
+  const name=document.getElementById('nameInput').value.trim();
+  if(!name){document.getElementById('nameInput').focus();document.getElementById('nameInput').style.borderColor='#ef4444';return;}
+  state.studentName=name;
+  document.getElementById('nameModal').style.display='none';
+  document.getElementById('studentChip').textContent='👤 '+name;
+  startTimer();saveState();
+}
+
+function finishTest(){
+  const all=getAllQuestions();const total=all.length;
+  let cor=0,wrg=0,emp=0;
+  all.forEach(q=>{const a=state.answers[q.id];if(a){if(a.correct)cor++;else wrg++;}else emp++;});
+  const pct=Math.round((cor/total)*100);
+  let emoji='🏆',msg='';
+  if(pct>=90){emoji='🏆';msg='Mükemmel! Sen bir matematik dehasısın!';}
+  else if(pct>=75){emoji='🥇';msg='Çok iyi! Az daha çalışma ile harika olacaksın!';}
+  else if(pct>=50){emoji='🥈';msg='Güzel iş! Bazı konulara biraz daha çalış.';}
+  else{emoji='💪';msg='Yılmaya yok! Daha fazla pratik yapacaksın.';}
+  document.getElementById('fm-emoji').textContent=emoji;
+  document.getElementById('fm-student').textContent='Öğrenci: '+state.studentName;
+  document.getElementById('fm-score').textContent=cor+'/'+total+' (%'+pct+')';
+  document.getElementById('fm-msg').textContent=msg;
+  document.getElementById('fm-cor').textContent=cor;
+  document.getElementById('fm-wrg').textContent=wrg;
+  document.getElementById('fm-emp').textContent=emp;
+  const dl=document.getElementById('fm-detail-list');
+  let detailHtml='';
+  all.forEach(q=>{const a=state.answers[q.id];
+    if(!a)detailHtml+=`<div class="detail-item di-empty"><span class="detail-icon">⬜</span><span><strong>${q.id}</strong>: ${q.text.slice(0,60)}...</span></div>`;
+    else if(a.correct)detailHtml+=`<div class="detail-item di-correct"><span class="detail-icon">✅</span><span><strong>${q.id}</strong>: Doğru</span></div>`;
+    else detailHtml+=`<div class="detail-item di-wrong"><span class="detail-icon">❌</span><span><strong>${q.id}</strong>: Yanlış — Doğru: ${q.correct||q.ans}</span></div>`;
+  });
+  dl.innerHTML=detailHtml;
+  document.getElementById('finishModal').classList.add('show');
+  if(pct>=75)launchConfetti();
+}
+
+function launchConfetti(){
+  const colors=['#6366f1','#ec4899','#f59e0b','#10b981','#8b5cf6','#3b82f6'];
+  for(let i=0;i<60;i++){
+    const c=document.createElement('div');c.className='confetti-piece';
+    c.style.left=Math.random()*100+'vw';c.style.background=colors[i%colors.length];
+    c.style.animationDuration=(2+Math.random()*2)+'s';c.style.animationDelay=(Math.random()*0.5)+'s';
+    document.body.appendChild(c);setTimeout(()=>c.remove(),5000);
+  }
+}
+
+function confirmReset(){document.getElementById('resetModal').classList.add('show');}
+function doReset(){
+  state.answers={};state.streak=0;state.startTime=Date.now();state.completed=false;
+  saveState();renderAll();updateStats();
+  document.getElementById('resetModal').classList.remove('show');
+}
+
+function renderAll(){['s1','s2','s3','s6','s4','s5','s8','s9'].forEach(s=>renderSection(s));}
+
+function enterQuizMode(){
+  quizMode=true;quizQuestions=shuffle(getAllQuestions());quizIdx=0;
+  document.getElementById('quizModeBar').classList.add('active');
+  document.querySelector('.tab-nav').style.display='none';
+  document.querySelector('.search-bar-wrap').style.display='none';
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  showQuizQuestion();
+}
+function showQuizQuestion(){
+  if(quizIdx<0||quizIdx>=quizQuestions.length)return;
+  const q=quizQuestions[quizIdx];
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  let sec=document.getElementById('sec-quiz');
+  if(!sec){sec=document.createElement('div');sec.id='sec-quiz';sec.className='section active';
+    sec.innerHTML='<div class="question-grid" id="grid-quiz" style="max-width:700px;margin:0 auto;"></div>';
+    document.querySelector('.search-bar-wrap').after(sec);}
+  sec.classList.add('active');
+  document.getElementById('grid-quiz').innerHTML=renderQuestion(q,q.sec,quizIdx+1);
+  document.getElementById('quizProgressTxt').textContent=`Soru ${quizIdx+1} / ${quizQuestions.length}`;
+  document.getElementById('quizPrev').disabled=quizIdx===0;
+  document.getElementById('quizNext').disabled=quizIdx===quizQuestions.length-1;
+}
+function quizNav(dir){quizIdx=Math.max(0,Math.min(quizQuestions.length-1,quizIdx+dir));showQuizQuestion();}
+function exitQuizMode(){
+  quizMode=false;
+  document.getElementById('quizModeBar').classList.remove('active');
+  document.querySelector('.tab-nav').style.display='flex';
+  document.querySelector('.search-bar-wrap').style.display='block';
+  const qs=document.getElementById('sec-quiz');if(qs)qs.remove();
+  switchTab(state.currentTab||'s1');
+}
+// SCRIPT_PART3
+function downloadPDF(){
+  const loading=document.getElementById('loadingOverlay');
+  loading.classList.add('show');
+  document.getElementById('loadingText').textContent='PDF Hazırlanıyor...';
+  document.getElementById('loadingProgress').textContent='Sayfa 1';
+  setTimeout(()=>{try{generatePDF();}catch(e){console.error('PDF Error:',e);alert('PDF oluşturulurken hata: '+e.message);}loading.classList.remove('show');},100);
+}
+
+function generatePDF(){
+  const {jsPDF}=window.jspdf;
+  if(!jsPDF){alert('jsPDF yuklenemedi.');return;}
+  const doc=new jsPDF({unit:'mm',format:'a4'});
+  const PW=210,PH=297,M=11;
+  const GAP=4;
+  const CW=(PW-2*M-GAP)/2;
+  const qs=getAllQuestions();
+  const student=String(state.studentName||'Ogrenci');
+  const dateStr=String(new Date().toLocaleDateString('tr-TR'));
+
+  // ── TAB / SECTION metadata for bookmarks ─────────────────────────────────
+  const TAB_META=[
+    {sec:'s1',label:'Toplama-Cikarma'},
+    {sec:'s2',label:'Carpma-Bolme'},
+    {sec:'s3',label:'Sayilar'},
+    {sec:'s6',label:'Sayilarin Okunusu'},
+    {sec:'s4',label:'Yuvarlama'},
+    {sec:'s5',label:'Oruntuler'},
+    {sec:'s8',label:'Karma Sorular'},
+    {sec:'s9',label:'Etkinlik'},
+  ];
+  // Map: secId -> first page where that section appears
+  const secPageMap={};
+
+  // ── QUESTION PAGES ────────────────────────────────────────────────────────
+  let qIdx=0, pageNum=1;
+  while(qIdx<qs.length){
+    if(pageNum>1)doc.addPage();
+    const HEADER_H=pdfPageHeader(doc,student,dateStr,pageNum,PW,M);
+    const FOOTER_Y=PH-11;
+    const leftColX=M;
+    const rightColX=M+CW+GAP;
+    let leftEnd=HEADER_H+1;
+    let rightEnd=HEADER_H+1;
+    while(qIdx<qs.length){
+      const h=pdfQuestionHeight(doc,qs[qIdx],CW);
+      if(leftEnd+h>FOOTER_Y)break;
+      if(!secPageMap[qs[qIdx].sec])secPageMap[qs[qIdx].sec]=pageNum;
+      leftEnd=pdfQuestion(doc,qs[qIdx],qIdx+1,leftColX,CW,leftEnd);
+      leftEnd+=2;
+      qIdx++;
+    }
+    let rIdx=qIdx;
+    while(rIdx<qs.length){
+      const h=pdfQuestionHeight(doc,qs[rIdx],CW);
+      if(rightEnd+h>FOOTER_Y)break;
+      if(!secPageMap[qs[rIdx].sec])secPageMap[qs[rIdx].sec]=pageNum;
+      rightEnd=pdfQuestion(doc,qs[rIdx],rIdx+1,rightColX,CW,rightEnd);
+      rightEnd+=2;
+      rIdx++;
+    }
+    qIdx=rIdx;
+    pdfFooter(doc,pageNum,student,PW,PH,M);
+    pageNum++;
+  }
+
+  // ── COMPACT ANSWER KEY ────────────────────────────────────────────────────
+  const ansKeyPage=pageNum;
+  doc.addPage();
+  pdfAnswerKeyCompact(doc,student,dateStr,qs,pageNum,PW,PH,M);
+
+  // ── NATIVE PDF BOOKMARKS (outline) ───────────────────────────────────────
+  try {
+    if(doc.outline){
+      TAB_META.forEach(tab=>{
+        const pg=secPageMap[tab.sec]||1;
+        doc.outline.add(null,tab.label,{pageNumber:pg});
+      });
+      doc.outline.add(null,'Cevap Anahtari',{pageNumber:ansKeyPage});
+    }
+  } catch(e){/* outline API yoksa sessizce geç */}
+
+  doc.save('YaprakTest_'+student.replace(/\s+/g,'_')+'.pdf');
+}
+
+// ── PAGE HEADER ──────────────────────────────────────────────────────────────────────────────
+function pdfPageHeader(doc,student,dateStr,pageNum,PW,M){
+  doc.setFillColor(49,46,129);doc.rect(0,0,PW,7,'F');
+  doc.setFillColor(79,70,229);doc.rect(0,7,PW,13,'F');
+  doc.setFillColor(109,40,217);doc.rect(0,14,PW,6,'F');
+  doc.setTextColor(255,255,255);doc.setFontSize(10);doc.setFont('helvetica','bold');
+  doc.text('DOGAL SAYILARDA ISLEMLER TESTI (1. ODEV)',M,12);
+  doc.setFontSize(7);doc.setFont('helvetica','normal');
+  doc.text('4-5. Sinif  |  Dogal Sayilarda Islemeler',M,17);
+  doc.setFontSize(8);doc.setFont('helvetica','bold');
+  doc.text(student,PW-M,12,{align:'right'});
+  doc.setFontSize(7);doc.setFont('helvetica','normal');
+  doc.text(dateStr+'  |  Sayfa '+String(pageNum),PW-M,17,{align:'right'});
+  // thin gold line
+  doc.setDrawColor(245,158,11);doc.setLineWidth(0.8);
+  doc.line(0,20,PW,20);
+  doc.setLineWidth(0.3);
+  return 24;
+}
+
+// ── QUESTION HEIGHT ESTIMATOR ─────────────────────────────────────────────────
+function pdfQuestionHeight(doc,q,w){
+  // MUST mirror pdfQuestion rendering exactly — same font size, weight, wrap widths
+  doc.setFontSize(8);doc.setFont('helvetica','bold');
+  const qLines=doc.splitTextToSize(String(stripFormat(q.text)),w-13);
+  let h=4+qLines.length*3.8+0.5;
+  if(q.type==='mcq'){
+    doc.setFont('helvetica','normal');doc.setFontSize(7.5);
+    q.opts.forEach(opt=>{
+      const oLines=doc.splitTextToSize(String(stripFormat(opt)),w-20);
+      h+=Math.max(4.5,oLines.length*3.5+1.5)+0.8;
+    });
+  } else {
+    h+=7.5;
+  }
+  return h+3; // +3 gap added by caller
+}
+
+// ── SINGLE QUESTION BLOCK ─────────────────────────────────────────────────────
+function pdfQuestion(doc,q,num,x,w,y){
+  const a=state.answers[q.id];
+  const thColors={s1:[99,102,241],s2:[219,39,119],s3:[16,185,129],s4:[245,158,11],s5:[59,130,246],s8:[79,70,229],s9:[13,148,136]};
+  const cc=thColors[q.sec]||[99,102,241];
+  const blockH=pdfQuestionHeight(doc,q,w)-3; // exact render height without gap
+  // thin left bar
+  doc.setFillColor(cc[0],cc[1],cc[2]);
+  doc.rect(x,y,1.5,blockH,'F');
+  // number badge
+  doc.setFillColor(cc[0],cc[1],cc[2]);
+  doc.roundedRect(x+2.5,y,7,5.5,1,1,'F');
+  doc.setTextColor(255,255,255);doc.setFontSize(6.5);doc.setFont('helvetica','bold');
+  doc.text(String(num),x+6,y+3.8,{align:'center'});
+  // answered indicator dot
+  if(a){
+    if(a.correct){doc.setFillColor(16,185,129);}else{doc.setFillColor(239,68,68);}
+    doc.circle(x+w-1.5,y+2.5,1.8,'F');
+    doc.setTextColor(255,255,255);doc.setFontSize(5.5);doc.setFont('helvetica','bold');
+    doc.text(a.correct?'D':'Y',x+w-1.5,y+3,{align:'center'});
+  }
+  // question text
+  doc.setTextColor(22,22,55);doc.setFontSize(8);doc.setFont('helvetica','bold');
+  const qText=String(stripFormat(q.text));
+  const qLines=doc.splitTextToSize(qText,w-13);
+  doc.text(qLines,x+11,y+4);
+  let cy=y+4+qLines.length*3.8+0.5;
+  if(q.type==='mcq'){
+    const letters=['A','B','C','D'];
+    q.opts.forEach((opt,i)=>{
+      const letter=letters[i];
+      const isCor=!!a&&letter===q.ans;
+      const isWrong=!!a&&!a.correct&&letter===a.val;
+      if(isCor){doc.setFillColor(220,252,231);doc.setDrawColor(16,185,129);}
+      else if(isWrong){doc.setFillColor(254,226,226);doc.setDrawColor(239,68,68);}
+      else{doc.setFillColor(241,245,249);doc.setDrawColor(203,213,225);}
+      const oText=String(stripFormat(opt));
+      const oLines=doc.splitTextToSize(oText,w-20);
+      const oh=Math.max(4.5,oLines.length*3.5+1.5);
+      doc.roundedRect(x+11,cy,w-12,oh,1,1,'FD');
+      // letter circle
+      if(isCor){doc.setFillColor(16,185,129);}
+      else if(isWrong){doc.setFillColor(239,68,68);}
+      else{doc.setFillColor(cc[0],cc[1],cc[2]);}
+      doc.circle(x+14.5,cy+oh/2,2.2,'F');
+      doc.setTextColor(255,255,255);doc.setFontSize(6);doc.setFont('helvetica','bold');
+      doc.text(letter,x+14.5,cy+oh/2+0.5,{align:'center'});
+      // option text
+      if(isCor){doc.setTextColor(22,101,52);}
+      else if(isWrong){doc.setTextColor(153,27,27);}
+      else{doc.setTextColor(51,65,85);}
+      doc.setFontSize(7.5);doc.setFont('helvetica','normal');
+      doc.text(oLines,x+18,cy+oh/2+0.6);
+      cy+=oh+0.8;
+    });
+  } else if(q.type==='fill'){
+    doc.setFillColor(245,243,255);doc.setDrawColor(167,139,250);doc.setLineWidth(0.4);
+    doc.roundedRect(x+11,cy,w-12,7,1.5,1.5,'FD');
+    doc.setTextColor(109,40,217);doc.setFontSize(7);doc.setFont('helvetica','italic');
+    if(a){
+      if(a.correct){
+        doc.setTextColor(22,101,52);doc.setFont('helvetica','bold');
+        doc.text('Cevabiniz: '+String(a.val)+'  [DOGRU]',x+14,cy+4.5);
+      } else {
+        doc.setTextColor(153,27,27);doc.setFont('helvetica','bold');
+        doc.text('Cevabiniz: '+String(a.val)+'  |  Dogru: '+String(q.correct),x+14,cy+4.5);
+      }
+    } else {
+      doc.text('Cevap: ___________________________',x+14,cy+4.5);
+    }
+    cy+=7.5;
+  }
+  return cy;
+}
+
+// ── FOOTER ────────────────────────────────────────────────────────────────────
+function pdfFooter(doc,pageNum,student,PW,PH,M){
+  doc.setDrawColor(203,213,225);doc.setLineWidth(0.3);
+  doc.line(M,PH-10,PW-M,PH-10);
+  doc.setTextColor(148,163,184);doc.setFontSize(6.5);doc.setFont('helvetica','normal');
+  doc.text('Dogal Sayilarda Islemler Testi (1. Odev)  |  4-5. Sinif',M,PH-6);
+  doc.text(student,PW/2,PH-6,{align:'center'});
+  doc.text('Sayfa '+String(pageNum),PW-M,PH-6,{align:'right'});
+}
+
+// ── COMPACT ANSWER KEY (1-2 pages max) ───────────────────────────────────────
+function pdfAnswerKeyCompact(doc,student,dateStr,qs,pageNum,PW,PH,M){
+  let cor=0,wrg=0,emp=0;
+  qs.forEach(q=>{const a=state.answers[q.id];if(a){if(a.correct)cor++;else wrg++;}else emp++;});
+  const pct=qs.length>0?Math.round(cor/qs.length*100):0;
+  const drawHeader=(pg)=>{
+    doc.setFillColor(5,95,70);doc.rect(0,0,PW,6,'F');
+    doc.setFillColor(5,150,105);doc.rect(0,6,PW,12,'F');
+    doc.setFillColor(16,185,129);doc.rect(0,15,PW,3,'F');
+    doc.setTextColor(255,255,255);doc.setFontSize(11);doc.setFont('helvetica','bold');
+    doc.text('CEVAP ANAHTARI'+(pg>pageNum?' (devam)':''),PW/2,13,{align:'center'});
+    if(pg===pageNum){
+      doc.setFillColor(255,255,255);doc.roundedRect(PW-M-30,7,28,6,2.5,2.5,'F');
+      doc.setTextColor(5,150,105);doc.setFontSize(7);doc.setFont('helvetica','bold');
+      doc.text(String(cor)+'/'+String(qs.length)+' = %'+String(pct),PW-M-16,11.5,{align:'center'});
+      doc.setTextColor(255,255,255);doc.setFontSize(6);doc.setFont('helvetica','normal');
+      doc.text(student+'  |  '+dateStr,M,13);
+    } else {
+      doc.setTextColor(255,255,255);doc.setFontSize(7);doc.setFont('helvetica','normal');
+      doc.text(student+'  |  Sayfa '+String(pg),M,13);
+    }
+    doc.setDrawColor(245,158,11);doc.setLineWidth(0.5);
+    doc.line(0,18,PW,18);doc.setLineWidth(0.2);
+    return pg===pageNum?20:19;
+  };
+  let startY=drawHeader(pageNum);
+  // Legend row
+  if(pageNum===pageNum){
+    doc.setFillColor(220,252,231);doc.roundedRect(M,startY,20,4.5,1.2,1.2,'F');
+    doc.setTextColor(22,101,52);doc.setFontSize(6);doc.setFont('helvetica','bold');
+    doc.text('D = Dogru ('+String(cor)+')',M+1,startY+3.1);
+    doc.setFillColor(254,226,226);doc.roundedRect(M+23,startY,20,4.5,1.2,1.2,'F');
+    doc.setTextColor(153,27,27);doc.text('Y = Yanlis ('+String(wrg)+')',M+24,startY+3.1);
+    doc.setFillColor(241,245,249);doc.roundedRect(M+46,startY,17,4.5,1.2,1.2,'F');
+    doc.setTextColor(107,114,128);doc.text('B = Bos ('+String(emp)+')',M+47,startY+3.1);
+    startY+=6;
+  }
+  // 5-column compact grid
+  const COLS=5;
+  const GAP_C=1.8;
+  const AVAIL=PW-2*M;
+  const CW=(AVAIL-(COLS-1)*GAP_C)/COLS;
+  const ROW_H=5;
+  const FOOTER_Y=PH-10;
+  const ROWS_PER_PAGE=Math.floor((FOOTER_Y-startY)/ROW_H);
+  let curPage=pageNum;
+  let sy=startY;
+  for(let i=0;i<qs.length;i++){
+    const posOnPage=i%(ROWS_PER_PAGE*COLS);
+    if(i>0&&posOnPage===0){
+      pdfFooter(doc,curPage,student,PW,PH,M);
+      doc.addPage();curPage++;
+      sy=drawHeader(curPage);
+    }
+    const rowOnPage=Math.floor(posOnPage/COLS);
+    const colOnPage=posOnPage%COLS;
+    const cx=M+colOnPage*(CW+GAP_C);
+    const ry=sy+rowOnPage*ROW_H;
+    const q=qs[i];
+    const a=state.answers[q.id];
+    const ans=String(q.type==='fill'?q.correct:q.ans);
+    const shortAns=ans.length>8?ans.slice(0,8)+'..':ans;
+    let bgC,txC,stT,stC;
+    if(!a){bgC=[241,245,249];txC=[107,114,128];stT='B';stC=[180,188,200];}
+    else if(a.correct){bgC=[220,252,231];txC=[22,101,52];stT='D';stC=[16,185,129];}
+    else{bgC=[254,226,226];txC=[153,27,27];stT='Y';stC=[239,68,68];}
+    doc.setFillColor(bgC[0],bgC[1],bgC[2]);
+    doc.setDrawColor(stC[0],stC[1],stC[2]);doc.setLineWidth(0.18);
+    doc.roundedRect(cx,ry,CW,ROW_H-0.3,0.9,0.9,'FD');
+    // num
+    doc.setFillColor(stC[0],stC[1],stC[2]);
+    doc.roundedRect(cx+0.3,ry+0.4,CW*0.24,ROW_H-1.1,0.7,0.7,'F');
+    doc.setTextColor(255,255,255);doc.setFontSize(4.8);doc.setFont('helvetica','bold');
+    doc.text(String(i+1),cx+0.3+CW*0.12,ry+ROW_H-1.4,{align:'center'});
+    // answer
+    doc.setTextColor(txC[0],txC[1],txC[2]);doc.setFontSize(5.5);doc.setFont('helvetica','bold');
+    doc.text(shortAns,cx+CW*0.28,ry+2.8);
+    // badge
+    doc.setFillColor(stC[0],stC[1],stC[2]);
+    doc.roundedRect(cx+CW-3.6,ry+0.65,3.2,ROW_H-1.8,0.7,0.7,'F');
+    doc.setTextColor(255,255,255);doc.setFontSize(4.5);doc.setFont('helvetica','bold');
+    doc.text(stT,cx+CW-2,ry+2.2,{align:'center'});
+  }
+  pdfFooter(doc,curPage,student,PW,PH,M);
+}
+
+function stripFormat(txt){
+  if(!txt)return'';
+  let s=String(txt).replace(/\*\*/g,'').replace(/<[^>]+>/g,'').replace(/&quot;/g,'"').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+  // jsPDF standard fonts (WinAnsi) don't support Turkish Unicode → transliterate
+  const trMap={'ç':'c','Ç':'C','ğ':'g','Ğ':'G','ı':'i','İ':'I','ö':'o','Ö':'O','ş':'s','Ş':'S','ü':'u','Ü':'U','â':'a','Â':'A','î':'i','Î':'I','û':'u','Û':'U','…':'...','×':'x','÷':'/','°':' deg ','≤':'<=','≥':'>=','≠':'!=','≈':'~','→':'->','×':'x'};
+  return s.replace(/[çÇğĞıİöÖşŞüÜâÂîÎûÛ…×÷°≤≥≠≈→]/g,ch=>trMap[ch]||ch);
+}
+
+// INIT
+function init(){
+  loadState();
+  if(state.darkMode){document.documentElement.setAttribute('data-theme','dark');document.getElementById('darkToggle').textContent='☀️';}
+  renderAll();updateStats();
+  const total=getAllQuestions().length;
+  document.getElementById('qCountBadge').textContent=total+' Soru';
+  if(!state.studentName){
+    document.getElementById('nameModal').style.display='flex';
+    document.getElementById('nameInput').focus();
+  } else {
+    document.getElementById('studentChip').textContent='👤 '+state.studentName;
+    if(state.startTime)startTimer();
+  }
+  // Keyboard shortcuts
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Enter'&&document.activeElement.classList.contains('fill-input')){
+      const qid=document.activeElement.closest('.q-card').dataset.qid;
+      checkFill(qid,document.activeElement);
+    }
+    if(e.ctrlKey&&e.key==='d'){e.preventDefault();toggleDark();}
+    if(e.ctrlKey&&e.key==='Enter'){e.preventDefault();finishTest();}
+  });
+  // Scroll progress + back to top
+  window.addEventListener('scroll',()=>{
+    const b=document.getElementById('backToTop');
+    const sp=document.getElementById('scrollProgress');
+    const scrolled=window.scrollY;
+    const maxScroll=document.documentElement.scrollHeight-window.innerHeight;
+    if(sp)sp.style.width=(maxScroll>0?Math.round(scrolled/maxScroll*100):0)+'%';
+    if(scrolled>400)b.classList.add('visible');else b.classList.remove('visible');
+  });
+  document.getElementById('nameInput').addEventListener('keydown',e=>{if(e.key==='Enter')startTest();});
+}
+init();
+// SCRIPT_END
+</script>
+</body>
+</html>
