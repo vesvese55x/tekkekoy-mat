@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔢 Çarpanlar, Katlar, EBOB-EKOK Testi (3. Ödev) | 6. Sınıf</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f5f3ff;--surface:#fff;--surface2:#f0eeff;--surface3:#e6e2ff;--border:rgba(124,58,237,.14);--border2:rgba(124,58,237,.26);--primary:#7c3aed;--primary2:#5b21b6;--accent:#f59e0b;--green:#059669;--green-bg:#d1fae5;--green-border:#6ee7b7;--red:#dc2626;--red-bg:#fee2e2;--red-border:#fca5a5;--text:#0f0e1e;--text2:#52566e;--text3:#8b90a7;--shadow:0 2px 16px rgba(124,58,237,.10);--shadow-lg:0 8px 40px rgba(124,58,237,.18);--glass:rgba(255,255,255,.92);--radius:16px;--radius-sm:10px;--header-h:58px;}
+[data-theme="dark"]{--bg:#0c0a1a;--surface:#150f2e;--surface2:#1d1540;--surface3:#251c50;--border:rgba(167,139,250,.2);--border2:rgba(167,139,250,.38);--text:#eceaff;--text2:#9996c0;--text3:#5e5a88;--glass:rgba(21,15,46,.94);}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);min-height:100vh;color:var(--text);overflow-x:hidden;transition:background .3s,color .3s}
+.scroll-progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#7c3aed,#a855f7,#f59e0b);z-index:9999;transition:width .1s linear;border-radius:0 2px 2px 0}
+.hero-header{background:linear-gradient(110deg,#3b0764 0%,#6d28d9 35%,#7c3aed 70%,#d97706 100%);height:var(--header-h);padding:0 1.6rem;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(59,7,100,.4);display:flex;align-items:center}
+.hero-inner{display:flex;align-items:center;justify-content:space-between;width:100%;gap:.8rem;flex-wrap:nowrap}
+.hero-left{display:flex;align-items:center;gap:.75rem;min-width:0}
+.hero-logo{width:36px;height:36px;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.35);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0}
+.hero-title{font-size:clamp(.9rem,2vw,1.1rem);font-weight:800;color:#fff;letter-spacing:-.02em;white-space:nowrap}
+.hero-sub{font-size:.68rem;color:rgba(255,255,255,.65);font-weight:500;margin-top:.05rem}
+.hero-right{display:flex;align-items:center;gap:.45rem;flex-shrink:0}
+.hero-badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:.18rem .65rem;font-size:.65rem;font-weight:700;color:rgba(255,255,255,.9);white-space:nowrap}
+.timer-display{display:inline-flex;align-items:center;gap:.25rem;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:.18rem .65rem;font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700;color:#fff}
+.student-chip-hdr{display:inline-flex;align-items:center;gap:.3rem;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);border-radius:20px;padding:.2rem .75rem;font-size:.72rem;font-weight:700;color:#fff;cursor:pointer;transition:all .18s;white-space:nowrap}
+.student-chip-hdr:hover{background:rgba(255,255,255,.28)}
+.dark-toggle{background:rgba(255,255,255,.13);border:1.5px solid rgba(255,255,255,.28);border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.95rem;transition:all .18s;flex-shrink:0}
+.dark-toggle:hover{background:rgba(255,255,255,.28)}
+.stats-bar{background:var(--glass);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:.55rem 1.6rem;display:flex;justify-content:center;align-items:center;gap:1.8rem;flex-wrap:wrap;position:sticky;top:var(--header-h);z-index:100;box-shadow:0 1px 12px rgba(124,58,237,.08)}
+.stat-item{display:flex;align-items:center;gap:.4rem;font-weight:700;font-size:.8rem;color:var(--text)}
+.stat-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.stat-sep{width:1px;height:18px;background:var(--border2);flex-shrink:0}
+.progress-wrap-outer{display:flex;align-items:center;gap:.6rem;flex:1;max-width:380px;min-width:120px}
+.progress-track{flex:1;height:6px;background:var(--surface3);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#7c3aed,#a855f7,#f59e0b);border-radius:3px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.progress-pct{font-size:.7rem;font-weight:800;color:var(--primary);min-width:32px;text-align:right;font-family:'JetBrains Mono',monospace}
+.quiz-mode-bar{background:linear-gradient(90deg,#3b0764,#7c3aed);color:#fff;padding:.55rem 1.6rem;display:none;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,.15)}
+.quiz-mode-bar.active{display:flex}
+.quiz-progress-txt{font-size:.8rem;font-weight:700}
+.quiz-nav{display:flex;gap:.4rem}
+.quiz-nav-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:20px;padding:.28rem .85rem;font-size:.76rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .18s}
+.quiz-nav-btn:hover{background:rgba(255,255,255,.3)}
+.quiz-nav-btn:disabled{opacity:.35;cursor:not-allowed}
+.search-bar-wrap{padding:.75rem 1.6rem .35rem;max-width:1120px;margin:0 auto}
+.search-wrap{position:relative}
+.search-bar{width:100%;background:var(--surface);border:1.5px solid var(--border);border-radius:50px;padding:.52rem 1.1rem .52rem 2.6rem;font-size:.86rem;font-weight:600;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:all .22s;box-shadow:var(--shadow)}
+.search-bar:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(124,58,237,.15)}
+.search-icon{position:absolute;left:.85rem;top:50%;transform:translateY(-50%);font-size:.9rem;pointer-events:none;opacity:.5}
+.tab-nav{display:flex;gap:.35rem;padding:.6rem 1.6rem .35rem;overflow-x:auto;scrollbar-width:none;flex-wrap:wrap;justify-content:center;max-width:1120px;margin:0 auto}
+.tab-nav::-webkit-scrollbar{display:none}
+.tab-btn{background:var(--surface);border:1.5px solid var(--border);color:var(--text2);border-radius:20px;padding:.38rem 1rem;font-size:.76rem;font-weight:700;cursor:pointer;transition:all .22s;white-space:nowrap;font-family:'Inter',sans-serif;display:inline-flex;align-items:center;gap:.3rem}
+.tab-btn:hover{background:var(--surface3);color:var(--primary);border-color:var(--border2)}
+.tab-btn.active{background:var(--primary);border-color:transparent;color:#fff;box-shadow:0 4px 16px rgba(124,58,237,.35)}
+[data-theme="dark"] .tab-btn{background:var(--surface2)}
+.sec-count{font-size:.62rem;font-weight:800;background:rgba(124,58,237,.15);color:var(--primary);border-radius:10px;padding:.08rem .38rem;transition:all .22s}
+.tab-btn.active .sec-count{background:rgba(255,255,255,.22);color:#fff}
+.section{display:none;padding:1rem 1.6rem 1.4rem;max-width:1120px;margin:0 auto;animation:fadeUp .28s ease}
+.section.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.section-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem;padding:.9rem 1.2rem;border-radius:var(--radius);position:relative;overflow:hidden;border:1.5px solid transparent}
+.section-icon{font-size:1.8rem;flex-shrink:0}
+.section-title{font-size:1.15rem;font-weight:800;letter-spacing:-.02em}
+.section-subtitle{font-size:.75rem;opacity:.7;margin-top:.1rem;font-weight:500}
+.section-score-bar{margin-left:auto;text-align:right;flex-shrink:0}
+.section-score-pct{font-size:1.3rem;font-weight:900;font-family:'JetBrains Mono',monospace}
+.section-score-lbl{font-size:.62rem;font-weight:700;opacity:.65;margin-top:.1rem}
+.hdr-violet{background:linear-gradient(135deg,#ede9fe,#f5f3ff);border-color:#c4b5fd!important}.hdr-violet .section-title{color:#5b21b6}.hdr-violet .section-score-pct{color:#7c3aed}
+.hdr-amber{background:linear-gradient(135deg,#fef3c7,#fffbeb);border-color:#fcd34d!important}.hdr-amber .section-title{color:#78350f}.hdr-amber .section-score-pct{color:#d97706}
+.hdr-rose{background:linear-gradient(135deg,#ffe4e6,#fff1f2);border-color:#fda4af!important}.hdr-rose .section-title{color:#9f1239}.hdr-rose .section-score-pct{color:#e11d48}
+.hdr-green{background:linear-gradient(135deg,#d1fae5,#ecfdf5);border-color:#6ee7b7!important}.hdr-green .section-title{color:#065f46}.hdr-green .section-score-pct{color:#059669}
+.hdr-sky{background:linear-gradient(135deg,#e0f2fe,#f0f9ff);border-color:#7dd3fc!important}.hdr-sky .section-title{color:#0c4a6e}.hdr-sky .section-score-pct{color:#0284c7}
+.hdr-orange{background:linear-gradient(135deg,#ffedd5,#fff7ed);border-color:#fdba74!important}.hdr-orange .section-title{color:#7c2d12}.hdr-orange .section-score-pct{color:#ea580c}
+.hdr-purple{background:linear-gradient(135deg,#f3e8ff,#faf5ff);border-color:#d8b4fe!important}.hdr-purple .section-title{color:#4a044e}.hdr-purple .section-score-pct{color:#a21caf}
+[data-theme="dark"] .hdr-violet{background:linear-gradient(135deg,#1e1040,#2a1a55)}
+[data-theme="dark"] .hdr-amber{background:linear-gradient(135deg,#251a08,#2e2010)}
+[data-theme="dark"] .hdr-rose{background:linear-gradient(135deg,#2d0a12,#3d0f1a)}
+[data-theme="dark"] .hdr-green{background:linear-gradient(135deg,#0a2218,#0e2d22)}
+[data-theme="dark"] .hdr-sky{background:linear-gradient(135deg,#0a1f30,#0e2a40)}
+[data-theme="dark"] .hdr-orange{background:linear-gradient(135deg,#251008,#301505)}
+[data-theme="dark"] .hdr-purple{background:linear-gradient(135deg,#1a0520,#250a2c)}
+.question-grid{display:grid;gap:.9rem}
+.question-grid.two-col{grid-template-columns:repeat(auto-fill,minmax(440px,1fr))}
+.q-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:1.1rem 1.2rem;transition:transform .22s,box-shadow .22s,border-color .22s;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.q-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--radius) var(--radius) 0 0;background:var(--card-accent,#7c3aed)}
+.q-card-inner{position:relative;z-index:1}
+.th-violet{--card-accent:linear-gradient(90deg,#7c3aed,#a855f7)}
+.th-amber{--card-accent:linear-gradient(90deg,#d97706,#f59e0b)}
+.th-rose{--card-accent:linear-gradient(90deg,#e11d48,#f43f5e)}
+.th-green{--card-accent:linear-gradient(90deg,#059669,#10b981)}
+.th-sky{--card-accent:linear-gradient(90deg,#0284c7,#38bdf8)}
+.th-orange{--card-accent:linear-gradient(90deg,#ea580c,#fb923c)}
+.th-purple{--card-accent:linear-gradient(90deg,#a21caf,#c026d3)}
+.q-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);border-color:var(--border2)}
+.q-card.answered{border-color:var(--green-border);background:linear-gradient(160deg,var(--surface) 80%,#f0fdf4)}
+.q-card.wrong-ans{border-color:var(--red-border);background:linear-gradient(160deg,var(--surface) 80%,#fff5f5)}
+[data-theme="dark"] .q-card.answered{background:linear-gradient(160deg,var(--surface) 75%,#052e16)}
+[data-theme="dark"] .q-card.wrong-ans{background:linear-gradient(160deg,var(--surface) 75%,#2d0f0f)}
+.q-header{display:flex;align-items:center;gap:.5rem;margin-bottom:.7rem}
+.q-number{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;font-size:.7rem;font-weight:800;flex-shrink:0;color:#fff;font-family:'JetBrains Mono',monospace}
+.nb-violet{background:#7c3aed}.nb-amber{background:#d97706}.nb-rose{background:#e11d48}.nb-green{background:#059669}.nb-sky{background:#0284c7}.nb-orange{background:#ea580c}.nb-purple{background:#a21caf}
+.q-tag{font-size:.6rem;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.7px;background:var(--surface2);border-radius:6px;padding:.12rem .48rem;border:1px solid var(--border)}
+.diff-badge{font-size:.57rem;font-weight:800;border-radius:6px;padding:.1rem .42rem;text-transform:uppercase;letter-spacing:.5px;margin-left:auto}
+.diff-easy{background:#d1fae5;color:#065f46}
+.diff-medium{background:#fef3c7;color:#92400e}
+.diff-hard{background:#fee2e2;color:#991b1b}
+.q-text{font-size:.93rem;font-weight:700;line-height:1.65;margin-bottom:.9rem;color:var(--text);word-break:break-word}
+.q-text .math{background:#ede9fe;border-radius:6px;padding:.1rem .45rem;font-family:'JetBrains Mono',monospace;font-size:.98rem;font-weight:700;color:#5b21b6}
+[data-theme="dark"] .q-text .math{background:#2d1b69;color:#a78bfa}
+.mcq-options{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;width:100%}
+.mcq-opt{background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.58rem .85rem;cursor:pointer;transition:all .18s;font-weight:600;font-size:.85rem;display:flex;align-items:center;gap:.5rem;font-family:'Inter',sans-serif;color:var(--text);word-break:break-word}
+.mcq-opt:hover{background:linear-gradient(135deg,#ede9fe,#f5f3ff);border-color:#c4b5fd;transform:translateX(2px)}
+.mcq-opt.correct{background:linear-gradient(135deg,#d1fae5,#ecfdf5)!important;border-color:#34d399!important;color:#065f46!important}
+.mcq-opt.wrong{background:linear-gradient(135deg,#fee2e2,#fff5f5)!important;border-color:#fca5a5!important;color:#991b1b!important}
+.opt-letter{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:6px;background:rgba(124,58,237,.12);font-size:.7rem;font-weight:800;flex-shrink:0;transition:all .18s;font-family:'JetBrains Mono',monospace}
+[data-theme="dark"] .opt-letter{background:#2d1b69}
+.mcq-opt:hover .opt-letter{background:#c4b5fd;color:#5b21b6}
+.mcq-opt.correct .opt-letter{background:#6ee7b7;color:#065f46}
+.mcq-opt.wrong .opt-letter{background:#fca5a5;color:#991b1b}
+.opt-text{flex:1}
+.fill-row{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;width:100%}
+.fill-input{background:var(--surface2);border:2px solid #c4b5fd;border-radius:var(--radius-sm);padding:.55rem 1rem;color:var(--text);font-size:1rem;font-weight:700;font-family:'JetBrains Mono',monospace;width:160px;text-align:center;transition:all .22s;outline:none}
+[data-theme="dark"] .fill-input{background:var(--surface2);border-color:#7c3aed}
+.fill-input:focus{border-color:#7c3aed;box-shadow:0 0 0 3px rgba(124,58,237,.15)}
+.fill-input.correct{border-color:#10b981;background:var(--green-bg);color:#065f46}
+.fill-input.wrong-fill{border-color:#ef4444;background:var(--red-bg);color:#991b1b}
+.fill-input::placeholder{color:#c4b5fd;font-size:.8rem;font-family:'Inter',sans-serif;font-weight:500}
+.check-btn{background:var(--primary);border:none;color:#fff;border-radius:var(--radius-sm);padding:.5rem 1rem;font-weight:700;cursor:pointer;font-size:.8rem;font-family:'Inter',sans-serif;transition:all .18s;box-shadow:0 3px 10px rgba(124,58,237,.28);display:inline-flex;align-items:center;gap:.3rem}
+.check-btn:hover{filter:brightness(1.1);transform:scale(1.04)}
+.result-badge{display:inline-flex;align-items:center;gap:.32rem;padding:.22rem .68rem;border-radius:20px;font-size:.75rem;font-weight:700;margin-top:.55rem;animation:popIn .25s ease}
+@keyframes popIn{from{transform:scale(.75);opacity:0}to{transform:scale(1);opacity:1}}
+.badge-ok{background:var(--green-bg);color:var(--green);border:1.5px solid var(--green-border)}
+.badge-no{background:var(--red-bg);color:var(--red);border:1.5px solid var(--red-border)}
+.activity-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:1.3rem;margin-bottom:1.2rem;box-shadow:var(--shadow)}
+.activity-title{font-size:1rem;font-weight:800;margin-bottom:.75rem;color:var(--text)}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.match-col{display:flex;flex-direction:column;gap:.45rem}
+.match-item{background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.58rem .8rem;cursor:pointer;transition:all .2s;font-weight:700;font-size:.82rem;text-align:center;min-height:42px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;color:var(--text)}
+.match-item:hover{border-color:#c4b5fd;background:linear-gradient(135deg,#ede9fe,#f5f3ff)}
+.match-item.sel{border-color:#f59e0b;background:linear-gradient(135deg,#fef3c7,#fffbeb);color:#92400e;box-shadow:0 0 0 3px rgba(245,158,11,.18)}
+.match-item.ok{border-color:#10b981;background:linear-gradient(135deg,#d1fae5,#ecfdf5);color:#065f46;pointer-events:none}
+.match-item.fail{border-color:#ef4444;background:var(--red-bg);color:#991b1b}
+.score-panel{position:fixed;bottom:1.2rem;right:1.2rem;background:var(--glass);backdrop-filter:blur(24px);border:1.5px solid var(--border2);border-radius:18px;padding:.8rem 1.1rem;z-index:200;box-shadow:0 8px 40px rgba(124,58,237,.24);min-width:156px}
+.score-pdf-btn{display:block;width:100%;margin-top:.45rem;background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;border:none;border-radius:8px;padding:.38rem .5rem;font-size:.68rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .18s}
+.score-pdf-btn:hover{filter:brightness(1.1)}
+.score-title{font-size:.62rem;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.score-val{font-size:1.7rem;font-weight:900;font-family:'JetBrains Mono',monospace;background:linear-gradient(135deg,#7c3aed,#d97706);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1}
+.score-pct-bar{height:4px;background:var(--surface3);border-radius:2px;overflow:hidden;margin:.3rem 0}
+.score-pct-fill{height:100%;background:linear-gradient(90deg,#7c3aed,#d97706);border-radius:2px;transition:width .5s}
+.action-bar{display:flex;gap:.7rem;justify-content:center;padding:1.3rem 1.6rem 1.6rem;flex-wrap:wrap}
+.btn-primary{background:var(--primary);color:#fff;border:none;border-radius:50px;padding:.72rem 1.8rem;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .22s;box-shadow:0 4px 16px rgba(124,58,237,.32)}
+.btn-primary:hover{filter:brightness(1.12);transform:translateY(-2px)}
+.btn-secondary{background:var(--surface);color:var(--text);border:1.5px solid var(--border);border-radius:50px;padding:.72rem 1.8rem;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .22s}
+.btn-secondary:hover{background:var(--surface2);border-color:var(--border2);transform:translateY(-2px)}
+.btn-danger{background:linear-gradient(135deg,#ef4444,#f43f5e);color:#fff;border:none;border-radius:50px;padding:.72rem 1.8rem;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .22s;box-shadow:0 4px 16px rgba(239,68,68,.25)}
+.btn-danger:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.btn-finish{background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff;border:none;border-radius:50px;padding:.72rem 1.8rem;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .22s;box-shadow:0 4px 16px rgba(217,119,6,.32);position:relative;overflow:hidden}
+.btn-finish::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);transform:translateX(-100%);animation:shimmer 2.2s infinite}
+@keyframes shimmer{100%{transform:translateX(100%)}}
+.btn-pdf{background:linear-gradient(135deg,#5b21b6,#7c3aed);color:#fff;border:none;border-radius:50px;padding:.72rem 1.8rem;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .22s;box-shadow:0 4px 16px rgba(124,58,237,.3);display:inline-flex;align-items:center;gap:.45rem}
+.btn-pdf:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.kbd-hint{display:inline-flex;align-items:center;gap:.3rem;font-size:.67rem;color:var(--text3);font-weight:600}
+.kbd{background:var(--surface2);border:1.5px solid var(--border);border-radius:4px;padding:.08rem .32rem;font-family:'JetBrains Mono',monospace;font-size:.65rem}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,8,28,.65);backdrop-filter:blur(18px);z-index:300;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal-box{background:var(--surface);border:1.5px solid var(--border2);border-radius:24px;padding:2rem 2rem 1.7rem;max-width:580px;width:95%;text-align:center;animation:scaleIn .3s cubic-bezier(.34,1.56,.64,1);max-height:92vh;overflow-y:auto;box-shadow:0 20px 64px rgba(124,58,237,.28)}
+@keyframes scaleIn{from{transform:scale(.72);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-emoji{font-size:3.5rem;margin-bottom:.4rem;display:block}
+.modal-title{font-size:1.55rem;font-weight:900;color:var(--text);letter-spacing:-.02em}
+.modal-score{font-size:2.4rem;font-weight:900;font-family:'JetBrains Mono',monospace;background:linear-gradient(135deg,#7c3aed,#d97706);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.modal-msg{color:var(--text2);margin:.6rem 0 1rem;font-size:.9rem;font-weight:600}
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin:.85rem 0}
+.result-cell{border-radius:12px;padding:.8rem .4rem;text-align:center;border:1.5px solid transparent}
+.result-cell .rc-num{font-size:1.9rem;font-weight:900;font-family:'JetBrains Mono',monospace}
+.result-cell .rc-lbl{font-size:.63rem;font-weight:700;margin-top:.12rem;opacity:.75}
+.rc-correct{background:#d1fae5;border-color:#6ee7b7}.rc-correct .rc-num,.rc-correct .rc-lbl{color:#065f46}
+.rc-wrong{background:#fee2e2;border-color:#fca5a5}.rc-wrong .rc-num,.rc-wrong .rc-lbl{color:#991b1b}
+.rc-empty{background:#ede9fe;border-color:#c4b5fd}.rc-empty .rc-num,.rc-empty .rc-lbl{color:#5b21b6}
+.detail-list{max-height:320px;overflow-y:auto;margin:.9rem 0;text-align:left;padding-right:.25rem}
+.detail-list::-webkit-scrollbar{width:4px}.detail-list::-webkit-scrollbar-thumb{background:#c4b5fd;border-radius:2px}
+.detail-item{display:flex;align-items:flex-start;gap:.5rem;padding:.5rem .8rem;border-radius:10px;margin-bottom:.38rem;font-size:.8rem;font-weight:600;line-height:1.5}
+.detail-item.di-correct{background:#f0fdf4;border:1.5px solid #86efac}
+.detail-item.di-wrong{background:#fff5f5;border:1.5px solid #fca5a5}
+.detail-item.di-empty{background:#f5f3ff;border:1.5px solid #ddd6fe}
+.detail-icon{font-size:1rem;flex-shrink:0}
+.reset-modal-inner{background:var(--surface);border:1.5px solid var(--red-border);border-radius:20px;padding:1.8rem;max-width:360px;width:93%;text-align:center;animation:scaleIn .28s ease}
+.name-modal{display:flex;position:fixed;inset:0;background:linear-gradient(135deg,rgba(59,7,100,.25),rgba(217,119,6,.15));backdrop-filter:blur(24px);z-index:500;align-items:center;justify-content:center}
+.name-box{background:var(--surface);border:1.5px solid var(--border2);border-radius:24px;padding:2.5rem 2rem;max-width:440px;width:93%;text-align:center;animation:scaleIn .4s cubic-bezier(.34,1.56,.64,1);box-shadow:0 24px 72px rgba(124,58,237,.22)}
+.name-logo{font-size:3rem;margin-bottom:.4rem}
+.name-title{font-size:1.85rem;font-weight:900;margin-bottom:.35rem;letter-spacing:-.03em;background:linear-gradient(135deg,#7c3aed,#d97706);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.name-subtitle{color:var(--text2);font-size:.88rem;margin-bottom:1.5rem;line-height:1.6;font-weight:500}
+.name-input{background:var(--surface2);border:2px solid #c4b5fd;border-radius:var(--radius-sm);padding:.88rem 1.2rem;color:var(--text);font-size:1rem;font-weight:700;font-family:'Inter',sans-serif;width:100%;text-align:center;outline:none;transition:all .22s}
+.name-input:focus{border-color:#7c3aed;box-shadow:0 0 0 3px rgba(124,58,237,.15)}
+.name-btn{background:var(--primary);color:#fff;border:none;border-radius:50px;padding:.88rem 2.2rem;font-size:.96rem;font-weight:800;cursor:pointer;font-family:'Inter',sans-serif;transition:all .22s;margin-top:1.1rem;width:100%;box-shadow:0 5px 20px rgba(124,58,237,.38)}
+.name-btn:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.name-notice{margin-top:.9rem;font-size:.72rem;color:var(--text3);font-weight:500}
+.name-features{display:grid;grid-template-columns:1fr 1fr;gap:.42rem;margin:.85rem 0 .45rem;text-align:left}
+.name-feat{display:flex;align-items:center;gap:.38rem;font-size:.72rem;font-weight:600;color:var(--text2);background:var(--surface2);border-radius:8px;padding:.28rem .55rem;border:1px solid var(--border)}
+.loading-overlay{display:none;position:fixed;inset:0;background:rgba(255,255,255,.88);backdrop-filter:blur(12px);z-index:600;align-items:center;justify-content:center;flex-direction:column;gap:.9rem}
+[data-theme="dark"] .loading-overlay{background:rgba(12,10,26,.9)}
+.loading-overlay.show{display:flex}
+.loading-spinner{width:48px;height:48px;border:3.5px solid var(--surface3);border-top-color:var(--primary);border-radius:50%;animation:spin .9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-weight:800;color:var(--primary);font-size:.92rem}
+.loading-progress-txt{font-size:.78rem;color:var(--text2);font-weight:600}
+.confetti-piece{position:fixed;width:8px;height:8px;top:-20px;animation:confetti-fall linear forwards;z-index:400;border-radius:2px}
+@keyframes confetti-fall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+.streak-banner{display:none;align-items:center;justify-content:center;gap:.45rem;padding:.38rem 1rem;background:linear-gradient(90deg,#7c3aed,#d97706);font-size:.8rem;font-weight:800;color:#fff;position:fixed;top:0;left:0;right:0;z-index:600;animation:slideDown .35s ease}
+.streak-banner.show{display:flex}
+@keyframes slideDown{from{transform:translateY(-100%)}to{transform:translateY(0)}}
+.back-to-top{position:fixed;bottom:1.2rem;left:1.2rem;background:var(--primary);border:none;border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.05rem;color:#fff;z-index:200;box-shadow:0 4px 16px rgba(124,58,237,.36);transition:all .22s;opacity:0;pointer-events:none}
+.back-to-top.visible{opacity:1;pointer-events:auto}
+.back-to-top:hover{transform:translateY(-3px)}
+@media(max-width:640px){.question-grid.two-col{grid-template-columns:1fr}.mcq-options{grid-template-columns:1fr}.hero-right{gap:.25rem}.score-panel{min-width:136px;padding:.6rem .85rem}.name-features{grid-template-columns:1fr}.quiz-mode-bar{flex-direction:column;align-items:flex-start}.stats-bar{gap:1rem;padding:.5rem 1rem}.tab-nav{padding:.5rem 1rem .3rem}.section{padding:.9rem 1rem 1.2rem}.action-bar{padding:1rem}}
+</style>
+</head>
+<body>
+<div class="scroll-progress" id="scrollProgress"></div>
+<div class="streak-banner" id="streakBanner"><span>🔥</span><span id="streakText">3 Doğru Üst Üste!</span><span>🔥</span><button onclick="document.getElementById('streakBanner').classList.remove('show')" style="background:none;border:none;color:#fff;cursor:pointer;margin-left:.5rem;font-size:1rem;">✕</button></div>
+
+<div class="name-modal" id="nameModal" style="display:none;">
+  <div class="name-box">
+    <div class="name-logo">🔢</div>
+    <div class="name-title">Sayı Teorisi Testi</div>
+    <div class="name-subtitle">6. Sınıf · 7 Konu · Çarpanlar, EBOB-EKOK<br>Başlamadan önce adını gir!</div>
+    <div class="name-features">
+      <div class="name-feat">🔢 7 Konu</div><div class="name-feat">📝 185+ Soru</div>
+      <div class="name-feat">🏆 Anlık Puanlama</div><div class="name-feat">📄 PDF İndir</div>
+      <div class="name-feat">⏱️ Süre Takibi</div><div class="name-feat">🌙 Gece Modu</div>
+      <div class="name-feat">🔥 Streak Sistemi</div><div class="name-feat">🎯 Quiz Modu</div>
+    </div>
+    <input class="name-input" id="nameInput" type="text" placeholder="Adın Soyadın..." maxlength="50" autocomplete="off">
+    <button class="name-btn" onclick="startTest()">🚀 Teste Başla</button>
+    <div class="name-notice">💾 İlerlemeniz otomatik kaydedilir</div>
+  </div>
+</div>
+
+<div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner"></div><div class="loading-text" id="loadingText">Yükleniyor...</div><div class="loading-progress-txt" id="loadingProgress"></div></div>
+
+<div class="modal-overlay" id="resetModal">
+  <div class="reset-modal-inner">
+    <div style="font-size:2.5rem;margin-bottom:.5rem;">⚠️</div>
+    <div style="font-size:1.2rem;font-weight:900;color:var(--text);margin-bottom:.5rem;">Testi Sıfırla?</div>
+    <div style="font-size:.88rem;color:var(--text2);font-weight:700;margin-bottom:1.2rem;">Tüm cevaplar ve puanlar silinir.</div>
+    <div style="display:flex;gap:.7rem;justify-content:center;">
+      <button class="btn-danger" onclick="doReset()">🗑️ Sıfırla</button>
+      <button class="btn-secondary" onclick="document.getElementById('resetModal').classList.remove('show')">İptal</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="finishModal">
+  <div class="modal-box">
+    <span class="modal-emoji" id="fm-emoji">🏆</span>
+    <div class="modal-title">Test Tamamlandı!</div>
+    <div style="font-size:.88rem;color:var(--text2);margin:.3rem 0;font-weight:700;" id="fm-student"></div>
+    <div class="modal-score" id="fm-score"></div>
+    <div class="modal-msg" id="fm-msg"></div>
+    <div class="result-grid">
+      <div class="result-cell rc-correct"><div class="rc-num" id="fm-cor">0</div><div class="rc-lbl">✅ Doğru</div></div>
+      <div class="result-cell rc-wrong"><div class="rc-num" id="fm-wrg">0</div><div class="rc-lbl">❌ Yanlış</div></div>
+      <div class="result-cell rc-empty"><div class="rc-num" id="fm-emp">0</div><div class="rc-lbl">⬜ Boş</div></div>
+    </div>
+    <div class="detail-list" id="fm-detail-list"></div>
+    <div style="display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-top:.8rem;">
+      <button class="btn-pdf" onclick="document.getElementById('finishModal').classList.remove('show');downloadPDF()">📄 PDF İndir</button>
+      <button class="btn-secondary" onclick="document.getElementById('finishModal').classList.remove('show')">Kapat</button>
+    </div>
+  </div>
+</div>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<header class="hero-header">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-logo">🔢</div>
+      <div>
+        <div class="hero-title">Çarpanlar, Katlar, EBOB-EKOK Testi (3. Ödev)</div>
+        <div class="hero-sub">6. Sınıf | Sayı Teorisi</div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <span class="hero-badge">7 Konu</span>
+      <span class="hero-badge" id="qCountBadge">... Soru</span>
+      <div class="timer-display" id="timerDisplay">⏱️ 00:00</div>
+      <button class="student-chip-hdr" onclick="document.getElementById('nameModal').style.display='flex'" id="studentChip">👤 Öğrenci</button>
+      <button class="dark-toggle" onclick="toggleDark()" id="darkToggle" title="Gece Modu">🌙</button>
+    </div>
+  </div>
+</header>
+
+<div class="quiz-mode-bar" id="quizModeBar">
+  <div class="quiz-progress-txt" id="quizProgressTxt">Soru 1 / 0</div>
+  <div class="quiz-nav">
+    <button class="quiz-nav-btn" id="quizPrev" onclick="quizNav(-1)">← Önceki</button>
+    <button class="quiz-nav-btn" id="quizNext" onclick="quizNav(1)">Sonraki →</button>
+    <button class="quiz-nav-btn" onclick="exitQuizMode()">✕ Quiz Modu Çık</button>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat-item"><span class="stat-dot" style="background:#059669"></span><span>Dogru <strong id="statCor">0</strong></span></div>
+  <div class="stat-sep"></div>
+  <div class="stat-item"><span class="stat-dot" style="background:#dc2626"></span><span>Yanlis <strong id="statWrg">0</strong></span></div>
+  <div class="stat-sep"></div>
+  <div class="stat-item"><span class="stat-dot" style="background:#94a3b8"></span><span>Bos <strong id="statEmp">0</strong></span></div>
+  <div class="stat-sep"></div>
+  <div class="stat-item"><span class="stat-dot" style="background:#7c3aed"></span><span>Cevaplanan <strong id="statAns">0</strong></span></div>
+  <div class="progress-wrap-outer">
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="progress-pct" id="progressPct">%0</div>
+  </div>
+</div>
+
+<div class="search-bar-wrap">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="search-bar" id="searchBar" type="text" placeholder="Soru ara... (örn: EBOB, asal, bölünebilme)" oninput="filterQuestions(this.value)">
+  </div>
+</div>
+
+<nav class="tab-nav" id="tabNav">
+  <button class="tab-btn active" onclick="switchTab('c1',this)">✖️ Çarpanlar &amp; Katlar <span class="sec-count" id="cnt-c1"></span></button>
+  <button class="tab-btn" onclick="switchTab('c2',this)">➗ Bölünebilme <span class="sec-count" id="cnt-c2"></span></button>
+  <button class="tab-btn" onclick="switchTab('c3',this)">⭐ Asal Sayılar <span class="sec-count" id="cnt-c3"></span></button>
+  <button class="tab-btn" onclick="switchTab('c4',this)">🔗 Aralarında Asal <span class="sec-count" id="cnt-c4"></span></button>
+  <button class="tab-btn" onclick="switchTab('c5',this)">⬇️ EBOB <span class="sec-count" id="cnt-c5"></span></button>
+  <button class="tab-btn" onclick="switchTab('c6',this)">⬆️ EKOK <span class="sec-count" id="cnt-c6"></span></button>
+  <button class="tab-btn" onclick="switchTab('c7',this)">🎯 Karma &amp; Etkinlik <span class="sec-count" id="cnt-c7"></span></button>
+</nav>
+
+<div class="section active" id="sec-c1">
+  <div class="section-header hdr-violet"><div class="section-icon">✖️</div><div><div class="section-title">Çarpanlar, Bölenler ve Katlar</div><div class="section-subtitle">Bir sayının çarpanları, özel çarpan çiftleri ve katları</div></div><div class="section-score-bar"><div class="section-score-pct" id="score-c1">-</div><div class="section-score-lbl">Basari</div></div></div>
+  <div class="question-grid two-col" id="grid-c1"></div>
+</div>
+<div class="section" id="sec-c2">
+  <div class="section-header hdr-amber"><div class="section-icon">➗</div><div><div class="section-title">Bölünebilme Kuralları</div><div class="section-subtitle">2, 3, 4, 5, 6, 7, 8, 9, 10, 11'e bölünebilme ve kalan yorumlama</div></div><div class="section-score-bar"><div class="section-score-pct" id="score-c2">-</div><div class="section-score-lbl">Basari</div></div></div>
+  <div class="question-grid two-col" id="grid-c2"></div>
+</div>
+<div class="section" id="sec-c3">
+  <div class="section-header hdr-rose"><div class="section-icon">⭐</div><div><div class="section-title">Asal Sayılar</div><div class="section-subtitle">Asal sayı tanımı, asal çarpanlar, çarpanlara ayırma</div></div><div class="section-score-bar"><div class="section-score-pct" id="score-c3">-</div><div class="section-score-lbl">Basari</div></div></div>
+  <div class="question-grid two-col" id="grid-c3"></div>
+</div>
+<div class="section" id="sec-c4">
+  <div class="section-header hdr-green"><div class="section-icon">🔗</div><div><div class="section-title">Aralarında Asal Sayılar</div><div class="section-subtitle">EBOB = 1 olan sayı çiftleri; aralarında asal olmayan sayılar</div></div><div class="section-score-bar"><div class="section-score-pct" id="score-c4">-</div><div class="section-score-lbl">Basari</div></div></div>
+  <div class="question-grid two-col" id="grid-c4"></div>
+</div>
+<div class="section" id="sec-c5">
+  <div class="section-header hdr-sky"><div class="section-icon">⬇️</div><div><div class="section-title">EBOB (En Büyük Ortak Bölen)</div><div class="section-subtitle">2 veya 3 sayının EBOB'unu bulma; EBOB'u kullanma</div></div><div class="section-score-bar"><div class="section-score-pct" id="score-c5">-</div><div class="section-score-lbl">Basari</div></div></div>
+  <div class="question-grid two-col" id="grid-c5"></div>
+</div>
+<div class="section" id="sec-c6">
+  <div class="section-header hdr-orange"><div class="section-icon">⬆️</div><div><div class="section-title">EKOK (En Küçük Ortak Kat)</div><div class="section-subtitle">2 veya 3 sayının EKOK'unu bulma; EKOK'u kullanma</div></div><div class="section-score-bar"><div class="section-score-pct" id="score-c6">-</div><div class="section-score-lbl">Basari</div></div></div>
+  <div class="question-grid two-col" id="grid-c6"></div>
+</div>
+<div class="section" id="sec-c7">
+  <div class="section-header hdr-purple"><div class="section-icon">🎯</div><div><div class="section-title">Karma &amp; Etkinlik</div><div class="section-subtitle">Tüm konulardan karışık sorular ve eşleştirme aktiviteleri</div></div><div class="section-score-bar"><div class="section-score-pct" id="score-c7">-</div><div class="section-score-lbl">Basari</div></div></div>
+  <div class="question-grid" id="grid-c7"></div>
+</div>
+
+<div class="action-bar">
+  <button class="btn-finish" onclick="finishTest()">🏁 Testi Bitir &amp; Sonuçları Gör</button>
+  <button class="btn-pdf" onclick="downloadPDF()">📄 PDF İndir</button>
+  <button class="btn-primary" onclick="enterQuizMode()">🎯 Quiz Modu</button>
+  <button class="btn-danger" onclick="confirmReset()">🔄 Sıfırla</button>
+</div>
+<div style="text-align:center;padding:.4rem 1rem 1.5rem;font-size:.67rem;color:var(--text3);font-weight:500;">
+  <span class="kbd-hint"><span class="kbd">Tab</span> sonraki &nbsp;|&nbsp; <span class="kbd">Enter</span> cevapla &nbsp;|&nbsp; <span class="kbd">Ctrl+D</span> gece modu &nbsp;|&nbsp; <span class="kbd">Ctrl+Enter</span> bitir</span>
+</div>
+<div class="score-panel" id="scorePanel">
+  <div class="score-title">ANLIK SKOR</div>
+  <div class="score-val" id="scorePanelVal">0/0</div>
+  <div class="score-pct-bar"><div class="score-pct-fill" id="scorePctFill" style="width:0%"></div></div>
+  <div style="font-size:.68rem;font-weight:700;color:var(--text3);" id="scorePanelPct">%0 basari</div>
+  <button class="score-pdf-btn" onclick="downloadPDF()">PDF Indir</button>
+  <button class="score-pdf-btn" style="background:linear-gradient(135deg,#5b21b6,#7c3aed);margin-top:.38rem;" onclick="finishTest()">Bitir &amp; Sonuc</button>
+</div>
+<script>
+'use strict';
+const QUESTIONS_DB = {
+  c1:[
+    {id:'c1q1',sec:'c1',type:'mcq',diff:'easy',tag:'Çarpan',text:'12 sayısının çarpanları hangi seçenekte tam olarak verilmiştir?',opts:['1,2,3,4,6,12','1,2,3,4,6','1,2,4,6,12','1,2,3,6,12'],ans:'A'},
+    {id:'c1q2',sec:'c1',type:'fill',diff:'easy',tag:'Çarpan',text:'18 sayısının kaç tane çarpanı vardır?',correct:'6'},
+    {id:'c1q3',sec:'c1',type:'mcq',diff:'easy',tag:'Bölen',text:'Aşağıdakilerden hangisi 24\'ün böleni DEĞİLDİR?',opts:['5','1','3','8'],ans:'A'},
+    {id:'c1q4',sec:'c1',type:'fill',diff:'easy',tag:'Kat',text:'7\'nin ilk 4 katını yazın (virgülle ayırın):',correct:'7,14,21,28'},
+    {id:'c1q5',sec:'c1',type:'mcq',diff:'easy',tag:'Kat',text:'Aşağıdakilerden hangisi 9\'un katı DEĞİLDİR?',opts:['39','9','27','63'],ans:'A'},
+    {id:'c1q6',sec:'c1',type:'fill',diff:'easy',tag:'Çarpan',text:'30\'un tüm çarpanlarının sayısı kaçtır?',correct:'8'},
+    {id:'c1q7',sec:'c1',type:'mcq',diff:'easy',tag:'Bölen',text:'36\'nın bölenlerinin toplamı kaçtır?',opts:['91','72','55','84'],ans:'A'},
+    {id:'c1q8',sec:'c1',type:'mcq',diff:'easy',tag:'Çarpan',text:'Kaç tane çarpanı olan sayılara "tam kare sayı" denir?',opts:['Tek sayıda çarpanı olan sayılar','Çift sayıda çarpanı olan sayılar','Yalnızca 2 çarpanı olan','4 çarpanı olan'],ans:'A'},
+    {id:'c1q9',sec:'c1',type:'fill',diff:'easy',tag:'Kat',text:'100\'e kadar olan 8\'in katlarının sayısı kaçtır?',correct:'12'},
+    {id:'c1q10',sec:'c1',type:'mcq',diff:'easy',tag:'Çarpan',text:'16\'nın kaç tane çarpanı vardır?',opts:['5','4','6','3'],ans:'A'},
+    {id:'c1q11',sec:'c1',type:'mcq',diff:'medium',tag:'Çarpan',text:'1\'den 50\'ye kadar tam olarak 2 çarpanı olan sayıların sayısı kaçtır? (asal sayı sayısı)',opts:['15','12','18','10'],ans:'A'},
+    {id:'c1q12',sec:'c1',type:'fill',diff:'medium',tag:'Bölen',text:'72\'nin tüm çarpanlarının toplamı kaçtır?',correct:'195'},
+    {id:'c1q13',sec:'c1',type:'mcq',diff:'medium',tag:'Kat',text:'Hem 4\'ün hem de 6\'nın katı olan 50\'den küçük pozitif tam sayıların sayısı kaçtır?',opts:['4','3','5','6'],ans:'A'},
+    {id:'c1q14',sec:'c1',type:'fill',diff:'medium',tag:'Çarpan',text:'48\'in çift çarpanlarının sayısı kaçtır? (2,4,6,8,12,16,24,48)',correct:'8'},
+    {id:'c1q15',sec:'c1',type:'mcq',diff:'medium',tag:'Bölen',text:'100\'ün bölenlerinin sayısı kaçtır?',opts:['9','8','10','7'],ans:'A'},
+    {id:'c1q16',sec:'c1',type:'fill',diff:'medium',tag:'Kat',text:'3 ile 7\'nin ortak katlarından en küçüğü kaçtır?',correct:'21'},
+    {id:'c1q17',sec:'c1',type:'mcq',diff:'medium',tag:'Çarpan',text:'Çarpanları yalnızca 1 ve kendisi olan sayılara ne denir?',opts:['Asal sayı','Tam kare sayı','Mükemmel sayı','Bileşik sayı'],ans:'A'},
+    {id:'c1q18',sec:'c1',type:'fill',diff:'medium',tag:'Bölen',text:'a sayısı 36\'nın bölenidir ve a > 6. a\'nın alabileceği en küçük değer kaçtır?',correct:'9'},
+    {id:'c1q19',sec:'c1',type:'mcq',diff:'medium',tag:'Kat',text:'200\'den küçük hem 8 hem de 12\'nin katı olan pozitif tam sayıların sayısı kaçtır?',opts:['4','5','6','3'],ans:'B'},
+    {id:'c1q20',sec:'c1',type:'fill',diff:'medium',tag:'Çarpan',text:'60\'ın asal çarpanlarının sayısı kaçtır? (2, 3, 5)',correct:'3'},
+    {id:'c1q21',sec:'c1',type:'mcq',diff:'hard',tag:'Çarpan',text:'Tam olarak 3 adet çarpanı olan sayılara ne denir?',opts:['Asal sayının karesi olan sayılar','Asal sayılar','Tam küp sayılar','Çift sayılar'],ans:'A'},
+    {id:'c1q22',sec:'c1',type:'fill',diff:'hard',tag:'Bölen',text:'n sayısının bölenlerinin toplamı n\'e eşit olan sayılara "mükemmel sayı" denir. 6 mükemmel bir sayı mı? (6\'nın bölenleri: 1+2+3=6) Cevap: evet/hayır',correct:'evet'},
+    {id:'c1q23',sec:'c1',type:'mcq',diff:'hard',tag:'Kat',text:'İlk 5 pozitif tam sayının (1,2,3,4,5) her birinin katı olan en küçük sayı kaçtır?',opts:['60','30','120','20'],ans:'A'},
+    {id:'c1q24',sec:'c1',type:'fill',diff:'hard',tag:'Çarpan',text:'1\'den 20\'ye kadar kaç sayının tam olarak 4 çarpanı vardır?',correct:'5'},
+    {id:'c1q25',sec:'c1',type:'mcq',diff:'hard',tag:'Bölen',text:'2³ × 3² × 5 sayısının kaç tane bölen vardır?',opts:['24','18','12','36'],ans:'A'},
+    {id:'c1q26',sec:'c1',type:'fill',diff:'easy',tag:'Çarpan',text:'24\'ün en büyük çarpanı (kendisi hariç) kaçtır?',correct:'12'},
+    {id:'c1q27',sec:'c1',type:'mcq',diff:'easy',tag:'Kat',text:'Aşağıdaki sayılardan hangisi hem 3\'ün hem de 5\'in katıdır?',opts:['45','20','21','25'],ans:'A'},
+    {id:'c1q28',sec:'c1',type:'fill',diff:'medium',tag:'Bölen',text:'40\'ın bölenlerinden yalnızca tek olanlar: 1, 5. Toplamları kaçtır?',correct:'6'},
+    {id:'c1q29',sec:'c1',type:'mcq',diff:'medium',tag:'Çarpan',text:'54 = 2 × 3³ biçiminde yazılır. Bu sayının kaç tane çarpanı vardır?',opts:['8','6','10','4'],ans:'A'},
+    {id:'c1q30',sec:'c1',type:'fill',diff:'hard',tag:'Kat',text:'4, 6 ve 9\'un ortak katlarının en küçüğü kaçtır?',correct:'36'},
+  ],
+  c2:[
+    {id:'c2q1',sec:'c2',type:'mcq',diff:'easy',tag:'2\'ye Bölünme',text:'Hangi sayı 2\'ye tam bölünür?',opts:['348','135','471','903'],ans:'A'},
+    {id:'c2q2',sec:'c2',type:'mcq',diff:'easy',tag:'5\'e Bölünme',text:'Aşağıdakilerden hangisi 5\'e tam bölünür?',opts:['4735','4731','4733','4737'],ans:'A'},
+    {id:'c2q3',sec:'c2',type:'fill',diff:'easy',tag:'3\'e Bölünme',text:'3\'e bölünebilme kuralı nedir? (rakamlar toplamı neye bölünmeli)',correct:'3'},
+    {id:'c2q4',sec:'c2',type:'mcq',diff:'easy',tag:'10\'a Bölünme',text:'Hangi sayı 10\'a tam bölünür?',opts:['2350','2355','2353','2357'],ans:'A'},
+    {id:'c2q5',sec:'c2',type:'mcq',diff:'easy',tag:'4\'e Bölünme',text:'4\'e bölünebilme kuralına göre hangi sayı 4\'e tam bölünür?',opts:['236','238','231','237'],ans:'A'},
+    {id:'c2q6',sec:'c2',type:'fill',diff:'easy',tag:'9\'a Bölünme',text:'9\'a bölünebilme kuralı: rakamlar toplamı kaça bölünmeli?',correct:'9'},
+    {id:'c2q7',sec:'c2',type:'mcq',diff:'easy',tag:'6\'ya Bölünme',text:'6\'ya bölünebilmek için sayı hangi iki kurala birden uymalıdır?',opts:['2 ve 3\'e bölünmeli','2 ve 4\'e bölünmeli','3 ve 5\'e bölünmeli','2 ve 9\'a bölünmeli'],ans:'A'},
+    {id:'c2q8',sec:'c2',type:'mcq',diff:'easy',tag:'2\'ye Bölünme',text:'2\'ye bölünebilme kuralı nedir?',opts:['Birler basamağı 0,2,4,6,8 olmalı','Rakamlar toplamı 2\'ye bölünmeli','Son iki rakam 2\'ye bölünmeli','Sayı çift olmalı'],ans:'A'},
+    {id:'c2q9',sec:'c2',type:'fill',diff:'easy',tag:'Bölünme',text:'252 sayısı hangi rakamlara bölünür? (2,3,4,6,9 içinden, virgülle sıralı)',correct:'2,3,4,6,9'},
+    {id:'c2q10',sec:'c2',type:'mcq',diff:'easy',tag:'8\'e Bölünme',text:'8\'e bölünebilme kuralı nedir?',opts:['Son üç basamak 8\'e bölünmeli','Son iki basamak 8\'e bölünmeli','Rakamlar toplamı 8\'e bölünmeli','Son basamak 8 olmalı'],ans:'A'},
+    {id:'c2q11',sec:'c2',type:'mcq',diff:'medium',tag:'3\'e Bölünme',text:'4□7 sayısı 3\'e tam bölünüyorsa □ yerine gelebilecek rakamlar hangileridir?',opts:['1, 4, 7','0, 3, 6, 9','2, 5, 8','1, 4, 7'],ans:'A'},
+    {id:'c2q12',sec:'c2',type:'fill',diff:'medium',tag:'11\'e Bölünme',text:'11\'e bölünebilme kuralı: tek ve çift sıradaki rakamlar farkının 11\'e (veya 0\'a) bölünmesi. 253 sayısı 11\'e bölünür mü? (2-5+3=0) Cevap: evet/hayır',correct:'evet'},
+    {id:'c2q13',sec:'c2',type:'mcq',diff:'medium',tag:'6\'ya Bölünme',text:'Hangisi 6\'ya tam bölünür?',opts:['534','532','533','535'],ans:'A'},
+    {id:'c2q14',sec:'c2',type:'fill',diff:'medium',tag:'9\'a Bölünme',text:'2□34 sayısı 9\'a tam bölünüyorsa □ yerine gelen rakam kaçtır?',correct:'7'},
+    {id:'c2q15',sec:'c2',type:'mcq',diff:'medium',tag:'7\'ye Bölünme',text:'7\'ye bölünebilme için pratik yöntem nedir?',opts:['Sayıyı 7\'ye bölerek kontrol et','Son rakamı 2 ile çarp, geriden çıkar','Rakamlar toplamını 7\'ye böl','Son üç rakamı 7\'ye böl'],ans:'A'},
+    {id:'c2q16',sec:'c2',type:'mcq',diff:'medium',tag:'Kalan',text:'37\'yi 5\'e böldüğümüzde kalan kaçtır?',opts:['2','1','3','0'],ans:'A'},
+    {id:'c2q17',sec:'c2',type:'fill',diff:'medium',tag:'Kalan',text:'100\'ü 7\'ye böldüğümüzde kalan kaçtır?',correct:'2'},
+    {id:'c2q18',sec:'c2',type:'mcq',diff:'medium',tag:'11\'e Bölünme',text:'Hangisi 11\'e tam bölünür?',opts:['176','174','177','178'],ans:'A'},
+    {id:'c2q19',sec:'c2',type:'fill',diff:'medium',tag:'Kalan',text:'2023 sayısı 8\'e bölündüğünde kalan kaçtır?',correct:'7'},
+    {id:'c2q20',sec:'c2',type:'mcq',diff:'medium',tag:'4\'e Bölünme',text:'3□52 sayısının 4\'e tam bölünmesi için □ yerine hangi rakam gelmelidir?',opts:['Herhangi bir rakam (son iki: 52, 52÷4=13 tam)','Yalnızca 0','Yalnızca çift rakam','4'],ans:'A'},
+    {id:'c2q21',sec:'c2',type:'mcq',diff:'hard',tag:'Çoklu Kural',text:'Hangisi aynı anda 2, 3 ve 5\'e tam bölünür?',opts:['510','512','513','515'],ans:'A'},
+    {id:'c2q22',sec:'c2',type:'fill',diff:'hard',tag:'Kalan',text:'n sayısı 6\'ya bölündüğünde kalan 4 oluyor. n+8 sayısı 6\'ya bölündüğünde kalan kaçtır?',correct:'0'},
+    {id:'c2q23',sec:'c2',type:'mcq',diff:'hard',tag:'Kalan',text:'Bir sayı 9\'a bölününce kalan 5 oluyor. Bu sayının 3 katı 9\'a bölününce kalan kaçtır?',opts:['6','5','3','0'],ans:'A'},
+    {id:'c2q24',sec:'c2',type:'fill',diff:'hard',tag:'Çoklu Kural',text:'4 basamaklı 27A4 sayısı 8\'e tam bölünüyorsa A kaçtır? (son 3 rakam: 7A4 → A=5 → 754÷8=94.25, A=1 → 714÷8=89.25... Kontrol: 2724÷8=340.5, 2784÷8=348 ✓ → A=8)',correct:'8'},
+    {id:'c2q25',sec:'c2',type:'mcq',diff:'hard',tag:'11\'e Bölünme',text:'5□3□ sayısı 11\'e tam bölünüyorsa (5-□+3-□=0 veya 11), □+□ toplamı kaçtır?',opts:['8','6','4','10'],ans:'A'},
+    {id:'c2q26',sec:'c2',type:'fill',diff:'easy',tag:'Bölünme',text:'360 sayısı 2, 3, 4, 5, 6, 8, 9, 10\'a bölünür. 7\'ye bölünür mü? (evet/hayır)',correct:'hayır'},
+    {id:'c2q27',sec:'c2',type:'mcq',diff:'medium',tag:'Kalan',text:'Bir sayı 4\'e bölününce kalan 3 kalıyor. Sayının 2\'ye bölümünden kalan kaçtır?',opts:['1','0','2','3'],ans:'A'},
+    {id:'c2q28',sec:'c2',type:'fill',diff:'medium',tag:'9\'a Bölünme',text:'Rakamları 3, 5, 7, x olan dört basamaklı sayının 9\'a tam bölünmesi için x kaçtır?',correct:'3'},
+    {id:'c2q29',sec:'c2',type:'mcq',diff:'hard',tag:'Kalan',text:'1\'den 100\'e kadar olan sayılardan 7\'ye bölümünde kalan 1 olan kaç sayı vardır?',opts:['15','14','13','16'],ans:'B'},
+    {id:'c2q30',sec:'c2',type:'fill',diff:'hard',tag:'Çoklu Kural',text:'Hem 4\'e hem 6\'ya tam bölünen 100\'den küçük pozitif sayıların sayısı kaçtır?',correct:'8'},
+  ],
+  c3:[
+    {id:'c3q1',sec:'c3',type:'mcq',diff:'easy',tag:'Tanım',text:'Asal sayının tanımı nedir?',opts:['Tam olarak 2 çarpanı olan 1\'den büyük doğal sayı','Yalnızca tek sayılar','Kendisine bölünen sayı','3\'ten büyük tek sayılar'],ans:'A'},
+    {id:'c3q2',sec:'c3',type:'fill',diff:'easy',tag:'Asal',text:'1\'den 20\'ye kadar kaç asal sayı vardır?',correct:'8'},
+    {id:'c3q3',sec:'c3',type:'mcq',diff:'easy',tag:'Asal',text:'Aşağıdakilerden hangisi asal sayıdır?',opts:['97','91','93','99'],ans:'A'},
+    {id:'c3q4',sec:'c3',type:'mcq',diff:'easy',tag:'Asal',text:'1 sayısı asal mıdır?',opts:['Hayır (1 çarpanı var, 2 değil)','Evet','Bileşik sayıdır','Belirsizdir'],ans:'A'},
+    {id:'c3q5',sec:'c3',type:'fill',diff:'easy',tag:'Asal',text:'2 ile 10 arasındaki asal sayıları yazın (virgülle):',correct:'2,3,5,7'},
+    {id:'c3q6',sec:'c3',type:'mcq',diff:'easy',tag:'Çarpanlara Ayır',text:'24 = ?',opts:['2³ × 3','2² × 6','2 × 12','2² × 3²'],ans:'A'},
+    {id:'c3q7',sec:'c3',type:'fill',diff:'easy',tag:'Çarpanlara Ayır',text:'36 = 2² × ? (eksik asal çarpanı üs ile yazın)',correct:'3^2'},
+    {id:'c3q8',sec:'c3',type:'mcq',diff:'easy',tag:'Bileşik',text:'Asal olmayan 1\'den büyük doğal sayılara ne denir?',opts:['Bileşik sayı','Kök sayı','Tam sayı','Doğal sayı'],ans:'A'},
+    {id:'c3q9',sec:'c3',type:'fill',diff:'easy',tag:'Asal',text:'50 ile 60 arasındaki asal sayıları yazın (virgülle):',correct:'53,59'},
+    {id:'c3q10',sec:'c3',type:'mcq',diff:'easy',tag:'Asal',text:'Hem çift hem asal olan tek sayı hangisidir?',opts:['2','4','6','8'],ans:'A'},
+    {id:'c3q11',sec:'c3',type:'mcq',diff:'medium',tag:'Çarpanlara Ayır',text:'60 = ?',opts:['2² × 3 × 5','2³ × 3 × 5','2 × 3 × 10','2² × 15'],ans:'A'},
+    {id:'c3q12',sec:'c3',type:'fill',diff:'medium',tag:'Asal Çarpan',text:'72 = 2³ × 3². Bu sayının kaç farklı asal çarpanı vardır?',correct:'2'},
+    {id:'c3q13',sec:'c3',type:'mcq',diff:'medium',tag:'Çarpanlara Ayır',text:'126 = ?',opts:['2 × 3² × 7','2 × 3 × 7²','2² × 3 × 7','2 × 63'],ans:'A'},
+    {id:'c3q14',sec:'c3',type:'fill',diff:'medium',tag:'Asal',text:'100 ile 120 arasındaki asal sayıların sayısı kaçtır? (101,103,107,109,113)',correct:'5'},
+    {id:'c3q15',sec:'c3',type:'fill',diff:'medium',tag:'Çarpanlara Ayır',text:'180 = 2² × 3² × 5. Bu sayının kaç tane bölen vardır?',correct:'18'},
+    {id:'c3q16',sec:'c3',type:'mcq',diff:'medium',tag:'Asal',text:'p ve q asal sayılar, p × q = 77 ise p + q kaçtır?',opts:['18','14','22','11'],ans:'A'},
+    {id:'c3q17',sec:'c3',type:'fill',diff:'medium',tag:'Çarpanlara Ayır',text:'2² × 3 × 7 sayısı kaçtır?',correct:'84'},
+    {id:'c3q18',sec:'c3',type:'mcq',diff:'medium',tag:'Çarpanlara Ayır',text:'2³ × 3 × 5² = ?',opts:['600','480','300','720'],ans:'A'},
+    {id:'c3q19',sec:'c3',type:'fill',diff:'hard',tag:'Asal',text:'1000\'den küçük en büyük asal sayı kaçtır?',correct:'997'},
+    {id:'c3q20',sec:'c3',type:'mcq',diff:'hard',tag:'Çarpanlara Ayır',text:'360 = ?',opts:['2³ × 3² × 5','2² × 3² × 5','2³ × 3 × 5²','2³ × 3³ × 5'],ans:'A'},
+    {id:'c3q21',sec:'c3',type:'fill',diff:'hard',tag:'Çarpanlara Ayır',text:'2 × 3 × 5 × 7 kaçtır?',correct:'210'},
+    {id:'c3q22',sec:'c3',type:'mcq',diff:'hard',tag:'Bölen Sayısı',text:'2³ × 3² × 5 sayısının kaç tane bölen vardır?',opts:['24','18','12','36'],ans:'A'},
+    {id:'c3q23',sec:'c3',type:'fill',diff:'hard',tag:'Asal',text:'p asal ve p+2 de asal olan (p, p+2) ikilisine ikiz asal denir. 100\'den küçük ikiz asal çiftlerinin sayısı kaçtır? ((3,5),(5,7),(11,13),(17,19),(29,31),(41,43),(59,61),(71,73))',correct:'8'},
+    {id:'c3q24',sec:'c3',type:'mcq',diff:'hard',tag:'Çarpanlara Ayır',text:'n = 2⁴ × 3 × 7² biçimindeyse n\'nin bölen sayısı kaçtır?',opts:['30','20','24','15'],ans:'A'},
+    {id:'c3q25',sec:'c3',type:'fill',diff:'easy',tag:'Asal',text:'20 ile 30 arasındaki asal sayıları yazın (virgülle):',correct:'23,29'},
+  ],
+  c4:[
+    {id:'c4q1',sec:'c4',type:'mcq',diff:'easy',tag:'Tanım',text:'İki sayının aralarında asal olması ne anlama gelir?',opts:['EBOB\'ları 1\'e eşittir','Her ikisi de asal sayıdır','Çarpımları asal sayıdır','Farkları 1\'dir'],ans:'A'},
+    {id:'c4q2',sec:'c4',type:'mcq',diff:'easy',tag:'Aralarında Asal',text:'8 ve 9 aralarında asal mıdır?',opts:['Evet (EBOB=1)','Hayır (EBOB=3)','Hayır, ikisi de çift','Hayır (EBOB=9)'],ans:'A'},
+    {id:'c4q3',sec:'c4',type:'fill',diff:'easy',tag:'EBOB',text:'EBOB(14, 15) kaçtır?',correct:'1'},
+    {id:'c4q4',sec:'c4',type:'mcq',diff:'easy',tag:'Aralarında Asal',text:'Hangisi aralarında asal bir çifttir?',opts:['8 ve 15','6 ve 9','4 ve 6','12 ve 16'],ans:'A'},
+    {id:'c4q5',sec:'c4',type:'fill',diff:'easy',tag:'Aralarında Asal',text:'Ardışık iki doğal sayı her zaman aralarında asal mıdır? (evet/hayır)',correct:'evet'},
+    {id:'c4q6',sec:'c4',type:'mcq',diff:'easy',tag:'Aralarında Asal',text:'Hangisi aralarında asal DEĞİLDİR?',opts:['12 ve 16','8 ve 9','7 ve 11','4 ve 9'],ans:'A'},
+    {id:'c4q7',sec:'c4',type:'fill',diff:'easy',tag:'EBOB',text:'EBOB(9, 16) = ?',correct:'1'},
+    {id:'c4q8',sec:'c4',type:'mcq',diff:'easy',tag:'Aralarında Asal',text:'3 ve 7 aralarında asal mıdır?',opts:['Evet (EBOB=1)','Hayır','Belirlenemez','Hayır (toplamları 10)'],ans:'A'},
+    {id:'c4q9',sec:'c4',type:'fill',diff:'medium',tag:'EBOB',text:'EBOB(36, 35) = ?',correct:'1'},
+    {id:'c4q10',sec:'c4',type:'mcq',diff:'medium',tag:'Aralarında Asal',text:'İki asal sayı her zaman aralarında asal mıdır?',opts:['Evet (farklı iki asalın EBOB\'u 1\'dir)','Hayır','Yalnızca ikiz asallar','Hayır, 2 ve 4 gibi'],ans:'A'},
+    {id:'c4q11',sec:'c4',type:'fill',diff:'medium',tag:'EBOB',text:'EBOB(100, 101) = ?',correct:'1'},
+    {id:'c4q12',sec:'c4',type:'mcq',diff:'medium',tag:'Özellik',text:'a ve b aralarında asal ise EBOB(a,b) × EKOK(a,b) neye eşittir?',opts:['a × b','a + b','a − b','1'],ans:'A'},
+    {id:'c4q13',sec:'c4',type:'mcq',diff:'medium',tag:'Aralarında Asal',text:'Hangisi 12 ile aralarında asaldır?',opts:['35','18','24','9'],ans:'A'},
+    {id:'c4q14',sec:'c4',type:'fill',diff:'medium',tag:'Aralarında Asal',text:'1\'den 10\'a kadar 8 ile aralarında asal kaç sayı vardır? (1,3,5,7,9)',correct:'5'},
+    {id:'c4q15',sec:'c4',type:'mcq',diff:'medium',tag:'Aralarında Asal',text:'n ve n+1 her zaman aralarında asal olmalarının nedeni nedir?',opts:['Ardışık sayıların tek ortak böleni 1\'dir','İkisi de asal','Toplamları asal','Farkları 1'],ans:'A'},
+    {id:'c4q16',sec:'c4',type:'fill',diff:'hard',tag:'EBOB',text:'EBOB(2024, 2025) = ?',correct:'1'},
+    {id:'c4q17',sec:'c4',type:'mcq',diff:'hard',tag:'Özellik',text:'a ve b aralarında asal ve a×b = 120 ise EKOK(a,b) kaçtır?',opts:['120','60','24','12'],ans:'A'},
+    {id:'c4q18',sec:'c4',type:'fill',diff:'hard',tag:'Aralarında Asal',text:'a ve b aralarında asal, a = 8, EKOK(a,b) = 56 ise b kaçtır?',correct:'7'},
+    {id:'c4q19',sec:'c4',type:'mcq',diff:'hard',tag:'Aralarında Asal',text:'p asal sayı, n herhangi tam sayı. EBOB(p,n) kaç olabilir?',opts:['1 veya p','Yalnızca 1','Yalnızca p','n'],ans:'A'},
+    {id:'c4q20',sec:'c4',type:'fill',diff:'medium',tag:'Aralarında Asal',text:'12 ile aralarında asal olan 1\'den 12\'ye kadar (12 dahil) kaç sayı vardır? (1,5,7,11)',correct:'4'},
+  ],
+  c5:[
+    {id:'c5q1',sec:'c5',type:'mcq',diff:'easy',tag:'EBOB Tanım',text:'EBOB ne anlama gelir?',opts:['İki veya daha fazla sayının ortak bölenlerinin en büyüğü','Sayıların toplamı','En büyük ortak kat','En küçük ortak bölen'],ans:'A'},
+    {id:'c5q2',sec:'c5',type:'fill',diff:'easy',tag:'EBOB',text:'EBOB(12, 18) = ?',correct:'6'},
+    {id:'c5q3',sec:'c5',type:'mcq',diff:'easy',tag:'EBOB',text:'EBOB(8, 12) kaçtır?',opts:['4','8','6','2'],ans:'A'},
+    {id:'c5q4',sec:'c5',type:'fill',diff:'easy',tag:'EBOB',text:'EBOB(15, 25) = ?',correct:'5'},
+    {id:'c5q5',sec:'c5',type:'mcq',diff:'easy',tag:'EBOB',text:'EBOB(6, 9) kaçtır?',opts:['3','6','9','2'],ans:'A'},
+    {id:'c5q6',sec:'c5',type:'fill',diff:'easy',tag:'EBOB',text:'EBOB(20, 30) = ?',correct:'10'},
+    {id:'c5q7',sec:'c5',type:'mcq',diff:'easy',tag:'EBOB',text:'EBOB(16, 24) kaçtır?',opts:['8','4','16','6'],ans:'A'},
+    {id:'c5q8',sec:'c5',type:'fill',diff:'easy',tag:'EBOB',text:'EBOB(7, 14) = ?',correct:'7'},
+    {id:'c5q9',sec:'c5',type:'mcq',diff:'easy',tag:'EBOB',text:'EBOB(100, 75) kaçtır?',opts:['25','5','50','10'],ans:'A'},
+    {id:'c5q10',sec:'c5',type:'fill',diff:'easy',tag:'EBOB',text:'EBOB(24, 36) = ?',correct:'12'},
+    {id:'c5q11',sec:'c5',type:'mcq',diff:'medium',tag:'EBOB',text:'EBOB(48, 72, 96) kaçtır?',opts:['24','12','48','8'],ans:'A'},
+    {id:'c5q12',sec:'c5',type:'fill',diff:'medium',tag:'EBOB',text:'EBOB(60, 84) = ?',correct:'12'},
+    {id:'c5q13',sec:'c5',type:'mcq',diff:'medium',tag:'EBOB Uygulama',text:'125 cm ve 75 cm uzunluğundaki iki şeridi eşit parçalara ayırmak istiyoruz. En uzun parça kaç cm olabilir?',opts:['25 cm','5 cm','15 cm','50 cm'],ans:'A'},
+    {id:'c5q14',sec:'c5',type:'fill',diff:'medium',tag:'EBOB',text:'EBOB(36, 54, 90) = ?',correct:'18'},
+    {id:'c5q15',sec:'c5',type:'mcq',diff:'medium',tag:'EBOB Uygulama',text:'48 elma ve 36 armudu eşit gruplara dağıtmak istiyoruz (her grupta aynı sayıda elma ve armut olacak). En fazla kaç grup oluşturulabilir?',opts:['12','6','4','8'],ans:'A'},
+    {id:'c5q16',sec:'c5',type:'fill',diff:'medium',tag:'EBOB',text:'EBOB(72, 108) = ?',correct:'36'},
+    {id:'c5q17',sec:'c5',type:'mcq',diff:'medium',tag:'EBOB',text:'EBOB(a, b) = 12 ve a = 36, b = ? olabilecek değerlerden biri hangisidir?',opts:['60','30','18','9'],ans:'A'},
+    {id:'c5q18',sec:'c5',type:'fill',diff:'medium',tag:'EBOB Uygulama',text:'56 m ve 84 m\'lik iki ip en uzun eşit parçalara kesilecek. Parça uzunluğu ve toplam parça sayısı: EBOB=28, 56/28=2, 84/28=3, toplam=5',correct:'5'},
+    {id:'c5q19',sec:'c5',type:'mcq',diff:'hard',tag:'EBOB',text:'EBOB(180, 252) kaçtır?',opts:['36','18','72','12'],ans:'A'},
+    {id:'c5q20',sec:'c5',type:'fill',diff:'hard',tag:'EBOB',text:'EBOB(a,b)=15, EKOK(a,b)=180. a×b = ?',correct:'2700'},
+    {id:'c5q21',sec:'c5',type:'mcq',diff:'hard',tag:'EBOB',text:'İki sayının EBOB\'u 6 ve bu sayılar 6\'nın 2. ve 5. katlarıdır. Sayılar kaçtır?',opts:['12 ve 30','6 ve 30','12 ve 18','18 ve 30'],ans:'A'},
+    {id:'c5q22',sec:'c5',type:'fill',diff:'hard',tag:'EBOB',text:'EBOB(2³×3, 2²×3²) = ? (asal çarpan yöntemi: min üs: 2²×3=12)',correct:'12'},
+    {id:'c5q23',sec:'c5',type:'mcq',diff:'hard',tag:'EBOB Uygulama',text:'144 ve 180 sayılarının EBOB\'u kaçtır?',opts:['36','18','72','12'],ans:'A'},
+    {id:'c5q24',sec:'c5',type:'fill',diff:'easy',tag:'EBOB',text:'EBOB(9, 15) = ?',correct:'3'},
+    {id:'c5q25',sec:'c5',type:'mcq',diff:'medium',tag:'EBOB',text:'EBOB(42, 70) kaçtır?',opts:['14','7','21','6'],ans:'A'},
+    {id:'c5q26',sec:'c5',type:'fill',diff:'medium',tag:'EBOB',text:'EBOB(45, 60, 75) = ?',correct:'15'},
+    {id:'c5q27',sec:'c5',type:'mcq',diff:'hard',tag:'EBOB',text:'EBOB(126, 210) kaçtır?',opts:['42','21','14','63'],ans:'A'},
+    {id:'c5q28',sec:'c5',type:'fill',diff:'easy',tag:'EBOB',text:'EBOB(50, 75) = ?',correct:'25'},
+    {id:'c5q29',sec:'c5',type:'mcq',diff:'medium',tag:'EBOB',text:'EBOB(a,b)=8, a=24. b\'nin olası değerlerinden biri hangisidir?',opts:['32','12','6','4'],ans:'A'},
+    {id:'c5q30',sec:'c5',type:'fill',diff:'hard',tag:'EBOB',text:'İki sayı 2:3 oranında ve EBOB\'ları 12. Sayılar kaçtır? (büyük olanı yazın)',correct:'36'},
+  ],
+  c6:[
+    {id:'c6q1',sec:'c6',type:'mcq',diff:'easy',tag:'EKOK Tanım',text:'EKOK ne anlama gelir?',opts:['İki veya daha fazla sayının ortak katlarının en küçüğü','En küçük ortak bölen','En büyük ortak kat','Sayıların çarpımı'],ans:'A'},
+    {id:'c6q2',sec:'c6',type:'fill',diff:'easy',tag:'EKOK',text:'EKOK(4, 6) = ?',correct:'12'},
+    {id:'c6q3',sec:'c6',type:'mcq',diff:'easy',tag:'EKOK',text:'EKOK(3, 5) kaçtır?',opts:['15','5','3','30'],ans:'A'},
+    {id:'c6q4',sec:'c6',type:'fill',diff:'easy',tag:'EKOK',text:'EKOK(6, 8) = ?',correct:'24'},
+    {id:'c6q5',sec:'c6',type:'mcq',diff:'easy',tag:'EKOK',text:'EKOK(4, 9) kaçtır?',opts:['36','18','12','9'],ans:'A'},
+    {id:'c6q6',sec:'c6',type:'fill',diff:'easy',tag:'EKOK',text:'EKOK(5, 7) = ?',correct:'35'},
+    {id:'c6q7',sec:'c6',type:'mcq',diff:'easy',tag:'EKOK',text:'EKOK(8, 12) kaçtır?',opts:['24','12','48','8'],ans:'A'},
+    {id:'c6q8',sec:'c6',type:'fill',diff:'easy',tag:'EKOK',text:'EKOK(9, 6) = ?',correct:'18'},
+    {id:'c6q9',sec:'c6',type:'mcq',diff:'easy',tag:'EKOK',text:'a ve b aralarında asal ise EKOK(a, b) neye eşittir?',opts:['a × b','a + b','EBOB(a,b)','a'],ans:'A'},
+    {id:'c6q10',sec:'c6',type:'fill',diff:'easy',tag:'EKOK',text:'EKOK(10, 15) = ?',correct:'30'},
+    {id:'c6q11',sec:'c6',type:'mcq',diff:'medium',tag:'EKOK',text:'EKOK(12, 18, 24) kaçtır?',opts:['72','36','48','24'],ans:'A'},
+    {id:'c6q12',sec:'c6',type:'fill',diff:'medium',tag:'EKOK',text:'EKOK(6, 10, 15) = ?',correct:'30'},
+    {id:'c6q13',sec:'c6',type:'mcq',diff:'medium',tag:'EKOK Uygulama',text:'İki trafik ışığı var: biri 12 saniyede, diğeri 18 saniyede yanıyor. Aynı anda kaç saniyede bir yanacaklar?',opts:['36 saniye','6 saniye','24 saniye','72 saniye'],ans:'A'},
+    {id:'c6q14',sec:'c6',type:'fill',diff:'medium',tag:'EKOK',text:'EKOK(4, 6, 10) = ?',correct:'60'},
+    {id:'c6q15',sec:'c6',type:'mcq',diff:'medium',tag:'EKOK',text:'EBOB(a,b)=6 ve EKOK(a,b)=60 ise a×b kaçtır?',opts:['360','66','10','30'],ans:'A'},
+    {id:'c6q16',sec:'c6',type:'fill',diff:'medium',tag:'EKOK',text:'EKOK(14, 21) = ?',correct:'42'},
+    {id:'c6q17',sec:'c6',type:'mcq',diff:'medium',tag:'EKOK Uygulama',text:'3\'er ve 4\'er adım atan iki öğrenci aynı yerden başlıyor. Her ikisi de ilk kaç adımda aynı yerde olur?',opts:['12. adımda','7. adımda','24. adımda','6. adımda'],ans:'A'},
+    {id:'c6q18',sec:'c6',type:'fill',diff:'medium',tag:'EKOK',text:'EKOK(8, 12, 16) = ?',correct:'48'},
+    {id:'c6q19',sec:'c6',type:'mcq',diff:'hard',tag:'EKOK',text:'EKOK(2³×3, 2²×3²) kaçtır? (max üs: 2³×3²=72)',opts:['72','36','24','48'],ans:'A'},
+    {id:'c6q20',sec:'c6',type:'fill',diff:'hard',tag:'EKOK',text:'EBOB(a,b)=12, a=48. EKOK(a,b)=144 ise b = ?',correct:'36'},
+    {id:'c6q21',sec:'c6',type:'mcq',diff:'hard',tag:'EKOK Uygulama',text:'Her 8 günde bir A mağazası, her 12 günde bir B mağazası indirim yapıyor. Bugün ikisi de indirim yapıyorsa kaç gün sonra tekrar aynı gün indirim yapacaklar?',opts:['24 gün','8 gün','12 gün','4 gün'],ans:'A'},
+    {id:'c6q22',sec:'c6',type:'fill',diff:'hard',tag:'EKOK',text:'EKOK(15, 20, 30) = ?',correct:'60'},
+    {id:'c6q23',sec:'c6',type:'mcq',diff:'hard',tag:'EKOK',text:'İki sayının EBOB\'u 14 ve EKOK\'u 168. Sayılardan biri 42 ise diğeri kaçtır?',opts:['56','84','28','112'],ans:'A'},
+    {id:'c6q24',sec:'c6',type:'fill',diff:'easy',tag:'EKOK',text:'EKOK(3, 4, 5) = ?',correct:'60'},
+    {id:'c6q25',sec:'c6',type:'mcq',diff:'medium',tag:'EKOK',text:'EKOK(25, 30) kaçtır?',opts:['150','75','50','30'],ans:'A'},
+    {id:'c6q26',sec:'c6',type:'fill',diff:'medium',tag:'EKOK',text:'EKOK(16, 20) = ?',correct:'80'},
+    {id:'c6q27',sec:'c6',type:'mcq',diff:'hard',tag:'EKOK',text:'EKOK(36, 48, 60) kaçtır?',opts:['720','360','180','240'],ans:'A'},
+    {id:'c6q28',sec:'c6',type:'fill',diff:'easy',tag:'EKOK',text:'EKOK(2, 3, 4, 5) = ?',correct:'60'},
+    {id:'c6q29',sec:'c6',type:'mcq',diff:'medium',tag:'EKOK Uygulama',text:'Bir öğrenci her 6 günde bir matematik, her 8 günde bir fen çalışıyor. Her ikisini de bugün çalıştıysa kaç gün sonra ikisini aynı anda çalışacak?',opts:['24 gün','14 gün','48 gün','12 gün'],ans:'A'},
+    {id:'c6q30',sec:'c6',type:'fill',diff:'hard',tag:'EKOK',text:'İki sayı 3:5 oranında ve EKOK\'ları 90. Sayılar kaçtır? (küçük olanı yazın)',correct:'18'},
+  ],
+  c7:[
+    {id:'c7_act1',sec:'c7',type:'activity',title:'🎯 Eşleştirme – Bölünebilme Kuralları',
+     pairs:[{left:'2\'ye bölünme',right:'Son rakam 0,2,4,6,8'},{left:'3\'e bölünme',right:'Rakamlar toplamı 3\'e bölünür'},{left:'5\'e bölünme',right:'Son rakam 0 veya 5'},{left:'9\'a bölünme',right:'Rakamlar toplamı 9\'a bölünür'},{left:'4\'e bölünme',right:'Son iki rakam 4\'e bölünür'},{left:'11\'e bölünme',right:'Çift-tek sıra farkı 0 veya 11'}]},
+    {id:'c7_act2',sec:'c7',type:'activity',title:'🔗 Eşleştirme – EBOB & EKOK',
+     pairs:[{left:'EBOB(12,18)',right:'6'},{left:'EKOK(4,6)',right:'12'},{left:'EBOB(8,12)',right:'4'},{left:'EKOK(6,9)',right:'18'},{left:'EBOB(25,75)',right:'25'},{left:'EKOK(3,5)',right:'15'}]},
+    {id:'c7q1',sec:'c7',type:'mcq',diff:'medium',tag:'Karma',text:'EBOB(a,b)=12 ve EKOK(a,b)=60. a=20 ise b kaçtır?',opts:['36','30','24','48'],ans:'A'},
+    {id:'c7q2',sec:'c7',type:'fill',diff:'easy',tag:'Karma',text:'288 = 2? × 3² yazılırsa 2\'nin üssü kaçtır? (288=2×144=2×4×36=2×4×4×9=2^5×3^2)',correct:'5'},
+    {id:'c7q3',sec:'c7',type:'mcq',diff:'medium',tag:'Karma',text:'48 ve 72\'nin EBOB ve EKOK\'ları sırasıyla kaçtır?',opts:['EBOB=24, EKOK=144','EBOB=12, EKOK=288','EBOB=24, EKOK=288','EBOB=12, EKOK=144'],ans:'A'},
+    {id:'c7q4',sec:'c7',type:'fill',diff:'easy',tag:'Karma',text:'1\'den 30\'a kadar kaç asal sayı vardır?',correct:'10'},
+    {id:'c7q5',sec:'c7',type:'mcq',diff:'hard',tag:'Karma',text:'Bir sayı aynı anda 4\'e, 6\'ya ve 9\'a tam bölünüyor. Bu sayının alabileceği en küçük pozitif değer kaçtır?',opts:['36','18','24','72'],ans:'A'},
+    {id:'c7q6',sec:'c7',type:'fill',diff:'medium',tag:'Karma',text:'EBOB(a,b)×EKOK(a,b) = 360 ve EBOB(a,b)=6 ise EKOK(a,b) kaçtır?',correct:'60'},
+    {id:'c7q7',sec:'c7',type:'mcq',diff:'medium',tag:'Karma',text:'54 ve 90\'ın EBOB\'u kaçtır?',opts:['18','9','27','6'],ans:'A'},
+    {id:'c7q8',sec:'c7',type:'fill',diff:'medium',tag:'Karma',text:'3, 4 ve 7\'nin EKOK\'u kaçtır?',correct:'84'},
+    {id:'c7q9',sec:'c7',type:'mcq',diff:'hard',tag:'Karma',text:'n bir doğal sayı. 2n, 3n ve 5n sayılarının EKOK\'u kaçtır?',opts:['30n','6n','15n','10n'],ans:'A'},
+    {id:'c7q10',sec:'c7',type:'fill',diff:'easy',tag:'Karma',text:'91 = 7 × 13 olduğuna göre 91 asal mıdır? (evet/hayır)',correct:'hayır'},
+    {id:'c7q11',sec:'c7',type:'mcq',diff:'medium',tag:'Karma',text:'Bir sayı 6\'ya bölündüğünde kalan 4, 4\'e bölündüğünde kalanı nedir?',opts:['0','2','1','3'],ans:'A'},
+    {id:'c7q12',sec:'c7',type:'fill',diff:'hard',tag:'Karma',text:'İki sayının çarpımı 504, EBOB\'ları 6. EKOK\'ları kaçtır?',correct:'84'},
+    {id:'c7q13',sec:'c7',type:'mcq',diff:'medium',tag:'Karma',text:'120 = 2³ × 3 × 5. Bu sayının kaç tane bölen vardır?',opts:['16','12','8','24'],ans:'A'},
+    {id:'c7q14',sec:'c7',type:'fill',diff:'medium',tag:'Karma',text:'Her 15 dakikada bir minibüs, her 20 dakikada bir otobüs kalkıyor. İkisi aynı anda kalktıktan kaç dakika sonra tekrar aynı anda kalkacaklar?',correct:'60'},
+    {id:'c7q15',sec:'c7',type:'mcq',diff:'hard',tag:'Karma',text:'a = 2² × 3 × 5, b = 2 × 3² × 7. EBOB(a,b) kaçtır?',opts:['6','12','3','18'],ans:'A'},
+    {id:'c7q16',sec:'c7',type:'fill',diff:'hard',tag:'Karma',text:'a = 2² × 3 × 5, b = 2 × 3² × 7. EKOK(a,b) kaçtır?',correct:'1260'},
+    {id:'c7q17',sec:'c7',type:'mcq',diff:'easy',tag:'Karma',text:'Hangisi hem 3\'e hem de 7\'ye tam bölünür?',opts:['63','42','35','28'],ans:'A'},
+    {id:'c7q18',sec:'c7',type:'fill',diff:'medium',tag:'Karma',text:'İki sayı aralarında asal ve büyük olanı 45. EKOK\'ları 45×8=360. Küçük sayı kaçtır?',correct:'8'},
+    {id:'c7q19',sec:'c7',type:'mcq',diff:'hard',tag:'Karma',text:'1\'den 50\'ye kadar kaç sayı 2\'ye veya 3\'e tam bölünür? (dahil/hariç: 25+16-8=33)',correct:'33',opts:['33','25','41','30'],ans:'A'},
+    {id:'c7q20',sec:'c7',type:'fill',diff:'hard',tag:'Karma',text:'Üç sayının EBOB\'u 6, asal çarpanlara ayrılışları 2×3, 2²×3, 2×3² şeklindeyse EKOK\'ları kaçtır?',correct:'36'},
+  ],
+};
+// ── ENGINE ───────────────────────────────────────────────────────────────────
+const STORAGE_KEY='cTest1';
+let state={studentName:'',answers:{},completed:false,startTime:null,darkMode:false,streak:0,bestStreak:0,currentTab:'c1'};
+let timerInterval=null,quizMode=false,quizIdx=0,quizQuestions=[];
+const ALL_SECS=['c1','c2','c3','c4','c5','c6','c7'];
+function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify({studentName:state.studentName,answers:state.answers,startTime:state.startTime,darkMode:state.darkMode,bestStreak:state.bestStreak}));}catch(e){}}
+function loadState(){try{const d=JSON.parse(localStorage.getItem(STORAGE_KEY));if(d){state.studentName=d.studentName||'';state.answers=d.answers||{};state.startTime=d.startTime||null;state.darkMode=!!d.darkMode;state.bestStreak=d.bestStreak||0;}}catch(e){}}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function getThemeClass(s){return{c1:'violet',c2:'amber',c3:'rose',c4:'green',c5:'sky',c6:'orange',c7:'purple'}[s]||'violet';}
+function getDiffClass(d){return d==='easy'?'diff-easy':d==='medium'?'diff-medium':'diff-hard';}
+function getDiffLabel(d){return d==='easy'?'Kolay':d==='medium'?'Orta':'Zor';}
+function getAllQuestions(){const all=[];ALL_SECS.forEach(sec=>{(QUESTIONS_DB[sec]||[]).forEach(q=>{if(q.type!=='activity')all.push({...q,sec});});});return all;}
+function getQuestionById(id){return getAllQuestions().find(q=>q.id===id);}
+function renderQuestion(q,sec,num){
+  const th=getThemeClass(sec),answered=state.answers[q.id];
+  if(q.type==='activity')return renderActivity(q,th);
+  const isCorrect=answered&&answered.correct===true,isWrong=answered&&answered.correct===false;
+  let html=`<div class="q-card th-${th}${isCorrect?' answered':''}${isWrong?' wrong-ans':''}" data-qid="${q.id}" data-tag="${q.tag||''}"><div class="q-card-inner"><div class="q-header"><span class="q-number nb-${th}">${num||'•'}</span><span class="q-tag">${q.tag||''}</span><span class="diff-badge ${getDiffClass(q.diff)}">${getDiffLabel(q.diff)}</span></div><div class="q-text">${formatQ(q.text)}</div>`;
+  if(q.type==='mcq'){
+    html+='<div class="mcq-options">';
+    ['A','B','C','D'].forEach((letter,i)=>{
+      let oc='';if(answered){if(letter===q.ans)oc='correct';else if(letter===answered.val)oc='wrong';}
+      html+=`<div class="mcq-opt ${oc}" onclick="answerMCQ('${q.id}','${letter}',this)"><span class="opt-letter">${letter}</span><span class="opt-text">${formatQ((q.opts||[])[i]||'')}</span></div>`;
+    });
+    html+='</div>';
+    if(answered)html+=`<div class="result-badge ${isCorrect?'badge-ok':'badge-no'}">${isCorrect?'✓ Doğru!':'✗ Yanlış. Doğru: '+q.ans}</div>`;
+  }else if(q.type==='fill'){
+    let ic=answered?(isCorrect?'correct':'wrong-fill'):'';
+    html+=`<div class="fill-row"><div class="fill-input-wrap"><input class="fill-input ${ic}" type="text" placeholder="Cevabın..." value="${answered?(answered.val||'').replace(/"/g,'&quot;'):''}" onkeydown="if(event.key==='Enter')checkFill('${q.id}',this)" ${answered?'disabled':''}></div>`;
+    if(!answered)html+=`<button class="check-btn" onclick="checkFill('${q.id}',this.parentElement.querySelector('.fill-input'))">✓ Cevapla</button>`;
+    if(answered)html+=`<div class="result-badge ${isCorrect?'badge-ok':'badge-no'}">${isCorrect?'✓ Doğru!':'✗ Doğru: '+q.correct}</div>`;
+    html+='</div>';
+  }
+  return html+'</div></div>';
+}
+function formatQ(t){return t?String(t).replace(/\*\*(.*?)\*\*/g,'<span class="math">$1</span>'):'';}
+function renderActivity(q,th){
+  const lH=q.pairs.map((p,i)=>`<div class="match-item" data-act="${q.id}" data-side="left" data-idx="${i}" onclick="matchClick('${q.id}','left',${i})">${p.left}</div>`).join('');
+  const rH=shuffle(q.pairs.map((p,i)=>({...p,origIdx:i}))).map((p,i)=>`<div class="match-item" data-act="${q.id}" data-side="right" data-idx="${i}" data-orig="${p.origIdx}" onclick="matchClick('${q.id}','right',${i})">${p.right}</div>`).join('');
+  return `<div class="activity-card"><div class="activity-title">${q.title}</div><div class="match-grid"><div class="match-col">${lH}</div><div class="match-col">${rH}</div></div><div id="actResult-${q.id}" style="margin-top:.8rem;"></div></div>`;
+}
+const matchSel={};
+function matchClick(actId,side,idx){
+  if(!matchSel[actId])matchSel[actId]={};const cur=matchSel[actId];
+  cur[side]=(cur[side]===idx)?null:idx;
+  document.querySelectorAll(`.match-item[data-act="${actId}"]`).forEach(it=>{it.classList.remove('sel');if(cur[it.dataset.side]!=null&&cur[it.dataset.side]==it.dataset.idx)it.classList.add('sel');});
+  if(cur.left!=null&&cur.right!=null){
+    const li=document.querySelector(`.match-item[data-act="${actId}"][data-side="left"][data-idx="${cur.left}"]`);
+    const ri=document.querySelector(`.match-item[data-act="${actId}"][data-side="right"][data-idx="${cur.right}"]`);
+    if(parseInt(li.dataset.idx)===parseInt(ri.dataset.orig)){
+      [li,ri].forEach(el=>{el.classList.remove('sel');el.classList.add('ok');el.onclick=null;});
+      const total=(QUESTIONS_DB.c7.find(x=>x.id===actId)||{pairs:[]}).pairs.length;
+      if(document.querySelectorAll(`.match-item[data-act="${actId}"].ok`).length===total*2)document.getElementById('actResult-'+actId).innerHTML='<div class="result-badge badge-ok">🎉 Tüm eşleşmeler doğru!</div>';
+    }else{[li,ri].forEach(el=>{el.classList.add('fail');setTimeout(()=>el.classList.remove('fail','sel'),800);});}
+    matchSel[actId]={};
+  }
+}
+function renderSection(secId){
+  const grid=document.getElementById('grid-'+secId);if(!grid)return;
+  const qs=QUESTIONS_DB[secId]||[];let num=0;
+  grid.innerHTML=qs.map(q=>{if(q.type!=='activity')num++;return renderQuestion(q,secId,num);}).join('');
+  const cnt=document.getElementById('cnt-'+secId);if(cnt)cnt.textContent=qs.filter(q=>q.type!=='activity').length;
+}
+function answerMCQ(qid,letter,el){
+  if(state.answers[qid])return;const q=getQuestionById(qid);if(!q)return;
+  const correct=letter===q.ans;state.answers[qid]={val:letter,correct};
+  const card=el.closest('.q-card');
+  card.querySelectorAll('.mcq-opt').forEach(o=>{const l=o.querySelector('.opt-letter').textContent;if(l===q.ans)o.classList.add('correct');else if(l===letter)o.classList.add('wrong');});
+  card.classList.add(correct?'answered':'wrong-ans');
+  const inner=card.querySelector('.q-card-inner');let badge=inner.querySelector('.result-badge');
+  if(!badge){badge=document.createElement('div');badge.className='result-badge '+(correct?'badge-ok':'badge-no');badge.textContent=correct?'✓ Doğru!':'✗ Yanlış. Doğru: '+q.ans;inner.appendChild(badge);}
+  updateStreak(correct);updateStats();saveState();
+}
+function checkFill(qid,input){
+  if(state.answers[qid])return;const q=getQuestionById(qid);if(!q)return;
+  const norm=s=>String(s).trim().toLowerCase().replace(/\s+/g,'').replace(/,\s*/g,',').replace(/[çğışöü]/g,c=>'cgisou'['çğışöü'.indexOf(c)]);
+  const correct=norm(input.value)===norm(q.correct);
+  state.answers[qid]={val:input.value.trim(),correct};
+  input.classList.add(correct?'correct':'wrong-fill');input.disabled=true;
+  const btn=input.parentElement.parentElement.querySelector('.check-btn');if(btn)btn.remove();
+  const row=input.parentElement.parentElement;let badge=row.querySelector('.result-badge');
+  if(!badge){badge=document.createElement('div');badge.className='result-badge '+(correct?'badge-ok':'badge-no');badge.textContent=correct?'✓ Doğru!':'✗ Doğru: '+q.correct;row.appendChild(badge);}
+  const card=input.closest('.q-card');if(card)card.classList.add(correct?'answered':'wrong-ans');
+  updateStreak(correct);updateStats();saveState();
+}
+function updateStreak(correct){
+  if(correct){state.streak++;if(state.streak>state.bestStreak)state.bestStreak=state.streak;
+    if(state.streak>=3){const b=document.getElementById('streakBanner');document.getElementById('streakText').textContent=state.streak+' Doğru Üst Üste!';b.classList.add('show');setTimeout(()=>b.classList.remove('show'),2500);}
+  }else state.streak=0;
+}
+function updateStats(){
+  const all=getAllQuestions(),total=all.length;let cor=0,wrg=0,ans=0;
+  all.forEach(q=>{const a=state.answers[q.id];if(a){ans++;if(a.correct)cor++;else wrg++;}});
+  ['statCor','statWrg','statEmp','statAns'].forEach((id,i)=>document.getElementById(id).textContent=[cor,wrg,total-ans,ans][i]);
+  const pct=Math.round((ans/total)*100);document.getElementById('progressFill').style.width=pct+'%';document.getElementById('progressPct').textContent='%'+pct;
+  document.getElementById('scorePanelVal').textContent=cor+'/'+total;
+  const sp=total>0?Math.round((cor/total)*100):0;document.getElementById('scorePanelPct').textContent='%'+sp+' basari';document.getElementById('scorePctFill').style.width=sp+'%';
+  ALL_SECS.forEach(sec=>{const qs=(QUESTIONS_DB[sec]||[]).filter(q=>q.type!=='activity');let sc=0,sa=0;qs.forEach(q=>{const a=state.answers[q.id];if(a){sa++;if(a.correct)sc++;}});const el=document.getElementById('score-'+sec);if(el)el.textContent=sa===0?'-':'%'+Math.round(sc/qs.length*100);});
+}
+function switchTab(secId,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  const sec=document.getElementById('sec-'+secId);if(sec)sec.classList.add('active');
+  if(btn)btn.classList.add('active');else{const tb=document.querySelector(`.tab-btn[onclick*="${secId}"]`);if(tb)tb.classList.add('active');}
+  state.currentTab=secId;filterQuestions(document.getElementById('searchBar').value);
+}
+function filterQuestions(term){term=(term||'').toLowerCase().trim();if(!term){document.querySelectorAll('.q-card').forEach(c=>c.style.display='');return;}document.querySelectorAll('.q-card').forEach(c=>{c.style.display=c.textContent.toLowerCase().includes(term)?'':'none';});}
+function toggleDark(){state.darkMode=!state.darkMode;document.documentElement.setAttribute('data-theme',state.darkMode?'dark':'light');document.getElementById('darkToggle').textContent=state.darkMode?'☀️':'🌙';saveState();}
+function startTimer(){if(!state.startTime)state.startTime=Date.now();if(timerInterval)clearInterval(timerInterval);timerInterval=setInterval(()=>{const el=Math.floor((Date.now()-state.startTime)/1000);document.getElementById('timerDisplay').textContent='⏱️ '+String(Math.floor(el/60)).padStart(2,'0')+':'+String(el%60).padStart(2,'0');},1000);}
+function startTest(){const name=document.getElementById('nameInput').value.trim();if(!name){document.getElementById('nameInput').style.borderColor='#ef4444';return;}state.studentName=name;document.getElementById('nameModal').style.display='none';document.getElementById('studentChip').textContent='👤 '+name;startTimer();saveState();}
+function confirmReset(){document.getElementById('resetModal').classList.add('show');}
+function doReset(){state.answers={};state.streak=0;state.startTime=Date.now();saveState();renderAll();updateStats();document.getElementById('resetModal').classList.remove('show');}
+function renderAll(){ALL_SECS.forEach(s=>renderSection(s));}
+function finishTest(){
+  const all=getAllQuestions(),total=all.length;let cor=0,wrg=0,emp=0;
+  all.forEach(q=>{const a=state.answers[q.id];if(a){if(a.correct)cor++;else wrg++;}else emp++;});
+  const pct=Math.round((cor/total)*100);
+  const msgs=[['💪','Yılma! Daha fazla pratik gerekiyor.'],['🥈','İyi iş! Bazı konulara daha çalış.'],['🥇','Çok iyi! Biraz daha pratikle harika olacaksın.'],['🏆','Mükemmel! Sayı teorisi ustasısın!']];
+  const [emoji,msg]=pct>=90?msgs[3]:pct>=75?msgs[2]:pct>=50?msgs[1]:msgs[0];
+  document.getElementById('fm-emoji').textContent=emoji;document.getElementById('fm-student').textContent='Öğrenci: '+state.studentName;document.getElementById('fm-score').textContent=cor+'/'+total+' (%'+pct+')';document.getElementById('fm-msg').textContent=msg;document.getElementById('fm-cor').textContent=cor;document.getElementById('fm-wrg').textContent=wrg;document.getElementById('fm-emp').textContent=emp;
+  let dh='';all.forEach(q=>{const a=state.answers[q.id];if(!a)dh+=`<div class="detail-item di-empty"><span class="detail-icon">⬜</span><span><strong>${q.id}</strong>: ${q.text.replace(/<[^>]+>/g,'').slice(0,55)}...</span></div>`;else if(a.correct)dh+=`<div class="detail-item di-correct"><span class="detail-icon">✅</span><span><strong>${q.id}</strong>: Doğru</span></div>`;else dh+=`<div class="detail-item di-wrong"><span class="detail-icon">❌</span><span><strong>${q.id}</strong>: Yanlış — Doğru: ${q.correct||q.ans}</span></div>`;});
+  document.getElementById('fm-detail-list').innerHTML=dh;document.getElementById('finishModal').classList.add('show');
+  if(pct>=75){const colors=['#7c3aed','#d97706','#10b981','#e11d48'];for(let i=0;i<60;i++){const c=document.createElement('div');c.className='confetti-piece';c.style.left=Math.random()*100+'vw';c.style.background=colors[i%colors.length];c.style.animationDuration=(2+Math.random()*2)+'s';c.style.animationDelay=(Math.random()*0.5)+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),5000);}}
+}
+function enterQuizMode(){quizMode=true;quizQuestions=shuffle(getAllQuestions());quizIdx=0;document.getElementById('quizModeBar').classList.add('active');document.querySelector('.tab-nav').style.display='none';document.querySelector('.search-bar-wrap').style.display='none';document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));showQuizQuestion();}
+function showQuizQuestion(){
+  if(quizIdx<0||quizIdx>=quizQuestions.length)return;const q=quizQuestions[quizIdx];
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  let sec=document.getElementById('sec-quiz');if(!sec){sec=document.createElement('div');sec.id='sec-quiz';sec.className='section active';sec.innerHTML='<div class="question-grid" id="grid-quiz" style="max-width:700px;margin:0 auto;"></div>';document.querySelector('.search-bar-wrap').after(sec);}
+  sec.classList.add('active');document.getElementById('grid-quiz').innerHTML=renderQuestion(q,q.sec,quizIdx+1);
+  document.getElementById('quizProgressTxt').textContent=`Soru ${quizIdx+1} / ${quizQuestions.length}`;document.getElementById('quizPrev').disabled=quizIdx===0;document.getElementById('quizNext').disabled=quizIdx===quizQuestions.length-1;
+}
+function quizNav(dir){quizIdx=Math.max(0,Math.min(quizQuestions.length-1,quizIdx+dir));showQuizQuestion();}
+function exitQuizMode(){quizMode=false;document.getElementById('quizModeBar').classList.remove('active');document.querySelector('.tab-nav').style.display='flex';document.querySelector('.search-bar-wrap').style.display='block';const qs=document.getElementById('sec-quiz');if(qs)qs.remove();switchTab(state.currentTab||'c1');}
+function downloadPDF(){const l=document.getElementById('loadingOverlay');l.classList.add('show');document.getElementById('loadingText').textContent='PDF Hazırlanıyor...';document.getElementById('loadingProgress').textContent='Sayfa 1';setTimeout(()=>{try{generatePDF();}catch(e){alert('PDF hatası: '+e.message);}l.classList.remove('show');},100);}
+function sF(txt){if(!txt)return'';let s=String(txt).replace(/\*\*/g,'').replace(/<[^>]+>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"');const m={'ç':'c','Ç':'C','ğ':'g','Ğ':'G','ı':'i','İ':'I','ö':'o','Ö':'O','ş':'s','Ş':'S','ü':'u','Ü':'U','×':'x','÷':'/','²':'^2','³':'^3'};return s.replace(/[çÇğĞıİöÖşŞüÜ×÷²³]/g,c=>m[c]||c);}
+function generatePDF(){
+  const {jsPDF}=window.jspdf;if(!jsPDF){alert('jsPDF yuklenemedi.');return;}
+  const doc=new jsPDF({unit:'mm',format:'a4'}),PW=210,PH=297,M=11,GAP=4,CW=(PW-2*M-GAP)/2;
+  const qs=getAllQuestions(),student=String(state.studentName||'Ogrenci'),dateStr=String(new Date().toLocaleDateString('tr-TR'));
+  const TM=[{sec:'c1',label:'Carpanlar-Katlar'},{sec:'c2',label:'Bolunebilme'},{sec:'c3',label:'Asal Sayilar'},{sec:'c4',label:'Aralarinda Asal'},{sec:'c5',label:'EBOB'},{sec:'c6',label:'EKOK'},{sec:'c7',label:'Karma'}];
+  const spm={};let qI=0,pN=1;
+  while(qI<qs.length){
+    if(pN>1)doc.addPage();const HH=pH(doc,student,dateStr,pN,PW,M),FY=PH-11;let lE=HH+1,rE=HH+1;
+    while(qI<qs.length){const h=qH(doc,qs[qI],CW);if(lE+h>FY)break;if(!spm[qs[qI].sec])spm[qs[qI].sec]=pN;lE=pQ(doc,qs[qI],qI+1,M,CW,lE);lE+=2;qI++;}
+    let rI=qI;while(rI<qs.length){const h=qH(doc,qs[rI],CW);if(rE+h>FY)break;if(!spm[qs[rI].sec])spm[qs[rI].sec]=pN;rE=pQ(doc,qs[rI],rI+1,M+CW+GAP,CW,rE);rE+=2;rI++;}
+    qI=rI;pF(doc,pN,student,PW,PH,M);pN++;
+  }
+  const akp=pN;doc.addPage();pAK(doc,student,dateStr,qs,pN,PW,PH,M);
+  try{if(doc.outline){TM.forEach(t=>doc.outline.add(null,t.label,{pageNumber:spm[t.sec]||1}));doc.outline.add(null,'Cevap Anahtari',{pageNumber:akp});}}catch(e){}
+  doc.save('CarpanlarEBOK_'+student.replace(/\s+/g,'_')+'.pdf');
+}
+function pH(doc,student,dateStr,pN,PW,M){doc.setFillColor(59,7,100);doc.rect(0,0,PW,7,'F');doc.setFillColor(109,40,217);doc.rect(0,7,PW,13,'F');doc.setFillColor(217,119,6);doc.rect(0,14,PW,6,'F');doc.setTextColor(255,255,255);doc.setFontSize(9.5);doc.setFont('helvetica','bold');doc.text('CARPANLAR, KATLAR, EBOB-EKOK TESTI (3. ODEV)',M,12);doc.setFontSize(7);doc.setFont('helvetica','normal');doc.text('6. Sinif  |  Sayi Teorisi',M,17);doc.setFontSize(8);doc.setFont('helvetica','bold');doc.text(student,PW-M,12,{align:'right'});doc.setFontSize(7);doc.setFont('helvetica','normal');doc.text(dateStr+'  |  Sayfa '+pN,PW-M,17,{align:'right'});doc.setDrawColor(245,158,11);doc.setLineWidth(0.8);doc.line(0,20,PW,20);doc.setLineWidth(0.3);return 24;}
+function qH(doc,q,w){doc.setFontSize(8);doc.setFont('helvetica','bold');const qL=doc.splitTextToSize(String(sF(q.text)),w-13);let h=4+qL.length*3.8+0.5;if(q.type==='mcq'){doc.setFont('helvetica','normal');doc.setFontSize(7.5);(q.opts||[]).forEach(o=>{const oL=doc.splitTextToSize(String(sF(o)),w-20);h+=Math.max(4.5,oL.length*3.5+1.5)+0.8;});}else h+=7.5;return h+3;}
+function pQ(doc,q,num,x,w,y){
+  const a=state.answers[q.id];const CC={c1:[124,58,237],c2:[217,119,6],c3:[225,29,72],c4:[5,150,105],c5:[2,132,199],c6:[234,88,12],c7:[162,28,175]};const cc=CC[q.sec]||[124,58,237];
+  const bH=qH(doc,q,w)-3;doc.setFillColor(cc[0],cc[1],cc[2]);doc.rect(x,y,1.5,bH,'F');doc.setFillColor(cc[0],cc[1],cc[2]);doc.roundedRect(x+2.5,y,7,5.5,1,1,'F');doc.setTextColor(255,255,255);doc.setFontSize(6.5);doc.setFont('helvetica','bold');doc.text(String(num),x+6,y+3.8,{align:'center'});
+  if(a){if(a.correct)doc.setFillColor(16,185,129);else doc.setFillColor(239,68,68);doc.circle(x+w-1.5,y+2.5,1.8,'F');doc.setTextColor(255,255,255);doc.setFontSize(5.5);doc.setFont('helvetica','bold');doc.text(a.correct?'D':'Y',x+w-1.5,y+3,{align:'center'});}
+  doc.setTextColor(22,22,55);doc.setFontSize(8);doc.setFont('helvetica','bold');const qL=doc.splitTextToSize(String(sF(q.text)),w-13);doc.text(qL,x+11,y+4);let cy=y+4+qL.length*3.8+0.5;
+  if(q.type==='mcq'){['A','B','C','D'].forEach((letter,i)=>{const opt=(q.opts||[])[i]||'',isCor=!!a&&letter===q.ans,isW=!!a&&!a.correct&&letter===a.val;if(isCor){doc.setFillColor(220,252,231);doc.setDrawColor(16,185,129);}else if(isW){doc.setFillColor(254,226,226);doc.setDrawColor(239,68,68);}else{doc.setFillColor(241,245,249);doc.setDrawColor(203,213,225);}const oL=doc.splitTextToSize(String(sF(opt)),w-20),oh=Math.max(4.5,oL.length*3.5+1.5);doc.roundedRect(x+11,cy,w-12,oh,1,1,'FD');if(isCor)doc.setFillColor(16,185,129);else if(isW)doc.setFillColor(239,68,68);else doc.setFillColor(cc[0],cc[1],cc[2]);doc.circle(x+14.5,cy+oh/2,2.2,'F');doc.setTextColor(255,255,255);doc.setFontSize(6);doc.setFont('helvetica','bold');doc.text(letter,x+14.5,cy+oh/2+0.5,{align:'center'});if(isCor)doc.setTextColor(22,101,52);else if(isW)doc.setTextColor(153,27,27);else doc.setTextColor(51,65,85);doc.setFontSize(7.5);doc.setFont('helvetica','normal');doc.text(oL,x+18,cy+oh/2+0.6);cy+=oh+0.8;});}
+  else{doc.setFillColor(237,233,254);doc.setDrawColor(196,181,253);doc.setLineWidth(0.4);doc.roundedRect(x+11,cy,w-12,7,1.5,1.5,'FD');doc.setTextColor(91,33,182);doc.setFontSize(7);doc.setFont('helvetica','italic');if(a){if(a.correct){doc.setTextColor(22,101,52);doc.setFont('helvetica','bold');doc.text('Cevabiniz: '+sF(a.val)+'  [DOGRU]',x+14,cy+4.5);}else{doc.setTextColor(153,27,27);doc.setFont('helvetica','bold');doc.text('Cevabiniz: '+sF(a.val)+'  |  Dogru: '+sF(q.correct),x+14,cy+4.5);}}else doc.text('Cevap: ___________________________',x+14,cy+4.5);cy+=7.5;}
+  return cy;
+}
+function pF(doc,pN,student,PW,PH,M){doc.setDrawColor(203,213,225);doc.setLineWidth(0.3);doc.line(M,PH-10,PW-M,PH-10);doc.setTextColor(148,163,184);doc.setFontSize(6.5);doc.setFont('helvetica','normal');doc.text('Carpanlar, Katlar, EBOB-EKOK Testi  |  6. Sinif',M,PH-6);doc.text(student,PW/2,PH-6,{align:'center'});doc.text('Sayfa '+pN,PW-M,PH-6,{align:'right'});}
+function pAK(doc,student,dateStr,qs,pN,PW,PH,M){
+  let cor=0,wrg=0,emp=0;qs.forEach(q=>{const a=state.answers[q.id];if(a){if(a.correct)cor++;else wrg++;}else emp++;});const pct=qs.length>0?Math.round(cor/qs.length*100):0;
+  const dH=(pg)=>{doc.setFillColor(59,7,100);doc.rect(0,0,PW,6,'F');doc.setFillColor(109,40,217);doc.rect(0,6,PW,12,'F');doc.setFillColor(217,119,6);doc.rect(0,15,PW,3,'F');doc.setTextColor(255,255,255);doc.setFontSize(11);doc.setFont('helvetica','bold');doc.text('CEVAP ANAHTARI'+(pg>pN?' (devam)':''),PW/2,13,{align:'center'});if(pg===pN){doc.setFillColor(255,255,255);doc.roundedRect(PW-M-30,7,28,6,2.5,2.5,'F');doc.setTextColor(109,40,217);doc.setFontSize(7);doc.setFont('helvetica','bold');doc.text(cor+'/'+qs.length+' = %'+pct,PW-M-16,11.5,{align:'center'});doc.setTextColor(255,255,255);doc.setFontSize(6);doc.setFont('helvetica','normal');doc.text(student+'  |  '+dateStr,M,13);}else{doc.setTextColor(255,255,255);doc.setFontSize(7);doc.setFont('helvetica','normal');doc.text(student+'  |  Sayfa '+pg,M,13);}doc.setDrawColor(245,158,11);doc.setLineWidth(0.5);doc.line(0,18,PW,18);doc.setLineWidth(0.2);return pg===pN?20:19;};
+  let sY=dH(pN);
+  [[220,252,231,22,101,52,'D = Dogru ('+cor+')'],[254,226,226,153,27,27,'Y = Yanlis ('+wrg+')'],[237,233,254,91,33,182,'B = Bos ('+emp+')']].forEach((r,i)=>{doc.setFillColor(r[0],r[1],r[2]);doc.roundedRect(M+i*23,sY,20,4.5,1.2,1.2,'F');doc.setTextColor(r[3],r[4],r[5]);doc.setFontSize(6);doc.setFont('helvetica','bold');doc.text(r[6],M+i*23+1,sY+3.1);});sY+=6;
+  const COLS=5,GC=1.8,AV=PW-2*M,CW=(AV-(COLS-1)*GC)/COLS,RH=5,FY=PH-10,RPP=Math.floor((FY-sY)/RH);
+  let cp=pN,sy=sY;
+  for(let i=0;i<qs.length;i++){const pp=i%(RPP*COLS);if(i>0&&pp===0){pF(doc,cp,student,PW,PH,M);doc.addPage();cp++;sy=dH(cp);}const ro=Math.floor(pp/COLS),co=pp%COLS,cx=M+co*(CW+GC),ry=sy+ro*RH,q=qs[i],a=state.answers[q.id];const ans=String(q.type==='fill'?q.correct:q.ans),sa=ans.length>8?ans.slice(0,8)+'..':ans;let bg,tx,st,sc;if(!a){bg=[241,245,249];tx=[107,114,128];st='B';sc=[180,188,200];}else if(a.correct){bg=[220,252,231];tx=[22,101,52];st='D';sc=[16,185,129];}else{bg=[254,226,226];tx=[153,27,27];st='Y';sc=[239,68,68];}doc.setFillColor(bg[0],bg[1],bg[2]);doc.setDrawColor(sc[0],sc[1],sc[2]);doc.setLineWidth(0.18);doc.roundedRect(cx,ry,CW,RH-0.3,0.9,0.9,'FD');doc.setFillColor(sc[0],sc[1],sc[2]);doc.roundedRect(cx+0.3,ry+0.4,CW*0.24,RH-1.1,0.7,0.7,'F');doc.setTextColor(255,255,255);doc.setFontSize(4.8);doc.setFont('helvetica','bold');doc.text(String(i+1),cx+0.3+CW*0.12,ry+RH-1.4,{align:'center'});doc.setTextColor(tx[0],tx[1],tx[2]);doc.setFontSize(5.5);doc.setFont('helvetica','bold');doc.text(sa,cx+CW*0.28,ry+2.8);doc.setFillColor(sc[0],sc[1],sc[2]);doc.roundedRect(cx+CW-3.6,ry+0.65,3.2,RH-1.8,0.7,0.7,'F');doc.setTextColor(255,255,255);doc.setFontSize(4.5);doc.setFont('helvetica','bold');doc.text(st,cx+CW-2,ry+2.2,{align:'center'});}
+  pF(doc,cp,student,PW,PH,M);
+}
+function init(){
+  loadState();if(state.darkMode){document.documentElement.setAttribute('data-theme','dark');document.getElementById('darkToggle').textContent='☀️';}
+  renderAll();updateStats();document.getElementById('qCountBadge').textContent=getAllQuestions().length+' Soru';
+  if(!state.studentName){document.getElementById('nameModal').style.display='flex';document.getElementById('nameInput').focus();}
+  else{document.getElementById('studentChip').textContent='👤 '+state.studentName;if(state.startTime)startTimer();}
+  if(state.currentTab)switchTab(state.currentTab);
+  document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.activeElement.classList.contains('fill-input')){const card=document.activeElement.closest('.q-card');if(card)checkFill(card.dataset.qid,document.activeElement);}if(e.ctrlKey&&e.key==='d'){e.preventDefault();toggleDark();}if(e.ctrlKey&&e.key==='Enter'){e.preventDefault();finishTest();}});
+  window.addEventListener('scroll',()=>{const b=document.getElementById('backToTop'),sp=document.getElementById('scrollProgress'),sc=window.scrollY,ms=document.documentElement.scrollHeight-window.innerHeight;if(sp)sp.style.width=(ms>0?Math.round(sc/ms*100):0)+'%';if(sc>400)b.classList.add('visible');else b.classList.remove('visible');});
+  document.getElementById('nameInput').addEventListener('keydown',e=>{if(e.key==='Enter')startTest();});
+}
+init();
+</script>
+</body>
+</html>
