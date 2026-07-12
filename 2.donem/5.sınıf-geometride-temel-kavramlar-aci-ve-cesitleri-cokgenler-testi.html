@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
@@ -1059,8 +1059,13 @@ function generatePDF(){
 function stripFormat(txt){
   if(!txt)return'';
   let s=String(txt).replace(/\*\*/g,'').replace(/<[^>]+>/g,'').replace(/&quot;/g,'"').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
-  const trMap={'ç':'c','Ç':'C','ğ':'g','Ğ':'G','ı':'i','İ':'I','ö':'o','Ö':'O','ş':'s','Ş':'S','ü':'u','Ü':'U','â':'a','î':'i','û':'u','°':' der.','²':'^2','≤':'<=','≥':'>=','≠':'!=','→':'->'};
-  return s.replace(/[çÇğĞıİöÖşŞüÜâîû°²≤≥≠→]/g,ch=>trMap[ch]||ch);
+  // π → "pi" (jsPDF WinAnsi/Helvetica'da U+03C0 desteklenmez, encoding bozulur)
+  s = s.replace(/π/g,'pi');
+  // ^2 / ^3 → Latin-1 superscript (U+00B2, U+00B3) — Helvetica'da desteklenir
+  s = s.replace(/\^2/g,'\xB2').replace(/\^3/g,'\xB3').replace(/\^(\d)/g,'^$1');
+  // Türkçe → Latin, semboller → PDF-safe
+  const trMap={'ç':'c','Ç':'C','ğ':'g','Ğ':'G','ı':'i','İ':'I','ö':'o','Ö':'O','ş':'s','Ş':'S','ü':'u','Ü':'U','â':'a','î':'i','û':'u','°':'\xB0','²':'\xB2','³':'\xB3','≤':'<=','≥':'>=','≠':'!=','→':'->'};
+  return s.replace(/[çÇğĞıİöÖşŞüÜâîû°²³≤≥≠→]/g,ch=>trMap[ch]||ch);
 }
 
 function pdfPageHeader(doc,student,dateStr,pageNum,PW,M){
@@ -1068,7 +1073,7 @@ function pdfPageHeader(doc,student,dateStr,pageNum,PW,M){
   doc.setFillColor(13,148,136);doc.rect(0,7,PW,13,'F');
   doc.setFillColor(8,145,178);doc.rect(0,14,PW,6,'F');
   doc.setTextColor(255,255,255);doc.setFontSize(9.5);doc.setFont('helvetica','bold');
-  doc.text('GEOMETRIDE TEMEL KAVRAMLAR TESTI (2. ODEV)',M,12);
+  doc.text('GEOMETRIDE TEMEL KAVRAMLAR TESTI (1. ODEV)',M,12);
   doc.setFontSize(7);doc.setFont('helvetica','normal');
   doc.text('5. Sinif  |  Geometri',M,17);
   doc.setFontSize(8);doc.setFont('helvetica','bold');
