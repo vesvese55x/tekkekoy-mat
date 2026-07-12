@@ -721,12 +721,13 @@ function sF(txt){
   let s=String(txt).replace(/\*\*/g,'').replace(/<[^>]+>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"');
   // π → "pi"  (U+03C0 WinAnsi'de yok — encoding bozulur)
   s=s.replace(/π/g,'pi');
-  // Unicode superscript rakamlar → ^n (sonra \xB2/\xB3 için tekrar işlenir)
-  s=s.replace(/⁰/g,'^0').replace(/¹/g,'^1').replace(/²/g,'\xB2').replace(/³/g,'\xB3')
-     .replace(/⁴/g,'^4').replace(/⁵/g,'^5').replace(/⁶/g,'^6').replace(/⁷/g,'^7')
-     .replace(/⁸/g,'^8').replace(/⁹/g,'^9');
-  // ^2 / ^3 → Latin-1 superscript (WinAnsi destekler: U+00B2, U+00B3)
-  s=s.replace(/\^2/g,'\xB2').replace(/\^3/g,'\xB3');
+  // ² ³ Latin-1 superscript — Helvetica WinAnsi'de desteklenir
+  s=s.replace(/²/g,'\xB2').replace(/³/g,'\xB3');
+  // ⁴-⁹ ve ^4-^9 → |SUPn| marker (pQ içinde küçük font+offset ile render edilir)
+  const supMap={'4':'4','5':'5','6':'6','7':'7','8':'8','9':'9','0':'0','1':'1'};
+  s=s.replace(/[⁴⁵⁶⁷⁸⁹⁰¹]/g,c=>({'\u2074':'|SUP4|','\u2075':'|SUP5|','\u2076':'|SUP6|','\u2077':'|SUP7|','\u2078':'|SUP8|','\u2079':'|SUP9|','\u2070':'|SUP0|','\u00B9':'|SUP1|'}[c]||c));
+  s=s.replace(/\^2/g,'\xB2').replace(/\^3/g,'\xB3')
+     .replace(/\^(\d)/g,(_,d)=>d==='2'?'\xB2':d==='3'?'\xB3':'|SUP'+d+'|');
   // □ (U+25A1) → "_" — WinAnsi'de yok
   s=s.replace(/□/g,'_');
   // ✓ (U+2713) → "+" — WinAnsi'de yok
@@ -754,14 +755,84 @@ function generatePDF(){
   doc.save('CarpanlarEBOK_'+student.replace(/\s+/g,'_')+'.pdf');
 }
 function pH(doc,student,dateStr,pN,PW,M){doc.setFillColor(59,7,100);doc.rect(0,0,PW,7,'F');doc.setFillColor(109,40,217);doc.rect(0,7,PW,13,'F');doc.setFillColor(217,119,6);doc.rect(0,14,PW,6,'F');doc.setTextColor(255,255,255);doc.setFontSize(9.5);doc.setFont('helvetica','bold');doc.text('CARPANLAR, KATLAR, EBOB-EKOK TESTI (1. ODEV)',M,12);doc.setFontSize(7);doc.setFont('helvetica','normal');doc.text('6. Sinif  |  Sayi Teorisi',M,17);doc.setFontSize(8);doc.setFont('helvetica','bold');doc.text(student,PW-M,12,{align:'right'});doc.setFontSize(7);doc.setFont('helvetica','normal');doc.text(dateStr+'  |  Sayfa '+pN,PW-M,17,{align:'right'});doc.setDrawColor(245,158,11);doc.setLineWidth(0.8);doc.line(0,20,PW,20);doc.setLineWidth(0.3);return 24;}
-function qH(doc,q,w){doc.setFontSize(8);doc.setFont('helvetica','bold');const qL=doc.splitTextToSize(String(sF(q.text)),w-13);let h=4+qL.length*3.8+0.5;if(q.type==='mcq'){doc.setFont('helvetica','normal');doc.setFontSize(7.5);(q.opts||[]).forEach(o=>{const oL=doc.splitTextToSize(String(sF(o)),w-20);h+=Math.max(4.5,oL.length*3.5+1.5)+0.8;});}else h+=7.5;return h+3;}
+// superscript-aware text width (^n kısmı daha dar — yaklaşık 0.6x)
+// |SUPn| marker içeren satırı superscript olarak render et
+// Önce tüm marker'ları temizleyerek düz metin döndür (splitTextToSize için)
+function stripSup(s){return s.replace(/\|SUP\d\|/g,'');}
+// Satırı render et: normal text + |SUPn| kısmını küçük+yukarı bas
+function renderLine(doc,line,x,y,sz,fontStyle){
+  if(!line.includes('|SUP')){doc.setFontSize(sz);doc.setFont('helvetica',fontStyle);doc.text(line,x,y);return;}
+  const parts=line.split(/(\|SUP\d\|)/);
+  let cx=x;
+  doc.setFont('helvetica',fontStyle);
+  parts.forEach(part=>{
+    const m=part.match(/\|SUP(\d)\|/);
+    if(m){
+      const prevSz=sz;doc.setFontSize(sz*0.65);
+      doc.text(m[1],cx,y-sz*0.28);
+      cx+=doc.getTextWidth(m[1]);
+      doc.setFontSize(prevSz);
+    } else if(part){
+      doc.setFontSize(sz);doc.setFont('helvetica',fontStyle);
+      doc.text(part,cx,y);
+      cx+=doc.getTextWidth(part);
+    }
+  });
+  doc.setFontSize(sz);
+}
+// wrap hesabı için: marker'sız metni kullan, ama marker'lı kadar yer ayır
+function splitWithSup(doc,txt,maxW,sz,fontStyle){
+  doc.setFontSize(sz);doc.setFont('helvetica',fontStyle);
+  return doc.splitTextToSize(txt,maxW);
+}
+function qH(doc,q,w){
+  doc.setFontSize(8);doc.setFont('helvetica','bold');
+  // wrap için marker'ları temizle (boyutları hafif büyütmemek için)
+  const qL=splitWithSup(doc,String(sF(q.text)),w-13,8,'bold');
+  let h=4+qL.length*3.8+0.5;
+  if(q.type==='mcq'){
+    doc.setFont('helvetica','normal');doc.setFontSize(7.5);
+    (q.opts||[]).forEach(o=>{const oL=splitWithSup(doc,String(sF(o)),w-20,7.5,'normal');h+=Math.max(4.5,oL.length*3.5+1.5)+0.8;});
+  } else h+=7.5;
+  return h+3;
+}
 function pQ(doc,q,num,x,w,y){
-  const a=state.answers[q.id];const CC={c1:[124,58,237],c2:[217,119,6],c3:[225,29,72],c4:[5,150,105],c5:[2,132,199],c6:[234,88,12],c7:[162,28,175]};const cc=CC[q.sec]||[124,58,237];
-  const bH=qH(doc,q,w)-3;doc.setFillColor(cc[0],cc[1],cc[2]);doc.rect(x,y,1.5,bH,'F');doc.setFillColor(cc[0],cc[1],cc[2]);doc.roundedRect(x+2.5,y,7,5.5,1,1,'F');doc.setTextColor(255,255,255);doc.setFontSize(6.5);doc.setFont('helvetica','bold');doc.text(String(num),x+6,y+3.8,{align:'center'});
+  const a=state.answers[q.id];
+  const CC={c1:[124,58,237],c2:[217,119,6],c3:[225,29,72],c4:[5,150,105],c5:[2,132,199],c6:[234,88,12],c7:[162,28,175]};
+  const cc=CC[q.sec]||[124,58,237];
+  const bH=qH(doc,q,w)-3;
+  doc.setFillColor(cc[0],cc[1],cc[2]);doc.rect(x,y,1.5,bH,'F');
+  doc.setFillColor(cc[0],cc[1],cc[2]);doc.roundedRect(x+2.5,y,7,5.5,1,1,'F');
+  doc.setTextColor(255,255,255);doc.setFontSize(6.5);doc.setFont('helvetica','bold');doc.text(String(num),x+6,y+3.8,{align:'center'});
   if(a){if(a.correct)doc.setFillColor(16,185,129);else doc.setFillColor(239,68,68);doc.circle(x+w-1.5,y+2.5,1.8,'F');doc.setTextColor(255,255,255);doc.setFontSize(5.5);doc.setFont('helvetica','bold');doc.text(a.correct?'D':'Y',x+w-1.5,y+3,{align:'center'});}
-  doc.setTextColor(22,22,55);doc.setFontSize(8);doc.setFont('helvetica','bold');const qL=doc.splitTextToSize(String(sF(q.text)),w-13);doc.text(qL,x+11,y+4);let cy=y+4+qL.length*3.8+0.5;
-  if(q.type==='mcq'){['A','B','C','D'].forEach((letter,i)=>{const opt=(q.opts||[])[i]||'',isCor=!!a&&letter===q.ans,isW=!!a&&!a.correct&&letter===a.val;if(isCor){doc.setFillColor(220,252,231);doc.setDrawColor(16,185,129);}else if(isW){doc.setFillColor(254,226,226);doc.setDrawColor(239,68,68);}else{doc.setFillColor(241,245,249);doc.setDrawColor(203,213,225);}const oL=doc.splitTextToSize(String(sF(opt)),w-20),oh=Math.max(4.5,oL.length*3.5+1.5);doc.roundedRect(x+11,cy,w-12,oh,1,1,'FD');if(isCor)doc.setFillColor(16,185,129);else if(isW)doc.setFillColor(239,68,68);else doc.setFillColor(cc[0],cc[1],cc[2]);doc.circle(x+14.5,cy+oh/2,2.2,'F');doc.setTextColor(255,255,255);doc.setFontSize(6);doc.setFont('helvetica','bold');doc.text(letter,x+14.5,cy+oh/2+0.5,{align:'center'});if(isCor)doc.setTextColor(22,101,52);else if(isW)doc.setTextColor(153,27,27);else doc.setTextColor(51,65,85);doc.setFontSize(7.5);doc.setFont('helvetica','normal');doc.text(oL,x+18,cy+oh/2+0.6);cy+=oh+0.8;});}
-  else{doc.setFillColor(237,233,254);doc.setDrawColor(196,181,253);doc.setLineWidth(0.4);doc.roundedRect(x+11,cy,w-12,7,1.5,1.5,'FD');doc.setTextColor(91,33,182);doc.setFontSize(7);doc.setFont('helvetica','italic');if(a){if(a.correct){doc.setTextColor(22,101,52);doc.setFont('helvetica','bold');doc.text('Cevabiniz: '+sF(a.val)+'  [DOGRU]',x+14,cy+4.5);}else{doc.setTextColor(153,27,27);doc.setFont('helvetica','bold');doc.text('Cevabiniz: '+sF(a.val)+'  |  Dogru: '+sF(q.correct),x+14,cy+4.5);}}else doc.text('Cevap: ___________________________',x+14,cy+4.5);cy+=7.5;}
+  doc.setTextColor(22,22,55);
+  const qLines=splitWithSup(doc,String(sF(q.text)),w-13,8,'bold');
+  qLines.forEach((line,li)=>renderLine(doc,line,x+11,y+4+li*3.8,8,'bold'));
+  let cy=y+4+qLines.length*3.8+0.5;
+  if(q.type==='mcq'){
+    ['A','B','C','D'].forEach((letter,i)=>{
+      const opt=(q.opts||[])[i]||'',isCor=!!a&&letter===q.ans,isW=!!a&&!a.correct&&letter===a.val;
+      if(isCor){doc.setFillColor(220,252,231);doc.setDrawColor(16,185,129);}
+      else if(isW){doc.setFillColor(254,226,226);doc.setDrawColor(239,68,68);}
+      else{doc.setFillColor(241,245,249);doc.setDrawColor(203,213,225);}
+      const oL=splitWithSup(doc,String(sF(opt)),w-20,7.5,'normal');
+      const oh=Math.max(4.5,oL.length*3.5+1.5);
+      doc.roundedRect(x+11,cy,w-12,oh,1,1,'FD');
+      if(isCor)doc.setFillColor(16,185,129);else if(isW)doc.setFillColor(239,68,68);else doc.setFillColor(cc[0],cc[1],cc[2]);
+      doc.circle(x+14.5,cy+oh/2,2.2,'F');
+      doc.setTextColor(255,255,255);doc.setFontSize(6);doc.setFont('helvetica','bold');doc.text(letter,x+14.5,cy+oh/2+0.5,{align:'center'});
+      if(isCor)doc.setTextColor(22,101,52);else if(isW)doc.setTextColor(153,27,27);else doc.setTextColor(51,65,85);
+      oL.forEach((line,li)=>renderLine(doc,line,x+18,cy+oh/2+0.6+li*3.5,7.5,'normal'));
+      cy+=oh+0.8;
+    });
+  } else {
+    doc.setFillColor(237,233,254);doc.setDrawColor(196,181,253);doc.setLineWidth(0.4);doc.roundedRect(x+11,cy,w-12,7,1.5,1.5,'FD');
+    doc.setTextColor(91,33,182);doc.setFontSize(7);doc.setFont('helvetica','italic');
+    if(a){if(a.correct){doc.setTextColor(22,101,52);doc.setFont('helvetica','bold');doc.text('Cevabiniz: '+sF(a.val)+'  [DOGRU]',x+14,cy+4.5);}
+    else{doc.setTextColor(153,27,27);doc.setFont('helvetica','bold');doc.text('Cevabiniz: '+sF(a.val)+'  |  Dogru: '+sF(q.correct),x+14,cy+4.5);}}
+    else doc.text('Cevap: ___________________________',x+14,cy+4.5);
+    cy+=7.5;
+  }
   return cy;
 }
 function pF(doc,pN,student,PW,PH,M){doc.setDrawColor(203,213,225);doc.setLineWidth(0.3);doc.line(M,PH-10,PW-M,PH-10);doc.setTextColor(148,163,184);doc.setFontSize(6.5);doc.setFont('helvetica','normal');doc.text('Carpanlar, Katlar, EBOB-EKOK Testi  |  6. Sinif',M,PH-6);doc.text(student,PW/2,PH-6,{align:'center'});doc.text('Sayfa '+pN,PW-M,PH-6,{align:'right'});}
