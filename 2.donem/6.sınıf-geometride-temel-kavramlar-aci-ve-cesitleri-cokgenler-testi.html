@@ -1,0 +1,1251 @@
+!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📐 Geometride Temel Kavramlar Testi (2. Ödev) | 5. Sınıf</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+/* ── CSS: a.html ile birebir aynı ── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f4f6fb;--surface:#ffffff;--surface2:#f0f2f8;--surface3:#e8ebf5;
+  --border:rgba(99,102,241,.14);--border2:rgba(99,102,241,.26);
+  --primary:#5b5fc7;--primary2:#7c3aed;--accent:#f59e0b;
+  --green:#059669;--green-bg:#d1fae5;--green-border:#6ee7b7;
+  --red:#dc2626;--red-bg:#fee2e2;--red-border:#fca5a5;
+  --text:#0f0e1e;--text2:#52566e;--text3:#8b90a7;
+  --shadow:0 2px 16px rgba(91,95,199,.10);--shadow-lg:0 8px 40px rgba(91,95,199,.18);
+  --glass:rgba(255,255,255,.92);--radius:16px;--radius-sm:10px;
+  --header-h:58px;
+}
+[data-theme="dark"]{
+  --bg:#0c0b17;--surface:#14122a;--surface2:#1e1b38;--surface3:#252243;
+  --border:rgba(139,92,246,.2);--border2:rgba(139,92,246,.38);
+  --text:#eceaff;--text2:#9996c0;--text3:#5e5a88;
+  --glass:rgba(20,18,42,.94);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);min-height:100vh;color:var(--text);overflow-x:hidden;transition:background .3s,color .3s}
+.scroll-progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#5b5fc7,#a855f7,#ec4899);z-index:9999;transition:width .1s linear;border-radius:0 2px 2px 0}
+.hero-header{background:linear-gradient(110deg,#0f4a3e 0%,#0d9488 35%,#0891b2 70%,#1d4ed8 100%);height:var(--header-h);padding:0 1.6rem;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(15,74,62,.4);display:flex;align-items:center}
+.hero-inner{display:flex;align-items:center;justify-content:space-between;width:100%;gap:.8rem;flex-wrap:nowrap}
+.hero-left{display:flex;align-items:center;gap:.75rem;min-width:0}
+.hero-logo{width:36px;height:36px;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.35);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0}
+.hero-title{font-size:clamp(.9rem,2vw,1.1rem);font-weight:800;color:#fff;letter-spacing:-.02em;white-space:nowrap}
+.hero-sub{font-size:.68rem;color:rgba(255,255,255,.65);font-weight:500;margin-top:.05rem}
+.hero-right{display:flex;align-items:center;gap:.45rem;flex-shrink:0}
+.hero-badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:.18rem .65rem;font-size:.65rem;font-weight:700;color:rgba(255,255,255,.9);white-space:nowrap}
+.timer-display{display:inline-flex;align-items:center;gap:.25rem;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:.18rem .65rem;font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700;color:#fff}
+.student-chip-hdr{display:inline-flex;align-items:center;gap:.3rem;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);border-radius:20px;padding:.2rem .75rem;font-size:.72rem;font-weight:700;color:#fff;cursor:pointer;transition:all .18s;white-space:nowrap}
+.student-chip-hdr:hover{background:rgba(255,255,255,.28)}
+.dark-toggle{background:rgba(255,255,255,.13);border:1.5px solid rgba(255,255,255,.28);border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.95rem;transition:all .18s;flex-shrink:0}
+.dark-toggle:hover{background:rgba(255,255,255,.28)}
+.stats-bar{background:var(--glass);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:.55rem 1.6rem;display:flex;justify-content:center;align-items:center;gap:1.8rem;flex-wrap:wrap;position:sticky;top:var(--header-h);z-index:100;box-shadow:0 1px 12px rgba(91,95,199,.08)}
+.stat-item{display:flex;align-items:center;gap:.4rem;font-weight:700;font-size:.8rem;color:var(--text)}
+.stat-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.stat-sep{width:1px;height:18px;background:var(--border2);flex-shrink:0}
+.progress-wrap-outer{display:flex;align-items:center;gap:.6rem;flex:1;max-width:380px;min-width:120px}
+.progress-track{flex:1;height:6px;background:var(--surface3);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#0d9488,#0891b2,#3b82f6);border-radius:3px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.progress-pct{font-size:.7rem;font-weight:800;color:var(--primary);min-width:32px;text-align:right;font-family:'JetBrains Mono',monospace}
+.quiz-mode-bar{background:linear-gradient(90deg,#0f4a3e,#0d9488);color:#fff;padding:.55rem 1.6rem;display:none;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,.15)}
+.quiz-mode-bar.active{display:flex}
+.quiz-progress-txt{font-size:.8rem;font-weight:700}
+.quiz-nav{display:flex;gap:.4rem}
+.quiz-nav-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:20px;padding:.28rem .85rem;font-size:.76rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .18s}
+.quiz-nav-btn:hover{background:rgba(255,255,255,.3)}
+.quiz-nav-btn:disabled{opacity:.35;cursor:not-allowed}
+.search-bar-wrap{padding:.75rem 1.6rem .35rem;max-width:1120px;margin:0 auto}
+.search-wrap{position:relative}
+.search-bar{width:100%;background:var(--surface);border:1.5px solid var(--border);border-radius:50px;padding:.52rem 1.1rem .52rem 2.6rem;font-size:.86rem;font-weight:600;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:all .22s;box-shadow:var(--shadow)}
+.search-bar:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(91,95,199,.15)}
+.search-icon{position:absolute;left:.85rem;top:50%;transform:translateY(-50%);font-size:.9rem;pointer-events:none;opacity:.5}
+.tab-nav{display:flex;gap:.35rem;padding:.6rem 1.6rem .35rem;overflow-x:auto;scrollbar-width:none;flex-wrap:wrap;justify-content:center;max-width:1120px;margin:0 auto}
+.tab-nav::-webkit-scrollbar{display:none}
+.tab-btn{background:var(--surface);border:1.5px solid var(--border);color:var(--text2);border-radius:20px;padding:.38rem 1rem;font-size:.76rem;font-weight:700;cursor:pointer;transition:all .22s;white-space:nowrap;font-family:'Inter',sans-serif;display:inline-flex;align-items:center;gap:.3rem}
+.tab-btn:hover{background:var(--surface3);color:var(--primary);border-color:var(--border2)}
+.tab-btn.active{background:#0d9488;border-color:transparent;color:#fff;box-shadow:0 4px 16px rgba(13,148,136,.35)}
+[data-theme="dark"] .tab-btn{background:var(--surface2)}
+.sec-count{font-size:.62rem;font-weight:800;background:rgba(13,148,136,.15);color:#0d9488;border-radius:10px;padding:.08rem .38rem;transition:all .22s}
+.tab-btn.active .sec-count{background:rgba(255,255,255,.22);color:#fff}
+.section{display:none;padding:1rem 1.6rem 1.4rem;max-width:1120px;margin:0 auto;animation:fadeUp .28s ease}
+.section.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.section-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem;padding:.9rem 1.2rem;border-radius:var(--radius);position:relative;overflow:hidden;border:1.5px solid transparent}
+.section-icon{font-size:1.8rem;flex-shrink:0}
+.section-title{font-size:1.15rem;font-weight:800;letter-spacing:-.02em}
+.section-subtitle{font-size:.75rem;opacity:.7;margin-top:.1rem;font-weight:500}
+.section-score-bar{margin-left:auto;text-align:right;flex-shrink:0}
+.section-score-pct{font-size:1.3rem;font-weight:900;font-family:'JetBrains Mono',monospace}
+.section-score-lbl{font-size:.62rem;font-weight:700;opacity:.65;margin-top:.1rem}
+.hdr-purple{background:linear-gradient(135deg,#ede9fe,#f5f3ff);border-color:#c4b5fd!important}.hdr-purple .section-title{color:#4f46e5}.hdr-purple .section-score-pct{color:#6366f1}
+.hdr-pink{background:linear-gradient(135deg,#fce7f3,#fdf2f8);border-color:#f9a8d4!important}.hdr-pink .section-title{color:#be185d}.hdr-pink .section-score-pct{color:#ec4899}
+.hdr-green{background:linear-gradient(135deg,#d1fae5,#ecfdf5);border-color:#6ee7b7!important}.hdr-green .section-title{color:#065f46}.hdr-green .section-score-pct{color:#059669}
+.hdr-orange{background:linear-gradient(135deg,#fef3c7,#fffbeb);border-color:#fcd34d!important}.hdr-orange .section-title{color:#92400e}.hdr-orange .section-score-pct{color:#d97706}
+.hdr-blue{background:linear-gradient(135deg,#dbeafe,#eff6ff);border-color:#93c5fd!important}.hdr-blue .section-title{color:#1d4ed8}.hdr-blue .section-score-pct{color:#3b82f6}
+.hdr-indigo{background:linear-gradient(135deg,#e0e7ff,#eef2ff);border-color:#a5b4fc!important}.hdr-indigo .section-title{color:#3730a3}.hdr-indigo .section-score-pct{color:#4f46e5}
+.hdr-teal{background:linear-gradient(135deg,#ccfbf1,#f0fdfa);border-color:#5eead4!important}.hdr-teal .section-title{color:#0f4a3e}.hdr-teal .section-score-pct{color:#0d9488}
+.hdr-cyan{background:linear-gradient(135deg,#cffafe,#ecfeff);border-color:#67e8f9!important}.hdr-cyan .section-title{color:#0e7490}.hdr-cyan .section-score-pct{color:#0891b2}
+[data-theme="dark"] .hdr-purple{background:linear-gradient(135deg,#1e1a40,#2a2560)}
+[data-theme="dark"] .hdr-pink{background:linear-gradient(135deg,#2a1225,#3a1535)}
+[data-theme="dark"] .hdr-green{background:linear-gradient(135deg,#0a2218,#0e2d22)}
+[data-theme="dark"] .hdr-orange{background:linear-gradient(135deg,#251a08,#2e2010)}
+[data-theme="dark"] .hdr-blue{background:linear-gradient(135deg,#0d1e3a,#122448)}
+[data-theme="dark"] .hdr-indigo{background:linear-gradient(135deg,#151230,#1c1840)}
+[data-theme="dark"] .hdr-teal{background:linear-gradient(135deg,#081a18,#0c2220)}
+[data-theme="dark"] .hdr-cyan{background:linear-gradient(135deg,#061820,#0a2230)}
+.question-grid{display:grid;gap:.9rem}
+.question-grid.two-col{grid-template-columns:repeat(auto-fill,minmax(440px,1fr))}
+.q-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:1.1rem 1.2rem;transition:transform .22s,box-shadow .22s,border-color .22s;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.q-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--radius) var(--radius) 0 0;background:var(--card-accent,#0d9488)}
+.q-card-inner{position:relative;z-index:1}
+.th-purple{--card-accent:linear-gradient(90deg,#6366f1,#8b5cf6)}
+.th-pink{--card-accent:linear-gradient(90deg,#ec4899,#f43f5e)}
+.th-green{--card-accent:linear-gradient(90deg,#10b981,#34d399)}
+.th-orange{--card-accent:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.th-blue{--card-accent:linear-gradient(90deg,#3b82f6,#60a5fa)}
+.th-indigo{--card-accent:linear-gradient(90deg,#4f46e5,#6366f1)}
+.th-teal{--card-accent:linear-gradient(90deg,#0d9488,#14b8a6)}
+.th-cyan{--card-accent:linear-gradient(90deg,#0891b2,#22d3ee)}
+.q-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);border-color:var(--border2)}
+.q-card.answered{border-color:var(--green-border);background:linear-gradient(160deg,var(--surface) 80%,#f0fdf4)}
+.q-card.wrong-ans{border-color:var(--red-border);background:linear-gradient(160deg,var(--surface) 80%,#fff5f5)}
+[data-theme="dark"] .q-card.answered{background:linear-gradient(160deg,var(--surface) 75%,#052e16)}
+[data-theme="dark"] .q-card.wrong-ans{background:linear-gradient(160deg,var(--surface) 75%,#2d0f0f)}
+.q-header{display:flex;align-items:center;gap:.5rem;margin-bottom:.7rem}
+.q-number{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;font-size:.7rem;font-weight:800;flex-shrink:0;color:#fff;font-family:'JetBrains Mono',monospace}
+.nb-purple{background:#6366f1}.nb-pink{background:#ec4899}.nb-green{background:#10b981}
+.nb-orange{background:#f59e0b}.nb-blue{background:#3b82f6}.nb-indigo{background:#4f46e5}.nb-teal{background:#0d9488}.nb-cyan{background:#0891b2}
+.q-tag{font-size:.6rem;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.7px;background:var(--surface2);border-radius:6px;padding:.12rem .48rem;border:1px solid var(--border)}
+.diff-badge{font-size:.57rem;font-weight:800;border-radius:6px;padding:.1rem .42rem;text-transform:uppercase;letter-spacing:.5px;margin-left:auto}
+.diff-easy{background:#d1fae5;color:#065f46}
+.diff-medium{background:#fef3c7;color:#92400e}
+.diff-hard{background:#fee2e2;color:#991b1b}
+.q-text{font-size:.93rem;font-weight:700;line-height:1.65;margin-bottom:.9rem;color:var(--text);word-break:break-word}
+.q-text .math{background:#ccfbf1;border-radius:6px;padding:.1rem .45rem;font-family:'JetBrains Mono',monospace;font-size:.98rem;font-weight:700;color:#0f766e}
+[data-theme="dark"] .q-text .math{background:#134e4a;color:#5eead4}
+.geo-fig{display:block;margin:.4rem auto .85rem;max-width:200px;width:100%}
+.mcq-options{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;width:100%}
+.mcq-opt{background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.58rem .85rem;cursor:pointer;transition:all .18s;font-weight:600;font-size:.85rem;display:flex;align-items:center;gap:.5rem;font-family:'Inter',sans-serif;color:var(--text);word-break:break-word}
+.mcq-opt:hover{background:linear-gradient(135deg,#ccfbf1,#f0fdfa);border-color:#5eead4;transform:translateX(2px)}
+.mcq-opt.correct{background:linear-gradient(135deg,#d1fae5,#ecfdf5)!important;border-color:#34d399!important;color:#065f46!important}
+.mcq-opt.wrong{background:linear-gradient(135deg,#fee2e2,#fff5f5)!important;border-color:#fca5a5!important;color:#991b1b!important}
+.opt-letter{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:6px;background:rgba(13,148,136,.12);font-size:.7rem;font-weight:800;flex-shrink:0;transition:all .18s;font-family:'JetBrains Mono',monospace}
+[data-theme="dark"] .opt-letter{background:#0c2220}
+.mcq-opt:hover .opt-letter{background:#5eead4;color:#0f4a3e}
+.mcq-opt.correct .opt-letter{background:#6ee7b7;color:#065f46}
+.mcq-opt.wrong .opt-letter{background:#fca5a5;color:#991b1b}
+.opt-text{flex:1}
+.fill-row{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;width:100%}
+.fill-input{background:var(--surface2);border:2px solid #5eead4;border-radius:var(--radius-sm);padding:.55rem 1rem;color:var(--text);font-size:1rem;font-weight:700;font-family:'JetBrains Mono',monospace;width:160px;text-align:center;transition:all .22s;outline:none}
+[data-theme="dark"] .fill-input{background:var(--surface2);border-color:#0d9488}
+.fill-input:focus{border-color:#0891b2;box-shadow:0 0 0 3px rgba(8,145,178,.15)}
+.fill-input.correct{border-color:#10b981;background:var(--green-bg);color:#065f46}
+.fill-input.wrong-fill{border-color:#ef4444;background:var(--red-bg);color:#991b1b}
+.fill-input::placeholder{color:#5eead4;font-size:.8rem;font-family:'Inter',sans-serif;font-weight:500}
+.check-btn{background:#0d9488;border:none;color:#fff;border-radius:var(--radius-sm);padding:.5rem 1rem;font-weight:700;cursor:pointer;font-size:.8rem;font-family:'Inter',sans-serif;transition:all .18s;box-shadow:0 3px 10px rgba(13,148,136,.28);display:inline-flex;align-items:center;gap:.3rem}
+.check-btn:hover{filter:brightness(1.1);transform:scale(1.04)}
+.result-badge{display:inline-flex;align-items:center;gap:.32rem;padding:.22rem .68rem;border-radius:20px;font-size:.75rem;font-weight:700;margin-top:.55rem;animation:popIn .25s ease}
+@keyframes popIn{from{transform:scale(.75);opacity:0}to{transform:scale(1);opacity:1}}
+.badge-ok{background:var(--green-bg);color:var(--green);border:1.5px solid var(--green-border)}
+.badge-no{background:var(--red-bg);color:var(--red);border:1.5px solid var(--red-border)}
+.activity-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:1.3rem;margin-bottom:1.2rem;box-shadow:var(--shadow)}
+.activity-title{font-size:1rem;font-weight:800;margin-bottom:.75rem;color:var(--text)}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.match-col{display:flex;flex-direction:column;gap:.45rem}
+.match-item{background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.58rem .8rem;cursor:pointer;transition:all .2s;font-weight:700;font-size:.82rem;text-align:center;min-height:42px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;color:var(--text)}
+.match-item:hover{border-color:#5eead4;background:linear-gradient(135deg,#ccfbf1,#f0fdfa)}
+.match-item.sel{border-color:#f59e0b;background:linear-gradient(135deg,#fef3c7,#fffbeb);color:#92400e;box-shadow:0 0 0 3px rgba(245,158,11,.18)}
+.match-item.ok{border-color:#10b981;background:linear-gradient(135deg,#d1fae5,#ecfdf5);color:#065f46;pointer-events:none}
+.match-item.fail{border-color:#ef4444;background:var(--red-bg);color:#991b1b}
+.score-panel{position:fixed;bottom:1.2rem;right:1.2rem;background:var(--glass);backdrop-filter:blur(24px);border:1.5px solid var(--border2);border-radius:18px;padding:.8rem 1.1rem;z-index:200;box-shadow:0 8px 40px rgba(13,148,136,.24);min-width:156px}
+.score-pdf-btn{display:block;width:100%;margin-top:.45rem;background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;border:none;border-radius:8px;padding:.38rem .5rem;font-size:.68rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .18s}
+.score-pdf-btn:hover{filter:brightness(1.1)}
+.score-title{font-size:.62rem;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.score-val{font-size:1.7rem;font-weight:900;font-family:'JetBrains Mono',monospace;background:linear-gradient(135deg,#0d9488,#0891b2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1}
+.score-pct-bar{height:4px;background:var(--surface3);border-radius:2px;overflow:hidden;margin:.3rem 0}
+.score-pct-fill{height:100%;background:linear-gradient(90deg,#0d9488,#0891b2);border-radius:2px;transition:width .5s}
+.action-bar{display:flex;gap:.7rem;justify-content:center;padding:1.3rem 1.6rem 1.6rem;flex-wrap:wrap}
+.btn-primary{background:#0d9488;color:#fff;border:none;border-radius:50px;padding:.72rem 1.8rem;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .22s;box-shadow:0 4px 16px rgba(13,148,136,.32)}
+.btn-primary:hover{filter:brightness(1.12);transform:translateY(-2px)}
+.btn-secondary{background:var(--surface);color:var(--text);border:1.5px solid var(--border);border-radius:50px;padding:.72rem 1.8rem;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .22s}
+.btn-secondary:hover{background:var(--surface2);border-color:var(--border2);transform:translateY(-2px)}
+.btn-danger{background:linear-gradient(135deg,#ef4444,#f43f5e);color:#fff;border:none;border-radius:50px;padding:.72rem 1.8rem;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .22s;box-shadow:0 4px 16px rgba(239,68,68,.25)}
+.btn-danger:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.btn-finish{background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#fff;border:none;border-radius:50px;padding:.72rem 1.8rem;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .22s;box-shadow:0 4px 16px rgba(245,158,11,.32);position:relative;overflow:hidden}
+.btn-finish::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);transform:translateX(-100%);animation:shimmer 2.2s infinite}
+@keyframes shimmer{100%{transform:translateX(100%)}}
+.btn-pdf{background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff;border:none;border-radius:50px;padding:.72rem 1.8rem;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .22s;box-shadow:0 4px 16px rgba(20,184,166,.3);display:inline-flex;align-items:center;gap:.45rem}
+.btn-pdf:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.kbd-hint{display:inline-flex;align-items:center;gap:.3rem;font-size:.67rem;color:var(--text3);font-weight:600}
+.kbd{background:var(--surface2);border:1.5px solid var(--border);border-radius:4px;padding:.08rem .32rem;font-family:'JetBrains Mono',monospace;font-size:.65rem}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,8,28,.65);backdrop-filter:blur(18px);z-index:300;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal-box{background:var(--surface);border:1.5px solid var(--border2);border-radius:24px;padding:2rem 2rem 1.7rem;max-width:580px;width:95%;text-align:center;animation:scaleIn .3s cubic-bezier(.34,1.56,.64,1);max-height:92vh;overflow-y:auto;box-shadow:0 20px 64px rgba(13,148,136,.28)}
+@keyframes scaleIn{from{transform:scale(.72);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-emoji{font-size:3.5rem;margin-bottom:.4rem;display:block}
+.modal-title{font-size:1.55rem;font-weight:900;color:var(--text);letter-spacing:-.02em}
+.modal-score{font-size:2.4rem;font-weight:900;font-family:'JetBrains Mono',monospace;background:linear-gradient(135deg,#0d9488,#0891b2);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.modal-msg{color:var(--text2);margin:.6rem 0 1rem;font-size:.9rem;font-weight:600}
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin:.85rem 0}
+.result-cell{border-radius:12px;padding:.8rem .4rem;text-align:center;border:1.5px solid transparent}
+.result-cell .rc-num{font-size:1.9rem;font-weight:900;font-family:'JetBrains Mono',monospace}
+.result-cell .rc-lbl{font-size:.63rem;font-weight:700;margin-top:.12rem;opacity:.75}
+.rc-correct{background:#d1fae5;border-color:#6ee7b7}.rc-correct .rc-num,.rc-correct .rc-lbl{color:#065f46}
+.rc-wrong{background:#fee2e2;border-color:#fca5a5}.rc-wrong .rc-num,.rc-wrong .rc-lbl{color:#991b1b}
+.rc-empty{background:#ccfbf1;border-color:#5eead4}.rc-empty .rc-num,.rc-empty .rc-lbl{color:#0e7490}
+.detail-list{max-height:320px;overflow-y:auto;margin:.9rem 0;text-align:left;padding-right:.25rem}
+.detail-list::-webkit-scrollbar{width:4px}.detail-list::-webkit-scrollbar-thumb{background:#5eead4;border-radius:2px}
+.detail-item{display:flex;align-items:flex-start;gap:.5rem;padding:.5rem .8rem;border-radius:10px;margin-bottom:.38rem;font-size:.8rem;font-weight:600;line-height:1.5}
+.detail-item.di-correct{background:#f0fdf4;border:1.5px solid #86efac}
+.detail-item.di-wrong{background:#fff5f5;border:1.5px solid #fca5a5}
+.detail-item.di-empty{background:#f0fdfa;border:1.5px solid #5eead4}
+.detail-icon{font-size:1rem;flex-shrink:0}
+.reset-modal-inner{background:var(--surface);border:1.5px solid var(--red-border);border-radius:20px;padding:1.8rem;max-width:360px;width:93%;text-align:center;animation:scaleIn .28s ease}
+.name-modal{display:flex;position:fixed;inset:0;background:linear-gradient(135deg,rgba(15,74,62,.25),rgba(8,145,178,.15));backdrop-filter:blur(24px);z-index:500;align-items:center;justify-content:center}
+.name-box{background:var(--surface);border:1.5px solid var(--border2);border-radius:24px;padding:2.5rem 2rem;max-width:440px;width:93%;text-align:center;animation:scaleIn .4s cubic-bezier(.34,1.56,.64,1);box-shadow:0 24px 72px rgba(13,148,136,.22)}
+.name-logo{font-size:3rem;margin-bottom:.4rem}
+.name-title{font-size:1.85rem;font-weight:900;margin-bottom:.35rem;letter-spacing:-.03em;background:linear-gradient(135deg,#0d9488,#0891b2);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.name-subtitle{color:var(--text2);font-size:.88rem;margin-bottom:1.5rem;line-height:1.6;font-weight:500}
+.name-input{background:var(--surface2);border:2px solid #5eead4;border-radius:var(--radius-sm);padding:.88rem 1.2rem;color:var(--text);font-size:1rem;font-weight:700;font-family:'Inter',sans-serif;width:100%;text-align:center;outline:none;transition:all .22s}
+.name-input:focus{border-color:#0891b2;box-shadow:0 0 0 3px rgba(8,145,178,.15)}
+.name-btn{background:#0d9488;color:#fff;border:none;border-radius:50px;padding:.88rem 2.2rem;font-size:.96rem;font-weight:800;cursor:pointer;font-family:'Inter',sans-serif;transition:all .22s;margin-top:1.1rem;width:100%;box-shadow:0 5px 20px rgba(13,148,136,.38)}
+.name-btn:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.name-notice{margin-top:.9rem;font-size:.72rem;color:var(--text3);font-weight:500}
+.name-features{display:grid;grid-template-columns:1fr 1fr;gap:.42rem;margin:.85rem 0 .45rem;text-align:left}
+.name-feat{display:flex;align-items:center;gap:.38rem;font-size:.72rem;font-weight:600;color:var(--text2);background:var(--surface2);border-radius:8px;padding:.28rem .55rem;border:1px solid var(--border)}
+.loading-overlay{display:none;position:fixed;inset:0;background:rgba(255,255,255,.88);backdrop-filter:blur(12px);z-index:600;align-items:center;justify-content:center;flex-direction:column;gap:.9rem}
+[data-theme="dark"] .loading-overlay{background:rgba(12,11,23,.9)}
+.loading-overlay.show{display:flex}
+.loading-spinner{width:48px;height:48px;border:3.5px solid var(--surface3);border-top-color:#0d9488;border-radius:50%;animation:spin .9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-weight:800;color:#0d9488;font-size:.92rem}
+.loading-progress-txt{font-size:.78rem;color:var(--text2);font-weight:600}
+.confetti-piece{position:fixed;width:8px;height:8px;top:-20px;animation:confetti-fall linear forwards;z-index:400;border-radius:2px}
+@keyframes confetti-fall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+.streak-banner{display:none;align-items:center;justify-content:center;gap:.45rem;padding:.38rem 1rem;background:linear-gradient(90deg,#0d9488,#0891b2);font-size:.8rem;font-weight:800;color:#fff;position:fixed;top:0;left:0;right:0;z-index:600;animation:slideDown .35s ease}
+.streak-banner.show{display:flex}
+@keyframes slideDown{from{transform:translateY(-100%)}to{transform:translateY(0)}}
+.back-to-top{position:fixed;bottom:1.2rem;left:1.2rem;background:#0d9488;border:none;border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.05rem;color:#fff;z-index:200;box-shadow:0 4px 16px rgba(13,148,136,.36);transition:all .22s;opacity:0;pointer-events:none}
+.back-to-top.visible{opacity:1;pointer-events:auto}
+.back-to-top:hover{transform:translateY(-3px)}
+.prob-box{background:linear-gradient(135deg,#ccfbf1,#f0fdfa);border:1.5px dashed #5eead4;border-radius:12px;padding:1rem 1.1rem;margin-bottom:.85rem;font-size:.9rem;line-height:1.7;color:#0e7490;font-weight:700}
+[data-theme="dark"] .prob-box{background:linear-gradient(135deg,#061820,#0a2230);border-color:#0e7490;color:#67e8f9}
+.pi-note{display:inline-block;background:#fef3c7;border:1px solid #fcd34d;border-radius:6px;padding:.08rem .5rem;font-size:.72rem;font-weight:700;color:#92400e;margin-bottom:.5rem}
+@media(max-width:640px){
+  .question-grid.two-col{grid-template-columns:1fr}
+  .mcq-options{grid-template-columns:1fr}
+  .hero-right{gap:.25rem}
+  .score-panel{min-width:136px;padding:.6rem .85rem}
+  .name-features{grid-template-columns:1fr}
+  .quiz-mode-bar{flex-direction:column;align-items:flex-start}
+  .stats-bar{gap:1rem;padding:.5rem 1rem}
+  .tab-nav{padding:.5rem 1rem .3rem}
+  .section{padding:.9rem 1rem 1.2rem}
+  .action-bar{padding:1rem}
+}
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<div class="streak-banner" id="streakBanner">
+  <span>🔥</span><span id="streakText">3 Doğru Üst Üste!</span><span>🔥</span>
+  <button onclick="document.getElementById('streakBanner').classList.remove('show')" style="background:none;border:none;color:#fff;cursor:pointer;margin-left:.5rem;font-size:1rem;">✕</button>
+</div>
+
+<div class="name-modal" id="nameModal" style="display:none;">
+  <div class="name-box">
+    <div class="name-logo">📐</div>
+    <div class="name-title">Geometri Testi</div>
+    <div class="name-subtitle">5. Sınıf · 7 Konu · Geometride Temel Kavramlar<br>Başlamadan önce adını gir!</div>
+    <div class="name-features">
+      <div class="name-feat">📐 7 Geometri Konusu</div>
+      <div class="name-feat">📝 200+ Soru</div>
+      <div class="name-feat">🏆 Anlık Puanlama</div>
+      <div class="name-feat">📄 PDF İndir</div>
+      <div class="name-feat">⏱️ Süre Takibi</div>
+      <div class="name-feat">🌙 Gece Modu</div>
+      <div class="name-feat">🔥 Streak Sistemi</div>
+      <div class="name-feat">🎯 Quiz Modu</div>
+    </div>
+    <input class="name-input" id="nameInput" type="text" placeholder="Adın Soyadın..." maxlength="50" autocomplete="off">
+    <button class="name-btn" onclick="startTest()">🚀 Teste Başla</button>
+    <div class="name-notice">💾 İlerlemeniz otomatik kaydedilir</div>
+  </div>
+</div>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-text" id="loadingText">Yükleniyor...</div>
+  <div class="loading-progress-txt" id="loadingProgress"></div>
+</div>
+
+<div class="modal-overlay" id="resetModal">
+  <div class="reset-modal-inner">
+    <div style="font-size:2.5rem;margin-bottom:.5rem;">⚠️</div>
+    <div style="font-size:1.2rem;font-weight:900;color:var(--text);margin-bottom:.5rem;">Testi Sıfırla?</div>
+    <div style="font-size:.88rem;color:var(--text2);font-weight:700;margin-bottom:1.2rem;">Tüm cevaplar ve puanlar silinir.</div>
+    <div style="display:flex;gap:.7rem;justify-content:center;">
+      <button class="btn-danger" onclick="doReset()">🗑️ Sıfırla</button>
+      <button class="btn-secondary" onclick="document.getElementById('resetModal').classList.remove('show')">İptal</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="finishModal">
+  <div class="modal-box">
+    <span class="modal-emoji" id="fm-emoji">🏆</span>
+    <div class="modal-title">Test Tamamlandı!</div>
+    <div style="font-size:.88rem;color:var(--text2);margin:.3rem 0;font-weight:700;" id="fm-student"></div>
+    <div class="modal-score" id="fm-score"></div>
+    <div class="modal-msg" id="fm-msg"></div>
+    <div class="result-grid">
+      <div class="result-cell rc-correct"><div class="rc-num" id="fm-cor">0</div><div class="rc-lbl">✅ Doğru</div></div>
+      <div class="result-cell rc-wrong"><div class="rc-num" id="fm-wrg">0</div><div class="rc-lbl">❌ Yanlış</div></div>
+      <div class="result-cell rc-empty"><div class="rc-num" id="fm-emp">0</div><div class="rc-lbl">⬜ Boş</div></div>
+    </div>
+    <div class="detail-list" id="fm-detail-list"></div>
+    <div style="display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-top:.8rem;">
+      <button class="btn-pdf" onclick="document.getElementById('finishModal').classList.remove('show');downloadPDF()">📄 PDF İndir</button>
+      <button class="btn-secondary" onclick="document.getElementById('finishModal').classList.remove('show')">Kapat</button>
+    </div>
+  </div>
+</div>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<header class="hero-header">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-logo">📐</div>
+      <div>
+        <div class="hero-title">Geometride Temel Kavramlar Testi (2. Ödev)</div>
+        <div class="hero-sub">5. Sınıf | Geometri</div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <span class="hero-badge">7 Konu</span>
+      <span class="hero-badge" id="qCountBadge">... Soru</span>
+      <div class="timer-display" id="timerDisplay">⏱️ 00:00</div>
+      <button class="student-chip-hdr" onclick="document.getElementById('nameModal').style.display='flex'" id="studentChip">👤 Öğrenci</button>
+      <button class="dark-toggle" onclick="toggleDark()" id="darkToggle" title="Gece Modu">🌙</button>
+    </div>
+  </div>
+</header>
+
+<div class="quiz-mode-bar" id="quizModeBar">
+  <div class="quiz-progress-txt" id="quizProgressTxt">Soru 1 / 0</div>
+  <div class="quiz-nav">
+    <button class="quiz-nav-btn" id="quizPrev" onclick="quizNav(-1)">← Önceki</button>
+    <button class="quiz-nav-btn" id="quizNext" onclick="quizNav(1)">Sonraki →</button>
+    <button class="quiz-nav-btn" onclick="exitQuizMode()">✕ Quiz Modu Çık</button>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat-item"><span class="stat-dot" style="background:#059669"></span><span>Dogru <strong id="statCor">0</strong></span></div>
+  <div class="stat-sep"></div>
+  <div class="stat-item"><span class="stat-dot" style="background:#dc2626"></span><span>Yanlis <strong id="statWrg">0</strong></span></div>
+  <div class="stat-sep"></div>
+  <div class="stat-item"><span class="stat-dot" style="background:#94a3b8"></span><span>Bos <strong id="statEmp">0</strong></span></div>
+  <div class="stat-sep"></div>
+  <div class="stat-item"><span class="stat-dot" style="background:#0d9488"></span><span>Cevaplanan <strong id="statAns">0</strong></span></div>
+  <div class="progress-wrap-outer">
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="progress-pct" id="progressPct">%0</div>
+  </div>
+</div>
+
+<div class="search-bar-wrap">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="search-bar" id="searchBar" type="text" placeholder="Soru ara... (örn: açı, üçgen, çevre, alan)" oninput="filterQuestions(this.value)">
+  </div>
+</div>
+
+<nav class="tab-nav" id="tabNav">
+  <button class="tab-btn active" onclick="switchTab('g1',this)">📍 Temel Kavramlar <span class="sec-count" id="cnt-g1"></span></button>
+  <button class="tab-btn" onclick="switchTab('g2',this)">📐 Açılar <span class="sec-count" id="cnt-g2"></span></button>
+  <button class="tab-btn" onclick="switchTab('g3',this)">△ Üçgenler <span class="sec-count" id="cnt-g3"></span></button>
+  <button class="tab-btn" onclick="switchTab('g4',this)">⬠ Çokgenler <span class="sec-count" id="cnt-g4"></span></button>
+  <button class="tab-btn" onclick="switchTab('g5',this)">▭ Kare-Dikdörtgen <span class="sec-count" id="cnt-g5"></span></button>
+  <button class="tab-btn" onclick="switchTab('g6',this)">⭕ Çember-Daire <span class="sec-count" id="cnt-g6"></span></button>
+  <button class="tab-btn" onclick="switchTab('g7',this)">🎯 Karma-Etkinlik <span class="sec-count" id="cnt-g7"></span></button>
+</nav>
+
+<div class="section active" id="sec-g1">
+  <div class="section-header hdr-teal">
+    <div class="section-icon">📍</div>
+    <div><div class="section-title">Temel Geometri Kavramları</div><div class="section-subtitle">Nokta, dogru, dogru parcasi, isin ve bunların özellikleri</div></div>
+    <div class="section-score-bar"><div class="section-score-pct" id="score-g1">-</div><div class="section-score-lbl">Basari</div></div>
+  </div>
+  <div class="question-grid two-col" id="grid-g1"></div>
+</div>
+
+<div class="section" id="sec-g2">
+  <div class="section-header hdr-indigo">
+    <div class="section-icon">📐</div>
+    <div><div class="section-title">Açılar ve Açı Çeşitleri</div><div class="section-subtitle">Dar, dik, genis, dogru, tam açı; aciların olcumu</div></div>
+    <div class="section-score-bar"><div class="section-score-pct" id="score-g2">-</div><div class="section-score-lbl">Basari</div></div>
+  </div>
+  <div class="question-grid two-col" id="grid-g2"></div>
+</div>
+
+<div class="section" id="sec-g3">
+  <div class="section-header hdr-green">
+    <div class="section-icon">△</div>
+    <div><div class="section-title">Üçgenler</div><div class="section-subtitle">Kenar ve aci çesitleri, üçgen esitsizligi, ic açı toplamı</div></div>
+    <div class="section-score-bar"><div class="section-score-pct" id="score-g3">-</div><div class="section-score-lbl">Basari</div></div>
+  </div>
+  <div class="question-grid two-col" id="grid-g3"></div>
+</div>
+
+<div class="section" id="sec-g4">
+  <div class="section-header hdr-orange">
+    <div class="section-icon">⬠</div>
+    <div><div class="section-title">Çokgenler</div><div class="section-subtitle">Tanim, ic açı toplamı, bilinmeyen ic açıyı bulma</div></div>
+    <div class="section-score-bar"><div class="section-score-pct" id="score-g4">-</div><div class="section-score-lbl">Basari</div></div>
+  </div>
+  <div class="question-grid two-col" id="grid-g4"></div>
+</div>
+
+<div class="section" id="sec-g5">
+  <div class="section-header hdr-blue">
+    <div class="section-icon">▭</div>
+    <div><div class="section-title">Kare ve Dikdörtgen</div><div class="section-subtitle">Çevre ve alan hesabı, bilinmeyen kenarı bulma</div></div>
+    <div class="section-score-bar"><div class="section-score-pct" id="score-g5">-</div><div class="section-score-lbl">Basari</div></div>
+  </div>
+  <div class="question-grid two-col" id="grid-g5"></div>
+</div>
+
+<div class="section" id="sec-g6">
+  <div class="section-header hdr-cyan">
+    <div class="section-icon">⭕</div>
+    <div><div class="section-title">Çember ve Daire</div><div class="section-subtitle">Çevre ve alan hesabı — <strong>π = 3 alınız</strong></div></div>
+    <div class="section-score-bar"><div class="section-score-pct" id="score-g6">-</div><div class="section-score-lbl">Basari</div></div>
+  </div>
+  <div class="question-grid two-col" id="grid-g6"></div>
+</div>
+
+<div class="section" id="sec-g7">
+  <div class="section-header hdr-purple">
+    <div class="section-icon">🎯</div>
+    <div><div class="section-title">Karma Geometri &amp; Etkinlik</div><div class="section-subtitle">Tüm konulardan karisik sorular ve eslestirme aktiviteleri</div></div>
+    <div class="section-score-bar"><div class="section-score-pct" id="score-g7">-</div><div class="section-score-lbl">Basari</div></div>
+  </div>
+  <div class="question-grid" id="grid-g7"></div>
+</div>
+
+<div class="action-bar">
+  <button class="btn-finish" onclick="finishTest()">🏁 Testi Bitir &amp; Sonuçları Gör</button>
+  <button class="btn-pdf" onclick="downloadPDF()">📄 PDF İndir</button>
+  <button class="btn-primary" onclick="enterQuizMode()">🎯 Quiz Modu</button>
+  <button class="btn-danger" onclick="confirmReset()">🔄 Sıfırla</button>
+</div>
+<div style="text-align:center;padding:.4rem 1rem 1.5rem;font-size:.67rem;color:var(--text3);font-weight:500;">
+  <span class="kbd-hint"><span class="kbd">Tab</span> sonraki &nbsp;|&nbsp; <span class="kbd">Enter</span> cevapla &nbsp;|&nbsp; <span class="kbd">Ctrl+D</span> gece modu &nbsp;|&nbsp; <span class="kbd">Ctrl+Enter</span> bitir</span>
+</div>
+
+<div class="score-panel" id="scorePanel">
+  <div class="score-title">ANLIK SKOR</div>
+  <div class="score-val" id="scorePanelVal">0/0</div>
+  <div class="score-pct-bar"><div class="score-pct-fill" id="scorePctFill" style="width:0%"></div></div>
+  <div style="font-size:.68rem;font-weight:700;color:var(--text3);" id="scorePanelPct">%0 basari</div>
+  <button class="score-pdf-btn" onclick="downloadPDF()">PDF Indir</button>
+  <button class="score-pdf-btn" style="background:linear-gradient(135deg,#0f766e,#14b8a6);margin-top:.38rem;" onclick="finishTest()">Bitir &amp; Sonuc</button>
+</div>
+
+<script>
+'use strict';
+const QUESTIONS_DB = {
+  g1: [
+    {id:'g1q1',sec:'g1',type:'mcq',diff:'easy',tag:'Nokta',text:'Geometride noktanın doğru tanımı hangisidir?',opts:['Yeri olan, boyutu olmayan soyut bir kavramdır','Uzunluğu olan doğrusal bir şekildir','İki ucu olan bir doğru parçasıdır','Bir yöne doğru sonsuza uzanan bir çizgidir'],ans:'A'},
+    {id:'g1q2',sec:'g1',type:'mcq',diff:'easy',tag:'Doğru',text:'Bir doğrunun kaç tane ucu vardır?',opts:['0 (ucu yoktur, sonsuz uzanır)','1','2','3'],ans:'A'},
+    {id:'g1q3',sec:'g1',type:'fill',diff:'easy',tag:'Doğru Parçası',text:'Bir doğru parçasının kaç uç noktası vardır?',correct:'2'},
+    {id:'g1q4',sec:'g1',type:'mcq',diff:'easy',tag:'Işın',text:'Işın hangi özelliği ile doğrudan farklıdır?',opts:['Bir başlangıç noktası vardır, bir yönde sonsuza uzanır','İki ucu vardır','Boyutu yoktur','Kapalı bir şekildir'],ans:'A'},
+    {id:'g1q5',sec:'g1',type:'mcq',diff:'easy',tag:'Doğru Parçası',text:'AB doğru parçası ile BA doğru parçası arasındaki ilişki nedir?',opts:['Aynı doğru parçasıdır','Farklı doğru parçalarıdır','AB daha uzundur','BA daha uzundur'],ans:'A'},
+    {id:'g1q6',sec:'g1',type:'fill',diff:'easy',tag:'Nokta',text:'Geometride "." sembolü hangi temel kavramı gösterir? (bir kelime)',correct:'nokta'},
+    {id:'g1q7',sec:'g1',type:'mcq',diff:'easy',tag:'Işın',text:'OA ışını için aşağıdakilerden hangisi doğrudur?',opts:['O başlangıç noktasıdır, A yönünde sonsuza uzanır','A başlangıç noktasıdır','İki ucu vardır','Kapalıdır'],ans:'A'},
+    {id:'g1q8',sec:'g1',type:'mcq',diff:'easy',tag:'Doğru',text:'Bir doğru üzerinde kaç farklı nokta bulunabilir?',opts:['Sonsuz sayıda','Sadece 2','Sadece 3','En fazla 10'],ans:'A'},
+    {id:'g1q9',sec:'g1',type:'fill',diff:'easy',tag:'Doğru Parçası',text:'Bir doğru parçasının uzunluğu ölçülebilir mi? (evet/hayır)',correct:'evet'},
+    {id:'g1q10',sec:'g1',type:'mcq',diff:'easy',tag:'Kavram',text:'Aşağıdakilerden hangisi uzunluğu ölçülemeyen geometrik kavramdır?',opts:['Doğru','Doğru parçası','Işın — tek yönde sonsuz','Hem doğru hem ışın'],ans:'A'},
+    {id:'g1q11',sec:'g1',type:'mcq',diff:'medium',tag:'Doğru',text:'İki farklı noktadan geçen doğru kaç tanedir?',opts:['Sadece 1','2','Sonsuz','0'],ans:'A'},
+    {id:'g1q12',sec:'g1',type:'mcq',diff:'medium',tag:'Kavram',text:'AB doğru parçasının uzunluğu 8 cm ise BA doğru parçasının uzunluğu kaç cm\'dir?',opts:['8 cm','4 cm','16 cm','Ölçülemez'],ans:'A'},
+    {id:'g1q13',sec:'g1',type:'fill',diff:'medium',tag:'Doğru',text:'Bir düzlemde birbirini kesen iki doğru kaç noktada kesişir?',correct:'1'},
+    {id:'g1q14',sec:'g1',type:'mcq',diff:'medium',tag:'Paralel',text:'Birbirine paralel iki doğru kaç noktada kesişir?',opts:['Hiç kesişmez (0 nokta)','1 noktada','2 noktada','Sonsuz noktada'],ans:'A'},
+    {id:'g1q15',sec:'g1',type:'mcq',diff:'medium',tag:'Kesişme',text:'Bir doğru ile bir doğru parçasının ortak noktası kaç olabilir?',opts:['0, 1 veya sonsuz','Sadece 1','Sadece 2','3'],ans:'A'},
+    {id:'g1q16',sec:'g1',type:'fill',diff:'medium',tag:'Işın',text:'OA ışını ile OB ışını aynı başlangıç noktasına sahip ve zıt yönlerdeyse bunlar birlikte nasıl bir şekil oluşturur? (bir kelime)',correct:'doğru'},
+    {id:'g1q17',sec:'g1',type:'mcq',diff:'medium',tag:'Doğru Parçası',text:'Bir doğru parçası, doğru ile ışından nasıl farklıdır?',opts:['İki uç noktası vardır ve uzunluğu ölçülebilir','Sonsuz uzanır','Başlangıç noktası yoktur','Paralel olamaz'],ans:'A'},
+    {id:'g1q18',sec:'g1',type:'mcq',diff:'medium',tag:'Kavram',text:'Bir düzlemde 3 farklı nokta bulunuyor. Bu noktalar doğrusal (aynı doğru üzerinde) değilse kaç farklı doğru parçası çizilebilir?',opts:['3','4','6','2'],ans:'A'},
+    {id:'g1q19',sec:'g1',type:'fill',diff:'medium',tag:'Doğru',text:'Üç farklı nokta aynı doğru üzerinde ise bu noktalara ne denir? (bir kelime)',correct:'doğrusal'},
+    {id:'g1q20',sec:'g1',type:'mcq',diff:'medium',tag:'Işın',text:'AB ışını ile BA ışını hakkında aşağıdakilerden hangisi doğrudur?',opts:['Farklı başlangıç noktaları ve yönleri olan iki farklı ışındır','Aynı ışındır','AB daha uzundur','Paraleldirler'],ans:'A'},
+    {id:'g1q21',sec:'g1',type:'mcq',diff:'hard',tag:'Doğru',text:'Bir düzlemde 4 nokta var ve hiçbir 3 nokta aynı doğruda değil. Bu noktalardan kaç farklı doğru çizilebilir?',opts:['6','4','8','3'],ans:'A'},
+    {id:'g1q22',sec:'g1',type:'fill',diff:'hard',tag:'Doğru Parçası',text:'5 doğrusal olmayan noktadan kaç farklı doğru parçası çizilebilir?',correct:'10'},
+    {id:'g1q23',sec:'g1',type:'mcq',diff:'hard',tag:'Kavram',text:'Aşağıdakilerden hangisi yanlıştır?',opts:['Bir doğru parçası bir doğrudur','Doğru iki doğru parçasının birleşimi olarak düşünülebilir','Bir ışın sonsuz uzanır','Nokta boyutsuz bir kavramdır'],ans:'A'},
+    {id:'g1q24',sec:'g1',type:'mcq',diff:'hard',tag:'Kesişme',text:'Bir düzlemde 5 doğru çizilmiş ve her ikisi birbiriyle kesişiyor (ikisi paralel değil). En fazla kaç kesişim noktası oluşabilir?',opts:['10','8','5','6'],ans:'A'},
+    {id:'g1q25',sec:'g1',type:'fill',diff:'hard',tag:'Işın',text:'Bir noktadan kaç farklı ışın çizilebilir? (tek kelimeyle)',correct:'sonsuz'},
+    {id:'g1q26',sec:'g1',type:'mcq',diff:'easy',tag:'Kavram',text:'Doğru parçası hangi iki kavramın "sınırlandırılmış" biçimidir?',opts:['Doğru','Işın','Nokta','Çember'],ans:'A'},
+    {id:'g1q27',sec:'g1',type:'mcq',diff:'easy',tag:'Doğru',text:'Bir doğru üzerindeki iki nokta o doğruyu kaç parçaya böler?',opts:['3 parçaya (2 ışın + 1 doğru parçası)','2 parçaya','4 parçaya','1 parçaya'],ans:'A'},
+    {id:'g1q28',sec:'g1',type:'fill',diff:'medium',tag:'Doğru',text:'A ve B noktalarından geçen tek bir doğru çizilir. Bu doğruyu nasıl adlandırırız? (iki harfli, büyük harfle)',correct:'AB'},
+    {id:'g1q29',sec:'g1',type:'mcq',diff:'medium',tag:'Kavram',text:'Bir ışının uzunluğu ölçülebilir mi?',opts:['Hayır, sonsuz uzandığı için ölçülemez','Evet, 100 cm\'dir','Evet, başlangıç noktasından itibaren','Evet, yalnızca doğru parçasına eşittir'],ans:'A'},
+    {id:'g1q30',sec:'g1',type:'mcq',diff:'hard',tag:'Kesişme',text:'İki doğru aynı düzlemde bulunuyorsa aralarındaki ilişki ne olabilir?',opts:['Ya kesişirler ya da paralellerdir','Sadece kesişirler','Sadece paralel olabilirler','Her zaman çakışırlar'],ans:'A'},
+  ],
+  g2: [
+    {id:'g2q1',sec:'g2',type:'mcq',diff:'easy',tag:'Açı',text:'Açı, kaç ışının oluşturduğu geometrik şekildir?',opts:['2 ışın','1 ışın','3 ışın','4 ışın'],ans:'A'},
+    {id:'g2q2',sec:'g2',type:'mcq',diff:'easy',tag:'Açı Çeşidi',text:'Ölçüsü 90° olan açıya ne denir?',opts:['Dik açı','Dar açı','Geniş açı','Doğru açı'],ans:'A'},
+    {id:'g2q3',sec:'g2',type:'fill',diff:'easy',tag:'Açı Çeşidi',text:'Ölçüsü 90°\'den küçük, 0°\'den büyük olan açıya ne denir? (iki kelime)',correct:'dar açı'},
+    {id:'g2q4',sec:'g2',type:'mcq',diff:'easy',tag:'Açı Çeşidi',text:'Ölçüsü 90° ile 180° arasında olan açıya ne denir?',opts:['Geniş açı','Dar açı','Dik açı','Tam açı'],ans:'A'},
+    {id:'g2q5',sec:'g2',type:'fill',diff:'easy',tag:'Doğru Açı',text:'Doğru açının ölçüsü kaç derecedir?',correct:'180'},
+    {id:'g2q6',sec:'g2',type:'mcq',diff:'easy',tag:'Tam Açı',text:'Tam açının ölçüsü kaç derecedir?',opts:['360°','180°','90°','270°'],ans:'A'},
+    {id:'g2q7',sec:'g2',type:'mcq',diff:'easy',tag:'Açı Çeşidi',text:'65° açı hangi çeşittir?',opts:['Dar açı','Dik açı','Geniş açı','Doğru açı'],ans:'A'},
+    {id:'g2q8',sec:'g2',type:'fill',diff:'easy',tag:'Açı Çeşidi',text:'135° açı hangi çeşittir? (iki kelime)',correct:'geniş açı'},
+    {id:'g2q9',sec:'g2',type:'mcq',diff:'easy',tag:'Ölçüm',text:'Açıları ölçmekte kullanılan araç hangisidir?',opts:['İletki (gönye)','Cetvel','Pergel','Şakül'],ans:'A'},
+    {id:'g2q10',sec:'g2',type:'mcq',diff:'easy',tag:'Açı',text:'Bir açının iki kenarı hangi geometrik kavramdır?',opts:['Işın','Doğru parçası','Doğru','Nokta'],ans:'A'},
+    {id:'g2q11',sec:'g2',type:'mcq',diff:'medium',tag:'Tümleyen',text:'Tümleyen açılar toplamı kaç derecedir?',opts:['90°','180°','360°','270°'],ans:'A'},
+    {id:'g2q12',sec:'g2',type:'fill',diff:'medium',tag:'Tümleyen',text:'35°\'nin tümleyeni kaç derecedir?',correct:'55'},
+    {id:'g2q13',sec:'g2',type:'mcq',diff:'medium',tag:'Bütünleyen',text:'Bütünleyen açılar toplamı kaç derecedir?',opts:['180°','90°','360°','270°'],ans:'A'},
+    {id:'g2q14',sec:'g2',type:'fill',diff:'medium',tag:'Bütünleyen',text:'110°\'nin bütünleyeni kaç derecedir?',correct:'70'},
+    {id:'g2q15',sec:'g2',type:'mcq',diff:'medium',tag:'Açı Çeşidi',text:'Bir açı 90°\'den büyük 180°\'den küçük ise bu açı hangi çeşittir?',opts:['Geniş açı','Dar açı','Dik açı','Tam açı'],ans:'A'},
+    {id:'g2q16',sec:'g2',type:'fill',diff:'medium',tag:'Açı Hesabı',text:'Bir açının bütünleyeni 40° ise açının kendisi kaç derecedir?',correct:'140'},
+    {id:'g2q17',sec:'g2',type:'mcq',diff:'medium',tag:'Açı Hesabı',text:'Bir açının tümleyeninin ölçüsü 25° ise açının kendisi kaç derecedir?',opts:['65°','55°','75°','45°'],ans:'A'},
+    {id:'g2q18',sec:'g2',type:'mcq',diff:'medium',tag:'Dikgen',text:'İki doğru birbirini dik açıyla kesiyorsa bu doğrulara ne denir?',opts:['Dik doğrular (dikgen)','Paralel doğrular','Çakışık doğrular','Eğik doğrular'],ans:'A'},
+    {id:'g2q19',sec:'g2',type:'fill',diff:'medium',tag:'Açı',text:'Bir saat 3:00\'da akrep ile yelkovan arasındaki açı kaç derecedir?',correct:'90'},
+    {id:'g2q20',sec:'g2',type:'mcq',diff:'medium',tag:'Açı Hesabı',text:'AOB doğru açısında C ışını OA ile 40° açı yapıyor. COB açısı kaç derecedir?',opts:['140°','40°','90°','180°'],ans:'A'},
+    {id:'g2q21',sec:'g2',type:'mcq',diff:'hard',tag:'Açı Hesabı',text:'Bir açının bütünleyeninin tümleyeni 30° ise açının kendisi kaç derecedir?',opts:['120°','60°','150°','30°'],ans:'A'},
+    {id:'g2q22',sec:'g2',type:'fill',diff:'hard',tag:'Açı Hesabı',text:'Bir açı ile tümleyeninin farkı 20° ise açı kaç derecedir?',correct:'55'},
+    {id:'g2q23',sec:'g2',type:'mcq',diff:'hard',tag:'Açı Hesabı',text:'Bir açının bütünleyeni ile kendisi arasındaki fark 60° ise açı kaç derecedir?',opts:['60°','70°','80°','120°'],ans:'B'},
+    {id:'g2q24',sec:'g2',type:'mcq',diff:'hard',tag:'Dikey Açı',text:'İki doğru kesiştiğinde oluşan karşılıklı açılara ne denir?',opts:['Dikey açılar','Tümleyen açılar','Bütünleyen açılar','Paralel açılar'],ans:'A'},
+    {id:'g2q25',sec:'g2',type:'fill',diff:'hard',tag:'Dikey Açı',text:'İki doğru 70° ile kesişiyor. Oluşan dikey açının ölçüsü kaç derecedir?',correct:'70'},
+    {id:'g2q26',sec:'g2',type:'mcq',diff:'easy',tag:'Açı Çeşidi',text:'200° açı hangi çeşittir?',opts:['Yayvan (tam açıdan büyük) açı','Geniş açı','Dik açı','Dar açı'],ans:'A'},
+    {id:'g2q27',sec:'g2',type:'fill',diff:'easy',tag:'Açı',text:'Dik açı kaç tane dar açıya eşittir? (45°\'lik)',correct:'2'},
+    {id:'g2q28',sec:'g2',type:'mcq',diff:'medium',tag:'Açı Hesabı',text:'Saat 12:00\'de akrep ile yelkovan arasındaki açı kaç derecedir?',opts:['0°','90°','180°','360°'],ans:'A'},
+    {id:'g2q29',sec:'g2',type:'mcq',diff:'medium',tag:'Açı Hesabı',text:'Bir saat 6:00\'da akrep ile yelkovan arasındaki açı hangi çeşittir?',opts:['Doğru açı (180°)','Dik açı (90°)','Dar açı','Tam açı (360°)'],ans:'A'},
+    {id:'g2q30',sec:'g2',type:'fill',diff:'hard',tag:'Açı Hesabı',text:'Bir açının tümleyeninin 3 katı ile kendisinin toplamı 270° ise açı kaç derecedir?',correct:'45'},
+  ],
+  g3: [
+    {id:'g3q1',sec:'g3',type:'mcq',diff:'easy',tag:'İç Açı',text:'Bir üçgenin iç açıları toplamı kaç derecedir?',opts:['180°','90°','360°','270°'],ans:'A'},
+    {id:'g3q2',sec:'g3',type:'fill',diff:'easy',tag:'İç Açı',text:'Bir üçgenin iki açısı 60° ve 80°. Üçüncü açı kaç derecedir?',correct:'40'},
+    {id:'g3q3',sec:'g3',type:'mcq',diff:'easy',tag:'Eşkenar',text:'Eşkenar üçgenin her iç açısı kaç derecedir?',opts:['60°','90°','45°','30°'],ans:'A'},
+    {id:'g3q4',sec:'g3',type:'mcq',diff:'easy',tag:'Dik Üçgen',text:'Bir dik üçgende dik açının yanı sıra diğer iki açının toplamı kaç derecedir?',opts:['90°','180°','45°','60°'],ans:'A'},
+    {id:'g3q5',sec:'g3',type:'fill',diff:'easy',tag:'İkizkenar',text:'İkizkenar üçgende tepe açısı 40° ise taban açılarının her biri kaç derecedir?',correct:'70'},
+    {id:'g3q6',sec:'g3',type:'mcq',diff:'easy',tag:'Çeşit',text:'Üç kenarı da birbirinden farklı olan üçgene ne denir?',opts:['Çeşitkenar üçgen','Eşkenar üçgen','İkizkenar üçgen','Dik üçgen'],ans:'A'},
+    {id:'g3q7',sec:'g3',type:'mcq',diff:'easy',tag:'Dik Üçgen',text:'Bir dik üçgende en uzun kenara ne denir?',opts:['Hipotenüs','Dik kenar','Taban','Yükseklik'],ans:'A'},
+    {id:'g3q8',sec:'g3',type:'mcq',diff:'easy',tag:'Açı Çeşidi',text:'Tüm iç açıları 90°\'dan küçük olan üçgene ne denir?',opts:['Dar açılı üçgen','Dik açılı üçgen','Geniş açılı üçgen','Eşkenar üçgen'],ans:'A'},
+    {id:'g3q9',sec:'g3',type:'mcq',diff:'easy',tag:'Açı Çeşidi',text:'İçinde bir 90° açı bulunan üçgene ne denir?',opts:['Dik açılı üçgen','Dar açılı üçgen','Geniş açılı üçgen','İkizkenar üçgen'],ans:'A'},
+    {id:'g3q10',sec:'g3',type:'fill',diff:'easy',tag:'Kenar',text:'Eşkenar üçgenin bir kenarı 9 cm ise çevresi kaç cm\'dir?',correct:'27'},
+    {id:'g3q11',sec:'g3',type:'mcq',diff:'medium',tag:'Üçgen Eşitsizliği',text:'Üçgen eşitsizliğine göre herhangi iki kenarın toplamı üçüncü kenara göre nasıl olmalıdır?',opts:['Büyük olmalıdır','Eşit olmalıdır','Küçük olmalıdır','Fark etmez'],ans:'A'},
+    {id:'g3q12',sec:'g3',type:'mcq',diff:'medium',tag:'Üçgen Eşitsizliği',text:'Kenar uzunlukları 3 cm ve 7 cm olan üçgenin üçüncü kenarı (x) hangi aralıkta olabilir?',opts:['4 < x < 10','3 < x < 7','0 < x < 10','7 < x < 10'],ans:'A'},
+    {id:'g3q13',sec:'g3',type:'fill',diff:'medium',tag:'Üçgen Eşitsizliği',text:'Kenarları 5 cm ve 9 cm olan üçgende üçüncü kenarın alabileceği en küçük tam sayı değeri kaçtır?',correct:'5'},
+    {id:'g3q14',sec:'g3',type:'mcq',diff:'medium',tag:'Üçgen Eşitsizliği',text:'Kenarları 4 cm ve 4 cm olan üçgende üçüncü kenarın alabileceği en büyük tam sayı değeri kaçtır?',opts:['7 cm','8 cm','4 cm','6 cm'],ans:'A'},
+    {id:'g3q15',sec:'g3',type:'fill',diff:'medium',tag:'Üçgen Eşitsizliği',text:'Kenarları 6 cm ve 10 cm olan üçgende üçüncü kenar kaç cm\'den küçük olmalıdır?',correct:'16'},
+    {id:'g3q16',sec:'g3',type:'mcq',diff:'medium',tag:'Üçgen Eşitsizliği',text:'3 cm, 5 cm, 9 cm kenarlarıyla üçgen çizilebilir mi?',opts:['Hayır (3+5 = 8, 9\'dan küçük)','Evet, dik üçgen','Evet, dar açılı','Evet, geniş açılı'],ans:'A'},
+    {id:'g3q17',sec:'g3',type:'fill',diff:'medium',tag:'İç Açı',text:'Bir üçgenin açıları 2x°, 3x° ve 4x° olarak verilmiş. x kaç derecedir?',correct:'20'},
+    {id:'g3q18',sec:'g3',type:'mcq',diff:'medium',tag:'Çeşit',text:'Eşkenar üçgen aynı zamanda hangi tür üçgendir?',opts:['İkizkenar üçgen','Çeşitkenar üçgen','Dik üçgen','Geniş açılı üçgen'],ans:'A'},
+    {id:'g3q19',sec:'g3',type:'mcq',diff:'medium',tag:'Üçgen Eşitsizliği',text:'4 cm, 4 cm, 8 cm kenarlarıyla üçgen çizilebilir mi?',opts:['Hayır (4+4=8, üçüncü kenara eşit)','Evet, ikizkenar','Evet, dik açılı','Evet, geniş açılı'],ans:'A'},
+    {id:'g3q20',sec:'g3',type:'fill',diff:'medium',tag:'Üçgen Eşitsizliği',text:'Kenarları 7 ve 11 olan üçgende üçüncü kenar tam sayı ise kaç farklı değer alabilir? (4<x<18 → 5,6,...,17)',correct:'13'},
+    {id:'g3q21',sec:'g3',type:'mcq',diff:'hard',tag:'İç Açı',text:'Bir üçgenin açıları (x+10)°, (2x-20)° ve (x+30)° ise x kaç derecedir?',opts:['40°','45°','35°','50°'],ans:'A'},
+    {id:'g3q22',sec:'g3',type:'fill',diff:'hard',tag:'İç Açı',text:'Bir üçgenin dış açısı 130°. Bu dış açıya komşu olmayan iki iç açının toplamı kaç derecedir?',correct:'130'},
+    {id:'g3q23',sec:'g3',type:'mcq',diff:'hard',tag:'Üçgen Eşitsizliği',text:'Bir üçgenin iki kenarı 6 ve 14. Üçüncü kenar tam sayıysa kaç farklı değer alabilir? (8<x<20 → 9,10,...,19)',correct:'11 değer',opts:['11 değer','9 değer','13 değer','15 değer'],ans:'A'},
+    {id:'g3q24',sec:'g3',type:'fill',diff:'hard',tag:'İç Açı',text:'Bir üçgenin dış açılarından biri 110°. Bu dış açıya bitişik iç açı kaç derecedir?',correct:'70'},
+    {id:'g3q25',sec:'g3',type:'mcq',diff:'hard',tag:'Açı Çeşidi',text:'Bir üçgenin iç açılarından biri 95° ise bu üçgen hangi çeşittir?',opts:['Geniş açılı üçgen','Dar açılı üçgen','Dik açılı üçgen','Eşkenar üçgen'],ans:'A'},
+    {id:'g3q26',sec:'g3',type:'mcq',diff:'easy',tag:'Kenar',text:'İkizkenar üçgenin taban uzunluğu 8 cm, yan kenarı 6 cm ise çevresi kaç cm\'dir?',opts:['20 cm','18 cm','22 cm','16 cm'],ans:'A'},
+    {id:'g3q27',sec:'g3',type:'fill',diff:'medium',tag:'İç Açı',text:'Bir üçgenin iki dış açısı 120° ve 130°. Üçüncü iç açı kaç derecedir?',correct:'70'},
+    {id:'g3q28',sec:'g3',type:'mcq',diff:'medium',tag:'Üçgen Eşitsizliği',text:'Kenarları 5 cm ve 8 cm olan üçgenin üçüncü kenarı tam sayı ise kaç farklı değer alabilir? (3<x<13 → 4,5,...,12)',opts:['9 değer','8 değer','7 değer','10 değer'],ans:'A'},
+    {id:'g3q29',sec:'g3',type:'fill',diff:'hard',tag:'Üçgen Eşitsizliği',text:'Kenarları 8 cm ve 15 cm olan üçgende üçüncü kenar tam sayı ve tek ise kaç farklı değer alabilir? (7<x<23 → tek: 9,11,13,...,21 → 7 tane)',correct:'7'},
+    {id:'g3q30',sec:'g3',type:'mcq',diff:'hard',tag:'İç Açı',text:'Açıları (3x)°, (2x+10)° ve (x+20)° olan üçgende en büyük açı kaç derecedir?',opts:['90°','75°','65°','80°'],ans:'A'},
+  ],
+  g4: [
+    {id:'g4q1',sec:'g4',type:'mcq',diff:'easy',tag:'Çokgen',text:'Çokgen nedir?',opts:['Doğru parçalarından oluşan kapalı düzlem şeklidir','Yuvarlak kenarlı kapalı şekildir','Sadece 4 kenarlı şekildir','Bir çember içindeki şekildir'],ans:'A'},
+    {id:'g4q2',sec:'g4',type:'fill',diff:'easy',tag:'Çokgen',text:'4 kenarlı çokgene ne denir? (bir kelime)',correct:'dörtgen'},
+    {id:'g4q3',sec:'g4',type:'mcq',diff:'easy',tag:'İç Açı',text:'Bir dörtgenin iç açıları toplamı kaç derecedir?',opts:['360°','180°','540°','270°'],ans:'A'},
+    {id:'g4q4',sec:'g4',type:'mcq',diff:'easy',tag:'İç Açı',text:'Bir beşgenin iç açıları toplamı kaç derecedir?',opts:['540°','360°','720°','180°'],ans:'A'},
+    {id:'g4q5',sec:'g4',type:'fill',diff:'easy',tag:'İç Açı',text:'Altıgen (6 kenarlı) iç açılar toplamı kaç derecedir?',correct:'720'},
+    {id:'g4q6',sec:'g4',type:'mcq',diff:'easy',tag:'Formül',text:'n kenarlı çokgenin iç açıları toplamı formülü hangisidir?',opts:['(n-2) × 180°','n × 180°','(n+2) × 180°','n × 90°'],ans:'A'},
+    {id:'g4q7',sec:'g4',type:'fill',diff:'easy',tag:'İç Açı',text:'Yedigen (7 kenarlı) iç açılar toplamı kaç derecedir?',correct:'900'},
+    {id:'g4q8',sec:'g4',type:'mcq',diff:'easy',tag:'Düzgün',text:'Düzgün çokgenlerde tüm kenarlar ve tüm açılar nasıldır?',opts:['Birbirine eşittir','Birbirinden farklıdır','Sadece açılar eşittir','Sadece kenarlar eşittir'],ans:'A'},
+    {id:'g4q9',sec:'g4',type:'fill',diff:'easy',tag:'İç Açı',text:'Düzgün dörtgenin (kare) her bir iç açısı kaç derecedir?',correct:'90'},
+    {id:'g4q10',sec:'g4',type:'mcq',diff:'easy',tag:'İç Açı',text:'Düzgün altıgenin her bir iç açısı kaç derecedir?',opts:['120°','90°','60°','108°'],ans:'A'},
+    {id:'g4q11',sec:'g4',type:'mcq',diff:'medium',tag:'Bilinmeyen Açı',text:'Bir dörtgenin üç açısı 80°, 95°, 115°. Dördüncü açı kaç derecedir?',opts:['70°','60°','75°','85°'],ans:'A'},
+    {id:'g4q12',sec:'g4',type:'fill',diff:'medium',tag:'Bilinmeyen Açı',text:'Bir beşgenin dört açısı 100°, 110°, 120°, 90°. Beşinci açı kaç derecedir?',correct:'120'},
+    {id:'g4q13',sec:'g4',type:'mcq',diff:'medium',tag:'Bilinmeyen Açı',text:'Bir altıgenin beş açısı her biri 115°. Altıncı açı kaç derecedir?',opts:['145°','120°','125°','115°'],ans:'A'},
+    {id:'g4q14',sec:'g4',type:'fill',diff:'medium',tag:'İç Açı',text:'Sekizgen (8 kenarlı) iç açılar toplamı kaç derecedir?',correct:'1080'},
+    {id:'g4q15',sec:'g4',type:'mcq',diff:'medium',tag:'Düzgün',text:'Düzgün beşgenin her bir iç açısı kaç derecedir?',opts:['108°','72°','120°','90°'],ans:'A'},
+    {id:'g4q16',sec:'g4',type:'fill',diff:'medium',tag:'Bilinmeyen Açı',text:'Bir dörtgenin açıları x°, 2x°, 3x° ve 90° olarak verilmiş. x kaç derecedir?',correct:'45'},
+    {id:'g4q17',sec:'g4',type:'fill',diff:'medium',tag:'İç Açı',text:'İç açıları toplamı 1080° olan çokgenin kaç kenarı vardır?',correct:'8'},
+    {id:'g4q18',sec:'g4',type:'mcq',diff:'medium',tag:'Trapez',text:'Trapezin özelliği nedir?',opts:['Sadece bir çifti paralel kenara sahip dörtgendir','İki çifti paralel kenara sahiptir','Tüm kenarları eşittir','Dört açısı da diktir'],ans:'A'},
+    {id:'g4q19',sec:'g4',type:'mcq',diff:'hard',tag:'Bilinmeyen Açı',text:'Bir beşgenin açıları (x+10)°, (x+20)°, (x+30)°, (x+40)°, (x+50)° ise x kaç derecedir?',opts:['68°','72°','80°','75°'],ans:'A'},
+    {id:'g4q20',sec:'g4',type:'fill',diff:'hard',tag:'İç Açı',text:'İç açıları toplamı 1440° olan çokgenin kaç kenarı vardır?',correct:'10'},
+    {id:'g4q21',sec:'g4',type:'mcq',diff:'hard',tag:'Dış Açı',text:'Herhangi bir çokgenin dış açıları toplamı kaç derecedir?',opts:['360°','180°','540°','720°'],ans:'A'},
+    {id:'g4q22',sec:'g4',type:'fill',diff:'hard',tag:'Bilinmeyen Açı',text:'Bir dörtgenin açıları 1:2:3:4 oranında. En büyük açı kaç derecedir?',correct:'144'},
+    {id:'g4q23',sec:'g4',type:'mcq',diff:'hard',tag:'Düzgün',text:'Düzgün sekizgenin her bir iç açısı kaç derecedir?',opts:['135°','120°','150°','144°'],ans:'A'},
+    {id:'g4q24',sec:'g4',type:'fill',diff:'medium',tag:'Bilinmeyen Açı',text:'Bir altıgenin açıları 100°, 120°, 130°, 110°, 90° ve x°. x kaç derecedir?',correct:'170'},
+    {id:'g4q25',sec:'g4',type:'mcq',diff:'hard',tag:'Düzgün',text:'Düzgün ongenin (10 kenarlı) her bir iç açısı kaç derecedir?',opts:['144°','135°','120°','150°'],ans:'A'},
+  ],
+  g5: [
+    {id:'g5q1',sec:'g5',type:'mcq',diff:'easy',tag:'Kare',text:'Karenin özellikleri arasında hangisi yoktur?',opts:['Karşılıklı kenarları farklı uzunluktadır','Dört kenarı eşittir','Dört açısı da 90°\'dir','Köşegenleri birbirini dik keser'],ans:'A'},
+    {id:'g5q2',sec:'g5',type:'fill',diff:'easy',tag:'Kare Çevre',text:'Kenar uzunluğu 7 cm olan karenin çevresi kaç cm\'dir?',correct:'28'},
+    {id:'g5q3',sec:'g5',type:'mcq',diff:'easy',tag:'Kare Alan',text:'Kenar uzunluğu 6 cm olan karenin alanı kaç cm²\'dir?',opts:['36 cm²','24 cm²','12 cm²','48 cm²'],ans:'A'},
+    {id:'g5q4',sec:'g5',type:'fill',diff:'easy',tag:'Dikdörtgen Çevre',text:'Uzunluğu 10 cm, genişliği 5 cm olan dikdörtgenin çevresi kaç cm\'dir?',correct:'30'},
+    {id:'g5q5',sec:'g5',type:'mcq',diff:'easy',tag:'Dikdörtgen Alan',text:'Uzunluğu 8 cm, genişliği 4 cm olan dikdörtgenin alanı kaç cm²\'dir?',opts:['32 cm²','24 cm²','16 cm²','48 cm²'],ans:'A'},
+    {id:'g5q6',sec:'g5',type:'fill',diff:'easy',tag:'Kare Alan',text:'Alanı 49 cm² olan karenin kenar uzunluğu kaç cm\'dir?',correct:'7'},
+    {id:'g5q7',sec:'g5',type:'mcq',diff:'easy',tag:'Dikdörtgen',text:'Dikdörtgenin özellikleri arasında hangisi doğrudur?',opts:['Karşılıklı kenarları eşit ve paraleldir','Dört kenarı birbirine eşittir','Köşegenleri birbirini dik keser','Tüm kenarları farklı uzunluktadır'],ans:'A'},
+    {id:'g5q8',sec:'g5',type:'fill',diff:'easy',tag:'Kare Çevre',text:'Çevresi 36 cm olan karenin kenar uzunluğu kaç cm\'dir?',correct:'9'},
+    {id:'g5q9',sec:'g5',type:'mcq',diff:'easy',tag:'Dikdörtgen Çevre',text:'Çevresi 26 cm ve uzunluğu 8 cm olan dikdörtgenin genişliği kaç cm\'dir?',opts:['5 cm','4 cm','6 cm','7 cm'],ans:'A'},
+    {id:'g5q10',sec:'g5',type:'fill',diff:'easy',tag:'Dikdörtgen Alan',text:'Alanı 60 cm² ve uzunluğu 12 cm olan dikdörtgenin genişliği kaç cm\'dir?',correct:'5'},
+    {id:'g5q11',sec:'g5',type:'mcq',diff:'medium',tag:'Kare Alan',text:'Çevresi 40 cm olan karenin alanı kaç cm²\'dir?',opts:['100 cm²','80 cm²','160 cm²','64 cm²'],ans:'A'},
+    {id:'g5q12',sec:'g5',type:'fill',diff:'medium',tag:'Dikdörtgen',text:'Uzunluğu genişliğinin 3 katı olan dikdörtgenin çevresi 48 cm. Uzunluğu kaç cm\'dir?',correct:'18'},
+    {id:'g5q13',sec:'g5',type:'mcq',diff:'medium',tag:'Alan Karşılaştırma',text:'Kenar uzunluğu 5 cm olan kare ile uzunluğu 8 cm, genişliği 3 cm olan dikdörtgenin alanları karşılaştırıldığında?',opts:['Kare daha büyük (25 > 24)','Dikdörtgen daha büyük','Eşit','Karşılaştırılamaz'],ans:'A'},
+    {id:'g5q14',sec:'g5',type:'fill',diff:'medium',tag:'Dikdörtgen Alan',text:'Çevresi 34 cm ve genişliği 7 cm olan dikdörtgenin alanı kaç cm²\'dir?',correct:'70'},
+    {id:'g5q15',sec:'g5',type:'mcq',diff:'medium',tag:'Kare',text:'Alanı 64 cm² olan karenin çevresi kaç cm\'dir?',opts:['32 cm','16 cm','24 cm','40 cm'],ans:'A'},
+    {id:'g5q16',sec:'g5',type:'fill',diff:'medium',tag:'Alan',text:'Bir odanın tabanı 12 m × 8 m dikdörtgen şeklinde. Bu tabanın alanı kaç m²\'dir?',correct:'96'},
+    {id:'g5q17',sec:'g5',type:'mcq',diff:'medium',tag:'Dikdörtgen',text:'Uzunluğu 15 cm, genişliği 9 cm olan dikdörtgenin çevresi kaç cm\'dir?',opts:['48 cm','42 cm','45 cm','54 cm'],ans:'A'},
+    {id:'g5q18',sec:'g5',type:'fill',diff:'medium',tag:'Kare',text:'Kenar uzunluğu 11 cm olan karenin hem çevresi hem alanı yazıldığında, alanı çevresinden kaç fazladır?',correct:'77'},
+    {id:'g5q19',sec:'g5',type:'mcq',diff:'hard',tag:'Alan',text:'Bir karenin kenarı 2 katına çıkarılırsa alanı kaç katına çıkar?',opts:['4 katına','2 katına','3 katına','8 katına'],ans:'A'},
+    {id:'g5q20',sec:'g5',type:'fill',diff:'hard',tag:'Alan',text:'Bir dikdörtgenin uzunluğu 2 katına, genişliği 3 katına çıkarılırsa yeni alan eski alanın kaç katı olur?',correct:'6'},
+    {id:'g5q21',sec:'g5',type:'mcq',diff:'hard',tag:'Alan',text:'Bir karenin çevresi ile aynı çevreye sahip bir dikdörtgen (8 × 6 cm). Bu karenin kenar uzunluğu kaç cm\'dir?',opts:['7 cm','8 cm','6 cm','14 cm'],ans:'A'},
+    {id:'g5q22',sec:'g5',type:'fill',diff:'hard',tag:'Alan',text:'Alanları toplamı 117 cm² olan iki kare var. Biri 6 cm kenarlı. Diğerinin kenar uzunluğu kaç cm\'dir?',correct:'9'},
+    {id:'g5q23',sec:'g5',type:'mcq',diff:'medium',tag:'Çevre',text:'L şeklinde bir şekil, 10×6 dikdörtgenden 3×2 dikdörtgen çıkarılmış. Alanı kaç cm²\'dir?',opts:['54 cm²','60 cm²','48 cm²','56 cm²'],ans:'A'},
+    {id:'g5q24',sec:'g5',type:'fill',diff:'easy',tag:'Kare Alan',text:'Kenar uzunluğu 13 cm olan karenin alanı kaç cm²\'dir?',correct:'169'},
+    {id:'g5q25',sec:'g5',type:'mcq',diff:'hard',tag:'Alan',text:'Çevresi 44 cm olan dikdörtgenin uzunluğu genişliğinin 2 katından 1 fazladır. Dikdörtgenin alanı kaç cm²\'dir?',opts:['120 cm²','110 cm²','132 cm²','100 cm²'],ans:'A'},
+  ],
+  g6: [
+    {id:'g6q1',sec:'g6',type:'mcq',diff:'easy',tag:'Çember',text:'Çember nedir? (π = 3 alınız)',opts:['Bir merkezden eşit uzaklıktaki noktaların oluşturduğu eğri çizgidir','Merkez dahil tüm iç noktaları kapsayan düzlem bölgesidir','Bir yarıçap uzunluğunda kapalı şekildir','Çevresi ölçülemeyen geometrik şekildir'],ans:'A'},
+    {id:'g6q2',sec:'g6',type:'mcq',diff:'easy',tag:'Daire',text:'Daire nedir?',opts:['Çemberin iç bölgesi dahil tüm noktaların kümesidir','Sadece çemberin kendisidir','Yarıçapı eşit olmayan şekildir','Köşeli kapalı şekildir'],ans:'A'},
+    {id:'g6q3',sec:'g6',type:'fill',diff:'easy',tag:'Çevre',text:'Yarıçapı 5 cm olan çemberin çevresi kaç cm\'dir? (π = 3)',correct:'30'},
+    {id:'g6q4',sec:'g6',type:'mcq',diff:'easy',tag:'Çevre',text:'Çapı 10 cm olan çemberin çevresi kaç cm\'dir? (π = 3)',opts:['30 cm','60 cm','15 cm','20 cm'],ans:'A'},
+    {id:'g6q5',sec:'g6',type:'fill',diff:'easy',tag:'Alan',text:'Yarıçapı 4 cm olan dairenin alanı kaç cm²\'dir? (π = 3)',correct:'48'},
+    {id:'g6q6',sec:'g6',type:'mcq',diff:'easy',tag:'Çap-Yarıçap',text:'Bir çemberin yarıçapı 7 cm ise çapı kaç cm\'dir?',opts:['14 cm','7 cm','21 cm','3.5 cm'],ans:'A'},
+    {id:'g6q7',sec:'g6',type:'fill',diff:'easy',tag:'Çevre',text:'Çapı 8 cm olan çemberin çevresi kaç cm\'dir? (π = 3)',correct:'24'},
+    {id:'g6q8',sec:'g6',type:'mcq',diff:'easy',tag:'Alan',text:'Çapı 6 cm olan dairenin alanı kaç cm²\'dir? (π = 3)',opts:['27 cm²','36 cm²','18 cm²','54 cm²'],ans:'A'},
+    {id:'g6q9',sec:'g6',type:'fill',diff:'easy',tag:'Çap-Yarıçap',text:'Çevresi 18 cm olan çemberin yarıçapı kaç cm\'dir? (π = 3)',correct:'3'},
+    {id:'g6q10',sec:'g6',type:'mcq',diff:'easy',tag:'Çevre',text:'Yarıçapı 10 cm olan çemberin çevresi kaç cm\'dir? (π = 3)',opts:['60 cm','30 cm','100 cm','20 cm'],ans:'A'},
+    {id:'g6q11',sec:'g6',type:'mcq',diff:'medium',tag:'Alan',text:'Yarıçapı 6 cm olan dairenin alanı kaç cm²\'dir? (π = 3)',opts:['108 cm²','36 cm²','72 cm²','216 cm²'],ans:'A'},
+    {id:'g6q12',sec:'g6',type:'fill',diff:'medium',tag:'Çap',text:'Çevresi 42 cm olan çemberin çapı kaç cm\'dir? (π = 3)',correct:'14'},
+    {id:'g6q13',sec:'g6',type:'mcq',diff:'medium',tag:'Alan',text:'Alanı 75 cm² olan dairenin yarıçapı kaç cm\'dir? (π = 3)',opts:['5 cm','3 cm','7 cm','25 cm'],ans:'A'},
+    {id:'g6q14',sec:'g6',type:'fill',diff:'medium',tag:'Çevre',text:'Yarıçapı 9 cm olan çemberin çevresi kaç cm\'dir? (π = 3)',correct:'54'},
+    {id:'g6q15',sec:'g6',type:'mcq',diff:'medium',tag:'Alan',text:'Çapı 12 cm olan dairenin alanı kaç cm²\'dir? (π = 3)',opts:['108 cm²','144 cm²','72 cm²','36 cm²'],ans:'A'},
+    {id:'g6q16',sec:'g6',type:'fill',diff:'medium',tag:'Alan',text:'Yarıçapı 7 cm olan dairenin alanı kaç cm²\'dir? (π = 3)',correct:'147'},
+    {id:'g6q17',sec:'g6',type:'mcq',diff:'medium',tag:'Çevre',text:'Çevresi 36 cm olan çemberin alanı kaç cm²\'dir? (π = 3, önce yarıçapı bulun)',opts:['108 cm²','36 cm²','72 cm²','54 cm²'],ans:'A'},
+    {id:'g6q18',sec:'g6',type:'fill',diff:'medium',tag:'Alan',text:'Alanı 300 cm² olan dairenin yarıçapı kaç cm\'dir? (π = 3)',correct:'10'},
+    {id:'g6q19',sec:'g6',type:'mcq',diff:'medium',tag:'Karşılaştırma',text:'Yarıçapı 2 katına çıkarılan bir dairenin alanı kaç katına çıkar?',opts:['4 katına','2 katına','3 katına','8 katına'],ans:'A'},
+    {id:'g6q20',sec:'g6',type:'fill',diff:'medium',tag:'Çevre',text:'Çevresi 60 cm olan çemberin yarıçapı kaç cm\'dir? (π = 3)',correct:'10'},
+    {id:'g6q21',sec:'g6',type:'mcq',diff:'hard',tag:'Alan',text:'Çapı 10 cm olan büyük daireden çapı 4 cm olan küçük daire çıkarılıyor. Kalan alanı kaç cm²\'dir? (π = 3)',opts:['63 cm²','75 cm²','51 cm²','48 cm²'],ans:'A'},
+    {id:'g6q22',sec:'g6',type:'fill',diff:'hard',tag:'Çevre',text:'Bir yarım çemberin çevresi = yarım çember yayı + çap. Yarıçapı 7 cm olan yarım çemberin çevresi kaç cm\'dir? (π = 3)',correct:'35'},
+    {id:'g6q23',sec:'g6',type:'mcq',diff:'hard',tag:'Alan',text:'Bir karenin içine tam sığan çemberin yarıçapı 5 cm. Karenin alanından dairenin alanını çıkarırsak kaç cm²\'dir? (π = 3)',opts:['25 cm²','50 cm²','75 cm²','100 cm²'],ans:'A'},
+    {id:'g6q24',sec:'g6',type:'fill',diff:'hard',tag:'Alan',text:'Yarıçapı 8 cm olan dairenin alanı kaç cm²\'dir? (π = 3)',correct:'192'},
+    {id:'g6q25',sec:'g6',type:'mcq',diff:'hard',tag:'Alan',text:'Çapları sırasıyla 6 cm ve 8 cm olan iki dairenin alanları toplamı kaç cm²\'dir? (π = 3)',opts:['75 cm²','108 cm²','48 cm²','27 cm²'],ans:'A'},
+  ],
+  g7: [
+    {id:'g7_act1',sec:'g7',type:'activity',title:'🎯 Eşleştirme – Geometri Kavramları',
+     pairs:[{left:'Nokta',right:'Boyutsuz, yeri olan kavram'},{left:'Doğru',right:'Sonsuz uzanan çizgi'},{left:'Işın',right:'Tek yönde sonsuz çizgi'},{left:'Dik açı',right:'90°'},{left:'Doğru açı',right:'180°'},{left:'Tam açı',right:'360°'}]},
+    {id:'g7_act2',sec:'g7',type:'activity',title:'🔗 Eşleştirme – Formüller',
+     pairs:[{left:'Kare çevresi',right:'4 × kenar'},{left:'Dikdörtgen alanı',right:'uzunluk × genişlik'},{left:'Çember çevresi',right:'2 × π × r'},{left:'Daire alanı',right:'π × r²'},{left:'Üçgen iç açı toplamı',right:'180°'},{left:'Dörtgen iç açı toplamı',right:'360°'}]},
+    {id:'g7q1',sec:'g7',type:'mcq',diff:'medium',tag:'Karma',text:'Bir karenin çevresi 28 cm, yarıçapı aynı kenar uzunluğuna eşit olan dairenin alanı kaç cm²\'dir? (π = 3)',opts:['147 cm²','36 cm²','108 cm²','63 cm²'],ans:'A'},
+    {id:'g7q2',sec:'g7',type:'fill',diff:'medium',tag:'Karma',text:'Bir dörtgenin açıları 70°, 90°, 110° ve x°. x kaçtır?',correct:'90'},
+    {id:'g7q3',sec:'g7',type:'mcq',diff:'medium',tag:'Karma',text:'Kenarları 5 cm, 7 cm olan üçgenin üçüncü kenarı hangi değeri alamaz?',opts:['2 cm (5+7=12, 2>12-5=7? hayır: 2<|7-5|=2 yani 2 eşit, alamaz)','6 cm','8 cm','10 cm'],ans:'A'},
+    {id:'g7q4',sec:'g7',type:'fill',diff:'medium',tag:'Karma',text:'Bir beşgenin iç açıları toplamı kaç derecedir?',correct:'540'},
+    {id:'g7q5',sec:'g7',type:'mcq',diff:'hard',tag:'Karma',text:'Bir dikdörtgenin alanı, aynı kenar uzunluğundaki karenin alanının yarısı kadar. Karenin kenarı 10 cm ise dikdörtgenin uzunluğu 10 cm olduğuna göre genişliği kaç cm\'dir?',opts:['5 cm','4 cm','6 cm','8 cm'],ans:'A'},
+    {id:'g7q6',sec:'g7',type:'fill',diff:'easy',tag:'Karma',text:'Yarıçapı 5 cm olan çemberin çevresi kaç cm? (π = 3)',correct:'30'},
+    {id:'g7q7',sec:'g7',type:'mcq',diff:'medium',tag:'Karma',text:'Açıları 30°, 60° ve x° olan bir üçgende x kaçtır?',opts:['90°','80°','70°','60°'],ans:'A'},
+    {id:'g7q8',sec:'g7',type:'fill',diff:'medium',tag:'Karma',text:'Eşkenar üçgenin her bir iç açısı kaç derecedir?',correct:'60'},
+    {id:'g7q9',sec:'g7',type:'mcq',diff:'hard',tag:'Karma',text:'Çevresi 48 cm olan kare ile çevresi 48 cm olan çemberin (π=3) alanlarının farkı kaç cm²\'dir? (Kare: 12×12=144, Çember: r=8, A=192)',opts:['48 cm²','36 cm²','24 cm²','60 cm²'],ans:'A'},
+    {id:'g7q10',sec:'g7',type:'fill',diff:'hard',tag:'Karma',text:'Kenarları 9 cm ve 13 cm olan üçgende üçüncü kenar tam sayı ise alabileceği en büyük değer kaçtır?',correct:'21'},
+    {id:'g7q11',sec:'g7',type:'mcq',diff:'medium',tag:'Karma',text:'Düzgün altıgenin bir iç açısı kaç derecedir?',opts:['120°','90°','108°','135°'],ans:'A'},
+    {id:'g7q12',sec:'g7',type:'fill',diff:'medium',tag:'Karma',text:'Çapı 14 cm olan dairenin alanı kaç cm²\'dir? (π = 3)',correct:'147'},
+    {id:'g7q13',sec:'g7',type:'mcq',diff:'easy',tag:'Karma',text:'Bir dikdörtgenin uzunluğu 15 cm, genişliği 7 cm. Alanı kaç cm²\'dir?',opts:['105 cm²','44 cm²','80 cm²','112 cm²'],ans:'A'},
+    {id:'g7q14',sec:'g7',type:'fill',diff:'easy',tag:'Karma',text:'35°\'lik açının bütünleyeni kaç derecedir?',correct:'145'},
+    {id:'g7q15',sec:'g7',type:'mcq',diff:'hard',tag:'Karma',text:'Bir üçgenin açıları (2x)°, (3x+10)° ve (x+20)° ise en büyük açı kaç derecedir?',opts:['95°','80°','55°','75°'],ans:'A'},
+    {id:'g7q16',sec:'g7',type:'fill',diff:'medium',tag:'Karma',text:'Kenar uzunluğu 8 cm olan karenin alanı, uzunluğu 12 cm genişliği 5 cm dikdörtgenin alanından kaç cm² büyüktür?',correct:'4'},
+    {id:'g7q17',sec:'g7',type:'mcq',diff:'medium',tag:'Karma',text:'Bir doğru üzerinde O noktası var. OA ışını ve OB ışını zıt yönlerde. Aralarındaki açı kaç derecedir?',opts:['180°','90°','360°','0°'],ans:'A'},
+    {id:'g7q18',sec:'g7',type:'fill',diff:'medium',tag:'Karma',text:'İç açıları toplamı 720° olan çokgenin kaç kenarı vardır?',correct:'6'},
+    {id:'g7q19',sec:'g7',type:'mcq',diff:'hard',tag:'Karma',text:'Alanı 192 cm² olan dairenin çevresi kaç cm\'dir? (π = 3)',opts:['48 cm','24 cm','36 cm','64 cm'],ans:'A'},
+    {id:'g7q20',sec:'g7',type:'fill',diff:'hard',tag:'Karma',text:'Çevresi 54 cm olan eşkenar üçgenin bir kenarı kaç cm\'dir?',correct:'18'},
+  ],
+};
+
+// ── ENGINE ────────────────────────────────────────────────────────────────────
+const STORAGE_KEY = 'geoTestV1';
+let state = {studentName:'',answers:{},completed:false,startTime:null,darkMode:false,streak:0,bestStreak:0,currentTab:'g1'};
+let timerInterval=null;
+let quizMode=false, quizIdx=0, quizQuestions=[];
+
+function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify({studentName:state.studentName,answers:state.answers,startTime:state.startTime,darkMode:state.darkMode,bestStreak:state.bestStreak}));}catch(e){}}
+function loadState(){try{const d=JSON.parse(localStorage.getItem(STORAGE_KEY));if(d){state.studentName=d.studentName||'';state.answers=d.answers||{};state.startTime=d.startTime||null;state.darkMode=!!d.darkMode;state.bestStreak=d.bestStreak||0;}}catch(e){}}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function getThemeClass(secId){
+  const themes={g1:'teal',g2:'indigo',g3:'green',g4:'orange',g5:'blue',g6:'cyan',g7:'purple'};
+  return themes[secId]||'teal';
+}
+function getDiffClass(d){return d==='easy'?'diff-easy':d==='medium'?'diff-medium':'diff-hard';}
+function getDiffLabel(d){return d==='easy'?'Kolay':d==='medium'?'Orta':'Zor';}
+
+const ALL_SECS=['g1','g2','g3','g4','g5','g6','g7'];
+function getAllQuestions(){
+  const all=[];
+  ALL_SECS.forEach(sec=>{
+    (QUESTIONS_DB[sec]||[]).forEach(q=>{if(q.type!=='activity')all.push({...q,sec});});
+  });
+  return all;
+}
+function getQuestionById(id){return getAllQuestions().find(q=>q.id===id);}
+
+function renderQuestion(q,sec,num){
+  const th=getThemeClass(sec);
+  const answered=state.answers[q.id];
+  if(q.type==='activity')return renderActivity(q,th);
+  const isCorrect=answered&&answered.correct===true;
+  const isWrong=answered&&answered.correct===false;
+  let cls='q-card th-'+th+(isCorrect?' answered':'')+(isWrong?' wrong-ans':'');
+  let diffBadge=`<span class="diff-badge ${getDiffClass(q.diff)}">${getDiffLabel(q.diff)}</span>`;
+  const label=num||'•';
+  let html=`<div class="${cls}" data-qid="${q.id}" data-tag="${q.tag||''}">
+    <div class="q-card-inner">
+      <div class="q-header">
+        <span class="q-number nb-${th}">${label}</span>
+        <span class="q-tag">${q.tag||''}</span>
+        ${diffBadge}
+      </div>
+      <div class="q-text">${formatQ(q.text)}</div>`;
+  if(q.type==='mcq'){
+    html+='<div class="mcq-options">';
+    const letters=['A','B','C','D'];
+    q.opts.forEach((opt,i)=>{
+      const letter=letters[i];
+      let oc='';if(answered){if(letter===q.ans)oc='correct';else if(letter===answered.val)oc='wrong';}
+      html+=`<div class="mcq-opt ${oc}" onclick="answerMCQ('${q.id}','${letter}',this)">
+        <span class="opt-letter">${letter}</span><span class="opt-text">${formatQ(opt)}</span></div>`;
+    });
+    html+='</div>';
+    if(answered){
+      html+=`<div class="result-badge ${isCorrect?'badge-ok':'badge-no'}">${isCorrect?'✓ Doğru!':'✗ Yanlış. Doğru: '+q.ans}</div>`;
+    }
+  } else if(q.type==='fill'){
+    let ic='';if(answered){ic=isCorrect?'correct':'wrong-fill';}
+    const v=answered?answered.val:'';
+    html+=`<div class="fill-row">
+      <div class="fill-input-wrap">
+        <input class="fill-input ${ic}" type="text" inputmode="text" placeholder="Cevabın..."
+          value="${v.replace(/"/g,'&quot;')}" onkeydown="if(event.key==='Enter')checkFill('${q.id}',this)"
+          ${answered?'disabled':''}>
+      </div>`;
+    if(!answered)html+=`<button class="check-btn" onclick="checkFill('${q.id}',this.parentElement.querySelector('.fill-input'))">✓ Cevapla</button>`;
+    if(answered)html+=`<div class="result-badge ${isCorrect?'badge-ok':'badge-no'}">${isCorrect?'✓ Doğru!':'✗ Doğru cevap: '+q.correct}</div>`;
+    html+='</div>';
+  }
+  html+='</div></div>';
+  return html;
+}
+
+function formatQ(txt){
+  if(!txt)return'';
+  return String(txt).replace(/\*\*(.*?)\*\*/g,'<span class="math">$1</span>');
+}
+
+function renderActivity(q,th){
+  let html=`<div class="activity-card">
+    <div class="activity-title">${q.title}</div>
+    <div class="match-grid">`;
+  const leftHtml=q.pairs.map((p,i)=>`<div class="match-item" data-act="${q.id}" data-side="left" data-idx="${i}" onclick="matchClick('${q.id}','left',${i})">${p.left}</div>`).join('');
+  const rightHtml=shuffle(q.pairs.map((p,i)=>({...p,origIdx:i}))).map((p,i)=>`<div class="match-item" data-act="${q.id}" data-side="right" data-idx="${i}" data-orig="${p.origIdx}" onclick="matchClick('${q.id}','right',${i})">${p.right}</div>`).join('');
+  html+=`<div class="match-col" id="left-${q.id}">${leftHtml}</div><div class="match-col" id="right-${q.id}">${rightHtml}</div>`;
+  html+='</div><div id="actResult-'+q.id+'" style="margin-top:.8rem;"></div></div>';
+  return html;
+}
+
+const matchSel={};
+function matchClick(actId,side,idx){
+  if(!matchSel[actId])matchSel[actId]={};
+  const items=document.querySelectorAll(`.match-item[data-act="${actId}"]`);
+  const cur=matchSel[actId];
+  if(cur[side]===idx){cur[side]=null;}else{cur[side]=idx;}
+  items.forEach(it=>{
+    if(it.dataset.act!==actId)return;
+    it.classList.remove('sel');
+    if(cur[it.dataset.side]!==undefined&&cur[it.dataset.side]!==null&&cur[it.dataset.side]==it.dataset.idx)it.classList.add('sel');
+  });
+  if(cur.left!==undefined&&cur.left!==null&&cur.right!==undefined&&cur.right!==null){
+    const leftItem=document.querySelector(`.match-item[data-act="${actId}"][data-side="left"][data-idx="${cur.left}"]`);
+    const rightItem=document.querySelector(`.match-item[data-act="${actId}"][data-side="right"][data-idx="${cur.right}"]`);
+    const leftOrig=parseInt(leftItem.dataset.idx);
+    const rightOrig=parseInt(rightItem.dataset.orig);
+    if(leftOrig===rightOrig){
+      leftItem.classList.remove('sel');leftItem.classList.add('ok');
+      rightItem.classList.remove('sel');rightItem.classList.add('ok');
+      leftItem.onclick=null;rightItem.onclick=null;
+    } else {
+      leftItem.classList.add('fail');rightItem.classList.add('fail');
+      setTimeout(()=>{leftItem.classList.remove('fail','sel');rightItem.classList.remove('fail','sel');},800);
+    }
+    matchSel[actId]={};
+    const q=QUESTIONS_DB.g7.find(x=>x.id===actId);
+    if(q){
+      const total=q.pairs.length;
+      const okCount=document.querySelectorAll(`.match-item[data-act="${actId}"].ok`).length;
+      if(okCount===total*2){document.getElementById('actResult-'+actId).innerHTML='<div class="result-badge badge-ok">🎉 Tüm eşleşmeler doğru!</div>';}
+    }
+  }
+}
+
+function renderSection(secId){
+  const grid=document.getElementById('grid-'+secId);
+  if(!grid)return;
+  const qs=QUESTIONS_DB[secId]||[];
+  let num=0;
+  grid.innerHTML=qs.map(q=>{if(q.type!=='activity')num++;return renderQuestion(q,secId,num);}).join('');
+  const cnt=document.getElementById('cnt-'+secId);
+  if(cnt)cnt.textContent=qs.filter(q=>q.type!=='activity').length;
+}
+
+function answerMCQ(qid,letter,el){
+  if(state.answers[qid])return;
+  const q=getQuestionById(qid);if(!q)return;
+  const correct=letter===q.ans;
+  state.answers[qid]={val:letter,correct:correct};
+  const card=el.closest('.q-card');
+  card.querySelectorAll('.mcq-opt').forEach(o=>{
+    const l=o.querySelector('.opt-letter').textContent;
+    if(l===q.ans)o.classList.add('correct');
+    else if(l===letter)o.classList.add('wrong');
+  });
+  card.classList.add(correct?'answered':'wrong-ans');
+  const inner=card.querySelector('.q-card-inner');
+  let badge=inner.querySelector('.result-badge');
+  if(!badge){badge=document.createElement('div');badge.className='result-badge '+(correct?'badge-ok':'badge-no');badge.textContent=correct?'✓ Doğru!':'✗ Yanlış. Doğru: '+q.ans;inner.appendChild(badge);}
+  updateStreak(correct);updateStats();saveState();
+}
+
+function checkFill(qid,input){
+  if(state.answers[qid])return;
+  const q=getQuestionById(qid);if(!q)return;
+  const raw=(input.value||'').trim().toLowerCase()
+    .replace(/\s+/g,' ')
+    .replace(/,/g,'.')
+    .replace(/ç/g,'c').replace(/ğ/g,'g').replace(/ı/g,'i').replace(/ö/g,'o').replace(/ş/g,'s').replace(/ü/g,'u')
+    .replace(/°/g,'').replace(/\s*cm²?\s*/g,'').replace(/\s*m²?\s*/g,'');
+  const correctRaw=String(q.correct).trim().toLowerCase()
+    .replace(/\s+/g,' ')
+    .replace(/,/g,'.')
+    .replace(/ç/g,'c').replace(/ğ/g,'g').replace(/ı/g,'i').replace(/ö/g,'o').replace(/ş/g,'s').replace(/ü/g,'u')
+    .replace(/°/g,'').replace(/\s*cm²?\s*/g,'').replace(/\s*m²?\s*/g,'');
+  const correct=raw===correctRaw;
+  state.answers[qid]={val:input.value.trim(),correct:correct};
+  input.classList.add(correct?'correct':'wrong-fill');input.disabled=true;
+  const btn=input.parentElement.parentElement.querySelector('.check-btn');
+  if(btn)btn.remove();
+  const row=input.parentElement.parentElement;
+  let badge=row.querySelector('.result-badge');
+  if(!badge){badge=document.createElement('div');badge.className='result-badge '+(correct?'badge-ok':'badge-no');badge.textContent=correct?'✓ Doğru!':'✗ Doğru cevap: '+q.correct;row.appendChild(badge);}
+  const card=input.closest('.q-card');
+  if(card)card.classList.add(correct?'answered':'wrong-ans');
+  updateStreak(correct);updateStats();saveState();
+}
+
+function updateStreak(correct){
+  if(correct){state.streak++;if(state.streak>state.bestStreak)state.bestStreak=state.streak;
+    if(state.streak>=3){const b=document.getElementById('streakBanner');document.getElementById('streakText').textContent=state.streak+' Doğru Üst Üste!';b.classList.add('show');setTimeout(()=>b.classList.remove('show'),2500);}
+  } else {state.streak=0;}
+}
+
+function updateStats(){
+  const all=getAllQuestions();
+  const total=all.length;
+  let cor=0,wrg=0,ans=0;
+  all.forEach(q=>{const a=state.answers[q.id];if(a){ans++;if(a.correct)cor++;else wrg++;}});
+  const emp=total-ans;
+  document.getElementById('statCor').textContent=cor;
+  document.getElementById('statWrg').textContent=wrg;
+  document.getElementById('statEmp').textContent=emp;
+  document.getElementById('statAns').textContent=ans;
+  const pct=Math.round((ans/total)*100);
+  document.getElementById('progressFill').style.width=pct+'%';
+  document.getElementById('progressPct').textContent='%'+pct;
+  document.getElementById('scorePanelVal').textContent=cor+'/'+total;
+  const scorePct=total>0?Math.round((cor/total)*100):0;
+  document.getElementById('scorePanelPct').textContent='%'+scorePct+' basari';
+  document.getElementById('scorePctFill').style.width=scorePct+'%';
+  ALL_SECS.forEach(sec=>{
+    const qs=(QUESTIONS_DB[sec]||[]).filter(q=>q.type!=='activity');
+    let sc=0,sa=0;
+    qs.forEach(q=>{const a=state.answers[q.id];if(a){sa++;if(a.correct)sc++;}});
+    const el=document.getElementById('score-'+sec);
+    if(el){if(sa===0){el.textContent='-';}else{const p=Math.round(sc/qs.length*100);el.textContent='%'+p;}}
+  });
+}
+
+function switchTab(secId,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  const sec=document.getElementById('sec-'+secId);if(sec)sec.classList.add('active');
+  if(btn)btn.classList.add('active');else{const tb=document.querySelector(`.tab-btn[onclick*="${secId}"]`);if(tb)tb.classList.add('active');}
+  state.currentTab=secId;filterQuestions(document.getElementById('searchBar').value);
+}
+
+function filterQuestions(term){
+  term=(term||'').toLowerCase().trim();
+  if(!term){document.querySelectorAll('.q-card').forEach(c=>c.style.display='');return;}
+  document.querySelectorAll('.q-card').forEach(c=>{const txt=c.textContent.toLowerCase();c.style.display=txt.includes(term)?'':'none';});
+}
+
+function toggleDark(){
+  state.darkMode=!state.darkMode;
+  document.documentElement.setAttribute('data-theme',state.darkMode?'dark':'light');
+  document.getElementById('darkToggle').textContent=state.darkMode?'☀️':'🌙';
+  saveState();
+}
+
+function startTimer(){
+  if(!state.startTime)state.startTime=Date.now();
+  if(timerInterval)clearInterval(timerInterval);
+  timerInterval=setInterval(()=>{
+    const el=Math.floor((Date.now()-state.startTime)/1000);
+    const m=String(Math.floor(el/60)).padStart(2,'0');
+    const s=String(el%60).padStart(2,'0');
+    document.getElementById('timerDisplay').textContent='⏱️ '+m+':'+s;
+  },1000);
+}
+
+function startTest(){
+  const name=document.getElementById('nameInput').value.trim();
+  if(!name){document.getElementById('nameInput').focus();document.getElementById('nameInput').style.borderColor='#ef4444';return;}
+  state.studentName=name;
+  document.getElementById('nameModal').style.display='none';
+  document.getElementById('studentChip').textContent='👤 '+name;
+  startTimer();saveState();
+}
+
+function finishTest(){
+  const all=getAllQuestions();const total=all.length;
+  let cor=0,wrg=0,emp=0;
+  all.forEach(q=>{const a=state.answers[q.id];if(a){if(a.correct)cor++;else wrg++;}else emp++;});
+  const pct=Math.round((cor/total)*100);
+  let emoji='🏆',msg='';
+  if(pct>=90){emoji='🏆';msg='Mükemmel! Geometri dehasısın!';}
+  else if(pct>=75){emoji='🥇';msg='Çok iyi! Biraz daha çalışırsan harika olacaksın!';}
+  else if(pct>=50){emoji='🥈';msg='Güzel iş! Bazı konulara biraz daha çalış.';}
+  else{emoji='💪';msg='Yılma! Daha fazla pratik yapacaksın.';}
+  document.getElementById('fm-emoji').textContent=emoji;
+  document.getElementById('fm-student').textContent='Öğrenci: '+state.studentName;
+  document.getElementById('fm-score').textContent=cor+'/'+total+' (%'+pct+')';
+  document.getElementById('fm-msg').textContent=msg;
+  document.getElementById('fm-cor').textContent=cor;
+  document.getElementById('fm-wrg').textContent=wrg;
+  document.getElementById('fm-emp').textContent=emp;
+  const dl=document.getElementById('fm-detail-list');
+  let dh='';
+  all.forEach(q=>{const a=state.answers[q.id];
+    if(!a)dh+=`<div class="detail-item di-empty"><span class="detail-icon">⬜</span><span><strong>${q.id}</strong>: ${q.text.replace(/<[^>]+>/g,'').slice(0,60)}...</span></div>`;
+    else if(a.correct)dh+=`<div class="detail-item di-correct"><span class="detail-icon">✅</span><span><strong>${q.id}</strong>: Doğru</span></div>`;
+    else dh+=`<div class="detail-item di-wrong"><span class="detail-icon">❌</span><span><strong>${q.id}</strong>: Yanlış — Doğru: ${q.correct||q.ans}</span></div>`;
+  });
+  dl.innerHTML=dh;
+  document.getElementById('finishModal').classList.add('show');
+  if(pct>=75)launchConfetti();
+}
+
+function launchConfetti(){
+  const colors=['#0d9488','#0891b2','#10b981','#3b82f6','#8b5cf6','#f59e0b'];
+  for(let i=0;i<60;i++){
+    const c=document.createElement('div');c.className='confetti-piece';
+    c.style.left=Math.random()*100+'vw';c.style.background=colors[i%colors.length];
+    c.style.animationDuration=(2+Math.random()*2)+'s';c.style.animationDelay=(Math.random()*0.5)+'s';
+    document.body.appendChild(c);setTimeout(()=>c.remove(),5000);
+  }
+}
+
+function confirmReset(){document.getElementById('resetModal').classList.add('show');}
+function doReset(){
+  state.answers={};state.streak=0;state.startTime=Date.now();state.completed=false;
+  saveState();renderAll();updateStats();
+  document.getElementById('resetModal').classList.remove('show');
+}
+
+function renderAll(){ALL_SECS.forEach(s=>renderSection(s));}
+
+function enterQuizMode(){
+  quizMode=true;quizQuestions=shuffle(getAllQuestions());quizIdx=0;
+  document.getElementById('quizModeBar').classList.add('active');
+  document.querySelector('.tab-nav').style.display='none';
+  document.querySelector('.search-bar-wrap').style.display='none';
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  showQuizQuestion();
+}
+function showQuizQuestion(){
+  if(quizIdx<0||quizIdx>=quizQuestions.length)return;
+  const q=quizQuestions[quizIdx];
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  let sec=document.getElementById('sec-quiz');
+  if(!sec){sec=document.createElement('div');sec.id='sec-quiz';sec.className='section active';
+    sec.innerHTML='<div class="question-grid" id="grid-quiz" style="max-width:700px;margin:0 auto;"></div>';
+    document.querySelector('.search-bar-wrap').after(sec);}
+  sec.classList.add('active');
+  document.getElementById('grid-quiz').innerHTML=renderQuestion(q,q.sec,quizIdx+1);
+  document.getElementById('quizProgressTxt').textContent=`Soru ${quizIdx+1} / ${quizQuestions.length}`;
+  document.getElementById('quizPrev').disabled=quizIdx===0;
+  document.getElementById('quizNext').disabled=quizIdx===quizQuestions.length-1;
+}
+function quizNav(dir){quizIdx=Math.max(0,Math.min(quizQuestions.length-1,quizIdx+dir));showQuizQuestion();}
+function exitQuizMode(){
+  quizMode=false;
+  document.getElementById('quizModeBar').classList.remove('active');
+  document.querySelector('.tab-nav').style.display='flex';
+  document.querySelector('.search-bar-wrap').style.display='block';
+  const qs=document.getElementById('sec-quiz');if(qs)qs.remove();
+  switchTab(state.currentTab||'g1');
+}
+
+// ── PDF ───────────────────────────────────────────────────────────────────────
+function downloadPDF(){
+  const loading=document.getElementById('loadingOverlay');
+  loading.classList.add('show');
+  document.getElementById('loadingText').textContent='PDF Hazırlanıyor...';
+  document.getElementById('loadingProgress').textContent='Sayfa 1';
+  setTimeout(()=>{try{generatePDF();}catch(e){console.error('PDF Error:',e);alert('PDF hatası: '+e.message);}loading.classList.remove('show');},100);
+}
+
+function generatePDF(){
+  const {jsPDF}=window.jspdf;
+  if(!jsPDF){alert('jsPDF yuklenemedi.');return;}
+  const doc=new jsPDF({unit:'mm',format:'a4'});
+  const PW=210,PH=297,M=11,GAP=4;
+  const CW=(PW-2*M-GAP)/2;
+  const qs=getAllQuestions();
+  const student=String(state.studentName||'Ogrenci');
+  const dateStr=String(new Date().toLocaleDateString('tr-TR'));
+
+  const TAB_META=[
+    {sec:'g1',label:'Temel Kavramlar'},{sec:'g2',label:'Acilar'},
+    {sec:'g3',label:'Ucgenler'},{sec:'g4',label:'Cokgenler'},
+    {sec:'g5',label:'Kare-Dikdortgen'},{sec:'g6',label:'Cember-Daire'},
+    {sec:'g7',label:'Karma-Etkinlik'},
+  ];
+  const secPageMap={};
+
+  let qIdx=0, pageNum=1;
+  while(qIdx<qs.length){
+    if(pageNum>1)doc.addPage();
+    const HEADER_H=pdfPageHeader(doc,student,dateStr,pageNum,PW,M);
+    const FOOTER_Y=PH-11;
+    let leftEnd=HEADER_H+1, rightEnd=HEADER_H+1;
+    while(qIdx<qs.length){
+      const h=pdfQuestionHeight(doc,qs[qIdx],CW);
+      if(leftEnd+h>FOOTER_Y)break;
+      if(!secPageMap[qs[qIdx].sec])secPageMap[qs[qIdx].sec]=pageNum;
+      leftEnd=pdfQuestion(doc,qs[qIdx],qIdx+1,M,CW,leftEnd);leftEnd+=2;qIdx++;
+    }
+    let rIdx=qIdx;
+    while(rIdx<qs.length){
+      const h=pdfQuestionHeight(doc,qs[rIdx],CW);
+      if(rightEnd+h>FOOTER_Y)break;
+      if(!secPageMap[qs[rIdx].sec])secPageMap[qs[rIdx].sec]=pageNum;
+      rightEnd=pdfQuestion(doc,qs[rIdx],rIdx+1,M+CW+GAP,CW,rightEnd);rightEnd+=2;rIdx++;
+    }
+    qIdx=rIdx;
+    pdfFooter(doc,pageNum,student,PW,PH,M);
+    pageNum++;
+  }
+  const ansKeyPage=pageNum;
+  doc.addPage();
+  pdfAnswerKeyCompact(doc,student,dateStr,qs,pageNum,PW,PH,M);
+
+  try{if(doc.outline){TAB_META.forEach(tab=>{const pg=secPageMap[tab.sec]||1;doc.outline.add(null,tab.label,{pageNumber:pg});});doc.outline.add(null,'Cevap Anahtari',{pageNumber:ansKeyPage});}}catch(e){}
+
+  doc.save('GeometriTesti_'+student.replace(/\s+/g,'_')+'.pdf');
+}
+
+function stripFormat(txt){
+  if(!txt)return'';
+  let s=String(txt).replace(/\*\*/g,'').replace(/<[^>]+>/g,'').replace(/&quot;/g,'"').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+  const trMap={'ç':'c','Ç':'C','ğ':'g','Ğ':'G','ı':'i','İ':'I','ö':'o','Ö':'O','ş':'s','Ş':'S','ü':'u','Ü':'U','â':'a','î':'i','û':'u','°':' der.','²':'^2','≤':'<=','≥':'>=','≠':'!=','→':'->'};
+  return s.replace(/[çÇğĞıİöÖşŞüÜâîû°²≤≥≠→]/g,ch=>trMap[ch]||ch);
+}
+
+function pdfPageHeader(doc,student,dateStr,pageNum,PW,M){
+  doc.setFillColor(15,74,62);doc.rect(0,0,PW,7,'F');
+  doc.setFillColor(13,148,136);doc.rect(0,7,PW,13,'F');
+  doc.setFillColor(8,145,178);doc.rect(0,14,PW,6,'F');
+  doc.setTextColor(255,255,255);doc.setFontSize(9.5);doc.setFont('helvetica','bold');
+  doc.text('GEOMETRIDE TEMEL KAVRAMLAR TESTI (2. ODEV)',M,12);
+  doc.setFontSize(7);doc.setFont('helvetica','normal');
+  doc.text('5. Sinif  |  Geometri',M,17);
+  doc.setFontSize(8);doc.setFont('helvetica','bold');
+  doc.text(student,PW-M,12,{align:'right'});
+  doc.setFontSize(7);doc.setFont('helvetica','normal');
+  doc.text(dateStr+'  |  Sayfa '+String(pageNum),PW-M,17,{align:'right'});
+  doc.setDrawColor(245,158,11);doc.setLineWidth(0.8);
+  doc.line(0,20,PW,20);doc.setLineWidth(0.3);
+  return 24;
+}
+
+function pdfQuestionHeight(doc,q,w){
+  doc.setFontSize(8);doc.setFont('helvetica','bold');
+  const qLines=doc.splitTextToSize(String(stripFormat(q.text)),w-13);
+  let h=4+qLines.length*3.8+0.5;
+  if(q.type==='mcq'){
+    doc.setFont('helvetica','normal');doc.setFontSize(7.5);
+    (q.opts||[]).forEach(opt=>{const oLines=doc.splitTextToSize(String(stripFormat(opt)),w-20);h+=Math.max(4.5,oLines.length*3.5+1.5)+0.8;});
+  } else { h+=7.5; }
+  return h+3;
+}
+
+function pdfQuestion(doc,q,num,x,w,y){
+  const a=state.answers[q.id];
+  const thColors={g1:[13,148,136],g2:[79,70,229],g3:[16,185,129],g4:[245,158,11],g5:[59,130,246],g6:[8,145,178],g7:[99,102,241]};
+  const cc=thColors[q.sec]||[13,148,136];
+  const blockH=pdfQuestionHeight(doc,q,w)-3;
+  doc.setFillColor(cc[0],cc[1],cc[2]);doc.rect(x,y,1.5,blockH,'F');
+  doc.setFillColor(cc[0],cc[1],cc[2]);doc.roundedRect(x+2.5,y,7,5.5,1,1,'F');
+  doc.setTextColor(255,255,255);doc.setFontSize(6.5);doc.setFont('helvetica','bold');
+  doc.text(String(num),x+6,y+3.8,{align:'center'});
+  if(a){
+    if(a.correct){doc.setFillColor(16,185,129);}else{doc.setFillColor(239,68,68);}
+    doc.circle(x+w-1.5,y+2.5,1.8,'F');
+    doc.setTextColor(255,255,255);doc.setFontSize(5.5);doc.setFont('helvetica','bold');
+    doc.text(a.correct?'D':'Y',x+w-1.5,y+3,{align:'center'});
+  }
+  doc.setTextColor(22,22,55);doc.setFontSize(8);doc.setFont('helvetica','bold');
+  const qLines=doc.splitTextToSize(String(stripFormat(q.text)),w-13);
+  doc.text(qLines,x+11,y+4);
+  let cy=y+4+qLines.length*3.8+0.5;
+  if(q.type==='mcq'){
+    const letters=['A','B','C','D'];
+    (q.opts||[]).forEach((opt,i)=>{
+      const letter=letters[i];
+      const isCor=!!a&&letter===q.ans;const isWrong=!!a&&!a.correct&&letter===a.val;
+      if(isCor){doc.setFillColor(220,252,231);doc.setDrawColor(16,185,129);}
+      else if(isWrong){doc.setFillColor(254,226,226);doc.setDrawColor(239,68,68);}
+      else{doc.setFillColor(241,245,249);doc.setDrawColor(203,213,225);}
+      const oLines=doc.splitTextToSize(String(stripFormat(opt)),w-20);
+      const oh=Math.max(4.5,oLines.length*3.5+1.5);
+      doc.roundedRect(x+11,cy,w-12,oh,1,1,'FD');
+      if(isCor){doc.setFillColor(16,185,129);}else if(isWrong){doc.setFillColor(239,68,68);}else{doc.setFillColor(cc[0],cc[1],cc[2]);}
+      doc.circle(x+14.5,cy+oh/2,2.2,'F');
+      doc.setTextColor(255,255,255);doc.setFontSize(6);doc.setFont('helvetica','bold');
+      doc.text(letter,x+14.5,cy+oh/2+0.5,{align:'center'});
+      if(isCor){doc.setTextColor(22,101,52);}else if(isWrong){doc.setTextColor(153,27,27);}else{doc.setTextColor(51,65,85);}
+      doc.setFontSize(7.5);doc.setFont('helvetica','normal');
+      doc.text(oLines,x+18,cy+oh/2+0.6);
+      cy+=oh+0.8;
+    });
+  } else {
+    doc.setFillColor(204,251,241);doc.setDrawColor(94,234,212);doc.setLineWidth(0.4);
+    doc.roundedRect(x+11,cy,w-12,7,1.5,1.5,'FD');
+    doc.setTextColor(13,148,136);doc.setFontSize(7);doc.setFont('helvetica','italic');
+    if(a){
+      if(a.correct){doc.setTextColor(22,101,52);doc.setFont('helvetica','bold');doc.text('Cevabiniz: '+String(a.val)+'  [DOGRU]',x+14,cy+4.5);}
+      else{doc.setTextColor(153,27,27);doc.setFont('helvetica','bold');doc.text('Cevabiniz: '+String(a.val)+'  |  Dogru: '+String(q.correct),x+14,cy+4.5);}
+    } else {doc.text('Cevap: ___________________________',x+14,cy+4.5);}
+    cy+=7.5;
+  }
+  return cy;
+}
+
+function pdfFooter(doc,pageNum,student,PW,PH,M){
+  doc.setDrawColor(203,213,225);doc.setLineWidth(0.3);
+  doc.line(M,PH-10,PW-M,PH-10);
+  doc.setTextColor(148,163,184);doc.setFontSize(6.5);doc.setFont('helvetica','normal');
+  doc.text('Geometride Temel Kavramlar Testi  |  5. Sinif',M,PH-6);
+  doc.text(student,PW/2,PH-6,{align:'center'});
+  doc.text('Sayfa '+String(pageNum),PW-M,PH-6,{align:'right'});
+}
+
+function pdfAnswerKeyCompact(doc,student,dateStr,qs,pageNum,PW,PH,M){
+  let cor=0,wrg=0,emp=0;
+  qs.forEach(q=>{const a=state.answers[q.id];if(a){if(a.correct)cor++;else wrg++;}else emp++;});
+  const pct=qs.length>0?Math.round(cor/qs.length*100):0;
+  const drawHeader=(pg)=>{
+    doc.setFillColor(5,95,70);doc.rect(0,0,PW,6,'F');
+    doc.setFillColor(13,148,136);doc.rect(0,6,PW,12,'F');
+    doc.setFillColor(8,145,178);doc.rect(0,15,PW,3,'F');
+    doc.setTextColor(255,255,255);doc.setFontSize(11);doc.setFont('helvetica','bold');
+    doc.text('CEVAP ANAHTARI'+(pg>pageNum?' (devam)':''),PW/2,13,{align:'center'});
+    if(pg===pageNum){
+      doc.setFillColor(255,255,255);doc.roundedRect(PW-M-30,7,28,6,2.5,2.5,'F');
+      doc.setTextColor(13,148,136);doc.setFontSize(7);doc.setFont('helvetica','bold');
+      doc.text(String(cor)+'/'+String(qs.length)+' = %'+String(pct),PW-M-16,11.5,{align:'center'});
+      doc.setTextColor(255,255,255);doc.setFontSize(6);doc.setFont('helvetica','normal');
+      doc.text(student+'  |  '+dateStr,M,13);
+    } else {doc.setTextColor(255,255,255);doc.setFontSize(7);doc.setFont('helvetica','normal');doc.text(student+'  |  Sayfa '+String(pg),M,13);}
+    doc.setDrawColor(245,158,11);doc.setLineWidth(0.5);doc.line(0,18,PW,18);doc.setLineWidth(0.2);
+    return pg===pageNum?20:19;
+  };
+  let startY=drawHeader(pageNum);
+  doc.setFillColor(220,252,231);doc.roundedRect(M,startY,20,4.5,1.2,1.2,'F');
+  doc.setTextColor(22,101,52);doc.setFontSize(6);doc.setFont('helvetica','bold');
+  doc.text('D = Dogru ('+String(cor)+')',M+1,startY+3.1);
+  doc.setFillColor(254,226,226);doc.roundedRect(M+23,startY,20,4.5,1.2,1.2,'F');
+  doc.setTextColor(153,27,27);doc.text('Y = Yanlis ('+String(wrg)+')',M+24,startY+3.1);
+  doc.setFillColor(204,251,241);doc.roundedRect(M+46,startY,17,4.5,1.2,1.2,'F');
+  doc.setTextColor(14,116,144);doc.text('B = Bos ('+String(emp)+')',M+47,startY+3.1);
+  startY+=6;
+  const COLS=5,GAP_C=1.8,AVAIL=PW-2*M;
+  const CW=(AVAIL-(COLS-1)*GAP_C)/COLS;
+  const ROW_H=5,FOOTER_Y=PH-10;
+  const ROWS_PER_PAGE=Math.floor((FOOTER_Y-startY)/ROW_H);
+  let curPage=pageNum,sy=startY;
+  for(let i=0;i<qs.length;i++){
+    const posOnPage=i%(ROWS_PER_PAGE*COLS);
+    if(i>0&&posOnPage===0){pdfFooter(doc,curPage,student,PW,PH,M);doc.addPage();curPage++;sy=drawHeader(curPage);}
+    const rowOnPage=Math.floor(posOnPage/COLS);const colOnPage=posOnPage%COLS;
+    const cx=M+colOnPage*(CW+GAP_C);const ry=sy+rowOnPage*ROW_H;
+    const q=qs[i];const a=state.answers[q.id];
+    const ans=String(q.type==='fill'?q.correct:q.ans);
+    const shortAns=ans.length>8?ans.slice(0,8)+'..':ans;
+    let bgC,txC,stT,stC;
+    if(!a){bgC=[241,245,249];txC=[107,114,128];stT='B';stC=[180,188,200];}
+    else if(a.correct){bgC=[220,252,231];txC=[22,101,52];stT='D';stC=[16,185,129];}
+    else{bgC=[254,226,226];txC=[153,27,27];stT='Y';stC=[239,68,68];}
+    doc.setFillColor(bgC[0],bgC[1],bgC[2]);doc.setDrawColor(stC[0],stC[1],stC[2]);doc.setLineWidth(0.18);
+    doc.roundedRect(cx,ry,CW,ROW_H-0.3,0.9,0.9,'FD');
+    doc.setFillColor(stC[0],stC[1],stC[2]);doc.roundedRect(cx+0.3,ry+0.4,CW*0.24,ROW_H-1.1,0.7,0.7,'F');
+    doc.setTextColor(255,255,255);doc.setFontSize(4.8);doc.setFont('helvetica','bold');
+    doc.text(String(i+1),cx+0.3+CW*0.12,ry+ROW_H-1.4,{align:'center'});
+    doc.setTextColor(txC[0],txC[1],txC[2]);doc.setFontSize(5.5);doc.setFont('helvetica','bold');
+    doc.text(shortAns,cx+CW*0.28,ry+2.8);
+    doc.setFillColor(stC[0],stC[1],stC[2]);doc.roundedRect(cx+CW-3.6,ry+0.65,3.2,ROW_H-1.8,0.7,0.7,'F');
+    doc.setTextColor(255,255,255);doc.setFontSize(4.5);doc.setFont('helvetica','bold');
+    doc.text(stT,cx+CW-2,ry+2.2,{align:'center'});
+  }
+  pdfFooter(doc,curPage,student,PW,PH,M);
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+function init(){
+  loadState();
+  if(state.darkMode){document.documentElement.setAttribute('data-theme','dark');document.getElementById('darkToggle').textContent='☀️';}
+  renderAll();updateStats();
+  const total=getAllQuestions().length;
+  document.getElementById('qCountBadge').textContent=total+' Soru';
+  if(!state.studentName){
+    document.getElementById('nameModal').style.display='flex';
+    document.getElementById('nameInput').focus();
+  } else {
+    document.getElementById('studentChip').textContent='👤 '+state.studentName;
+    if(state.startTime)startTimer();
+  }
+  if(state.currentTab)switchTab(state.currentTab);
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Enter'&&document.activeElement.classList.contains('fill-input')){
+      const card=document.activeElement.closest('.q-card');
+      if(card){const qid=card.dataset.qid;checkFill(qid,document.activeElement);}
+    }
+    if(e.ctrlKey&&e.key==='d'){e.preventDefault();toggleDark();}
+    if(e.ctrlKey&&e.key==='Enter'){e.preventDefault();finishTest();}
+  });
+  window.addEventListener('scroll',()=>{
+    const b=document.getElementById('backToTop');
+    const sp=document.getElementById('scrollProgress');
+    const scrolled=window.scrollY;
+    const maxScroll=document.documentElement.scrollHeight-window.innerHeight;
+    if(sp)sp.style.width=(maxScroll>0?Math.round(scrolled/maxScroll*100):0)+'%';
+    if(scrolled>400)b.classList.add('visible');else b.classList.remove('visible');
+  });
+  document.getElementById('nameInput').addEventListener('keydown',e=>{if(e.key==='Enter')startTest();});
+}
+init();
+</script>
+</body>
+</html>
