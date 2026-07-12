@@ -716,7 +716,17 @@ function showQuizQuestion(){
 function quizNav(dir){quizIdx=Math.max(0,Math.min(quizQuestions.length-1,quizIdx+dir));showQuizQuestion();}
 function exitQuizMode(){quizMode=false;document.getElementById('quizModeBar').classList.remove('active');document.querySelector('.tab-nav').style.display='flex';document.querySelector('.search-bar-wrap').style.display='block';const qs=document.getElementById('sec-quiz');if(qs)qs.remove();switchTab(state.currentTab||'c1');}
 function downloadPDF(){const l=document.getElementById('loadingOverlay');l.classList.add('show');document.getElementById('loadingText').textContent='PDF Hazırlanıyor...';document.getElementById('loadingProgress').textContent='Sayfa 1';setTimeout(()=>{try{generatePDF();}catch(e){alert('PDF hatası: '+e.message);}l.classList.remove('show');},100);}
-function sF(txt){if(!txt)return'';let s=String(txt).replace(/\*\*/g,'').replace(/<[^>]+>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"');const m={'ç':'c','Ç':'C','ğ':'g','Ğ':'G','ı':'i','İ':'I','ö':'o','Ö':'O','ş':'s','Ş':'S','ü':'u','Ü':'U','×':'x','÷':'/','²':'^2','³':'^3'};return s.replace(/[çÇğĞıİöÖşŞüÜ×÷²³]/g,c=>m[c]||c);}
+function sF(txt){
+  if(!txt)return'';
+  let s=String(txt).replace(/\*\*/g,'').replace(/<[^>]+>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"');
+  // π → "pi" (jsPDF WinAnsi/Helvetica'da U+03C0 desteklenmez, encoding bozulur)
+  s=s.replace(/π/g,'pi');
+  // ^2 / ^3 → Latin-1 superscript — Helvetica WinAnsi'de desteklenir
+  s=s.replace(/\^2/g,'\xB2').replace(/\^3/g,'\xB3').replace(/\^(\d)/g,'^$1');
+  // Türkçe → Latin, semboller → PDF-safe
+  const m={'ç':'c','Ç':'C','ğ':'g','Ğ':'G','ı':'i','İ':'I','ö':'o','Ö':'O','ş':'s','Ş':'S','ü':'u','Ü':'U','×':'x','÷':'/','²':'\xB2','³':'\xB3','°':'\xB0'};
+  return s.replace(/[çÇğĞıİöÖşŞüÜ×÷²³°]/g,c=>m[c]||c);
+}
 function generatePDF(){
   const {jsPDF}=window.jspdf;if(!jsPDF){alert('jsPDF yuklenemedi.');return;}
   const doc=new jsPDF({unit:'mm',format:'a4'}),PW=210,PH=297,M=11,GAP=4,CW=(PW-2*M-GAP)/2;
@@ -733,7 +743,7 @@ function generatePDF(){
   try{if(doc.outline){TM.forEach(t=>doc.outline.add(null,t.label,{pageNumber:spm[t.sec]||1}));doc.outline.add(null,'Cevap Anahtari',{pageNumber:akp});}}catch(e){}
   doc.save('CarpanlarEBOK_'+student.replace(/\s+/g,'_')+'.pdf');
 }
-function pH(doc,student,dateStr,pN,PW,M){doc.setFillColor(59,7,100);doc.rect(0,0,PW,7,'F');doc.setFillColor(109,40,217);doc.rect(0,7,PW,13,'F');doc.setFillColor(217,119,6);doc.rect(0,14,PW,6,'F');doc.setTextColor(255,255,255);doc.setFontSize(9.5);doc.setFont('helvetica','bold');doc.text('CARPANLAR, KATLAR, EBOB-EKOK TESTI (3. ODEV)',M,12);doc.setFontSize(7);doc.setFont('helvetica','normal');doc.text('6. Sinif  |  Sayi Teorisi',M,17);doc.setFontSize(8);doc.setFont('helvetica','bold');doc.text(student,PW-M,12,{align:'right'});doc.setFontSize(7);doc.setFont('helvetica','normal');doc.text(dateStr+'  |  Sayfa '+pN,PW-M,17,{align:'right'});doc.setDrawColor(245,158,11);doc.setLineWidth(0.8);doc.line(0,20,PW,20);doc.setLineWidth(0.3);return 24;}
+function pH(doc,student,dateStr,pN,PW,M){doc.setFillColor(59,7,100);doc.rect(0,0,PW,7,'F');doc.setFillColor(109,40,217);doc.rect(0,7,PW,13,'F');doc.setFillColor(217,119,6);doc.rect(0,14,PW,6,'F');doc.setTextColor(255,255,255);doc.setFontSize(9.5);doc.setFont('helvetica','bold');doc.text('CARPANLAR, KATLAR, EBOB-EKOK TESTI (1. ODEV)',M,12);doc.setFontSize(7);doc.setFont('helvetica','normal');doc.text('6. Sinif  |  Sayi Teorisi',M,17);doc.setFontSize(8);doc.setFont('helvetica','bold');doc.text(student,PW-M,12,{align:'right'});doc.setFontSize(7);doc.setFont('helvetica','normal');doc.text(dateStr+'  |  Sayfa '+pN,PW-M,17,{align:'right'});doc.setDrawColor(245,158,11);doc.setLineWidth(0.8);doc.line(0,20,PW,20);doc.setLineWidth(0.3);return 24;}
 function qH(doc,q,w){doc.setFontSize(8);doc.setFont('helvetica','bold');const qL=doc.splitTextToSize(String(sF(q.text)),w-13);let h=4+qL.length*3.8+0.5;if(q.type==='mcq'){doc.setFont('helvetica','normal');doc.setFontSize(7.5);(q.opts||[]).forEach(o=>{const oL=doc.splitTextToSize(String(sF(o)),w-20);h+=Math.max(4.5,oL.length*3.5+1.5)+0.8;});}else h+=7.5;return h+3;}
 function pQ(doc,q,num,x,w,y){
   const a=state.answers[q.id];const CC={c1:[124,58,237],c2:[217,119,6],c3:[225,29,72],c4:[5,150,105],c5:[2,132,199],c6:[234,88,12],c7:[162,28,175]};const cc=CC[q.sec]||[124,58,237];
