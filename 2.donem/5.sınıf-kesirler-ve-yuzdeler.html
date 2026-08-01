@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6. Sınıf Kesirler ve Yüzdeler - Yaprak Test</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+:root{--primary:#6366f1;--primary-dark:#4f46e5;--easy:#10b981;--medium:#f59e0b;--hard:#ef4444;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);min-height:100vh;}
+.hero{background:linear-gradient(135deg,#1e1b4b 0%,#312e81 40%,#4338ca 100%);padding:14px 20px 12px;text-align:center;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.3);}
+.hero-top{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:8px;}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(99,102,241,0.35);border:1px solid rgba(129,140,248,0.5);border-radius:100px;padding:4px 14px;font-size:12px;color:#a5b4fc;font-weight:700;}
+.hero h1{font-size:clamp(16px,3.5vw,26px);font-weight:900;color:#fff;line-height:1.15;text-shadow:0 2px 10px rgba(0,0,0,0.3);}
+.hero h1 span{color:#fbbf24;}
+.hero-sub{color:#c7d2fe;font-size:12px;margin-bottom:8px;}
+.topic-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;margin:6px auto 8px;max-width:800px;}
+.topic-tag{background:rgba(255,255,255,0.12);border-radius:6px;padding:3px 9px;font-size:10px;color:#e0e7ff;font-weight:600;}
+.stats-bar{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;}
+.stat-chip{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:10px;padding:6px 14px;color:#fff;font-size:12px;font-weight:700;}
+.stat-chip .num{font-size:16px;font-weight:900;color:#fbbf24;}
+.controls-wrap{background:#fff;border-bottom:3px solid #e0e7ff;padding:10px 20px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(0,0,0,0.08);}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .2s;font-family:'Nunito',sans-serif;white-space:nowrap;}
+.btn:active{transform:scale(0.97);}
+.btn-primary{background:linear-gradient(135deg,#6366f1,#4f46e5);color:#fff;box-shadow:0 3px 12px rgba(99,102,241,0.4);}
+.btn-primary:hover{box-shadow:0 5px 18px rgba(99,102,241,0.5);transform:translateY(-1px);}
+.btn-success{background:linear-gradient(135deg,#10b981,#059669);color:#fff;box-shadow:0 3px 12px rgba(16,185,129,0.4);}
+.btn-success:hover{transform:translateY(-1px);}
+.btn-warning{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;box-shadow:0 3px 12px rgba(245,158,11,0.4);}
+.btn-warning:hover{transform:translateY(-1px);}
+.btn-danger{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;box-shadow:0 3px 12px rgba(239,68,68,0.4);}
+.btn-danger:hover{transform:translateY(-1px);}
+.btn-outline{background:#fff;color:#6366f1;border:2px solid #6366f1;}
+.btn-outline:hover{background:#6366f1;color:#fff;}
+.progress-section{background:#fff;padding:12px 20px;border-bottom:2px solid #f0f0f0;}
+.progress-grid{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:10px;}
+.prog-card{flex:1;min-width:110px;max-width:150px;padding:8px 12px;border-radius:10px;text-align:center;border:2px solid transparent;}
+.prog-card.total{background:#eff6ff;border-color:#bfdbfe;}
+.prog-card.correct{background:#f0fdf4;border-color:#bbf7d0;}
+.prog-card.wrong{background:#fef2f2;border-color:#fecaca;}
+.prog-card.empty{background:#fffbeb;border-color:#fde68a;}
+.prog-card .pnum{font-size:20px;font-weight:900;}
+.prog-card .ptxt{font-size:11px;font-weight:600;color:#6b7280;}
+.prog-bar-wrap{background:#f3f4f6;border-radius:100px;height:8px;overflow:hidden;}
+.prog-bar-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,#6366f1,#10b981);transition:width .4s ease;}
+.filter-wrap{background:#f8fafc;padding:10px 20px;display:flex;flex-wrap:wrap;gap:7px;align-items:center;justify-content:center;border-bottom:2px solid #e2e8f0;}
+.filter-btn{padding:6px 14px;border-radius:100px;font-size:12px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all .2s;font-family:'Nunito',sans-serif;}
+.filter-btn.active-all{background:#6366f1;color:#fff;border-color:#6366f1;}
+.filter-btn.active-easy{background:#10b981;color:#fff;border-color:#10b981;}
+.filter-btn.active-medium{background:#f59e0b;color:#fff;border-color:#f59e0b;}
+.filter-btn.active-hard{background:#ef4444;color:#fff;border-color:#ef4444;}
+.filter-btn.active-unans{background:#8b5cf6;color:#fff;border-color:#8b5cf6;}
+.filter-btn.active-wrong{background:#dc2626;color:#fff;border-color:#dc2626;}
+.filter-btn:not([class*="active"]){background:#fff;color:#6b7280;border-color:#e2e8f0;}
+.filter-btn:not([class*="active"]):hover{border-color:#6366f1;color:#6366f1;}
+.main-content{padding:18px;max-width:1400px;margin:0 auto;}
+.section-header{background:linear-gradient(135deg,#fff 0%,#f8f9ff 100%);border-radius:16px;padding:16px 20px;margin-bottom:16px;border:2px solid #e0e7ff;position:relative;overflow:hidden;}
+.section-header::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#6366f1,#8b5cf6,#ec4899);}
+.section-header h2{font-size:clamp(15px,2.5vw,20px);font-weight:900;color:#1e1b4b;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.section-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700;}
+.badge-easy{background:#dcfce7;color:#15803d;}
+.badge-medium{background:#fef3c7;color:#b45309;}
+.badge-hard{background:#fee2e2;color:#b91c1c;}
+.q-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,370px),1fr));gap:14px;margin-bottom:20px;}
+.q-card{background:#fff;border-radius:16px;border:2px solid #e8ecf0;overflow:hidden;transition:all .25s;position:relative;box-shadow:0 2px 10px rgba(0,0,0,0.05);}
+.q-card:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,0.1);border-color:#c7d2fe;}
+.q-card.answered-correct{border-color:#10b981!important;box-shadow:0 4px 18px rgba(16,185,129,0.2)!important;}
+.q-card.answered-wrong{border-color:#ef4444!important;box-shadow:0 4px 18px rgba(239,68,68,0.2)!important;}
+.q-card-header{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;font-size:12px;font-weight:700;border-bottom:1px solid #f0f0f0;}
+.q-num{color:#6366f1;font-size:12px;font-weight:900;}
+.q-level{padding:2px 9px;border-radius:100px;font-size:10px;font-weight:700;}
+.lvl-easy{background:#dcfce7;color:#15803d;}
+.lvl-medium{background:#fef3c7;color:#b45309;}
+.lvl-hard{background:#fee2e2;color:#b91c1c;}
+.q-topic{color:#9ca3af;font-size:10px;font-weight:600;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.q-body{padding:12px;}
+.q-text{font-size:14px;font-weight:700;color:#1f2937;margin-bottom:10px;line-height:1.6;}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 2px;font-size:0.85em;line-height:1.1;}
+.frac .fn{border-bottom:1.5px solid currentColor;padding:0 3px 1px;text-align:center;}
+.frac .fd{padding:1px 3px 0;text-align:center;}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.option-btn{padding:8px 10px;border-radius:9px;font-size:12.5px;font-weight:700;cursor:pointer;border:2px solid #e5e7eb;background:#f9fafb;color:#374151;transition:all .2s;text-align:left;font-family:'Nunito',sans-serif;display:flex;align-items:center;gap:7px;}
+.option-btn:hover:not(:disabled){border-color:#6366f1;background:#eff6ff;color:#4338ca;}
+.option-btn.correct-opt{background:#dcfce7!important;border-color:#10b981!important;color:#15803d!important;}
+.option-btn.wrong-opt{background:#fee2e2!important;border-color:#ef4444!important;color:#b91c1c!important;}
+.option-btn.show-correct{background:#dcfce7!important;border-color:#10b981!important;color:#15803d!important;}
+.option-btn:disabled{cursor:default;}
+.opt-letter{width:20px;height:20px;border-radius:50%;background:#e5e7eb;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;color:#374151;transition:all .2s;}
+.correct-opt .opt-letter{background:#10b981;color:#fff;}
+.wrong-opt .opt-letter{background:#ef4444;color:#fff;}
+.show-correct .opt-letter{background:#10b981;color:#fff;}
+.result-card{display:none;margin-top:8px;padding:8px 12px;border-radius:9px;font-size:12px;font-weight:700;}
+.result-correct{background:#dcfce7;color:#15803d;border:1px solid #86efac;}
+.result-wrong{background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5;}
+.visual-q{background:#f8faff;border-radius:10px;padding:14px 10px;margin-bottom:10px;text-align:center;border:1.5px dashed #c7d2fe;overflow:visible;}
+.visual-q svg{max-width:280px;width:100%;height:auto;display:block;margin:0 auto;overflow:visible;}
+.section-divider{text-align:center;margin:20px 0 14px;position:relative;}
+.section-divider::before{content:'';position:absolute;top:50%;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#e0e7ff,transparent);}
+.section-divider-inner{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#6366f1,#4f46e5);color:#fff;padding:6px 18px;border-radius:100px;font-size:12px;font-weight:800;position:relative;box-shadow:0 4px 12px rgba(99,102,241,0.3);}
+.answer-key{background:#fff;border-radius:18px;padding:20px;margin-top:20px;border:3px solid #6366f1;box-shadow:0 8px 28px rgba(99,102,241,0.15);}
+.answer-key h2{font-size:20px;font-weight:900;color:#1e1b4b;text-align:center;margin-bottom:16px;}
+.answer-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:6px;}
+.answer-item{background:#f8f9ff;border:1.5px solid #e0e7ff;border-radius:8px;padding:6px 4px;text-align:center;}
+.answer-item .aq-num{color:#6b7280;font-size:10px;font-weight:700;}
+.answer-item .aq-ans{color:#4338ca;font-weight:900;font-size:13px;margin-top:1px;}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:20px;}
+.modal-overlay.active{display:flex;}
+.modal{background:#fff;border-radius:20px;padding:28px;max-width:480px;width:100%;text-align:center;box-shadow:0 25px 60px rgba(0,0,0,0.3);animation:modalIn .3s ease;}
+@keyframes modalIn{from{transform:scale(0.8) translateY(20px);opacity:0;}to{transform:scale(1) translateY(0);opacity:1;}}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:12px 18px;border-radius:12px;color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;gap:8px;box-shadow:0 8px 28px rgba(0,0,0,0.2);transition:all .3s;transform:translateY(100px);opacity:0;max-width:300px;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.success{background:linear-gradient(135deg,#10b981,#059669);}
+.toast.error{background:linear-gradient(135deg,#ef4444,#dc2626);}
+.toast.info{background:linear-gradient(135deg,#6366f1,#4f46e5);}
+.scroll-top{position:fixed;bottom:70px;right:18px;z-index:500;width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#4f46e5);color:#fff;border:none;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(99,102,241,0.4);opacity:0;transition:all .3s;transform:translateY(10px);}
+.scroll-top.visible{opacity:1;transform:translateY(0);}
+#pdfLoadingOverlay{display:none;position:fixed;inset:0;background:rgba(30,27,75,0.92);z-index:9998;align-items:center;justify-content:center;flex-direction:column;gap:16px;color:#fff;}
+#pdfLoadingOverlay.active{display:flex;}
+.pdf-progress{width:260px;height:7px;background:rgba(255,255,255,0.2);border-radius:100px;overflow:hidden;}
+.pdf-progress-bar{height:100%;background:linear-gradient(90deg,#6366f1,#fbbf24);border-radius:100px;width:0;transition:width .3s;}
+.loader-ring{width:56px;height:56px;border:4px solid rgba(255,255,255,0.2);border-top-color:#fbbf24;border-radius:50%;animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+/* PDF export mode: strip interactive coloring so the exported worksheet is clean */
+body.pdf-export-mode .option-btn{background:#f9fafb!important;border-color:#e5e7eb!important;color:#374151!important;}
+body.pdf-export-mode .opt-letter{background:#e5e7eb!important;color:#374151!important;}
+body.pdf-export-mode .result-card{display:none!important;}
+body.pdf-export-mode .q-card{box-shadow:none!important;}
+body.pdf-export-mode .q-card.answered-correct,body.pdf-export-mode .q-card.answered-wrong{border-color:#e8ecf0!important;}
+/* PDF fix: force generous, non-clipping room for number-line / shape SVGs during export capture */
+body.pdf-export-mode .visual-q{overflow:visible!important;padding:16px 10px!important;}
+body.pdf-export-mode .visual-q svg{overflow:visible!important;max-width:300px!important;}
+body.pdf-export-mode .q-card{overflow:visible!important;}
+@media(max-width:640px){
+.options{grid-template-columns:1fr;}
+.q-grid{grid-template-columns:1fr;}
+.btn{padding:7px 12px;font-size:12px;}
+.main-content{padding:10px;}
+.controls-wrap{gap:5px;}
+}
+@media print {
+body{background:#fff;}
+.controls-wrap,.filter-wrap,.progress-section,.scroll-top,.toast,#pdfLoadingOverlay{display:none!important;}
+.hero{padding:10px;box-shadow:none;}
+.q-card{break-inside:avoid;box-shadow:none;}
+.main-content{padding:5px;}
+}
+</style>
+</head>
+<body>
+<div id="pdfLoadingOverlay">
+<div class="loader-ring"></div>
+<div style="font-size:16px;font-weight:700;text-align:center;">PDF oluşturuluyor...<br><span style="font-size:12px;color:#a5b4fc" id="pdfSubtext">Lütfen bekleyin, şekiller ve tüm sorular hazırlanıyor</span></div>
+<div class="pdf-progress"><div class="pdf-progress-bar" id="pdfProgressBar"></div></div>
+<div id="pdfProgressText" style="font-size:12px;color:#a5b4fc;">%0</div>
+</div>
+<div class="hero">
+<div class="hero-top">
+<div class="hero-badge">📐 6. Sınıf Matematik</div>
+<h1>🔢 Kesirler &amp; <span>Yüzdeler</span> — Yaprak Test</h1>
+</div>
+<div class="hero-sub">9 konu başlığı · 3 zorluk seviyesi · <strong>250 özgün soru</strong> · Görsel &amp; Sayı Doğrusu soruları dahil</div>
+<div class="topic-tags">
+<span class="topic-tag">🔢 Kesir Çeşitleri</span>
+<span class="topic-tag">📊 Sayı Doğrusu</span>
+<span class="topic-tag">✂️ Sadeleştirme</span>
+<span class="topic-tag">➕ Dört İşlem</span>
+<span class="topic-tag">🧩 Kesir Problemleri</span>
+<span class="topic-tag">💯 Kesir↔Yüzde</span>
+<span class="topic-tag">📈 Yüzde Hesapları</span>
+<span class="topic-tag">🛒 Yüzde Problemleri</span>
+<span class="topic-tag">🎨 Görsel Kesirler</span>
+</div>
+<div class="stats-bar">
+<div class="stat-chip">📝 <span class="num" id="statTotal">—</span> Toplam</div>
+<div class="stat-chip">🟢 <span class="num" id="statEasy">—</span> Kolay</div>
+<div class="stat-chip">🟡 <span class="num" id="statMedium">—</span> Orta</div>
+<div class="stat-chip">🔴 <span class="num" id="statHard">—</span> Zor</div>
+<div class="stat-chip">📚 <span class="num">9</span> Konu</div>
+</div>
+</div>
+<div class="controls-wrap">
+<button class="btn btn-success" onclick="checkAll()">✅ Tümünü Kontrol Et</button>
+<button class="btn btn-warning" onclick="showAllAnswers()">💡 Cevapları Göster</button>
+<button class="btn btn-outline" onclick="resetAll()">🔄 Sıfırla</button>
+<button class="btn btn-primary" onclick="downloadPDF()">📥 PDF İndir</button>
+<button class="btn btn-danger" onclick="scrollToAnswerKey()">🔑 Cevap Anahtarı</button>
+</div>
+<div class="progress-section">
+<div class="progress-grid">
+<div class="prog-card total"><div class="pnum" id="pTotal">—</div><div class="ptxt">Toplam Soru</div></div>
+<div class="prog-card correct"><div class="pnum" id="pCorrect">0</div><div class="ptxt">✅ Doğru</div></div>
+<div class="prog-card wrong"><div class="pnum" id="pWrong">0</div><div class="ptxt">❌ Yanlış</div></div>
+<div class="prog-card empty"><div class="pnum" id="pEmpty">—</div><div class="ptxt">⬜ Boş</div></div>
+</div>
+<div class="prog-bar-wrap"><div class="prog-bar-fill" id="progBarFill" style="width:0%"></div></div>
+<div style="text-align:center;font-size:11px;color:#6b7280;margin-top:5px;font-weight:700;" id="progText">Henüz soru cevaplanmadı</div>
+</div>
+<div class="filter-wrap">
+<span style="font-size:12px;font-weight:800;color:#374151;">Filtrele:</span>
+<button class="filter-btn active-all" onclick="filterQuestions('all',this)">📋 Tümü</button>
+<button class="filter-btn" onclick="filterQuestions('easy',this)">🟢 Kolay</button>
+<button class="filter-btn" onclick="filterQuestions('medium',this)">🟡 Orta</button>
+<button class="filter-btn" onclick="filterQuestions('hard',this)">🔴 Zor</button>
+<button class="filter-btn" onclick="filterQuestions('unanswered',this)">⬜ Cevaplanmamış</button>
+<button class="filter-btn" onclick="filterQuestions('wrong',this)">❌ Yanlışlar</button>
+</div>
+<div class="main-content" id="mainContent"></div>
+<div class="main-content">
+<div class="answer-key" id="answerKeySection">
+<h2>🔑 Cevap Anahtarı</h2>
+<div class="answer-grid" id="answerKeyGrid"></div>
+</div>
+</div>
+<div class="modal-overlay" id="resultModal">
+<div class="modal">
+<div style="font-size:60px;margin-bottom:14px;" id="modalEmoji">🎉</div>
+<h2 style="font-size:26px;font-weight:900;color:#1e1b4b;margin-bottom:10px;" id="modalTitle">Harika!</h2>
+<p style="color:#6b7280;font-size:15px;line-height:1.6;" id="modalDesc"></p>
+<div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+<button class="btn btn-outline" onclick="closeModal()">Kapat</button>
+<button class="btn btn-primary" onclick="resetAll();closeModal()">🔄 Tekrar Dene</button>
+</div>
+</div>
+</div>
+<div class="toast" id="toast"></div>
+<button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+// =============================================================
+// HELPERS
+// =============================================================
+function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){const t=a%b;a=b;b=t;}return a||1;}
+function simp(n,d){const g=gcd(n,d);return [n/g,d/g];}
+function K(pay,payda){ return `<span class="frac"><span class="fn">${pay}</span><span class="fd">${payda}</span></span>`; }
+function mixedHtml(w,p,d){ if(p<=0) return `${w}`; return `${w}${K(p,d)}`; }
+function fracDisplay(num,den){ const g=gcd(num,den)||1; const n=num/g,d=den/g; if(d===1) return `${n}`; return K(n,d); }
+function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+const rnd = mulberry32(240501);
+function buildQ(level,topic,text,correct,distractors){
+let pool=[correct];
+for(const d of distractors){ if(!pool.includes(d)){ pool.push(d); } if(pool.length===4) break; }
+let guard=0;
+while(pool.length<4 && guard<40){
+const base = distractors[guard % Math.max(distractors.length,1)] || (correct+'*');
+const cand = base + '\u200b'.repeat(Math.floor(guard/Math.max(distractors.length,1))+1);
+if(!pool.includes(cand)) pool.push(cand);
+guard++;
+}
+const idx=[0,1,2,3];
+for(let i=3;i>0;i--){ const j=Math.floor(rnd()*(i+1)); const tmp=idx[i]; idx[i]=idx[j]; idx[j]=tmp; }
+const letters=['A','B','C','D'];
+const shuffled = idx.map(ix=>pool[ix]);
+const ans = letters[idx.indexOf(0)];
+const opts = shuffled.map((o,i)=>`${letters[i]}) ${o}`);
+return {level,topic,text,opts,ans};
+}
+// Zorluk dağılımı: her 10 soruda 4 kolay, 3 orta, 3 zor (kademeli artan zorluk)
+function lvl(i){const m = i % 10;if (m < 4) return 'easy';if (m < 7) return 'medium';return 'hard';}
+function cyc(arr,i){ return arr[((i%arr.length)+arr.length)%arr.length]; }
+function fracDistractors(num,den){
+const d1 = den-num>0? den-num : num+1;
+const alt = num-1>0? num-1 : num+1;
+return [K(d1,den), K(alt,den), K(num,den+1)];
+}
+
+// =============================================================
+// SVG BUILDERS (sayı doğrusu + kesir şekilleri)
+// PDF/html2canvas dışa aktarımında şekillerin/sayı doğrularının
+// kesik ya da yarım görünmemesi için: explicit width/height,
+// viewBox'a göre bol güvenlik payı (padding), overflow:visible
+// (hem satır-içi style hem CSS ile), ve ok uçları viewBox
+// sınırlarının kesinlikle içinde kalacak şekilde hesaplanır.
+// =============================================================
+function svgWrap(vbW, vbH, inner){
+return `<div class="visual-q"><svg viewBox="0 0 ${vbW} ${vbH}" width="${vbW}" height="${vbH}" preserveAspectRatio="xMidYMid meet" style="overflow:visible;display:block;margin:0 auto;max-width:300px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg">${inner}</svg></div>`;
+}
+
+// ---- Sayı doğrusu ----
+// from,to : tam sayı sınırları (örn 0 ve 1) | den: birim başına eşit parça sayısı
+// markNum : from noktasından itibaren kaçıncı "eşit parça" işaretinde nokta olduğu (tam sayı, 0..(to-from)*den)
+// label   : işaretlenen noktanın harfi (örn 'A')
+function svgNumberLine(from, to, den, markNum, label){
+label = label || 'A';
+den = Math.max(1, den|0);
+const totalUnits = Math.max(1, to-from);
+const totalTicks = totalUnits*den;
+markNum = Math.max(0, Math.min(totalTicks, markNum|0));
+const segW = 46;
+const lineW = totalTicks*segW;
+const padL = 42, padR = 42, padT = 46, padBExtra = 30;
+const arrowLen = 15;
+const y = padT + 16;
+const x0 = padL;
+const x1 = padL + lineW;
+const vbW = lineW + padL + padR;
+const vbH = y + padBExtra + 26;
+
+let ticks = '';
+for(let i=0;i<=totalTicks;i++){
+const x = x0 + i*segW;
+const isInt = i % den === 0;
+const tickH = isInt ? 13 : 8;
+ticks += `<line x1="${x.toFixed(2)}" y1="${(y-tickH).toFixed(2)}" x2="${x.toFixed(2)}" y2="${(y+tickH).toFixed(2)}" stroke="#4338ca" stroke-width="${isInt?2.4:1.4}" stroke-linecap="round"/>`;
+if(isInt){
+const val = from + i/den;
+ticks += `<text x="${x.toFixed(2)}" y="${(y+tickH+17).toFixed(2)}" font-size="14" font-weight="800" fill="#1e1b4b" text-anchor="middle" font-family="Nunito,Arial,sans-serif">${val}</text>`;
+}
+}
+
+const mx = x0 + markNum*segW;
+const marker = `
+<polygon points="${(mx-7).toFixed(2)},${(y-27).toFixed(2)} ${(mx+7).toFixed(2)},${(y-27).toFixed(2)} ${mx.toFixed(2)},${(y-13).toFixed(2)}" fill="#ef4444" stroke="#991b1b" stroke-width="1"/>
+<line x1="${mx.toFixed(2)}" y1="${(y-13).toFixed(2)}" x2="${mx.toFixed(2)}" y2="${(y-2).toFixed(2)}" stroke="#ef4444" stroke-width="2.2" stroke-linecap="round"/>
+<text x="${mx.toFixed(2)}" y="${(y-31).toFixed(2)}" font-size="15" font-weight="900" fill="#dc2626" text-anchor="middle" font-family="Nunito,Arial,sans-serif">${label}</text>
+`;
+
+// Ana çizgi + iki uçtaki oklar (doğrunun devam ettiğini gösterir; her iki
+// ucun ok başı da viewBox sınırlarının kesinlikle içinde, kesilmeden çizilir)
+const leftTipX = x0 - arrowLen;
+const rightTipX = x1 + arrowLen;
+const line = `
+<line x1="${leftTipX.toFixed(2)}" y1="${y.toFixed(2)}" x2="${rightTipX.toFixed(2)}" y2="${y.toFixed(2)}" stroke="#4338ca" stroke-width="2.6" stroke-linecap="round"/>
+<polygon points="${leftTipX.toFixed(2)},${y.toFixed(2)} ${(leftTipX+12).toFixed(2)},${(y-6.5).toFixed(2)} ${(leftTipX+12).toFixed(2)},${(y+6.5).toFixed(2)}" fill="#4338ca"/>
+<polygon points="${rightTipX.toFixed(2)},${y.toFixed(2)} ${(rightTipX-12).toFixed(2)},${(y-6.5).toFixed(2)} ${(rightTipX-12).toFixed(2)},${(y+6.5).toFixed(2)}" fill="#4338ca"/>
+`;
+
+return svgWrap(vbW, vbH, line + ticks + marker);
+}
+
+// ---- Kesir şekilleri (bar / daire / kare) ----
+// shape: 'bar' | 'circle' | 'square' | whole: tam sayı kısmı | part: kesirli kısım payı | den: payda
+function svgFractionShape(shape, whole, part, den){
+whole = Math.max(0, whole|0);
+part = Math.max(0, part|0);
+den = Math.max(1, den|0);
+const shadedTotal = whole*den + part;
+const numShapes = Math.max(1, whole + (part>0?1:0));
+const unit = 62;
+const gap = 16;
+const pad = 22;
+const totalW = numShapes*unit + (numShapes-1)*gap;
+const vbW = totalW + pad*2;
+const vbH = unit + pad*2;
+const purple = '#8b5cf6';
+const purpleLight = '#f3f0ff';
+const stroke = '#4c1d95';
+let inner = '';
+for(let s=0; s<numShapes; s++){
+const ox = pad + s*(unit+gap);
+const oy = pad;
+const shadedHere = Math.min(den, Math.max(0, shadedTotal - s*den));
+if(shape === 'circle'){
+inner += svgPie(ox, oy, unit, den, shadedHere, purple, purpleLight, stroke);
+} else {
+inner += svgStripes(ox, oy, unit, unit, den, shadedHere, purple, purpleLight, stroke, shape==='bar');
+}
+}
+return svgWrap(vbW, vbH, inner);
+}
+function svgStripes(ox, oy, w, h, den, shaded, fill, fillLight, stroke, isBar){
+const rectH = isBar ? h*0.62 : h;
+const rectY = oy + (h-rectH)/2;
+let out = '';
+const segW = w/den;
+for(let i=0;i<den;i++){
+const x = ox + i*segW;
+const filled = i<shaded;
+out += `<rect x="${x.toFixed(2)}" y="${rectY.toFixed(2)}" width="${segW.toFixed(2)}" height="${rectH.toFixed(2)}" fill="${filled?fill:fillLight}" stroke="${stroke}" stroke-width="1.6"/>`;
+}
+out += `<rect x="${ox.toFixed(2)}" y="${rectY.toFixed(2)}" width="${w.toFixed(2)}" height="${rectH.toFixed(2)}" fill="none" stroke="${stroke}" stroke-width="2"/>`;
+return out;
+}
+function svgPie(ox, oy, size, den, shaded, fill, fillLight, stroke){
+const cx = ox + size/2, cy = oy + size/2, r = size/2 - 2;
+let out = '';
+for(let i=0;i<den;i++){
+const a0 = (Math.PI*2*i/den) - Math.PI/2;
+const a1 = (Math.PI*2*(i+1)/den) - Math.PI/2;
+const x0 = cx + r*Math.cos(a0), y0 = cy + r*Math.sin(a0);
+const x1 = cx + r*Math.cos(a1), y1 = cy + r*Math.sin(a1);
+const large = (a1-a0) > Math.PI ? 1 : 0;
+const filled = i<shaded;
+out += `<path d="M${cx.toFixed(2)},${cy.toFixed(2)} L${x0.toFixed(2)},${y0.toFixed(2)} A${r.toFixed(2)},${r.toFixed(2)} 0 ${large} 1 ${x1.toFixed(2)},${y1.toFixed(2)} Z" fill="${filled?fill:fillLight}" stroke="${stroke}" stroke-width="1.6"/>`;
+}
+return out;
+}
+
+// =============================================================
+// BÖLÜM 1: Kesir Çeşitleri ve Temel Kavramlar
+// =============================================================
+function genSec1(count){
+const qs=[];
+const DEN=[4,5,6,7,8,9,10,12];
+for(let i=0;i<count;i++){
+const level = lvl(i);
+const den = cyc(DEN,i);
+const num = 1+(i%(den-1));
+const t = i%6;
+if(t===0){
+qs.push(buildQ(level,'Kesir Kavramı', `Bir bütün ${den} eşit parçaya ayrılıyor. Bu parçalardan ${num} tanesi alınıyor. Alınan kısmı gösteren kesir aşağıdakilerden hangisidir?`, K(num,den), fracDistractors(num,den)));
+} else if(t===1){
+qs.push(buildQ(level,'Kesir Kavramı', `${K(num,den)} kesrinde payda kaçtır?`, `${den}`, [`${den+1}`, `${den>1?den-1:den+2}`, `${num}`]));
+} else if(t===2){
+qs.push(buildQ(level,'Kesir Kavramı', `${K(num,den)} kesrinde pay kaçtır?`, `${num}`, [`${num+1}`, `${num>1?num-1:num+2}`, `${den}`]));
+} else if(t===3){
+qs.push(buildQ(level,'Birim Kesir', `Aşağıdakilerden hangisi bir birim kesirdir (payı 1 olan kesirdir)?`, K(1,den), [K(num>1?num:num+2,den), K(2,den+1), K(den,den)]));
+} else if(t===4){
+const whole = 1+(i%3);
+qs.push(buildQ(level,'Kesir Çeşitleri', `${whole} tam sayısı, paydası ${den} olan bir kesir olarak yazılırsa hangisi elde edilir?`, K(whole*den, den), [K(whole*den-1,den), K(whole*den+1,den), K(whole*den, den+1)]));
+} else {
+const bilesik = den+num;
+qs.push(buildQ(level,'Kesir Çeşitleri', `${K(bilesik,den)} kesri için aşağıdakilerden hangisi doğrudur?`, "Bileşik kesirdir (pay, paydadan büyüktür)", ["Basit kesirdir (pay, paydadan küçüktür)", "Birim kesirdir (payı 1'dir)", "Bu bir tam sayıdır"]));
+}
+}
+return qs;
+}
+
+// =============================================================
+// BÖLÜM 2: Sayı Doğrusunda Kesirler
+// =============================================================
+function genSec2(count){
+const qs=[];
+const DEN=[3,4,5,6,8,10];
+for(let i=0;i<count;i++){
+const level = lvl(i);
+const den = cyc(DEN,i);
+const span = level==='hard' ? (2+(i%2)) : (level==='medium' && i%3===0 ? 2 : 1);
+const totalTicks = span*den;
+let markNum = 1 + (i % Math.max(1,totalTicks-1));
+if(markNum>=totalTicks) markNum = totalTicks-1;
+if(markNum<=0) markNum = 1;
+const svg = svgNumberLine(0, span, den, markNum, 'A');
+const qText = `${svg}Yukarıdaki sayı doğrusunda A noktasının gösterdiği değer aşağıdakilerden hangisidir?`;
+let correctDisplay, distractors;
+if(markNum>=den){
+const wholePart = Math.floor(markNum/den);
+const remPart = markNum - wholePart*den;
+if(i%2===0){
+correctDisplay = K(markNum, den);
+distractors = [K(markNum-1,den), K(markNum+1,den), K(markNum, den+1)];
+} else {
+correctDisplay = remPart>0 ? mixedHtml(wholePart, remPart, den) : `${wholePart}`;
+distractors = [mixedHtml(wholePart, Math.max(1,remPart-1), den), mixedHtml(wholePart+1, remPart, den), mixedHtml(Math.max(0,wholePart-1), remPart, den)];
+}
+} else {
+correctDisplay = fracDisplay(markNum, den);
+distractors = fracDistractors(markNum, den);
+}
+qs.push(buildQ(level,'Sayı Doğrusu', qText, correctDisplay, distractors));
+}
+return qs;
+}
+
+// =============================================================
+// BÖLÜM 3: Sadeleştirme ve Genişletme
+// =============================================================
+function genSec3(count){
+const qs=[];
+const BASE=[[1,2],[1,3],[2,3],[1,4],[3,4],[1,5],[2,5],[3,5],[1,6],[5,6]];
+for(let i=0;i<count;i++){
+const level = lvl(i);
+const [a,b] = cyc(BASE,i);
+const k = 2+(i%4);
+if(i%2===0){
+const num = a*k, den = b*k;
+qs.push(buildQ(level,'Sadeleştirme', `${K(num,den)} kesrini sadeleştirirsek (en sade hâline getirirsek) hangi kesri elde ederiz?`, K(a,b), [K(a+1,b), K(a,b+1), K(a>1?a-1:a+2,b)]));
+} else {
+const targetDen = b*k;
+qs.push(buildQ(level,'Genişletme', `${K(a,b)} kesrini genişleterek paydasını ${targetDen} yaparsak elde edilen kesir hangisidir?`, K(a*k,targetDen), [K(a*k+1,targetDen), K(a*k-1>0?a*k-1:a*k+2,targetDen), K(a*k,targetDen+ b)]));
+}
+}
+return qs;
+}
+
+// =============================================================
+// BÖLÜM 4: Kesirlerde Dört İşlem
+// =============================================================
+function genSec4(count){
+const qs=[];
+const DEN=[4,5,6,7,8,9,10];
+for(let i=0;i<count;i++){
+const level = lvl(i);
+const den = cyc(DEN,i);
+const t = i%4;
+if(t===0){
+const a=1+(i%(den-2)), b=1+((i+2)%(den-a-1>0?den-a-1:1));
+const sum=a+b>den?den-1:a+b;
+qs.push(buildQ(level,'Kesirlerde Toplama', `${K(a,den)} + ${K(b,den)} işleminin sonucu kaçtır?`, fracDisplay(sum,den), fracDistractors(Math.max(1,gcd(sum,den)===den?1:sum%den||1),den)));
+} else if(t===1){
+const a=2+(i%(den-2)), b=1+(i%(a-1>0?a-1:1));
+qs.push(buildQ(level,'Kesirlerde Çıkarma', `${K(a,den)} - ${K(b,den)} işleminin sonucu kaçtır?`, fracDisplay(a-b,den), fracDistractors(Math.max(1,(a-b)%den||1),den)));
+} else if(t===2){
+const a=1+(i%3), b=cyc(DEN,i+1), c=1+(i%3), d=cyc(DEN,i+3);
+const num=a*c, denn=b*d;
+qs.push(buildQ(level,'Kesirlerde Çarpma', `${K(a,b)} × ${K(c,d)} işleminin sonucu kaçtır?`, fracDisplay(num,denn), [fracDisplay(num+1,denn), fracDisplay(num,denn+1), fracDisplay(num>1?num-1:num+2,denn)]));
+} else {
+const a=1+(i%3), b=cyc(DEN,i+2), c=1+(i%3), d=cyc(DEN,i+4);
+const num=a*d, denn=b*c;
+qs.push(buildQ(level,'Kesirlerde Bölme', `${K(a,b)} ÷ ${K(c,d)} işleminin sonucu kaçtır?`, fracDisplay(num,denn), [fracDisplay(num+1,denn), fracDisplay(num,denn+1), fracDisplay(num>1?num-1:num+2,denn)]));
+}
+}
+return qs;
+}
+
+// =============================================================
+// BÖLÜM 5: Kesir Problemleri
+// =============================================================
+function genSec5(count){
+const qs=[];
+const DEN=[3,4,5,6,8,10];
+const NAMES=['öğrenci','elma','kalem','bilye','sayfa','kitap'];
+for(let i=0;i<count;i++){
+const level = lvl(i);
+const den = cyc(DEN,i);
+const num = 1+(i%(den-1));
+const total = den*(2+(i%5));
+const part = total*num/den;
+const name = cyc(NAMES,i);
+const t = i%3;
+if(t===0){
+qs.push(buildQ(level,'Kesir Problemi', `Bir grupta ${total} ${name} vardır. Bunların ${K(num,den)}'i seçiliyor. Seçilen ${name} sayısı kaçtır?`, `${part}`, [`${part+den}`, `${part-den>0?part-den:part+2*den}`, `${total-part}`]));
+} else if(t===1){
+qs.push(buildQ(level,'Kesir Problemi', `${total} sayısının ${K(num,den)}'i kaçtır?`, `${part}`, [`${part+den}`, `${part-den>0?part-den:part+2*den}`, `${total/den}`]));
+} else {
+const remaining = total - part;
+qs.push(buildQ(level,'Kesir Problemi', `Toplamı ${total} olan bir işin ${K(num,den)}'i tamamlanmıştır. Geriye kaç birimlik iş kalmıştır?`, `${remaining}`, [`${part}`, `${remaining+den}`, `${remaining-den>0?remaining-den:remaining+2*den}`]));
+}
+}
+return qs;
+}
+
+// =============================================================
+// BÖLÜM 6: Kesir ↔ Yüzde Dönüşümü
+// =============================================================
+function genSec6(count){
+const qs=[];
+const PAIRS=[[1,4],[1,5],[3,4],[2,5],[1,2],[1,10],[3,10],[1,20],[3,20],[7,10],[9,10],[1,25]];
+for(let i=0;i<count;i++){
+const level = lvl(i);
+const [n,d] = cyc(PAIRS,i);
+const pct = Math.round(n*100/d);
+if(i%2===0){
+qs.push(buildQ(level,'Kesir → Yüzde', `${K(n,d)} kesrinin yüzde olarak karşılığı kaçtır?`, `%${pct}`, [`%${pct+5}`, `%${pct>5?pct-5:pct+10}`, `%${Math.round(pct/2)}`]));
+} else {
+qs.push(buildQ(level,'Yüzde → Kesir', `%${pct} ifadesinin en sade kesir karşılığı hangisidir?`, K(n,d), fracDistractors(n,d)));
+}
+}
+return qs;
+}
+
+// =============================================================
+// BÖLÜM 7: Yüzde Hesaplamaları
+// =============================================================
+function genSec7(count){
+const qs=[];
+const PCTS=[5,10,15,20,25,30,40,50,60,75];
+for(let i=0;i<count;i++){
+const level = lvl(i);
+const pct = cyc(PCTS,i);
+const base = (2+(i%18))*20;
+const result = base*pct/100;
+const t = i%3;
+if(t===0){
+qs.push(buildQ(level,'Yüzde Hesabı', `${base} sayısının %${pct}'i kaçtır?`, `${result}`, [`${result+pct}`, `${result-pct>0?result-pct:result+2*pct}`, `${result*2}`]));
+} else if(t===1){
+qs.push(buildQ(level,'Yüzde Hesabı', `Bir sayının %${pct}'i ${result} olduğuna göre, bu sayının kendisi kaçtır?`, `${base}`, [`${base+pct}`, `${base-pct>0?base-pct:base+2*pct}`, `${result*2}`]));
+} else {
+const diffPct = pct<=50?pct:100-pct;
+qs.push(buildQ(level,'Yüzde Hesabı', `${base} sayısının %${diffPct}'i, %${100-diffPct}'inden kaç fazla ya da eksiktir? (Farkın mutlak değerini bulunuz)`, `${Math.abs(base*diffPct/100 - base*(100-diffPct)/100)}`, [`${base}`, `${result}`, `${Math.round(base/2)}`]));
+}
+}
+return qs;
+}
+
+// =============================================================
+// BÖLÜM 8: Yüzde Problemleri
+// =============================================================
+function genSec8(count){
+const qs=[];
+const PCTS=[5,10,15,20,25,30,40,50];
+const PRICES=[80,100,120,150,160,200,240,250,300,400,500,600,800];
+for(let i=0;i<count;i++){
+const level = lvl(i);
+const pct = cyc(PCTS,i);
+const price = cyc(PRICES,i);
+const unit = price*pct/100;
+const t = i%3;
+if(t===0){
+const newPrice = price+unit;
+const correct = `${newPrice} TL`;
+const distractors = [`${price} TL`, `${newPrice+unit} TL`, `${newPrice-unit>0?newPrice-unit:newPrice+unit} TL`];
+qs.push(buildQ(level,'Yüzde Problemi',`Fiyatı ${price} TL olan bir ürünün fiyatına %${pct} zam yapılıyor. Ürünün yeni fiyatı kaç TL olur?`,correct,distractors));
+} else if(t===1){
+const newPrice = price-unit;
+const correct = `${newPrice} TL`;
+const distractors = [`${price} TL`, `${newPrice-unit>0?newPrice-unit:newPrice+unit} TL`, `${newPrice+unit} TL`];
+qs.push(buildQ(level,'Yüzde Problemi',`Fiyatı ${price} TL olan bir ürüne %${pct} indirim uygulanıyor. Ürünün indirimli fiyatı kaç TL olur?`,correct,distractors));
+} else {
+const correct = `${unit} TL`;
+const distractors = [`${price} TL`, `${unit+pct} TL`, `${unit-pct>0?unit-pct:unit+pct} TL`];
+qs.push(buildQ(level,'Yüzde Problemi',`${price} TL olan bir üründe %${pct} oranında indirim yapılırsa, indirim tutarı kaç TL olur?`,correct,distractors));
+}
+}
+return qs;
+}
+
+// =============================================================
+// BÖLÜM 9: Görsel Kesirler (basit + bileşik + tam sayılı kesirli
+// şekiller karışık olarak; şekiller küçük ve net boyutta)
+// =============================================================
+function genSec9(count){
+const qs=[];
+const SHAPES=['bar','circle','square'];
+const DEN=[3,4,5,6,8];
+for(let i=0;i<count;i++){
+const level=lvl(i);
+const shape=cyc(SHAPES,i);
+const den=cyc(DEN,i);
+const t=i%3;
+if(t===0){
+const k=1+(i%(den-1));
+const svg=svgFractionShape(shape,0,k,den);
+qs.push(buildQ(level,'Görsel Kesir', `${svg}Şekilde taralı (mor) bölüm bütünün kaçta kaçıdır?`, K(k,den), fracDistractors(k,den)));
+} else if(t===1){
+const whole=1+(i%2);
+const part=1+(i%(den-1));
+const impro=whole*den+part;
+const svg=svgFractionShape(shape,whole,part,den);
+qs.push(buildQ(level,'Görsel Kesir', `${svg}Şekilde taralı (mor) bölümlerin tamamını bileşik kesir olarak ifade edersek hangisi doğrudur?`, K(impro,den), [K(impro-1,den), K(impro+1,den), K(impro,den+1)]));
+} else {
+const whole=1+(i%2);
+const part=1+(i%(den-1));
+const svg=svgFractionShape(shape,whole,part,den);
+const d1=mixedHtml(whole+1,part,den);
+const d2=mixedHtml(whole,part+1<den?part+1:Math.max(1,part-1),den);
+const d3=mixedHtml(whole>1?whole-1:whole+2,part,den);
+qs.push(buildQ(level,'Görsel Kesir', `${svg}Şekilde taralı (mor) bölümlerin tamamını tam sayılı kesir olarak ifade edersek hangisi doğrudur?`, mixedHtml(whole,part,den), [d1,d2,d3]));
+}
+}
+return qs;
+}
+
+// =============================================================
+// BUILD SECTIONS (toplam tam 250 soru)
+// =============================================================
+const RAW=[
+{title:'📌 Bölüm 1: Kesir Çeşitleri ve Temel Kavramlar', count:28, gen:genSec1},
+{title:'📊 Bölüm 2: Sayı Doğrusunda Kesirler', count:27, gen:genSec2},
+{title:'✂️ Bölüm 3: Sadeleştirme ve Genişletme', count:28, gen:genSec3},
+{title:'➕ Bölüm 4: Kesirlerde Dört İşlem', count:28, gen:genSec4},
+{title:'🧩 Bölüm 5: Kesir Problemleri', count:28, gen:genSec5},
+{title:'💯 Bölüm 6: Kesir ↔ Yüzde Dönüşümü', count:27, gen:genSec6},
+{title:'📈 Bölüm 7: Yüzde Hesaplamaları', count:28, gen:genSec7},
+{title:'🛒 Bölüm 8: Yüzde Problemleri', count:28, gen:genSec8},
+{title:'🎨 Bölüm 9: Görsel Kesirler (Şekillerle Kesirler)', count:28, gen:genSec9},
+];
+let _idCounter=1;
+const SECTIONS = RAW.map(sec=>{
+const rawQs = sec.gen(sec.count);
+const questions = rawQs.map(q=>({id:_idCounter++, level:q.level, topic:q.topic, text:q.text, opts:q.opts, ans:q.ans}));
+return {title:sec.title, questions};
+});
+
+// =============================================================
+// STATE
+// =============================================================
+let answers = {};
+let revealed = {};
+
+// =============================================================
+// RENDER
+// =============================================================
+function renderSection(section) {
+const qs = section.questions;
+const easyQ = qs.filter(q => q.level === 'easy');
+const medQ = qs.filter(q => q.level === 'medium');
+const hardQ = qs.filter(q => q.level === 'hard');
+return `
+<div class="section-header">
+<h2>${section.title}
+${easyQ.length ? `<span class="section-badge badge-easy">🟢 ${easyQ.length} Kolay</span>` : ''}
+${medQ.length ? `<span class="section-badge badge-medium">🟡 ${medQ.length} Orta</span>` : ''}
+${hardQ.length ? `<span class="section-badge badge-hard">🔴 ${hardQ.length} Zor</span>` : ''}
+</h2>
+</div>
+${easyQ.length ? `<div class="section-divider"><span class="section-divider-inner">🟢 Kolay Sorular</span></div><div class="q-grid">${easyQ.map(renderCard).join('')}</div>` : ''}
+${medQ.length ? `<div class="section-divider"><span class="section-divider-inner">🟡 Orta Sorular</span></div><div class="q-grid">${medQ.map(renderCard).join('')}</div>` : ''}
+${hardQ.length ? `<div class="section-divider"><span class="section-divider-inner">🔴 Zor Sorular</span></div><div class="q-grid">${hardQ.map(renderCard).join('')}</div>` : ''}
+`;
+}
+function renderCard(q) {
+const levelMap = {easy:'lvl-easy', medium:'lvl-medium', hard:'lvl-hard'};
+const levelText = {easy:'🟢 Kolay', medium:'🟡 Orta', hard:'🔴 Zor'};
+const levelBg = {easy:'#f0fdf4', medium:'#fffbeb', hard:'#fef2f2'};
+const levelBorder = {easy:'#86efac', medium:'#fde68a', hard:'#fca5a5'};
+const optLetters = ['A','B','C','D'];
+const optsHTML = q.opts.map((opt, i) =>
+`<button class="option-btn" id="opt-${q.id}-${i}" onclick="selectAnswer(${q.id},${i},'${optLetters[i]}')" data-letter="${optLetters[i]}">
+<span class="opt-letter">${optLetters[i]}</span>
+<span style="flex:1">${opt.replace(/^[A-D]\)\s*/,'')}</span>
+</button>`
+).join('');
+return `
+<div class="q-card" id="card-${q.id}" data-level="${q.level}" data-answered="false" style="border-top:3px solid ${levelBorder[q.level]};">
+<div class="q-card-header" style="background:${levelBg[q.level]};">
+<span class="q-num">📝 Soru ${q.id}</span>
+<span class="q-topic">${q.topic}</span>
+<span class="q-level ${levelMap[q.level]}">${levelText[q.level]}</span>
+</div>
+<div class="q-body">
+<div class="q-text">${q.text}</div>
+<div class="options">${optsHTML}</div>
+<div class="result-card" id="result-${q.id}"></div>
+</div>
+</div>`;
+}
+
+// =============================================================
+// INTERACTION
+// =============================================================
+function selectAnswer(qId, optIdx, letter) {
+if (answers[qId] !== undefined && !revealed[qId]) return;
+const q = findQ(qId);
+if (!q) return;
+answers[qId] = letter;
+const card = document.getElementById(`card-${qId}`);
+const resultEl = document.getElementById(`result-${qId}`);
+const allOpts = card.querySelectorAll('.option-btn');
+allOpts.forEach(b => { b.classList.remove('correct-opt','wrong-opt','show-correct'); });
+const isCorrect = letter === q.ans;
+allOpts.forEach(b => b.disabled = true);
+if (isCorrect) {
+document.getElementById(`opt-${qId}-${optIdx}`).classList.add('correct-opt');
+card.classList.remove('answered-wrong'); card.classList.add('answered-correct');
+card.dataset.answered = 'correct';
+resultEl.className = 'result-card result-correct';
+resultEl.style.display = 'block';
+resultEl.innerHTML = '✅ Doğru! Tebrikler!';
+} else {
+document.getElementById(`opt-${qId}-${optIdx}`).classList.add('wrong-opt');
+allOpts.forEach(b => { if (b.dataset.letter === q.ans) b.classList.add('show-correct'); });
+card.classList.remove('answered-correct'); card.classList.add('answered-wrong');
+card.dataset.answered = 'wrong';
+resultEl.className = 'result-card result-wrong';
+resultEl.style.display = 'block';
+resultEl.innerHTML = `❌ Yanlış! Doğru cevap: <b>${q.ans})</b>`;
+}
+updateProgress();
+if (!revealed[qId]) checkMilestone();
+}
+function checkAll() {
+const all = getAllQ();
+const unanswered = all.filter(q => answers[q.id] === undefined).length;
+if (unanswered > 0) { showToast(`⚠️ ${unanswered} soru cevaplanmamış!`,'info'); return; }
+const correct = all.filter(q => answers[q.id] === q.ans).length;
+showResultModal(correct, all.length);
+}
+function showAllAnswers() {
+if (!confirm('Tüm cevapları görmek istiyor musunuz?')) return;
+getAllQ().forEach(q => {
+revealed[q.id] = true;
+if (answers[q.id] === undefined) {
+const card = document.getElementById(`card-${q.id}`);
+const allOpts = card ? card.querySelectorAll('.option-btn') : [];
+allOpts.forEach(b => { b.disabled = true; if (b.dataset.letter === q.ans) b.classList.add('show-correct'); });
+const resultEl = document.getElementById(`result-${q.id}`);
+if (resultEl) { resultEl.className = 'result-card result-wrong'; resultEl.style.display='block'; resultEl.innerHTML=`💡 Doğru cevap: <b>${q.ans})</b>`; }
+}
+});
+showToast('✅ Tüm cevaplar gösterildi!','success');
+}
+function resetAll() {
+if (!confirm('Tüm cevapları sıfırlamak istiyor musunuz?')) return;
+answers = {}; revealed = {};
+getAllQ().forEach(q => {
+const card = document.getElementById(`card-${q.id}`);
+if (!card) return;
+card.classList.remove('answered-correct','answered-wrong');
+card.dataset.answered = 'false';
+card.querySelectorAll('.option-btn').forEach(b => { b.disabled=false; b.classList.remove('correct-opt','wrong-opt','show-correct'); });
+const resultEl = document.getElementById(`result-${q.id}`);
+if (resultEl) { resultEl.style.display='none'; resultEl.className='result-card'; }
+});
+updateProgress();
+showToast('🔄 Tüm cevaplar sıfırlandı!','info');
+}
+function filterQuestions(filter, btn) {
+document.querySelectorAll('.filter-btn').forEach(b => b.className='filter-btn');
+const cls = {all:'active-all',easy:'active-easy',medium:'active-medium',hard:'active-hard',unanswered:'active-unans',wrong:'active-wrong'};
+btn.className = 'filter-btn ' + (cls[filter]||'active-all');
+document.querySelectorAll('.q-card').forEach(card => {
+const level = card.dataset.level, answered = card.dataset.answered;
+let show = true;
+if (filter==='easy') show = level==='easy';
+else if (filter==='medium') show = level==='medium';
+else if (filter==='hard') show = level==='hard';
+else if (filter==='unanswered') show = answered==='false';
+else if (filter==='wrong') show = answered==='wrong';
+card.style.display = show ? '' : 'none';
+});
+}
+function updateProgress() {
+const all = getAllQ();
+const total = all.length;
+const answered = all.filter(q => answers[q.id] !== undefined);
+const correct = answered.filter(q => answers[q.id] === q.ans).length;
+const wrong = answered.length - correct;
+const empty = total - answered.length;
+document.getElementById('pTotal').textContent = total;
+document.getElementById('pCorrect').textContent = correct;
+document.getElementById('pWrong').textContent = wrong;
+document.getElementById('pEmpty').textContent = empty;
+const pct = Math.round(answered.length / total * 100);
+document.getElementById('progBarFill').style.width = pct + '%';
+document.getElementById('progText').textContent = `${answered.length} / ${total} soru cevaplanmış (%${pct})`;
+}
+function checkMilestone() {
+const all = getAllQ();
+const answered = all.filter(q => answers[q.id] !== undefined).length;
+if ([25,50,75,100,125,150,175,200,225,250].includes(answered)) {
+const correct = all.filter(q => answers[q.id] === q.ans).length;
+showToast(`🎉 ${answered}. soruya ulaştın! ${correct} doğru`,'success');
+}
+}
+function showResultModal(correct, total) {
+const pct = Math.round(correct / total * 100);
+let emoji='😊', title='İyi İş!';
+if (pct>=90){emoji='🏆';title='Mükemmel!';}
+else if(pct>=75){emoji='🎉';title='Harika!';}
+else if(pct>=60){emoji='😊';title='İyi İş!';}
+else if(pct>=40){emoji='📚';title='Çalışmaya Devam!';}
+else{emoji='💪';title='Daha Çok Çalışmalısın!';}
+document.getElementById('modalEmoji').textContent = emoji;
+document.getElementById('modalTitle').textContent = title;
+document.getElementById('modalDesc').innerHTML = `${total} sorudan <b>${correct}</b> doğru, <b>${total-correct}</b> yanlış. Başarı oranın: <b>%${pct}</b>`;
+document.getElementById('resultModal').classList.add('active');
+}
+function closeModal(){ document.getElementById('resultModal').classList.remove('active'); }
+function scrollToAnswerKey(){ document.getElementById('answerKeySection').scrollIntoView({behavior:'smooth'}); }
+
+// =============================================================
+// ANSWER KEY
+// =============================================================
+function buildAnswerKey() {
+const grid = document.getElementById('answerKeyGrid');
+const all = getAllQ();
+const lc = {easy:'#15803d', medium:'#b45309', hard:'#b91c1c'};
+grid.innerHTML = all.map(q =>
+`<div class="answer-item">
+<div class="aq-num">S.${q.id}</div>
+<div class="aq-ans" style="color:${lc[q.level]}">${q.ans}</div>
+</div>`
+).join('');
+}
+
+// =============================================================
+// PDF DOWNLOAD — HIZLANDIRILMIŞ SÜRÜM
+// (Şekiller/sayı doğrusu artık explicit width/height + bol padding
+// + inline overflow:visible ile üretildiğinden, ayrıca yakalamadan
+// önce font/reflow beklemesi eklendiğinden, html2canvas
+// rasterleştirmesinde kesilme yaşanmaz; kart kırpma mantığı
+// aynen korunmuştur.)
+// =============================================================
+async function downloadPDF() {
+const overlay = document.getElementById('pdfLoadingOverlay');
+const bar = document.getElementById('pdfProgressBar');
+const txt = document.getElementById('pdfProgressText');
+const sub = document.getElementById('pdfSubtext');
+overlay.classList.add('active');
+bar.style.width = '2%'; txt.textContent = '%2';
+const prevDisplays = new Map();
+document.querySelectorAll('.q-card').forEach(c=>{ prevDisplays.set(c, c.style.display); c.style.display=''; });
+document.body.classList.add('pdf-export-mode');
+await new Promise(r => setTimeout(r, 200));
+// Ekstra güvenlik: fontlar tam yüklensin ve SVG'ler kesin reflow olsun
+// (sayı doğrusu / şekillerin PDF'de kesik/yarım görünmesini engeller)
+try { if (document.fonts && document.fonts.ready) { await document.fonts.ready; } } catch(e){}
+document.querySelectorAll('.visual-q svg').forEach(svg=>{ svg.getBoundingClientRect(); });
+await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+try {
+const { jsPDF } = window.jspdf;
+const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress:true });
+const pW=210, pH=297, mg=10;
+const colW=(pW-mg*3)/2;
+const purple=[99,102,241], dark=[30,27,75], gray=[107,114,128];
+pdf.setFillColor(...purple); pdf.rect(0,0,pW,32,'F');
+pdf.setTextColor(255,255,255); pdf.setFontSize(16); pdf.setFont('helvetica','bold');
+pdf.text('6. SINIF MATEMATIK', pW/2, 12, {align:'center'});
+pdf.setFontSize(11); pdf.text('KESIRLER VE YUZDELER - YAPRAK TESTI', pW/2, 20, {align:'center'});
+pdf.setFontSize(8); pdf.text('250 Soru | 9 Konu | 3 Zorluk Seviyesi', pW/2, 27, {align:'center'});
+pdf.setFillColor(240,242,255); pdf.rect(mg,35,pW-mg*2,13,'F');
+pdf.setDrawColor(...purple); pdf.rect(mg,35,pW-mg*2,13,'S');
+pdf.setTextColor(...dark); pdf.setFontSize(9); pdf.setFont('helvetica','normal');
+pdf.text('Ad Soyad: ..........................................................', mg+3, 41);
+pdf.text('Sinif: ..............   Numara: ..............   Puan: ...........', mg+3, 46);
+let pageNum = 1;
+let col = 0, colY = [53,53];
+const footH = 11;
+function addPageHeader(){
+pageNum++;
+pdf.setFillColor(...purple); pdf.rect(0,0,pW,11,'F');
+pdf.setTextColor(255,255,255); pdf.setFontSize(8); pdf.setFont('helvetica','bold');
+pdf.text('6. Sinif | Kesirler ve Yuzdeler', mg, 7.5);
+pdf.text(`Sayfa ${pageNum}`, pW-mg, 7.5, {align:'right'});
+return 15;
+}
+function addFooter(){
+pdf.setFillColor(240,242,255); pdf.rect(0,pH-8,pW,8,'F');
+pdf.setTextColor(...gray); pdf.setFontSize(7); pdf.setFont('helvetica','normal');
+pdf.text('6. Sinif Matematik | Kesirler ve Yuzdeler | 250 Soru', mg, pH-3);
+pdf.text(`Sayfa ${pageNum}`, pW-mg, pH-3, {align:'right'});
+}
+const grids = Array.from(document.querySelectorAll('.q-grid'));
+const cardData = [];
+const totalCards = document.querySelectorAll('.q-card').length || 1;
+let doneCards = 0;
+const CAPTURE_SCALE = 2;
+for (const grid of grids) {
+const cards = Array.from(grid.querySelectorAll('.q-card'));
+if (!cards.length) continue;
+let gridCanvas;
+try {
+gridCanvas = await html2canvas(grid, { scale: CAPTURE_SCALE, backgroundColor:'#ffffff', useCORS:true, logging:false });
+} catch(e) {
+gridCanvas = null;
+}
+const gridRect = grid.getBoundingClientRect();
+if (gridCanvas && gridRect.width > 0) {
+const scaleX = gridCanvas.width / gridRect.width;
+const scaleY = gridCanvas.height / gridRect.height;
+for (const card of cards) {
+const r = card.getBoundingClientRect();
+const sx = Math.max(0,(r.left - gridRect.left) * scaleX);
+const sy = Math.max(0,(r.top - gridRect.top) * scaleY);
+const sw = Math.max(1, r.width * scaleX);
+const sh = Math.max(1, r.height * scaleY);
+const tmp = document.createElement('canvas');
+tmp.width = Math.max(1,Math.round(sw));
+tmp.height = Math.max(1,Math.round(sh));
+tmp.getContext('2d').drawImage(gridCanvas, sx, sy, sw, sh, 0, 0, tmp.width, tmp.height);
+cardData.push({ imgData: tmp.toDataURL('image/jpeg', 0.92), w: tmp.width, h: tmp.height });
+doneCards++;
+}
+} else {
+for (const card of cards) {
+const cCanvas = await html2canvas(card, { scale:2, backgroundColor:'#ffffff', useCORS:true, logging:false });
+cardData.push({ imgData: cCanvas.toDataURL('image/jpeg',0.92), w:cCanvas.width, h:cCanvas.height });
+doneCards++;
+}
+}
+const p = 2 + Math.round(doneCards/totalCards*58);
+bar.style.width = p+'%'; txt.textContent = `%${p}`;
+if (sub) sub.textContent = `Soru ${doneCards} / ${totalCards} hazırlanıyor...`;
+await new Promise(r=>setTimeout(r,0));
+}
+for (let i=0;i<cardData.length;i++){
+const { imgData, w, h } = cardData[i];
+const imgW = colW;
+const imgH = h * imgW / w;
+if (colY[col] + imgH > pH - footH) {
+if (col===0 && colY[1] + imgH <= pH - footH) { col = 1; }
+else { addFooter(); pdf.addPage(); const y0 = addPageHeader(); colY=[y0,y0]; col=0; }
+}
+const dx = col===0 ? mg : mg+colW+mg;
+pdf.addImage(imgData, 'JPEG', dx, colY[col], imgW, imgH);
+colY[col] += imgH + 4;
+col = 1-col;
+const p = 62 + Math.round((i+1)/cardData.length*30);
+bar.style.width = p+'%'; txt.textContent = `%${p}`;
+}
+addFooter();
+pdf.addPage(); pageNum++;
+pdf.setFillColor(...purple); pdf.rect(0,0,pW,16,'F');
+pdf.setTextColor(255,255,255); pdf.setFontSize(13); pdf.setFont('helvetica','bold');
+pdf.text('CEVAP ANAHTARI', pW/2, 11, {align:'center'});
+const allQ = getAllQ();
+const akCols=10, akW=(pW-mg*2)/akCols, akH=10;
+const rowsPerPage = Math.floor((pH-footH-22)/akH);
+const perPage = akCols*rowsPerPage;
+function lc2(l){ return l==='easy'?[16,185,129]:(l==='medium'?[245,158,11]:[239,68,68]); }
+allQ.forEach((q,i)=>{
+if (i>0 && i%perPage===0){
+addFooter(); pdf.addPage(); pageNum++;
+pdf.setFillColor(...purple); pdf.rect(0,0,pW,14,'F');
+pdf.setTextColor(255,255,255); pdf.setFontSize(11); pdf.setFont('helvetica','bold');
+pdf.text('CEVAP ANAHTARI (devam)', pW/2, 9, {align:'center'});
+}
+const within = i%perPage;
+const c = within%akCols, r = Math.floor(within/akCols);
+const ax = mg+c*akW, ay = 22+r*akH;
+pdf.setFillColor(i%2===0?240:248,242,255);
+pdf.rect(ax,ay,akW-0.6,akH-0.6,'F');
+pdf.setDrawColor(210,215,245); pdf.rect(ax,ay,akW-0.6,akH-0.6,'S');
+pdf.setTextColor(...gray); pdf.setFontSize(5); pdf.setFont('helvetica','normal');
+pdf.text(`S.${q.id}`, ax+akW/2, ay+3.8, {align:'center'});
+pdf.setTextColor(...lc2(q.level)); pdf.setFontSize(7); pdf.setFont('helvetica','bold');
+pdf.text(q.ans, ax+akW/2, ay+8, {align:'center'});
+});
+addFooter();
+bar.style.width = '100%'; txt.textContent = '%100';
+await new Promise(r=>setTimeout(r,120));
+pdf.save('6.Sinif_Kesirler_Yuzdeler_Yaprak_Testi.pdf');
+showToast('✅ PDF başarıyla indirildi!','success');
+} catch(e){
+console.error(e);
+showToast('❌ PDF oluşturulamadı: '+e.message,'error');
+} finally {
+document.body.classList.remove('pdf-export-mode');
+prevDisplays.forEach((disp,c)=>{ c.style.display = disp; });
+overlay.classList.remove('active');
+}
+}
+
+// =============================================================
+// UTILS
+// =============================================================
+function getAllQ(){
+const result=[];
+SECTIONS.forEach(s=>s.questions.forEach(q=>result.push(q)));
+return result.sort((a,b)=>a.id-b.id);
+}
+function findQ(id){
+for (const s of SECTIONS){ const q=s.questions.find(q=>q.id===id); if (q) return q; }
+return null;
+}
+function showToast(msg, type='info'){
+const t=document.getElementById('toast');
+t.textContent=msg; t.className=`toast ${type} show`;
+clearTimeout(t._to); t._to=setTimeout(()=>t.classList.remove('show'),3500);
+}
+window.addEventListener('scroll',()=>{
+const btn=document.getElementById('scrollTopBtn');
+window.scrollY>400 ? btn.classList.add('visible') : btn.classList.remove('visible');
+});
+
+// =============================================================
+// INIT
+// =============================================================
+(function init(){
+const main=document.getElementById('mainContent');
+main.innerHTML='';
+SECTIONS.forEach(s=>{
+const div=document.createElement('div');
+div.innerHTML=renderSection(s);
+main.appendChild(div);
+});
+buildAnswerKey();
+updateProgress();
+const all=getAllQ();
+document.getElementById('statTotal').textContent=all.length;
+document.getElementById('statEasy').textContent=all.filter(q=>q.level==='easy').length;
+document.getElementById('statMedium').textContent=all.filter(q=>q.level==='medium').length;
+document.getElementById('statHard').textContent=all.filter(q=>q.level==='hard').length;
+document.getElementById('pTotal').textContent=all.length;
+document.getElementById('pEmpty').textContent=all.length;
+})();
+</script>
+</body>
+</html>
